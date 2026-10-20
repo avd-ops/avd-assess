@@ -1,0 +1,12 @@
+id: wdot
+title: Windows Desktop Optimization Tool (WDOT)
+url: https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool
+pin: https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool/tree/ff2574c016c6202dbb0303a3728016ad3dbf391c
+read: 2026-10-20
+license: MIT
+areas: [assessment]
+notes: WDOT supersedes VDOT, which has no license. avd-landing-zone's image build runs WDOT at a pinned commit with a reviewed profile (scripts/image/wdot/).
+claims:
+  - id: categories
+    says: Optimizations come in categories (services, scheduled tasks, autologgers, default user settings, local policy, network, disk cleanup, Appx packages and more), each item set to apply or skip in a JSON profile.
+    kind: guidance

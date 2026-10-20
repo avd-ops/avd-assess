@@ -1,0 +1,14 @@
+id: vdi-optimization-guide
+title: Optimizing Windows configuration for VDI desktops
+url: https://learn.microsoft.com/windows-server/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration
+pin: https://github.com/MicrosoftDocs/windowsserverdocs/blob/ad5a77c71f56256d9c306ddd93cc9e076c1a76c5/WindowsServerDocs/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration.md
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: test-cleanup-first
+    says: Disk cleanup tasks should all be tested before they're used.
+    kind: guidance
+  - id: sysprep-store-apps
+    says: Removing or updating built-in Store apps can make sysprep fail; the guide links the support article.
+    kind: guidance

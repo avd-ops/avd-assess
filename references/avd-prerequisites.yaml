@@ -1,0 +1,11 @@
+id: avd-prerequisites
+title: Prerequisites for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/prerequisites
+pin: "Learn git_commit_id 98f726730d8d63d52a4fea0415ab8eaffffcd975, updated_at 2026-09-30"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [benchmarks, collection]
+claims:
+  - id: rtt-under-150
+    says: Round-trip time from the client's network to the host pool's Azure region should be under 150 ms; put session hosts in the region closest to users.
+    kind: published

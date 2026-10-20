@@ -1,0 +1,17 @@
+id: waf-reliability-checklist
+title: Design review checklist for Reliability (Well-Architected Framework)
+url: https://learn.microsoft.com/azure/well-architected/reliability/checklist
+pin: "Learn git_commit_id 687e8febe6ddfa4646952220e057a50b1046a75a, updated_at 2026-05-29"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, scoring]
+notes: Each pillar's checklist numbers its items (RE, SE, CO, OE, PE). The source repo is private, so the pin is the page's own git_commit_id and updated_at.
+claims:
+  - id: RE:04
+    says: Define reliability and recovery targets and use them as the base of the health model.
+  - id: RE:05
+    says: Add redundancy at several levels, especially for critical flows.
+  - id: RE:06
+    says: Scale on actual or predicted usage with little manual intervention.
+  - id: RE:10
+    says: Measure and track health continuously with uptime and reliability indicators.
