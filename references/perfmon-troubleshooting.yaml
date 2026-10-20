@@ -1,0 +1,17 @@
+id: perfmon-troubleshooting
+title: Troubleshoot issues using Performance Monitor (Windows Server)
+url: https://learn.microsoft.com/troubleshoot/windows-server/support-tools/troubleshoot-issues-performance-monitor
+pin: "Learn git_commit_id 30a828869b7c22f58ceea4796a81b5597449a3f7, updated_at 2026-02-19"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [benchmarks, collection]
+claims:
+  - id: cpu-bands
+    says: "Processor time bands: up to 50% healthy, 50 to 80% worth watching, over 80% critical."
+    kind: published
+  - id: pql-per-processor
+    says: A processor queue of two or more per processor while CPU is high means looking for the processes using it.
+    kind: published
+  - id: patterns-over-days
+    says: Log counters over one or two working days, then look for patterns by day and hour rather than reacting to one reading.
+    kind: guidance
