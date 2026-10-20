@@ -2,6 +2,25 @@
   "schema": "avd-assess-index/v1",
   "references": [
     {
+      "id": "amba-avd",
+      "title": "Azure Monitor Baseline Alerts, Azure Virtual Desktop pattern",
+      "url": "https://azure.github.io/azure-monitor-baseline-alerts/patterns/specialized/avd/index.html",
+      "pin": "https://github.com/Azure/azure-monitor-baseline-alerts/tree/ec5e5f3acfcdc52773110517b1f51bd06cf766de",
+      "read": "2026-10-20",
+      "license": "MIT",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Pinned at release v2.2.1 (2025-12-16). The only published alert baseline for AVD we found; the landing zone alerts on a subset (draft avd-landing-zone PR 80 adds the host disk, memory and CPU alerts).",
+      "claims": [
+        {
+          "id": "alert-set",
+          "says": "The AVD pattern defines a set of alerts with thresholds and severities for session hosts, host pools, FSLogix profile storage and service health.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "aprl-desktop-virtualization",
       "title": "Azure Proactive Resiliency Library v2, Microsoft.DesktopVirtualization",
       "url": "https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2",
@@ -236,6 +255,30 @@
       ]
     },
     {
+      "id": "avd-insights-costs",
+      "title": "Estimate Azure Virtual Desktop monitoring costs",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/insights-costs",
+      "pin": "Learn git_commit_id 6d2a9179f453f9b31c9795e5c9e84e5c13b1099a, updated_at 2026-05-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "counter-set",
+          "says": "Insights' recommended collection is 20 performance counters at stated sample rates and 6 event logs.",
+          "kind": "published"
+        },
+        {
+          "id": "ingestion-per-vm",
+          "says": "An example VM sends roughly 90 to 130 MB of performance counter data a day from light to power workloads; actual volume varies.",
+          "kind": "prior"
+        }
+      ]
+    },
+    {
       "id": "avd-insights-glossary",
       "title": "Azure Virtual Desktop Insights glossary",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/insights-glossary",
@@ -289,6 +332,53 @@
         {
           "id": "utilization-for-scaling",
           "says": "Use session history and idle host counts over time to design a scaling plan, then repeat to validate it.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-insights-whats-new",
+      "title": "What's new in Azure Virtual Desktop Insights",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/whats-new-insights",
+      "pin": "Learn git_commit_id 4fdc1dca34d1fa7147fb1406df29d3ece36533fb, updated_at 2025-06-21",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "workbook-version",
+          "says": "The latest Insights workbook version listed is 4.3.1; a configuration check should name the version whose requirements it tests.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-insights",
+      "title": "Enable Azure Virtual Desktop Insights",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/insights",
+      "pin": "Learn git_commit_id ec0c680142f45947b0691d842131822e8708beac, updated_at 2025-06-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "required-diagnostics",
+          "says": "Insights needs diagnostic settings on host pools and workspaces sending the listed log categories (connections, errors, checkpoints, agent health and others) to a Log Analytics workspace.",
+          "kind": "published"
+        },
+        {
+          "id": "agent-and-dcr",
+          "says": "Session hosts send performance counters and event logs through the Azure Monitor Agent and a data collection rule associated with each host.",
+          "kind": "published"
+        },
+        {
+          "id": "designated-workspace",
+          "says": "Use a designated Log Analytics workspace for Insights.",
           "kind": "guidance"
         }
       ]

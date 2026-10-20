@@ -1,0 +1,11 @@
+id: avd-insights-whats-new
+title: What's new in Azure Virtual Desktop Insights
+url: https://learn.microsoft.com/azure/virtual-desktop/whats-new-insights
+pin: "Learn git_commit_id 4fdc1dca34d1fa7147fb1406df29d3ece36533fb, updated_at 2025-06-21"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: workbook-version
+    says: The latest Insights workbook version listed is 4.3.1; a configuration check should name the version whose requirements it tests.
+    kind: published

@@ -1,0 +1,17 @@
+id: avd-insights
+title: Enable Azure Virtual Desktop Insights
+url: https://learn.microsoft.com/azure/virtual-desktop/insights
+pin: "Learn git_commit_id ec0c680142f45947b0691d842131822e8708beac, updated_at 2025-06-25"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: required-diagnostics
+    says: Insights needs diagnostic settings on host pools and workspaces sending the listed log categories (connections, errors, checkpoints, agent health and others) to a Log Analytics workspace.
+    kind: published
+  - id: agent-and-dcr
+    says: Session hosts send performance counters and event logs through the Azure Monitor Agent and a data collection rule associated with each host.
+    kind: published
+  - id: designated-workspace
+    says: Use a designated Log Analytics workspace for Insights.
+    kind: guidance

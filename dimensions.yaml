@@ -520,15 +520,16 @@ dimensions:
     landingZone: []
   - id: ops.monitoring
     area: operations
-    title: Monitoring and logs
-    decides: Insights, diagnostic settings, log retention and alerts.
-    home: {decision: proposed:operations.monitoring, facts: []}
+    title: Monitoring, Insights and alerts
+    decides: Insights wiring (diagnostics per AVD object, agent and data collection rule per host), log retention and alerts.
+    home: {decision: proposed:operations.monitoring, facts: [proposed:c11.monitoring.diagnostics, proposed:c11.hostPool.sessionHosts.monitoringAgent, proposed:c11.hostPool.sessionHosts.insightsDcr, proposed:c11.monitoring.workspace.retentionDays, proposed:c11.monitoring.alerts]}
     baseline:
-      standing: guidance
-      claims: [ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02]
-      says: Turn on AVD monitoring and send diagnostics for every AVD object and host to Log Analytics; no source sets a retention number.
+      standing: published
+      claims: [ref:avd-insights#required-diagnostics, ref:avd-insights#agent-and-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#workbook-version, ref:amba-avd#alert-set, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:deployment-dimensions]
+      says: Insights' required diagnostics, agent and data collection rule as published for workbook 4.3.1, alerts against the AMBA pattern; no source sets a retention number, so retention stays a gap.
     measure: rebuild
     landingZone: [logRetentionDays, deploySubscriptionSettings]
+    note: Alerts are fixed in the landing zone's monitoring module. Alert facts carry counts and state only, never receivers.
   - id: ops.config-management
     area: operations
     title: Host configuration management

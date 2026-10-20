@@ -1,0 +1,12 @@
+id: amba-avd
+title: Azure Monitor Baseline Alerts, Azure Virtual Desktop pattern
+url: https://azure.github.io/azure-monitor-baseline-alerts/patterns/specialized/avd/index.html
+pin: https://github.com/Azure/azure-monitor-baseline-alerts/tree/ec5e5f3acfcdc52773110517b1f51bd06cf766de
+read: 2026-10-20
+license: MIT
+areas: [assessment]
+notes: Pinned at release v2.2.1 (2025-12-16). The only published alert baseline for AVD we found; the landing zone alerts on a subset (draft avd-landing-zone PR 80 adds the host disk, memory and CPU alerts).
+claims:
+  - id: alert-set
+    says: The AVD pattern defines a set of alerts with thresholds and severities for session hosts, host pools, FSLogix profile storage and service health.
+    kind: published
