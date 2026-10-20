@@ -1,5 +1,7 @@
 # avd-assess
 
+Part of [avd-ops](https://avd-ops.dev/), the open toolkit for Azure Virtual Desktop.
+
 An open, curated methodology for assessing Azure Virtual Desktop estates: what to collect, how to judge it, what good looks like, and how to score it. It is a research index. It links to what Microsoft and the community already publish, pinned so a reader can see exactly what each source said on the day we read it. It adds what our own runs observed about those sources, and it writes new method only where nothing exists.
 
 Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/nickprignano/avd-current-state) is what is there now, and avd-assess is what it should be, and why.
@@ -38,19 +40,21 @@ The [gold-standard registry](gold-standards.yaml) names, for each metric, the cl
 
 ## How to cite
 
-Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observation as `avd-assess@<commit>:observations/<file>.yaml`, and a gap as `avd-assess@<commit>:gaps/<file>.md`. The design is in avd-second-brain's [assess spec](https://github.com/nickprignano/avd-second-brain/blob/main/docs/assess-spec.md).
+Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observation as `avd-assess@<commit>:observations/<file>.yaml`, a gap as `avd-assess@<commit>:gaps/<file>.md`, and a check as `avd-assess@<commit>:method.json#<check id>`.
+
+[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, and the scoring. [avd-current-state](https://github.com/nickprignano/avd-current-state) runs a pinned copy. The design is in avd-second-brain's [assess spec](https://github.com/nickprignano/avd-second-brain/blob/main/docs/assess-spec.md).
 
 ## Checks
 
 ```bash
-pip install pyyaml
+pip install pyyaml jsonschema
 python3 scripts/build_index.py --check
 python3 tests/check_method.py
 ```
 
 `index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (avd-second-brain contract C20, `avd-assess-index/v1`), so the brain and avd-current-state read it without a YAML parser.
 
-The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; every registry entry cites a claim that exists and has the evidence its standing needs; and no file holds a GUID, email address or IP address.
+The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; every registry entry cites a claim that exists and has the evidence its standing needs; `index.json` and `method.json` match avd-second-brain's schemas, vendored byte-identical in [contracts/](contracts/PINS.json); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address.
 
 ## Contributing
 

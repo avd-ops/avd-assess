@@ -1,0 +1,21 @@
+id: avd-rest-api
+title: Azure Virtual Desktop REST API specification, stable 2025-10-10
+url: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization
+pin: https://github.com/Azure/azure-rest-api-specs/blob/1355fe2fc33e3e3d4b69b026392f887239c87fe9/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/DesktopVirtualization/stable/2025-10-10/desktopvirtualization.json
+read: 2026-10-20
+license: MIT
+areas: [collection]
+notes: The property names Resource Graph returns under properties for each AVD resource type.
+claims:
+  - id: hostpool-properties
+    says: A host pool has hostPoolType, loadBalancerType, maxSessionLimit, preferredAppGroupType, startVMOnConnect, validationEnvironment, agentUpdate and publicNetworkAccess, among others.
+    kind: published
+  - id: sessionhost-properties
+    says: A session host has status, sessions, allowNewSession, lastHeartBeat, agentVersion, updateState and resourceId, the virtual machine it runs on.
+    kind: published
+  - id: applicationgroup-properties
+    says: An application group has applicationGroupType and hostPoolArmPath, which links it to its host pool.
+    kind: published
+  - id: scalingplan-hostpool-references
+    says: A scaling plan lists the host pools it applies to in hostPoolReferences, with a schedule and a time zone.
+    kind: published

@@ -1,0 +1,18 @@
+id: resource-graph-tables
+title: Azure Resource Graph table and resource type reference
+url: https://learn.microsoft.com/azure/governance/resource-graph/reference/supported-tables-resources
+pin: Learn git_commit_id 464ed4ceba6ca2e5a8d7b97d8c130dc3807b355c, updated_at 2025-10-06
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [collection]
+notes: The source repo for this page is private, so the pin is the page's own commit and update date.
+claims:
+  - id: dv-table-session-hosts
+    says: The DesktopVirtualizationResources table holds session hosts only.
+    kind: published
+  - id: avd-objects-in-resources
+    says: Host pools, application groups, workspaces and scaling plans are in the Resources table, with virtual machines, storage accounts, virtual networks, route tables and private endpoints.
+    kind: published
+  - id: policy-table
+    says: Policy assignments are in the PolicyResources table.
+    kind: published

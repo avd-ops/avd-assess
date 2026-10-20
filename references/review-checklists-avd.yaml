@@ -7,8 +7,24 @@ license: MIT
 areas: [assessment]
 notes: 130 items with short ID, category, WAF pillar, severity and Learn link. The AVD items have no Resource Graph query, so mapping evidence to them is ours (gap:checklist-mapping). Cite items by short ID, never by GUID.
 claims:
+  - id: A01.06
+    says: Prepare a local disaster recovery strategy for personal host pool session hosts (Reliability, medium).
+  - id: A03.05
+    says: Use zone-redundant storage for Azure Files to maximize resiliency (Reliability, high).
+  - id: C01.05
+    says: Session host VMs in pooled host pools shouldn't have more than 32 cores (Performance, medium).
+  - id: C01.06
+    says: Don't offer both full desktops and RemoteApps to the same users from the same host pool (Security, high).
   - id: E01.05
     says: Consider Start VM on Connect for personal host pools (Cost, low).
+  - id: E01.10
+    says: Configure scheduled agent updates (Reliability, low).
+  - id: E01.11
+    says: Create a validation (canary) host pool (Operations, medium).
+  - id: E01.13
+    says: Turn session host VMs on at least every 90 days so their tokens refresh (Operations, medium).
+  - id: E02.01
+    says: Enable monitoring for Azure Virtual Desktop (Reliability, high).
   - id: E02.02
     says: Send diagnostic settings for workspaces, host pools, application groups and host VMs to a Log Analytics workspace (Reliability, medium).
   - id: F01.10
