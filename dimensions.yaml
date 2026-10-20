@@ -11,11 +11,11 @@
 # measure: fact (a built C11 fact) | rebuild (in avd-current-state's private rebuild package, not a C11
 #   fact) | measured (needs performance or in-guest data) | intake (only the operator knows) | none.
 # landingZone: parameter names in avd-landing-zone bicep/main.bicep at the commit below. Every one of the
-#   55 is either set by a dimension or listed in notDimensions with a reason (tests/check_dimensions.py).
+#   57 is either set by a dimension or listed in notDimensions with a reason (tests/check_dimensions.py).
 schema: avd-assess-dimensions/v1
 landingZone:
-  commit: 2c441569a5d584ac6beb473162ba1f1420caea3e
-  source: https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep
+  commit: ae5c2877d53d9af8e1efbf47b85cfdef06c51364
+  source: https://github.com/nickprignano/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep
   parameters: [namePrefix, environmentName, location, tags, avdUsersGroupObjectId, avdAdminsGroupObjectId,
     avdServicePrincipalObjectId, enrollInIntune, connectivityMode, spokeAddressPrefix, sessionHostSubnetPrefix,
     privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix,
@@ -23,11 +23,11 @@ landingZone:
     enableAvdPrivateLink, sessionHostCount, sessionHostVmSize, sessionHostNamePrefix, availabilityZones,
     sessionHostImage, maxSessionLimit, encryptionAtHost, localAdminUsername, localAdminPassword, rdpProperties,
     validationEnvironment, profileStorageSku, profileShareQuotaGiB, fslogixProfileSizeMiB, enableProfileBackup,
-    profileBackupRetentionDays, startVmOnConnect, scalingTimeZone, logRetentionDays, alertEmailAddresses,
+    profileBackupRetentionDays, profileBackupTier, startVmOnConnect, scalingTimeZone, logRetentionDays, alertEmailAddresses,
     monthlyBudgetAmount, budgetStartDate, enableAutoShutdown, autoShutdownTime, autoShutdownDays,
     autoShutdownTimeZone, autoShutdownScheduleAction, autoShutdownBudgetAction, autoShutdownBudgetPercent,
     autoShutdownRunbookUri, enableDefenderForCloud, deploySubscriptionSettings, enablePolicyGuardrails,
-    allowedLocations]
+    recoveryLocation, allowedLocations]
   notDimensions:
     namePrefix: Naming only.
     environmentName: A label; its one effect (validation pool default) is under updates.validation-pool.
@@ -228,7 +228,7 @@ dimensions:
       claims: [ref:review-checklists-avd#A03.05, ref:review-checklists-avd#A03.02]
       says: Zone-redundant storage for Azure Files, and a backup strategy for profile containers.
     measure: rebuild
-    landingZone: [profileStorageSku, enableProfileBackup, profileBackupRetentionDays]
+    landingZone: [profileStorageSku, enableProfileBackup, profileBackupRetentionDays, profileBackupTier]
 
   # Performance optimizations
   - id: perf.image-optimization
@@ -412,6 +412,18 @@ dimensions:
     observations: [obs:wdot-pin-on-image-version]
     measure: fact
     landingZone: [sessionHostImage]
+  - id: updates.image-rollout
+    area: updates
+    title: Image rollout to hosts
+    decides: How a new image version reaches a pool - canary first, how many hosts at a time, how users move off old hosts, and what to roll back to.
+    home: {decision: proposed:hostPool.updates, facts: [c11.hostPool.images]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-session-host-update#initial-then-batches, ref:avd-session-host-update#test-on-aligned-pool, ref:avd-session-host-update#autoscale-off-during-update, ref:review-checklists-avd#E01.09, ref:review-checklists-avd#E01.11]
+      says: Test on a pool aligned to production first; replace one host before the rest, in batches or alongside the old ones; drain and notify before removing; keep the previous version to roll back to. With the native session host update, autoscale is off for the update.
+    measure: rebuild
+    landingZone: []
+    note: Set by the landing zone's image pipeline and rotation script (spec section 6), not a template parameter.
   - id: updates.agent
     area: updates
     title: AVD agent updates and token refresh
@@ -459,15 +471,26 @@ dimensions:
       says: Choose the resiliency option per host pool; zones where the region has them.
     measure: rebuild
     landingZone: [availabilityZones]
-  - id: reliability.dr
+  - id: reliability.dr-model
     area: reliability
-    title: Disaster recovery
-    decides: How host pools and profiles recover in another region.
+    title: Disaster recovery model
+    decides: Per pool, how it comes back after a region loss - rebuild, restore, warm standby (active-passive) or active-active - and where.
     home: {decision: region, facts: []}
     baseline:
       standing: guidance
-      claims: [ref:review-checklists-avd#A01.06]
-      says: A recovery strategy per pool type; personal pools need their own.
+      claims: [ref:review-checklists-avd#A01.06, ref:avd-multiregion-bcdr#active-active-vs-passive, ref:avd-multiregion-bcdr#estimates-to-test, ref:avd-multiregion-bcdr#capacity-not-guaranteed, ref:avd-multiregion-bcdr#image-in-both-regions, ref:avd-multiregion-bcdr#selective-failover-test]
+      says: A recovery model per pool type with targets treated as estimates until tested; the same image in both regions; recovery-region capacity is not guaranteed; test with a subset of users first.
+    measure: none
+    landingZone: [recoveryLocation]
+  - id: profile.cross-region
+    area: reliability
+    title: Profiles across regions
+    decides: How profile containers reach a second region and how failover avoids profile conflicts.
+    home: {decision: proposed:profile.storage, facts: [c11.storage.sku]}
+    baseline:
+      standing: published
+      claims: [ref:avd-multiregion-bcdr#cloud-cache-over-storage-replication, ref:avd-multiregion-bcdr#one-pool-at-a-time, ref:avd-multiregion-bcdr#cache-disk-sizing, ref:fslogix-bcdr#options, ref:fslogix-bcdr#events-rarely-graceful]
+      says: FSLogix Cloud Cache, not storage replication (Premium Files has no GRS); users in one pool at a time; a local cache disk at least as large as the largest profile; critical data in OneDrive or SharePoint.
     measure: none
     landingZone: []
   - id: network.mode
