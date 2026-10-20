@@ -1,0 +1,53 @@
+# The gold-standard registry (gaps/gold-standards.md). One entry per metric or judgment the method makes.
+# standing: candidate | gold | baseline | demoted. Changed only by a pull request a person merges.
+entries:
+  - metric: rtt-to-region
+    claim: ref:avd-prerequisites#rtt-under-150
+    standing: gold
+    since: 2026-10-20
+    why: Our run measured latency from the user and confirmed the region choice depends on it (obs:region-latency-from-the-user).
+  - metric: input-delay-session
+    claim: ref:avd-insights-glossary#input-delay-bands
+    standing: candidate
+    since: 2026-10-20
+    why: Published bands; not yet checked against users we measured.
+  - metric: input-delay-host
+    claim: ref:avd-insights-use-cases#input-delay-host-100
+    standing: candidate
+    since: 2026-10-20
+    why: Published per-host figure; measures hosts, not sessions, so it sits beside input-delay-session.
+  - metric: cpu-utilization
+    claim: ref:perfmon-troubleshooting#cpu-bands
+    standing: candidate
+    since: 2026-10-20
+    why: General Windows guidance; not AVD-specific and not yet checked against a multi-session host.
+  - metric: cpu-queue-per-core
+    claim: ref:perfmon-troubleshooting#pql-per-processor
+    standing: candidate
+    since: 2026-10-20
+    why: General Windows guidance, read together with CPU utilization.
+  - metric: users-per-vcpu
+    claim: ref:session-host-sizing#multisession-users-per-vcpu
+    standing: candidate
+    since: 2026-10-20
+    why: Microsoft calls these estimates; no measured users yet (obs:users-per-vcpu-adopted).
+  - metric: logon-time
+    claim: gap:logon-target
+    standing: baseline
+    since: 2026-10-20
+    why: No published target; the estate's own median and 95th percentile set it.
+  - metric: memory-utilization
+    claim: gap:sample-check
+    standing: baseline
+    since: 2026-10-20
+    why: No pinned AVD or Windows source with a number found yet.
+  - metric: disk-latency
+    claim: gap:sample-check
+    standing: baseline
+    since: 2026-10-20
+    why: Learn gives numbers only inside product-specific guides (databases, monitoring servers); none for session hosts.
+  - metric: app-load-time
+    claim: gap:sample-check
+    standing: baseline
+    since: 2026-10-20
+    why: No published number found.
