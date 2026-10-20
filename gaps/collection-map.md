@@ -1,0 +1,11 @@
+# Gap: where each fact comes from
+
+**Searched (2026-10-20):** the Resource Graph table reference (`ref:resource-graph-tables`), the AVD REST API specification (`ref:avd-rest-api`), WARA and APRL (`ref:wara`, `ref:aprl-desktop-virtualization`), ARI (`ref:ari`), Microsoft Learn. **Not found:** a published map from a list of AVD facts to the Resource Graph table, resource type and property each one comes from, with a privacy class. APRL's queries read single recommendations; ARI inventories everything into Excel. Each piece of the map is documented somewhere; the join is ours.
+
+**What we write.** The `collection` block of [method.json](../method.json): one row per fact in avd-second-brain's fact register (C15) that a check or a readiness row uses, with its source (`resource-graph` or `intake`), the Resource Graph table, the ARM resource type, the property, and the references that document them. The privacy class stays in the register, so it is defined once.
+
+What we learned while writing it:
+
+- Only session hosts are in the `DesktopVirtualizationResources` table (`ref:resource-graph-tables#dv-table-session-hosts`). Host pools, application groups, workspaces and scaling plans are in `Resources` (`ref:resource-graph-tables#avd-objects-in-resources`). A collector that reads only `DesktopVirtualizationResources` sees no host pool settings.
+- A session host's VM size and image aren't on the session host. They come from the virtual machine named by its `resourceId` (`ref:avd-rest-api#sessionhost-properties`), so the map joins two rows.
+- The custom DNS, default route and storage private endpoint facts are counts or booleans derived from a property, not the property itself. avd-current-state's redaction defines the derivation; this map names only where the raw value is.

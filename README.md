@@ -35,19 +35,21 @@ Every step on those pages cites one of three things:
 
 ## How to cite
 
-Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observation as `avd-assess@<commit>:observations/<file>.yaml`, and a gap as `avd-assess@<commit>:gaps/<file>.md`. The design is in avd-second-brain's [assess spec](https://github.com/nickprignano/avd-second-brain/blob/main/docs/assess-spec.md).
+Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observation as `avd-assess@<commit>:observations/<file>.yaml`, a gap as `avd-assess@<commit>:gaps/<file>.md`, and a check as `avd-assess@<commit>:method.json#<check id>`.
+
+[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, and the scoring. [avd-current-state](https://github.com/nickprignano/avd-current-state) runs a pinned copy. The design is in avd-second-brain's [assess spec](https://github.com/nickprignano/avd-second-brain/blob/main/docs/assess-spec.md).
 
 ## Checks
 
 ```bash
-pip install pyyaml
+pip install pyyaml jsonschema
 python3 scripts/build_index.py --check
 python3 tests/check_method.py
 ```
 
 `index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (avd-second-brain contract C20, `avd-assess-index/v1`), so the brain and avd-current-state read it without a YAML parser.
 
-The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; and no file holds a GUID, email address or IP address.
+The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; `index.json` and `method.json` match avd-second-brain's schemas, vendored byte-identical in [contracts/](contracts/PINS.json); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address.
 
 ## Contributing
 

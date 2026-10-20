@@ -9,3 +9,6 @@ claims:
   - id: excel-inventory
     says: Inventories a whole Azure environment into an Excel workbook and a diagram; it has no JSON output.
     kind: guidance
+  - id: diagram-from-rows
+    says: Its draw.io diagram functions (Modules/Public/PublicFunctions/Diagram/) make no Azure calls and draw from the Resource Graph rows they are given, with no AVD host pool placement.
+    kind: guidance
