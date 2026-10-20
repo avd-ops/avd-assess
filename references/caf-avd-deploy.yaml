@@ -1,0 +1,17 @@
+id: caf-avd-deploy
+title: Cloud Adoption Framework, Azure Virtual Desktop deployment or migration
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/migrate-deploy
+pin: "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: persona-iterations
+    says: Each persona is likely its own iteration and host pool; breaking deployment into persona-driven iterations limits the change the business absorbs at once.
+    kind: guidance
+  - id: legacy-apps-personal
+    says: Personas that depend on apps that aren't multi-session compatible may need dedicated desktops, and this is sometimes found only in testing.
+    kind: guidance
+  - id: app-remediation-blocks
+    says: Some apps need remediation, modernization or a move to Azure first; when latency would hurt the business, that can block a persona's migration.
+    kind: guidance

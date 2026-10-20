@@ -2,6 +2,29 @@
   "schema": "avd-assess-index/v1",
   "references": [
     {
+      "id": "app-attach",
+      "title": "App Attach in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/app-attach-overview",
+      "pin": "Learn git_commit_id 18f8ed292f3df23081d1cb2446c480105abdbaf9, updated_at 2026-08-26",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "per-user-per-host-pool",
+          "says": "An attached app reaches a user only when it is assigned to the host pool and to the user, so users on one multi-session host can get different app sets.",
+          "kind": "published"
+        },
+        {
+          "id": "share-same-region",
+          "says": "The app package share should be in the session hosts' region and not the share used for profile containers.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "aprl-desktop-virtualization",
       "title": "Azure Proactive Resiliency Library v2, Microsoft.DesktopVirtualization",
       "url": "https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2",
@@ -194,6 +217,122 @@
       ]
     },
     {
+      "id": "caf-avd-assess",
+      "title": "Cloud Adoption Framework, Azure Virtual Desktop assessment",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/migrate-assess",
+      "pin": "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "deprecated",
+          "says": "The page is deprecated, no longer updated, and is to be removed from Learn on 2026-10-30; its source stays in the public Cloud Adoption Framework docs repo.",
+          "kind": "published"
+        },
+        {
+          "id": "assumption-validation",
+          "says": "The assessment tests the proof of concept's assumptions with data and refines the scope wherever an assumption turns out false.",
+          "kind": "guidance"
+        },
+        {
+          "id": "assessment-unit",
+          "says": "Each assessment covers one combination of a user persona, a consistent host pool, the persona's applications and data, and its user profiles.",
+          "kind": "guidance"
+        },
+        {
+          "id": "persona-criteria",
+          "says": "Bucket users into personas by eight criteria: dedicated or pooled desktop, density, performance, GPU, the region users work from, business function, user count and peak concurrent sessions.",
+          "kind": "guidance"
+        },
+        {
+          "id": "persona-to-host-pool",
+          "says": "Each persona with distinct business and technical needs needs its own host pool configuration; the persona's answers become pool type, density, size, CPU or GPU and region.",
+          "kind": "guidance"
+        },
+        {
+          "id": "region-test-from-users",
+          "says": "Before configuring a host pool, a user from each region tests latency and reports the three lowest-latency Azure regions.",
+          "kind": "guidance"
+        },
+        {
+          "id": "business-function-for-cost",
+          "says": "Grouping personas by business unit, charge code or function lets later operations align costs.",
+          "kind": "guidance"
+        },
+        {
+          "id": "app-questions",
+          "says": "For each persona's required apps, ask: does it need installed apps (so a custom image), Microsoft 365 apps, is each app multi-session compatible (if not, personal), and will latency to back-end systems hurt a critical app.",
+          "kind": "guidance"
+        },
+        {
+          "id": "isv-discovery",
+          "says": "Where the team lacks user, desktop and app data, the page points to third-party discovery tools listed with Azure Migrate rather than a first-party tool.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "caf-avd-deploy",
+      "title": "Cloud Adoption Framework, Azure Virtual Desktop deployment or migration",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/migrate-deploy",
+      "pin": "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "persona-iterations",
+          "says": "Each persona is likely its own iteration and host pool; breaking deployment into persona-driven iterations limits the change the business absorbs at once.",
+          "kind": "guidance"
+        },
+        {
+          "id": "legacy-apps-personal",
+          "says": "Personas that depend on apps that aren't multi-session compatible may need dedicated desktops, and this is sometimes found only in testing.",
+          "kind": "guidance"
+        },
+        {
+          "id": "app-remediation-blocks",
+          "says": "Some apps need remediation, modernization or a move to Azure first; when latency would hurt the business, that can block a persona's migration.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "caf-avd-poc",
+      "title": "Cloud Adoption Framework, Azure Virtual Desktop proof of concept",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/proof-of-concept",
+      "pin": "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "deprecated",
+          "says": "Deprecated with the rest of the Cloud Adoption Framework AVD scenario, to be removed from Learn on 2026-10-30.",
+          "kind": "published"
+        },
+        {
+          "id": "assumptions",
+          "says": "The proof of concept assumes low latency to the landing zone, one shared pool for everyone, the multi-session Marketplace image, profiles on a file service, one persona at 6 users per vCPU and 4 GB RAM per vCPU, every workload multi-session compatible, and acceptable latency to back ends.",
+          "kind": "prior"
+        },
+        {
+          "id": "assumptions-rarely-all-true",
+          "says": "Not every assumption will hold for every enterprise; they are a reference point for where to tailor the production design.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "perfmon-troubleshooting",
       "title": "Troubleshoot issues using Performance Monitor (Windows Server)",
       "url": "https://learn.microsoft.com/troubleshoot/windows-server/support-tools/troubleshoot-issues-performance-monitor",
@@ -332,6 +471,11 @@
         "benchmarks"
       ],
       "claims": [
+        {
+          "id": "workload-types",
+          "says": "Four example workload types: light (basic data entry), medium (office documents and static web), heavy (developers, content creators) and power (graphics, CAD, machine learning).",
+          "kind": "guidance"
+        },
         {
           "id": "estimates-only",
           "says": "The page's numbers are generic guidelines for initial performance estimates only.",
@@ -499,6 +643,16 @@
   ],
   "observations": [
     {
+      "id": "landing-zone-one-persona",
+      "claim": "ref:caf-avd-poc#assumptions",
+      "verdict": "agrees",
+      "observed": "The landing zone builds the proof of concept's shape. Its sizing keeps a list of host pools but allows one entry today, sized from one workload's users per vCPU, so every user is one persona until a use case assessment says otherwise.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/237aa80db7b4462473be390ed719eb8e6cbecb58/build/decisions/0010-sizing-and-cost.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
       "id": "region-latency-from-the-user",
       "claim": "ref:avd-prerequisites#rtt-under-150",
       "verdict": "extends",
@@ -575,6 +729,10 @@
       "title": "decision readiness"
     },
     {
+      "id": "discovery",
+      "title": "discovery"
+    },
+    {
       "id": "gold-standards",
       "title": "gold standards"
     },
@@ -593,6 +751,10 @@
     {
       "id": "scoring",
       "title": "scoring"
+    },
+    {
+      "id": "use-cases",
+      "title": "use cases"
     }
   ]
 }

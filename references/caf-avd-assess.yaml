@@ -1,0 +1,35 @@
+id: caf-avd-assess
+title: Cloud Adoption Framework, Azure Virtual Desktop assessment
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/migrate-assess
+pin: "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+claims:
+  - id: deprecated
+    says: The page is deprecated, no longer updated, and is to be removed from Learn on 2026-10-30; its source stays in the public Cloud Adoption Framework docs repo.
+    kind: published
+  - id: assumption-validation
+    says: The assessment tests the proof of concept's assumptions with data and refines the scope wherever an assumption turns out false.
+    kind: guidance
+  - id: assessment-unit
+    says: Each assessment covers one combination of a user persona, a consistent host pool, the persona's applications and data, and its user profiles.
+    kind: guidance
+  - id: persona-criteria
+    says: "Bucket users into personas by eight criteria: dedicated or pooled desktop, density, performance, GPU, the region users work from, business function, user count and peak concurrent sessions."
+    kind: guidance
+  - id: persona-to-host-pool
+    says: Each persona with distinct business and technical needs needs its own host pool configuration; the persona's answers become pool type, density, size, CPU or GPU and region.
+    kind: guidance
+  - id: region-test-from-users
+    says: Before configuring a host pool, a user from each region tests latency and reports the three lowest-latency Azure regions.
+    kind: guidance
+  - id: business-function-for-cost
+    says: Grouping personas by business unit, charge code or function lets later operations align costs.
+    kind: guidance
+  - id: app-questions
+    says: "For each persona's required apps, ask: does it need installed apps (so a custom image), Microsoft 365 apps, is each app multi-session compatible (if not, personal), and will latency to back-end systems hurt a critical app."
+    kind: guidance
+  - id: isv-discovery
+    says: Where the team lacks user, desktop and app data, the page points to third-party discovery tools listed with Azure Migrate rather than a first-party tool.
+    kind: guidance
