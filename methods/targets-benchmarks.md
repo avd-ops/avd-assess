@@ -10,7 +10,9 @@ What good looks like, as numbers with their sources. A benchmark is `published` 
 4. **Multi-session host size:** 6 to 24 vCPUs, never under 4 (published, `ref:session-host-sizing#multisession-vcpu-range`). Our own minimum kit sits at the floor (`obs:sizing-floor-not-measured`).
 5. **Profile storage:** at least 30 GB per user (prior, `ref:session-host-sizing#profile-storage-minimum`), and the profile storage in the hosts' region (`ref:review-checklists-avd#H03.05`).
 6. **Logon and time to connect:** no published number; set a baseline (`gap:logon-target`, `ref:avd-insights-glossary#time-to-connect-stages`).
-7. **Reliability and recovery targets** are the workload's own, set first (`ref:waf-reliability-checklist#RE:04`).
+7. **CPU on session hosts:** under 50% healthy, over 80% critical, and a queue of two or more per core with high CPU worth investigating (published for Windows generally, not AVD, `ref:perfmon-troubleshooting#cpu-bands`, `ref:perfmon-troubleshooting#pql-per-processor`).
+8. **Which number is the reference** for each metric, and its standing, is in the gold-standard registry (`gap:gold-standards`).
+9. **Reliability and recovery targets** are the workload's own, set first (`ref:waf-reliability-checklist#RE:04`).
 
 ## Not yet known
 

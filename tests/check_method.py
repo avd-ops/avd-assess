@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Checks the method: references, observations, gaps, the four method pages and method.json.
+"""Checks the method: references, observations, gaps, the method pages, the gold-standard registry and method.json.
 
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
@@ -17,7 +17,8 @@ ROOT = Path(__file__).resolve().parent.parent
 VERDICTS = {"agrees", "disagrees", "extends", "not-yet-tested"}
 KINDS = {"published", "prior", "guidance"}
 AREAS = {"collection", "assessment", "benchmarks", "scoring"}
-METHODS = ["collection", "assessment", "targets-benchmarks", "scoring"]
+METHODS = ["collection", "assessment", "targets-benchmarks", "scoring", "sample-check"]
+STANDINGS = {"candidate", "gold", "baseline", "demoted"}
 CITE = re.compile(r"`((?:ref|obs|gap):[A-Za-z0-9._:#-]+)`")
 GUID = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b")
 EMAIL = re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b")
@@ -63,8 +64,10 @@ for path in sorted((ROOT / "references").glob("*.yaml")):
         claims.add(f"ref:{rid}#{c['id']}")
 
 observations = set()
+observation_data = []
 for path in sorted((ROOT / "observations").glob("*.yaml")):
     obs = load(path)
+    observation_data.append(obs)
     if obs.get("id") != path.stem:
         err(path, "id must match the file name")
     observations.add(f"obs:{path.stem}")
@@ -184,6 +187,37 @@ for r in method.get("readiness", []):
         err(mpath, f"{r['decision']} is {r['readiness']}, but the register says {d['decidableFrom']}")
     elif not any(facts.get(f, {}).get("tier") == tier for f in r["facts"]):
         err(mpath, f"{r['decision']} is {r['readiness']} but names no {tier} fact")
+
+registry = ROOT / "gold-standards.yaml"
+entries = load(registry).get("entries") or []
+all_metrics = {e.get("metric") for e in entries}
+metrics = set()
+for entry in entries:
+    metric = entry.get("metric")
+    if not metric or metric in metrics:
+        err(registry, f"every entry needs a unique metric ({metric!r})")
+    metrics.add(metric)
+    for key in ("claim", "standing", "since", "why"):
+        if not entry.get(key):
+            err(registry, f"{metric}: missing {key}")
+    standing = entry.get("standing")
+    if standing not in STANDINGS:
+        err(registry, f"{metric}: standing must be one of {sorted(STANDINGS)}")
+    claim = entry.get("claim")
+    if claim not in known:
+        err(registry, f"{metric}: claim {claim!r} doesn't exist")
+    if standing in {"candidate", "gold"} and not str(claim).startswith("ref:"):
+        err(registry, f"{metric}: a {standing} must cite a ref: claim")
+    if standing == "baseline" and not str(claim).startswith("gap:"):
+        err(registry, f"{metric}: a baseline must cite the gap that sets it")
+    if standing == "gold":
+        backing = [o for o in observation_data if o.get("claim") == claim]
+        if not any(o.get("verdict") in {"agrees", "extends"} for o in backing):
+            err(registry, f"{metric}: gold needs an agrees or extends observation on {claim}")
+        if any(o.get("verdict") == "disagrees" for o in backing):
+            err(registry, f"{metric}: gold can't stand with a disagrees observation on {claim}")
+    if entry.get("replaces") and entry["replaces"] not in all_metrics:
+        err(registry, f"{metric}: replaces {entry['replaces']!r}, which isn't in the registry")
 
 public_ids = {
     line.strip().lower()

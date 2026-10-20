@@ -12,7 +12,7 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 > - It is provided **"as is", without warranty of any kind**, under the [MIT License](LICENSE). You use it at your own risk.
 > - **Contributions and forks are welcome and encouraged.** See [Contributing](#contributing).
 
-## Start here: the four methods
+## Start here: the methods
 
 | Method | Answers |
 |---|---|
@@ -20,12 +20,15 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 | [Assessment](methods/assessment.md) | How to judge what was collected against published recommendations |
 | [Targets and benchmarks](methods/targets-benchmarks.md) | What good looks like, as numbers with their sources |
 | [Scoring](methods/scoring.md) | How outcomes roll up, and which design decisions the evidence can support |
+| [Sample check](methods/sample-check.md) | A short, point-in-time health check of measured user experience, built on the four above |
 
 Every step on those pages cites one of three things:
 
 - **`ref:`** a claim from a published source, in [references/](references/). Each source is pinned to a commit or a dated version. We keep a claim ID and one line in our own words, never the source's text.
 - **`obs:`** what our own runs showed about a claim, in [observations/](observations/): agrees, disagrees, extends, or not yet tested, with links to the evidence.
 - **`gap:`** method we wrote because no source covers it, in [gaps/](gaps/). Each gap says what was searched and not found, and is retired when a source appears.
+
+The [gold-standard registry](gold-standards.yaml) names, for each metric, the claim the methods treat as the reference and its standing (candidate, gold, baseline or demoted). How an entry is promoted or demoted is in [gaps/gold-standards.md](gaps/gold-standards.md).
 
 ## What this repo is not
 
@@ -49,7 +52,7 @@ python3 tests/check_method.py
 
 `index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (avd-second-brain contract C20, `avd-assess-index/v1`), so the brain and avd-current-state read it without a YAML parser.
 
-The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; `index.json` and `method.json` match avd-second-brain's schemas, vendored byte-identical in [contracts/](contracts/PINS.json); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address.
+The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; every registry entry cites a claim that exists and has the evidence its standing needs; `index.json` and `method.json` match avd-second-brain's schemas, vendored byte-identical in [contracts/](contracts/PINS.json); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address.
 
 ## Contributing
 
