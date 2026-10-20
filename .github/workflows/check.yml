@@ -17,4 +17,5 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pyyaml
+      - run: python3 scripts/build_index.py --check
       - run: python3 tests/check_method.py

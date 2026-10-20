@@ -1,0 +1,467 @@
+{
+  "schema": "avd-assess-index/v1",
+  "references": [
+    {
+      "id": "aprl-desktop-virtualization",
+      "title": "Azure Proactive Resiliency Library v2, Microsoft.DesktopVirtualization",
+      "url": "https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2",
+      "pin": "https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2/tree/153914b153d9a6c67c4591055f3ebae433a0d175/azure-resources/DesktopVirtualization",
+      "read": "2026-10-20",
+      "license": "MIT",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "notes": "Reliability only. Each recommendation has a Resource Graph query under kql/ named by its ID. WARA runs these (ref:wara). Claim IDs are APRL's own public IDs.",
+      "claims": [
+        {
+          "id": "499769ae-67c9-492e-9ca5-cfd4cece5209",
+          "says": "Create scaling plans per region (scaling plans, medium)."
+        },
+        {
+          "id": "013ac34e-7c4b-425f-9e0c-216f0cc06181",
+          "says": "Create a validation host pool (host pools, medium)."
+        },
+        {
+          "id": "979ff8be-5f3a-4d8e-9aa3-407ecdd6d6f7",
+          "says": "Configure scheduled agent updates for host pools (host pools, medium)."
+        },
+        {
+          "id": "939cb85c-102a-4e0a-ab82-5c92116d3778",
+          "says": "Use a unique OU when deploying host pools with domain-joined session hosts (host pools, medium)."
+        },
+        {
+          "id": "38721758-2cc2-4d6b-b7b7-8b47dadbf7df",
+          "says": "Protect stateful session hosts with Azure Site Recovery (host pools, medium)."
+        }
+      ]
+    },
+    {
+      "id": "ari",
+      "title": "Azure Resource Inventory (ARI)",
+      "url": "https://github.com/microsoft/ARI",
+      "pin": "https://github.com/microsoft/ARI/tree/4cc602c36f64ad26eb2bad920a9cae04ac0dd43e",
+      "read": "2026-10-20",
+      "license": "MIT in the repo; the PowerShell Gallery listing says otherwise, so check before reuse",
+      "areas": [
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "excel-inventory",
+          "says": "Inventories a whole Azure environment into an Excel workbook and a diagram; it has no JSON output.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-connection-quality",
+      "title": "Troubleshoot connection quality in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-connection-quality",
+      "pin": "https://github.com/MicrosoftDocs/SupportArticles-docs/blob/2cfae2b375860366506f5497eaca74503382dccf/support/azure/virtual-desktop/troubleshoot-connection-quality.md",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "rtt-bands",
+          "says": "Up to 150 ms shouldn't affect work without rendering or video, 150 to 200 ms is fine for text, over 200 ms might affect user experience.",
+          "kind": "published"
+        },
+        {
+          "id": "review-region-latency",
+          "says": "Review Azure's network latency statistics every two to three months in case the best region changes.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-insights-glossary",
+      "title": "Azure Virtual Desktop Insights glossary",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/insights-glossary",
+      "pin": "Learn git_commit_id 6d2a9179f453f9b31c9795e5c9e84e5c13b1099a, updated_at 2026-05-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "input-delay-bands",
+          "says": "Input delay bands: good under 150 ms, acceptable 150 to 500 ms, poor 500 ms to 2 s, bad over 2 s.",
+          "kind": "published"
+        },
+        {
+          "id": "time-to-connect-stages",
+          "says": "Time to connect splits into user route, stack connected, logon (profiles, Group Policy, shell start, FSLogix) and shell start to shell ready; no target time is given.",
+          "kind": "guidance"
+        },
+        {
+          "id": "perf-counters",
+          "says": "Insights lists the recommended performance counters and their intervals for session hosts.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-insights-use-cases",
+      "title": "Use cases for Azure Virtual Desktop Insights",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/insights-use-cases",
+      "pin": "Learn git_commit_id ec0c680142f45947b0691d842131822e8708beac, updated_at 2025-06-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "rtt-ideal-100-poor-200",
+          "says": "Latency should generally be below 100 ms for ideal interaction; a session becomes broadly low quality over 200 ms.",
+          "kind": "published"
+        },
+        {
+          "id": "input-delay-host-100",
+          "says": "Each session host's user input delay should ideally stay below 100 ms.",
+          "kind": "published"
+        },
+        {
+          "id": "utilization-for-scaling",
+          "says": "Use session history and idle host counts over time to design a scaling plan, then repeat to validate it.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-prerequisites",
+      "title": "Prerequisites for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/prerequisites",
+      "pin": "Learn git_commit_id 98f726730d8d63d52a4fea0415ab8eaffffcd975, updated_at 2026-09-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "rtt-under-150",
+          "says": "Round-trip time from the client's network to the host pool's Azure region should be under 150 ms; put session hosts in the region closest to users.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "perfmon-troubleshooting",
+      "title": "Troubleshoot issues using Performance Monitor (Windows Server)",
+      "url": "https://learn.microsoft.com/troubleshoot/windows-server/support-tools/troubleshoot-issues-performance-monitor",
+      "pin": "Learn git_commit_id 30a828869b7c22f58ceea4796a81b5597449a3f7, updated_at 2026-02-19",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "cpu-bands",
+          "says": "Processor time bands: up to 50% healthy, 50 to 80% worth watching, over 80% critical.",
+          "kind": "published"
+        },
+        {
+          "id": "pql-per-processor",
+          "says": "A processor queue of two or more per processor while CPU is high means looking for the processes using it.",
+          "kind": "published"
+        },
+        {
+          "id": "patterns-over-days",
+          "says": "Log counters over one or two working days, then look for patterns by day and hour rather than reacting to one reading.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "review-checklists-avd",
+      "title": "Azure review checklists, Azure Virtual Desktop",
+      "url": "https://github.com/Azure/review-checklists",
+      "pin": "https://github.com/Azure/review-checklists/blob/f131b93418892102b00c247fd9cf685e3d356522/checklists/avd_checklist.en.json",
+      "read": "2026-10-20",
+      "license": "MIT",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "130 items with short ID, category, WAF pillar, severity and Learn link. The AVD items have no Resource Graph query, so mapping evidence to them is ours (gap:checklist-mapping). Cite items by short ID, never by GUID.",
+      "claims": [
+        {
+          "id": "E01.05",
+          "says": "Consider Start VM on Connect for personal host pools (Cost, low)."
+        },
+        {
+          "id": "E02.02",
+          "says": "Send diagnostic settings for workspaces, host pools, application groups and host VMs to a Log Analytics workspace (Reliability, medium)."
+        },
+        {
+          "id": "F01.10",
+          "says": "Evaluate a private endpoint for the Azure Files share (Security, medium)."
+        },
+        {
+          "id": "F01.11",
+          "says": "Evaluate RDP Shortpath for clients on managed internal networks (Performance, medium)."
+        },
+        {
+          "id": "H03.05",
+          "says": "Keep the FSLogix profile storage in the same Azure region as the session hosts (Performance, high)."
+        },
+        {
+          "id": "H04.03",
+          "says": "Review and confirm the configured maximum FSLogix profile size (Cost, high)."
+        }
+      ]
+    },
+    {
+      "id": "session-host-sizing",
+      "title": "Session host virtual machine sizing guidelines",
+      "url": "https://learn.microsoft.com/windows-server/remote/remote-desktop-services/session-host-virtual-machine-sizing-guidelines",
+      "pin": "https://github.com/MicrosoftDocs/windowsserverdocs/blob/ad5a77c71f56256d9c306ddd93cc9e076c1a76c5/WindowsServerDocs/remote/remote-desktop-services/session-host-virtual-machine-sizing-guidelines.md",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "estimates-only",
+          "says": "The page's numbers are generic guidelines for initial performance estimates only.",
+          "kind": "guidance"
+        },
+        {
+          "id": "multisession-users-per-vcpu",
+          "says": "Multi-session maximum users per vCPU: light 6, medium 4, heavy 2, power 1.",
+          "kind": "prior"
+        },
+        {
+          "id": "multisession-vcpu-range",
+          "says": "Keep multi-session VMs between 6 and 24 vCPUs; four cores is the lowest for a stable multi-session VM.",
+          "kind": "published"
+        },
+        {
+          "id": "profile-storage-minimum",
+          "says": "Plan at least 30 GB of profile storage per user.",
+          "kind": "prior"
+        }
+      ]
+    },
+    {
+      "id": "vdi-optimization-guide",
+      "title": "Optimizing Windows configuration for VDI desktops",
+      "url": "https://learn.microsoft.com/windows-server/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration",
+      "pin": "https://github.com/MicrosoftDocs/windowsserverdocs/blob/ad5a77c71f56256d9c306ddd93cc9e076c1a76c5/WindowsServerDocs/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration.md",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "test-cleanup-first",
+          "says": "Disk cleanup tasks should all be tested before they're used.",
+          "kind": "guidance"
+        },
+        {
+          "id": "sysprep-store-apps",
+          "says": "Removing or updating built-in Store apps can make sysprep fail; the guide links the support article.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-reliability-checklist",
+      "title": "Design review checklist for Reliability (Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/reliability/checklist",
+      "pin": "Learn git_commit_id 687e8febe6ddfa4646952220e057a50b1046a75a, updated_at 2026-05-29",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "scoring"
+      ],
+      "notes": "Each pillar's checklist numbers its items (RE, SE, CO, OE, PE). The source repo is private, so the pin is the page's own git_commit_id and updated_at.",
+      "claims": [
+        {
+          "id": "RE:04",
+          "says": "Define reliability and recovery targets and use them as the base of the health model."
+        },
+        {
+          "id": "RE:05",
+          "says": "Add redundancy at several levels, especially for critical flows."
+        },
+        {
+          "id": "RE:06",
+          "says": "Scale on actual or predicted usage with little manual intervention."
+        },
+        {
+          "id": "RE:10",
+          "says": "Measure and track health continuously with uptime and reliability indicators."
+        }
+      ]
+    },
+    {
+      "id": "waf-review-assessment",
+      "title": "Complete an Azure Well-Architected Review assessment",
+      "url": "https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations",
+      "pin": "Learn git_commit_id 40bc276f4cbdfeeb32c8325a07b7447afa9be1e3, updated_at 2026-06-04",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "scoring"
+      ],
+      "claims": [
+        {
+          "id": "questionnaire",
+          "says": "The Well-Architected Review is a self-assessment of about 60 questions across the pillars, with an Azure Virtual Desktop workload variant listed under specialized reviews."
+        },
+        {
+          "id": "advisor-one-scope",
+          "says": "It can add Azure Advisor recommendations for one subscription or resource group only."
+        },
+        {
+          "id": "milestones",
+          "says": "Brownfield workloads should repeat it on a cadence (every four months is the example), tracked as milestones."
+        }
+      ]
+    },
+    {
+      "id": "wara",
+      "title": "Well-Architected Reliability Assessment (WARA)",
+      "url": "https://github.com/Azure/Well-Architected-Reliability-Assessment",
+      "pin": "https://github.com/Azure/Well-Architected-Reliability-Assessment/tree/86832273f857b7298b625b26d18e2e0dbb06714c",
+      "read": "2026-10-20",
+      "license": "MIT",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "notes": "The owner chose WARA as the rule engine for live reliability checks (2026-10-20). Details as checked on avd-second-brain's landing-zone KB page the same day.",
+      "claims": [
+        {
+          "id": "collector-avd-json",
+          "says": "Start-WARACollector, with -AVD for AVD resource types, runs APRL's queries and writes JSON."
+        },
+        {
+          "id": "reliability-only",
+          "says": "WARA covers the Reliability pillar only."
+        },
+        {
+          "id": "report-needs-windows",
+          "says": "The analyzer writes an Excel action plan; the reporter writes PowerPoint and needs Windows with PowerPoint."
+        }
+      ]
+    },
+    {
+      "id": "wdot",
+      "title": "Windows Desktop Optimization Tool (WDOT)",
+      "url": "https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool",
+      "pin": "https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool/tree/ff2574c016c6202dbb0303a3728016ad3dbf391c",
+      "read": "2026-10-20",
+      "license": "MIT",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "WDOT supersedes VDOT, which has no license. avd-landing-zone's image build runs WDOT at a pinned commit with a reviewed profile (scripts/image/wdot/).",
+      "claims": [
+        {
+          "id": "categories",
+          "says": "Optimizations come in categories (services, scheduled tasks, autologgers, default user settings, local policy, network, disk cleanup, Appx packages and more), each item set to apply or skip in a JSON profile.",
+          "kind": "guidance"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "id": "region-latency-from-the-user",
+      "claim": "ref:avd-prerequisites#rtt-under-150",
+      "verdict": "extends",
+      "observed": "Latency measured from Cloud Shell says nothing about users, because Cloud Shell runs in an Azure datacenter. Measure round-trip time from the user's device, against endpoints verified to be regional.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "sizing-floor-not-measured",
+      "claim": "ref:session-host-sizing#multisession-vcpu-range",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "users-per-vcpu-adopted",
+      "claim": "ref:session-host-sizing#multisession-users-per-vcpu",
+      "verdict": "not-yet-tested",
+      "observed": "Adopted as the landing zone's automatic sizing input, and its preflight warns above 6 sessions per vCPU. No real users have been measured against it, so the numbers are still Microsoft's prior, not our evidence.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "wdot-appx-removal-left-off",
+      "claim": "ref:vdi-optimization-guide#sysprep-store-apps",
+      "verdict": "agrees",
+      "observed": "The landing zone's image build keeps WDOT's Appx package removal off for this reason; no sysprep failure has been seen with it off. Not yet tested with it on.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md",
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/specs/image-pipeline-spec.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "wdot-disk-cleanup-deletes-evidence",
+      "claim": "ref:vdi-optimization-guide#test-cleanup-first",
+      "verdict": "extends",
+      "observed": "WDOT's DiskCleanup category deletes every log, trace and event log file on the system drive, including an image build's own evidence before the image test reads it. The landing zone keeps that category off and cleans narrowly instead.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md"
+      ],
+      "date": "2026-10-20"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "checklist-mapping",
+      "title": "mapping facts to review checklist items"
+    },
+    {
+      "id": "decision-readiness",
+      "title": "decision readiness"
+    },
+    {
+      "id": "gold-standards",
+      "title": "gold standards"
+    },
+    {
+      "id": "intake",
+      "title": "intake"
+    },
+    {
+      "id": "logon-target",
+      "title": "a logon time target"
+    },
+    {
+      "id": "sample-check",
+      "title": "the sample check"
+    },
+    {
+      "id": "scoring",
+      "title": "scoring"
+    }
+  ]
+}
