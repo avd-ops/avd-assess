@@ -1,0 +1,15 @@
+id: avd-insights-workbooks
+title: AVD Insights workbook source (Application Insights Workbooks repo)
+url: https://github.com/microsoft/Application-Insights-Workbooks/tree/master/Workbooks/Windows%20Virtual%20Desktop
+pin: https://github.com/microsoft/Application-Insights-Workbooks/tree/92cdb7c8413332d6b737340e2d0a4262885f3cf5/Workbooks/Windows%20Virtual%20Desktop
+read: 2026-10-20
+license: MIT
+areas: [collection, assessment]
+notes: The KQL behind each Insights tab (AVD Insights, AtScale, CheckAMAConfiguration, Connection Diagnostics, Connection Performance, Host Diagnostics, Host Performance and more). A reader of Insights data should take its queries from here, with attribution, rather than write new ones.
+claims:
+  - id: queries-define-measures
+    says: Each Insights measure (round-trip time, time to connect, input delay, utilization) is defined by the KQL in its workbook template.
+    kind: published
+  - id: config-check
+    says: The configuration check workbook tests diagnostic settings, the Azure Monitor Agent and the association with a data collection rule named microsoft-avdi-* for each host.
+    kind: published
