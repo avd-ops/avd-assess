@@ -24,7 +24,7 @@ The loop works with these three alone. A layer above the foundation can keep the
 
 ## Proposal for avd-landing-zone (not code)
 
-Tuning levers among the template's 57 parameters at [53c9e7d](https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/main.bicep) (the dimension register's 55 plus `profileBackupTier` and `recoveryLocation`, neither a tuning lever):
+Tuning levers among the template's 57 parameters at [53c9e7d](https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/main.bicep) (`profileBackupTier` and `recoveryLocation` among them, neither a tuning lever):
 
 | Lever | Parameters | Flag and variable today |
 |---|---|---|

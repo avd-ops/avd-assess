@@ -12,3 +12,9 @@ claims:
   - id: replaces-vms
     says: Session host update replaces VMs from the host pool's session host configuration (image, size, disk type and more); local data on the old hosts is not kept.
     kind: published
+  - id: autoscale-off-during-update
+    says: Autoscale must be disabled on the host pool for the whole update, or the update can fail.
+    kind: published
+  - id: test-on-aligned-pool
+    says: Test the update process and the new image on a test host pool aligned to the one being updated before updating production.
+    kind: guidance

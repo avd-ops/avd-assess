@@ -8,7 +8,7 @@
 2. **Its home in the contracts:** the target-state decision (a decision in [contracts/fact-register.json](../contracts/fact-register.json), or `proposed:` when the register doesn't have it yet), the current-state and measured facts that evidence it, the intake questions only an operator can answer, and any check in [method.json](../method.json) that judges it.
 3. **Its baseline:** the standing (`published`, `prior`, `guidance`, `gap`, or `owned` when another method here holds it), the claims it rests on, and a one-line summary in our own words. A `gap` row cites this page or another gap, and the estate's own measurement sets the number, as the [gold-standard registry](../gold-standards.yaml) does for `baseline` metrics.
 4. **What avd-current-state can see today:** a built C11 fact, the private rebuild package, measured performance data, intake only, or nothing yet.
-5. **The landing zone parameters** that set it, at a pinned avd-landing-zone commit. Every one of the template's 55 parameters is either set by a dimension or listed with the reason it isn't one (a name, a group ID, a secret), so a new parameter can't arrive without a home.
+5. **The landing zone parameters** that set it, at a pinned avd-landing-zone commit. Every one of the template's 57 parameters is either set by a dimension or listed with the reason it isn't one (a name, a group ID, a secret), so a new parameter can't arrive without a home.
 
 The register is for the three foundation repos: avd-assess says what good is, avd-current-state measures it, avd-landing-zone builds it. Other tools may read it; none is needed.
 
