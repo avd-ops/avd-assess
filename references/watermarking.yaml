@@ -1,0 +1,11 @@
+id: watermarking
+title: Watermarking in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/watermarking
+pin: "Learn git_commit_id be2f9f86d2cc3d64add1b87272a9b30eb320124c, updated_at 2025-06-21"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: needs-capture-protection
+    says: Watermarking puts a QR code on the remote desktop so a photo of the screen can be traced to its session; it's set on the session host and works with screen capture protection.
+    kind: guidance

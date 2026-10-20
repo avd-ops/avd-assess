@@ -155,6 +155,187 @@
       ]
     },
     {
+      "id": "avd-security-guide",
+      "title": "Security recommendations for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/security-guide",
+      "pin": "Learn git_commit_id 02c72255bd133b6d98c53d233b6f97b780f2322a, updated_at 2026-08-27",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "The AVD product team's own security page. The Well-Architected AVD security page resolves to the same article and commit. The review checklist's G items (ref:review-checklists-avd) link into its sections.",
+      "claims": [
+        {
+          "id": "shared-responsibility",
+          "says": "Microsoft secures the control plane and the physical layers; identity, user devices, apps, the session host OS, deployment configuration and network controls are the customer's.",
+          "kind": "guidance"
+        },
+        {
+          "id": "trust-boundary",
+          "says": "Multi-session hosts suit standard users of one organization; users who need local admin get a personal host pool; users from different organizations get a separate tenant and subscription.",
+          "kind": "guidance"
+        },
+        {
+          "id": "defender-for-cloud",
+          "says": "Turn on Defender for Cloud's enhanced security features and work from its Secure Score recommendations.",
+          "kind": "guidance"
+        },
+        {
+          "id": "mfa-conditional-access",
+          "says": "Require multifactor authentication for AVD sign-in and scope access with Conditional Access.",
+          "kind": "guidance"
+        },
+        {
+          "id": "audit-logs",
+          "says": "Collect audit logs (AVD diagnostics, the activity log, Entra sign-ins, session hosts) and monitor usage with Azure Monitor.",
+          "kind": "guidance"
+        },
+        {
+          "id": "idle-limits",
+          "says": "Set maximum inactive time and disconnection policies, and screen locks for idle sessions.",
+          "kind": "guidance"
+        },
+        {
+          "id": "tiered-admin",
+          "says": "Separate admin access by tier, and don't give users local administrator rights on pooled hosts.",
+          "kind": "guidance"
+        },
+        {
+          "id": "endpoint-protection",
+          "says": "Run endpoint protection and an endpoint detection and response product on session hosts, with vulnerability assessment and regular patching.",
+          "kind": "guidance"
+        },
+        {
+          "id": "trusted-launch",
+          "says": "Use Trusted launch (Secure Boot, vTPM, boot integrity monitoring) for session hosts; confidential VMs are the stronger option where needed.",
+          "kind": "guidance"
+        },
+        {
+          "id": "os-hardening",
+          "says": "Turn on Virtualization-based Security, HVCI and Credential Guard, and control which apps run with Windows Defender Application Control.",
+          "kind": "guidance"
+        },
+        {
+          "id": "device-redirection",
+          "says": "Restrict device redirection (drives, clipboard, printers, USB) to what each group of users needs.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "defender-compute-recommendations",
+      "title": "Defender for Cloud compute security recommendations",
+      "url": "https://learn.microsoft.com/azure/defender-for-cloud/recommendations-reference-compute",
+      "pin": "Learn git_commit_id 0759515f9869ae112f8af061415431d73218ab2a, updated_at 2026-06-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "notes": "None of these is AVD-specific; they apply to session hosts as VMs. Reading Defender's own assessment results is cheaper and fresher than recomputing them.",
+      "claims": [
+        {
+          "id": "vm-recommendations",
+          "says": "Defender for Cloud assesses VMs for an EDR solution, vulnerability findings, Secure Boot and vTPM on supported VMs, and the Guest Attestation extension, among others.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "intune-security-baselines",
+      "title": "Intune security baselines for Windows devices",
+      "url": "https://learn.microsoft.com/mem/intune/protect/security-baselines",
+      "pin": "Learn git_commit_id 63ff44f43d17d04e8cbcf5c1ab60f7614f49762e, updated_at 2026-10-05",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "baselines-in-intune",
+          "says": "Intune ships versioned security baselines (Windows, Defender for Endpoint, Edge and others) that enrolled devices, session hosts included, can be assigned and reported against.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "mcsb-avd-baseline",
+      "title": "Azure security baseline for Azure Virtual Desktop (Microsoft cloud security benchmark)",
+      "url": "https://learn.microsoft.com/security/benchmark/azure/baselines/azure-virtual-desktop-security-baseline",
+      "pin": "Learn git_commit_id 2ee57af577ff5e8792fc4f9f3292ceaebc6b7292, updated_at 2026-08-04",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Maps the benchmark's controls to what AVD supports, feature by feature, with whether each is on by default and who configures it. Claim IDs are the benchmark's own control IDs; we use them to place a security finding in a control family, as the WAF codes do for pillars. Only the controls the method uses are listed. It covers the AVD service itself; session hosts are VMs and also fall under the VM baseline. On 2026-10-20, LT-1's guidance text talks about Key Vault alerts, which looks like a copy error upstream.",
+      "claims": [
+        {
+          "id": "NS-2",
+          "says": "Private Link is supported for TCP RDP but not required or recommended without a specific need; RDP Shortpath covers private networks and the internet path is a fallback.",
+          "kind": "guidance"
+        },
+        {
+          "id": "IM-1",
+          "says": "Use one central identity and authentication system (Microsoft Entra ID) for the service.",
+          "kind": "guidance"
+        },
+        {
+          "id": "IM-7",
+          "says": "Restrict resource access based on conditions, through Conditional Access.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PA-7",
+          "says": "Follow least privilege with Azure RBAC, using the built-in AVD roles.",
+          "kind": "guidance"
+        },
+        {
+          "id": "DP-3",
+          "says": "Encrypt sensitive data in transit.",
+          "kind": "guidance"
+        },
+        {
+          "id": "DP-4",
+          "says": "AVD's own data at rest is encrypted with platform keys by default, with nothing to configure; customer-managed keys aren't supported for the service.",
+          "kind": "guidance"
+        },
+        {
+          "id": "LT-1",
+          "says": "Turn on threat detection; the reference is onboarding session hosts to Defender for Endpoint.",
+          "kind": "guidance"
+        },
+        {
+          "id": "LT-4",
+          "says": "Turn on resource logs for security investigation.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PV-3",
+          "says": "Build a secure configuration baseline into the session host image, or use a hardened image from a trusted supplier.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PV-5",
+          "says": "Run vulnerability assessments on session hosts.",
+          "kind": "guidance"
+        },
+        {
+          "id": "ES-1",
+          "says": "Use endpoint detection and response on session hosts.",
+          "kind": "guidance"
+        },
+        {
+          "id": "ES-2",
+          "says": "Use modern anti-malware on session hosts.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "perfmon-troubleshooting",
       "title": "Troubleshoot issues using Performance Monitor (Windows Server)",
       "url": "https://learn.microsoft.com/troubleshoot/windows-server/support-tools/troubleshoot-issues-performance-monitor",
@@ -184,6 +365,26 @@
       ]
     },
     {
+      "id": "rdp-properties",
+      "title": "Supported RDP properties",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-properties",
+      "pin": "Learn git_commit_id 2ef32495c3b6974be09cd3373e163f2b2a920d55, updated_at 2026-08-10",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "notes": "The host pool's custom RDP properties are readable from the control plane, so device redirection can be judged without signing in to a host. Session host policy can still restrict further.",
+      "claims": [
+        {
+          "id": "redirection-properties",
+          "says": "Drive, clipboard, printer, USB, COM port, camera and WebAuthn redirection are each named host pool RDP properties with documented values.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "review-checklists-avd",
       "title": "Azure review checklists, Azure Virtual Desktop",
       "url": "https://github.com/Azure/review-checklists",
@@ -196,12 +397,24 @@
       "notes": "130 items with short ID, category, WAF pillar, severity and Learn link. The AVD items have no Resource Graph query, so mapping evidence to them is ours (gap:checklist-mapping). Cite items by short ID, never by GUID.",
       "claims": [
         {
+          "id": "C01.06",
+          "says": "Don't offer both full desktops and RemoteApps from the same host pool to the same users (Security, high)."
+        },
+        {
+          "id": "D02.01",
+          "says": "Configure the Azure Files share for Entra Kerberos authentication on Entra joined hosts (Security, medium)."
+        },
+        {
           "id": "E01.05",
           "says": "Consider Start VM on Connect for personal host pools (Cost, low)."
         },
         {
           "id": "E02.02",
           "says": "Send diagnostic settings for workspaces, host pools, application groups and host VMs to a Log Analytics workspace (Reliability, medium)."
+        },
+        {
+          "id": "F01.04",
+          "says": "Decide whether to control or restrict internet outbound traffic from session hosts (Security, medium)."
         },
         {
           "id": "F01.10",
@@ -212,12 +425,91 @@
           "says": "Evaluate RDP Shortpath for clients on managed internal networks (Performance, medium)."
         },
         {
+          "id": "G01.01",
+          "says": "Secure RDP sessions with policy (idle and disconnect limits, screen lock) (Security, medium)."
+        },
+        {
+          "id": "G02.01",
+          "says": "Run anti-virus and anti-malware on session hosts (Security, high)."
+        },
+        {
+          "id": "G02.02",
+          "says": "Assess disk encryption requirements for session hosts (Security, low)."
+        },
+        {
+          "id": "G02.03",
+          "says": "Enable Trusted launch on Gen2 session hosts (Security, medium)."
+        },
+        {
+          "id": "G02.04",
+          "says": "Trusted launch and a Gen2 image are requirements for Windows 11 (Security, high)."
+        },
+        {
+          "id": "G02.05",
+          "says": "Consider screen capture protection for sensitive information (Security, low)."
+        },
+        {
+          "id": "G02.06",
+          "says": "Restrict device redirection and drive mapping (Security, medium)."
+        },
+        {
+          "id": "G03.03",
+          "says": "Users have no local administrator rights on session hosts (Security, high)."
+        },
+        {
+          "id": "G03.04",
+          "says": "Enable Defender for Cloud for session host security posture (Security, medium)."
+        },
+        {
+          "id": "G03.05",
+          "says": "Enable diagnostic and audit logging (Security, medium)."
+        },
+        {
+          "id": "G03.06",
+          "says": "Assess whether custom RBAC roles are needed for AVD management (Security, low)."
+        },
+        {
+          "id": "G03.07",
+          "says": "Restrict users from installing unauthorized applications (Security, medium)."
+        },
+        {
+          "id": "G04.01",
+          "says": "Evaluate MFA and Conditional Access for AVD users (Security, medium)."
+        },
+        {
+          "id": "G05.01",
+          "says": "Review and apply Zero Trust principles (Security, medium)."
+        },
+        {
           "id": "H03.05",
           "says": "Keep the FSLogix profile storage in the same Azure region as the session hosts (Performance, high)."
         },
         {
+          "id": "H04.02",
+          "says": "Configure the recommended antivirus exclusions for FSLogix (Security, medium)."
+        },
+        {
           "id": "H04.03",
           "says": "Review and confirm the configured maximum FSLogix profile size (Cost, high)."
+        }
+      ]
+    },
+    {
+      "id": "screen-capture-protection",
+      "title": "Screen capture protection in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/screen-capture-protection",
+      "pin": "Learn git_commit_id bad64e5f793350a66f4b99c18ea0f7c0968cbc70, updated_at 2026-10-08",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "The setting lives on the session host (Intune or Group Policy), with Intune MAM and Conditional Access for mobile and web clients. It isn't visible from the control plane.",
+      "claims": [
+        {
+          "id": "host-policy",
+          "says": "Screen capture protection is turned on per session host by Intune device configuration or Group Policy, and its reach depends on the client platform.",
+          "kind": "guidance"
         }
       ]
     },
@@ -362,6 +654,24 @@
       ]
     },
     {
+      "id": "watermarking",
+      "title": "Watermarking in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/watermarking",
+      "pin": "Learn git_commit_id be2f9f86d2cc3d64add1b87272a9b30eb320124c, updated_at 2025-06-21",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "needs-capture-protection",
+          "says": "Watermarking puts a QR code on the remote desktop so a photo of the screen can be traced to its session; it's set on the session host and works with screen capture protection.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "wdot",
       "title": "Windows Desktop Optimization Tool (WDOT)",
       "url": "https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool",
@@ -379,9 +689,57 @@
           "kind": "guidance"
         }
       ]
+    },
+    {
+      "id": "windows-security-baselines",
+      "title": "Windows security baselines guide",
+      "url": "https://learn.microsoft.com/windows/security/operating-system-security/device-management/windows-security-configuration-framework/windows-security-baselines",
+      "pin": "Learn git_commit_id 88a2de288ae38d082d8d9dcb8b14b4d0a3ddb318, updated_at 2025-08-18",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "The baselines ship in the Security Compliance Toolkit as Group Policy objects. None is tuned for multi-session AVD hosts (gap:host-baseline-profile).",
+      "claims": [
+        {
+          "id": "baselines-published",
+          "says": "Microsoft publishes recommended security configuration baselines for each Windows release, for Group Policy and tooling to compare against.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "zero-trust-avd",
+      "title": "Apply Zero Trust principles to Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/security/zero-trust/azure-infrastructure-avd",
+      "pin": "Learn git_commit_id aacf4bfa9d35342e0399cdb1c37586dcb3cf2abf, updated_at 2026-05-31",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "A seven-step walk through identity, endpoints, storage, networks, session hosts, governance and monitoring. Useful as the order in which a security review reads an estate; it adds few items the security guide doesn't have.",
+      "claims": [
+        {
+          "id": "seven-steps",
+          "says": "Secure identities, then endpoints, storage, hub and spoke networks, session hosts, governance and compliance, and finally management and monitoring.",
+          "kind": "guidance"
+        }
+      ]
     }
   ],
   "observations": [
+    {
+      "id": "redirection-kept-for-usability",
+      "claim": "ref:avd-security-guide#device-redirection",
+      "verdict": "extends",
+      "observed": "The landing zone's default RDP properties turn drive, USB and COM port redirection off but keep clipboard, printers, smart cards, WebAuthn and the camera, because users need them. Restricting redirection is a per-property trade-off, so the method reports each one kept on as a warn with its reason, not as a gap.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/main.bicep"
+      ],
+      "date": "2026-10-20"
+    },
     {
       "id": "region-latency-from-the-user",
       "claim": "ref:avd-prerequisites#rtt-under-150",
@@ -399,6 +757,28 @@
       "observed": "The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.",
       "evidence": [
         "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "smb-channel-aes128-gcm-needed",
+      "claim": "ref:mcsb-avd-baseline#DP-3",
+      "verdict": "extends",
+      "observed": "Hardening the profile share to AES-256-GCM as the only SMB channel encryption denied every Entra Kerberos session; allowing AES-128-GCM as well, with CCM still off, let users in. Encryption in transit stays on, but the strictest setting isn't usable with Entra Kerberos, so the method treats AES-128-GCM plus AES-256-GCM as passing.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0028-smb-channel-encryption-entra-kerberos.md",
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/storage.bicep"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "trusted-launch-by-default",
+      "claim": "ref:review-checklists-avd#G02.03",
+      "verdict": "agrees",
+      "observed": "The landing zone deploys every session host with Trusted launch, Secure Boot and vTPM on, from Gen2 images, and the demo host pool ran on it with no boot or image problem.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/sessionHosts.bicep",
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/docs/design-decisions.md"
       ],
       "date": "2026-10-20"
     },
@@ -448,6 +828,10 @@
       "title": "gold standards"
     },
     {
+      "id": "host-baseline-profile",
+      "title": "a security baseline profile for multi-session hosts"
+    },
+    {
       "id": "intake",
       "title": "intake"
     },
@@ -462,6 +846,10 @@
     {
       "id": "scoring",
       "title": "scoring"
+    },
+    {
+      "id": "security-scope",
+      "title": "what a security assessment covers, and which repo does what"
     }
   ]
 }

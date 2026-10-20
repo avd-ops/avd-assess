@@ -11,3 +11,5 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [scoring](scoring.md) | How outcomes roll up into scores |
 | [sample-check](sample-check.md) | A point-in-time health check of measured user experience: sampling, when a reading counts, outcomes |
 | [gold-standards](gold-standards.md) | Which source is the reference for each metric, and how that changes |
+| [security-scope](security-scope.md) | What a security assessment can judge, from which evidence, and which repo does what |
+| [host-baseline-profile](host-baseline-profile.md) | Judging a multi-session host against Microsoft's OS baseline through a reviewed profile |

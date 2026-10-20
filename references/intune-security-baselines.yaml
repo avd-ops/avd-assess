@@ -1,0 +1,11 @@
+id: intune-security-baselines
+title: Intune security baselines for Windows devices
+url: https://learn.microsoft.com/mem/intune/protect/security-baselines
+pin: "Learn git_commit_id 63ff44f43d17d04e8cbcf5c1ab60f7614f49762e, updated_at 2026-10-05"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: baselines-in-intune
+    says: Intune ships versioned security baselines (Windows, Defender for Endpoint, Edge and others) that enrolled devices, session hosts included, can be assigned and reported against.
+    kind: guidance

@@ -1,0 +1,12 @@
+id: windows-security-baselines
+title: Windows security baselines guide
+url: https://learn.microsoft.com/windows/security/operating-system-security/device-management/windows-security-configuration-framework/windows-security-baselines
+pin: "Learn git_commit_id 88a2de288ae38d082d8d9dcb8b14b4d0a3ddb318, updated_at 2025-08-18"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: The baselines ship in the Security Compliance Toolkit as Group Policy objects. None is tuned for multi-session AVD hosts (gap:host-baseline-profile).
+claims:
+  - id: baselines-published
+    says: Microsoft publishes recommended security configuration baselines for each Windows release, for Group Policy and tooling to compare against.
+    kind: guidance

@@ -1,0 +1,8 @@
+id: trusted-launch-by-default
+claim: ref:review-checklists-avd#G02.03
+verdict: agrees
+observed: The landing zone deploys every session host with Trusted launch, Secure Boot and vTPM on, from Gen2 images, and the demo host pool ran on it with no boot or image problem.
+evidence:
+  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/sessionHosts.bicep
+  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/docs/design-decisions.md
+date: 2026-10-20

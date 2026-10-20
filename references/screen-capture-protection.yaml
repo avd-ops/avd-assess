@@ -1,0 +1,12 @@
+id: screen-capture-protection
+title: Screen capture protection in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/screen-capture-protection
+pin: "Learn git_commit_id bad64e5f793350a66f4b99c18ea0f7c0968cbc70, updated_at 2026-10-08"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: The setting lives on the session host (Intune or Group Policy), with Intune MAM and Conditional Access for mobile and web clients. It isn't visible from the control plane.
+claims:
+  - id: host-policy
+    says: Screen capture protection is turned on per session host by Intune device configuration or Group Policy, and its reach depends on the client platform.
+    kind: guidance

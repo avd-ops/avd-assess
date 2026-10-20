@@ -21,6 +21,7 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 | [Targets and benchmarks](methods/targets-benchmarks.md) | What good looks like, as numbers with their sources |
 | [Scoring](methods/scoring.md) | How outcomes roll up, and which design decisions the evidence can support |
 | [Sample check](methods/sample-check.md) | A short, point-in-time health check of measured user experience, built on the four above |
+| [Security](methods/security.md) | How to judge an estate's security against Microsoft's AVD guidance, and which repo holds which part |
 
 Every step on those pages cites one of three things:
 

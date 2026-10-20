@@ -7,15 +7,51 @@ license: MIT
 areas: [assessment]
 notes: 130 items with short ID, category, WAF pillar, severity and Learn link. The AVD items have no Resource Graph query, so mapping evidence to them is ours (gap:checklist-mapping). Cite items by short ID, never by GUID.
 claims:
+  - id: C01.06
+    says: Don't offer both full desktops and RemoteApps from the same host pool to the same users (Security, high).
+  - id: D02.01
+    says: Configure the Azure Files share for Entra Kerberos authentication on Entra joined hosts (Security, medium).
   - id: E01.05
     says: Consider Start VM on Connect for personal host pools (Cost, low).
   - id: E02.02
     says: Send diagnostic settings for workspaces, host pools, application groups and host VMs to a Log Analytics workspace (Reliability, medium).
+  - id: F01.04
+    says: Decide whether to control or restrict internet outbound traffic from session hosts (Security, medium).
   - id: F01.10
     says: Evaluate a private endpoint for the Azure Files share (Security, medium).
   - id: F01.11
     says: Evaluate RDP Shortpath for clients on managed internal networks (Performance, medium).
+  - id: G01.01
+    says: Secure RDP sessions with policy (idle and disconnect limits, screen lock) (Security, medium).
+  - id: G02.01
+    says: Run anti-virus and anti-malware on session hosts (Security, high).
+  - id: G02.02
+    says: Assess disk encryption requirements for session hosts (Security, low).
+  - id: G02.03
+    says: Enable Trusted launch on Gen2 session hosts (Security, medium).
+  - id: G02.04
+    says: Trusted launch and a Gen2 image are requirements for Windows 11 (Security, high).
+  - id: G02.05
+    says: Consider screen capture protection for sensitive information (Security, low).
+  - id: G02.06
+    says: Restrict device redirection and drive mapping (Security, medium).
+  - id: G03.03
+    says: Users have no local administrator rights on session hosts (Security, high).
+  - id: G03.04
+    says: Enable Defender for Cloud for session host security posture (Security, medium).
+  - id: G03.05
+    says: Enable diagnostic and audit logging (Security, medium).
+  - id: G03.06
+    says: Assess whether custom RBAC roles are needed for AVD management (Security, low).
+  - id: G03.07
+    says: Restrict users from installing unauthorized applications (Security, medium).
+  - id: G04.01
+    says: Evaluate MFA and Conditional Access for AVD users (Security, medium).
+  - id: G05.01
+    says: Review and apply Zero Trust principles (Security, medium).
   - id: H03.05
     says: Keep the FSLogix profile storage in the same Azure region as the session hosts (Performance, high).
+  - id: H04.02
+    says: Configure the recommended antivirus exclusions for FSLogix (Security, medium).
   - id: H04.03
     says: Review and confirm the configured maximum FSLogix profile size (Cost, high).

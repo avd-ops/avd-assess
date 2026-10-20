@@ -1,0 +1,12 @@
+id: zero-trust-avd
+title: Apply Zero Trust principles to Azure Virtual Desktop
+url: https://learn.microsoft.com/security/zero-trust/azure-infrastructure-avd
+pin: "Learn git_commit_id aacf4bfa9d35342e0399cdb1c37586dcb3cf2abf, updated_at 2026-05-31"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: A seven-step walk through identity, endpoints, storage, networks, session hosts, governance and monitoring. Useful as the order in which a security review reads an estate; it adds few items the security guide doesn't have.
+claims:
+  - id: seven-steps
+    says: Secure identities, then endpoints, storage, hub and spoke networks, session hosts, governance and compliance, and finally management and monitoring.
+    kind: guidance

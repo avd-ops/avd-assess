@@ -9,7 +9,8 @@ How to judge what was collected against published recommendations. avd-current-s
 3. **Give each check one of four outcomes:** pass, warn (a trade-off to review), gap, or unknown. Unknown is never guessed, and a model never decides an outcome (`gap:scoring`).
 4. **Judge the image against the landing zone's reviewed WDOT profile**, not against every WDOT item: some items destroy evidence or break sysprep (`ref:wdot#categories`, `obs:wdot-disk-cleanup-deletes-evidence`, `obs:wdot-appx-removal-left-off`).
 5. **Use the Well-Architected checklists' codes** (RE:04 and the rest) to place each finding in its pillar (`ref:waf-reliability-checklist#RE:04`).
-6. **Repeat on a cadence** and compare to the last run, as the Well-Architected Review does with milestones (`ref:waf-review-assessment#milestones`).
+6. **Judge the security pillar with the [security method](security.md)**, which adds the sources security needs (`ref:avd-security-guide`, `gap:security-scope`).
+7. **Repeat on a cadence** and compare to the last run, as the Well-Architected Review does with milestones (`ref:waf-review-assessment#milestones`).
 
 ## Not yet known
 
