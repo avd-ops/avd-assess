@@ -1,0 +1,17 @@
+id: avd-deploy-host-pool
+title: Deploy Azure Virtual Desktop (host pools and session hosts)
+url: https://learn.microsoft.com/azure/virtual-desktop/deploy-azure-virtual-desktop
+pin: "Learn git_commit_id d823adcfe80080adb47686ee827ee5b3ff8e397f, updated_at 2026-09-30"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: premium-ssd-os-disk
+    says: Premium SSD is the recommended OS disk type for production session hosts.
+    kind: published
+  - id: trusted-launch-default
+    says: Trusted launch is the default security type for new session hosts; confidential VMs are the other non-standard option.
+    kind: published
+  - id: no-public-inbound
+    says: Azure Virtual Desktop needs no public inbound ports on session hosts.
+    kind: published

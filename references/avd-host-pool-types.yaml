@@ -1,0 +1,14 @@
+id: avd-host-pool-types
+title: Azure Virtual Desktop terminology (host pools)
+url: https://learn.microsoft.com/azure/virtual-desktop/terminology
+pin: "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: pooled-updated-by-redeploy
+    says: Pooled hosts are updated by redeploying from updated images; personal hosts are updated in place.
+    kind: published
+  - id: limit-can-be-exceeded
+    says: Under high concurrent connection load, sessions on a host can exceed the maximum session limit.
+    kind: published

@@ -23,6 +23,8 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 | [Targets and benchmarks](methods/targets-benchmarks.md) | What good looks like, as numbers with their sources |
 | [Scoring](methods/scoring.md) | How outcomes roll up, and which design decisions the evidence can support |
 | [Sample check](methods/sample-check.md) | A short, point-in-time health check of measured user experience, built on the four above |
+| [Baseline profile](methods/baseline-profile.md) | What good looks like for a host pool of each workload class: experience, utilization, density |
+| [Tune and rightsize](methods/tune-rightsize.md) | A repeatable loop to move a running estate toward its profile at the lowest cost that keeps it there |
 
 Every step on those pages cites one of three things:
 
@@ -50,6 +52,7 @@ Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observa
 pip install pyyaml jsonschema
 python3 scripts/build_index.py --check
 python3 tests/check_method.py
+python3 tests/check_baselines.py
 ```
 
 `index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (avd-second-brain contract C20, `avd-assess-index/v1`), so the brain and avd-current-state read it without a YAML parser.
