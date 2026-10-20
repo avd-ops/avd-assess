@@ -19,5 +19,6 @@ jobs:
       - run: pip install pyyaml jsonschema
       - run: python3 scripts/build_index.py --check
       - run: python3 tests/check_method.py
+      - run: python3 tests/check_contracts.py
       - run: python3 tests/check_dimensions.py
       - run: python3 tests/check_baselines.py
