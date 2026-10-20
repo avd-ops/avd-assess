@@ -1,0 +1,11 @@
+id: cost-tag-inheritance
+title: Group and allocate costs using tag inheritance (Microsoft Cost Management)
+url: https://learn.microsoft.com/azure/cost-management-billing/costs/enable-tag-inheritance
+pin: "Learn git_commit_id 41cb5173716c2cf6f1f38563aaa1919fc6ec258f, updated_at 2025-09-30"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: inherit-to-usage-records
+    says: With tag inheritance on, subscription and resource group tags apply to child resources' usage records (not to the resources), for EA, MCA and MPA billing accounts.
+    kind: guidance

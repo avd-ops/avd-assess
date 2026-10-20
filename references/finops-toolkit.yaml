@@ -1,0 +1,12 @@
+id: finops-toolkit
+title: FinOps toolkit overview (Microsoft, open source)
+url: https://learn.microsoft.com/cloud-computing/finops/toolkit/finops-toolkit-overview
+pin: "Learn git_commit_id a74e7c72db9bbdc44d6f3307194cad5e78348cc9, updated_at 2026-02-11"
+read: 2026-10-20
+license: Microsoft Learn content (link only); the toolkit itself is open source
+areas: [assessment, collection]
+notes: Prior art for cost tooling. Its hubs, workbooks and optimization engine already report and recommend across an organization's cost data; the family doesn't rebuild them, and avd-current-state may cite their output as evidence when an operator runs them.
+claims:
+  - id: tools
+    says: The toolkit offers FinOps hubs for cost reporting, Power BI reports, cost optimization and governance workbooks, the Azure Optimization Engine, a PowerShell module and open data such as pricing units.
+    kind: prior

@@ -1,0 +1,17 @@
+id: avd-tagging
+title: Tag Azure Virtual Desktop resources to manage costs
+url: https://learn.microsoft.com/azure/virtual-desktop/tag-virtual-desktop-resources
+pin: "Learn git_commit_id 6d2a9179f453f9b31c9795e5c9e84e5c13b1099a, updated_at 2026-05-25"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: tag-host-pools-first
+    says: Start tagging with host pools, because their VMs are usually the main cost of an AVD deployment.
+    kind: guidance
+  - id: tags-only-direct
+    says: Tags report cost only for resources they are directly assigned to, and a new or changed tag shows in Cost Management only after the resource reports activity.
+    kind: guidance
+  - id: cm-resource-parent
+    says: The cm-resource-parent tag, set to the host pool's resource ID, groups costs by host pool in Cost Management without filters.
+    kind: guidance

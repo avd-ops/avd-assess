@@ -35,3 +35,14 @@ claims:
     says: Keep the FSLogix profile storage in the same Azure region as the session hosts (Performance, high).
   - id: H04.03
     says: Review and confirm the configured maximum FSLogix profile size (Cost, high).
+  # Cost items read for methods/finops.md (2026-10-20); kept here, after the others, so the list grows without reordering.
+  - id: C01.01
+    says: Determine the host pool type to use (Cost, high).
+  - id: E01.04
+    says: Assess the requirements for host pool autoscaling (Reliability, medium).
+  - id: E01.06
+    says: Evaluate an ad-hoc mechanism to shut down personal session hosts (Cost, low).
+  - id: E01.07
+    says: Review and adopt the suggested tags for Azure Virtual Desktop (Cost, low).
+  - id: H04.07
+    says: Review the use of FSLogix redirections (Cost, medium).

@@ -1,0 +1,36 @@
+id: waf-cost-optimization-checklist
+title: Design review checklist for Cost Optimization (Azure Well-Architected Framework)
+url: https://learn.microsoft.com/azure/well-architected/cost-optimization/checklist
+pin: "Learn git_commit_id 28a78d22523542beeafc7de5eaa11fad791559b6, updated_at 2025-10-30"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: Fourteen recommendations, CO:01 to CO:14. Claim IDs are the checklist's codes, used to place a cost finding in the pillar as RE:04 does for reliability. Only the codes the FinOps method uses are listed. The page footer showed 2023-11-15 while the page metadata said 2025-10-30; the pin uses the metadata.
+claims:
+  - id: CO:02
+    says: Keep a cost model of initial cost, run rate and ongoing cost, and a budget that covers it with a buffer.
+    kind: guidance
+  - id: CO:03
+    says: Collect daily cost data, review spend against budget and cost model, and alert at thresholds and on anomalies.
+    kind: guidance
+  - id: CO:04
+    says: Set spending guardrails, such as release gates, policies, resource limits and access controls, and prefer platform automation.
+    kind: guidance
+  - id: CO:05
+    says: Get the best rates, reviewing region, tier, consumption against commitment pricing and license portability.
+    kind: guidance
+  - id: CO:06
+    says: Understand the billing meters and align usage to their increments, validating major cost drivers with a proof of concept.
+    kind: guidance
+  - id: CO:07
+    says: Regularly remove or optimize unneeded and underused components.
+    kind: guidance
+  - id: CO:08
+    says: Optimize each environment's cost, including its operating hours; nonproduction should emulate production with deliberate tradeoffs.
+    kind: guidance
+  - id: CO:12
+    says: Optimize scaling costs against the cost model and the limits of each scale unit.
+    kind: guidance
+  - id: CO:14
+    says: Consolidate resources and increase density where the workload allows.
+    kind: guidance

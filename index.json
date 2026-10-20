@@ -2,6 +2,41 @@
   "schema": "avd-assess-index/v1",
   "references": [
     {
+      "id": "advisor-cost",
+      "title": "Cost recommendations (Azure Advisor)",
+      "url": "https://learn.microsoft.com/azure/advisor/advisor-reference-cost-recommendations",
+      "pin": "Learn git_commit_id 1812af4408854e11b0f7aa17a596b5e666d5603f, updated_at 2026-09-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "notes": "The list of Advisor's cost recommendations. Each has a recommendation ID on the page; we cite by our claim ID only. The method reads Advisor's results as evidence and doesn't recompute them (gap:finops-scope).",
+      "claims": [
+        {
+          "id": "right-size-or-shutdown-vms",
+          "says": "Advisor flags virtual machines with low usage to resize or shut down, and notes that some low use is by design.",
+          "kind": "guidance"
+        },
+        {
+          "id": "unattached-disks",
+          "says": "Advisor lists managed disks not attached to a VM for review (preview).",
+          "kind": "guidance"
+        },
+        {
+          "id": "vm-reservations",
+          "says": "Advisor recommends VM reservations from usage over a look-back period, estimated per subscription.",
+          "kind": "guidance"
+        },
+        {
+          "id": "savings-plan",
+          "says": "Advisor recommends a savings plan commitment from recent eligible usage.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "aprl-desktop-virtualization",
       "title": "Azure Proactive Resiliency Library v2, Microsoft.DesktopVirtualization",
       "url": "https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2",
@@ -60,6 +95,50 @@
       ]
     },
     {
+      "id": "avd-autoscale",
+      "title": "Autoscale scaling plans and example scenarios in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-scenarios",
+      "pin": "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "scales-to-save-cost",
+          "says": "Autoscale turns session hosts on and off on a schedule to optimize deployment cost; ramp-down is usually when VMs shut down to save cost.",
+          "kind": "guidance"
+        },
+        {
+          "id": "two-methods",
+          "says": "Power management autoscaling powers hosts on and off; dynamic autoscaling also creates and deletes hosts, for pooled host pools with a session host configuration.",
+          "kind": "guidance"
+        },
+        {
+          "id": "one-plan-per-pool",
+          "says": "A host pool has at most one scaling plan, and autoscale must not be combined with Azure Automation or other scaling tools on the same host pool.",
+          "kind": "guidance"
+        },
+        {
+          "id": "capacity-threshold",
+          "says": "In a pooled host pool, autoscale keeps the minimum percentage of hosts on and turns on more only when used capacity passes the capacity threshold.",
+          "kind": "published"
+        },
+        {
+          "id": "hibernate-personal",
+          "says": "Hibernate is available for personal host pools.",
+          "kind": "guidance"
+        },
+        {
+          "id": "exclusion-tags",
+          "says": "Autoscale overwrites drain mode in pooled host pools, so updates use exclusion tags.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "avd-connection-quality",
       "title": "Troubleshoot connection quality in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-connection-quality",
@@ -78,6 +157,45 @@
         {
           "id": "review-region-latency",
           "says": "Review Azure's network latency statistics every two to three months in case the best region changes.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-costs",
+      "title": "Understand and estimate costs for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/understand-estimate-costs",
+      "pin": "Learn git_commit_id f640b92b872a8e86e4962296145928498fdaa50f, updated_at 2026-05-29",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "two-sources",
+          "says": "AVD costs come from Azure resource consumption and from licensing, and the owner of the deployment pays them, not the users.",
+          "kind": "guidance"
+        },
+        {
+          "id": "vm-instances-cost-most",
+          "says": "Session host VM instances usually cost the most; autoscale, savings plans and reserved instances reduce compute cost.",
+          "kind": "guidance"
+        },
+        {
+          "id": "accompanying-services",
+          "says": "Features carry their own costs, such as Insights log data, App Attach and profile storage, and custom image template storage.",
+          "kind": "guidance"
+        },
+        {
+          "id": "calculator-scope",
+          "says": "The pricing calculator's AVD module estimates session hosts and feature storage only; egress to Microsoft 365 and other features need separate estimates.",
+          "kind": "guidance"
+        },
+        {
+          "id": "view-costs-after",
+          "says": "After deployment, track AVD costs in Cost Management and with tags, and use Insights usage to optimize.",
           "kind": "guidance"
         }
       ]
@@ -141,6 +259,35 @@
       ]
     },
     {
+      "id": "avd-licensing",
+      "title": "Licensing Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/licensing",
+      "pin": "Learn git_commit_id 5107b5fb31aafba47fc5410de88daa2b821313da, updated_at 2025-11-18",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Licensing isn't visible to a Reader-only run; the method takes it from the operator (gap:finops-scope).",
+      "claims": [
+        {
+          "id": "eligible-license-per-user",
+          "says": "Every user needs an eligible license; Windows client session hosts take a qualifying Microsoft 365, Windows Enterprise or VDA per-user license, Windows Server hosts take RDS CALs with Software Assurance or RDS subscription licenses.",
+          "kind": "guidance"
+        },
+        {
+          "id": "per-user-access-external-only",
+          "says": "Per-user access pricing is only for external commercial purposes, charged per user who connects in the month, and isn't available for Windows Server.",
+          "kind": "guidance"
+        },
+        {
+          "id": "separate-subscription-for-licensed-users",
+          "says": "Users who already hold eligible licenses are still charged in a subscription enrolled in per-user access pricing, so serve them from a separate subscription.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "avd-prerequisites",
       "title": "Prerequisites for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/prerequisites",
@@ -194,6 +341,216 @@
       ]
     },
     {
+      "id": "avd-tagging",
+      "title": "Tag Azure Virtual Desktop resources to manage costs",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/tag-virtual-desktop-resources",
+      "pin": "Learn git_commit_id 6d2a9179f453f9b31c9795e5c9e84e5c13b1099a, updated_at 2026-05-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "tag-host-pools-first",
+          "says": "Start tagging with host pools, because their VMs are usually the main cost of an AVD deployment.",
+          "kind": "guidance"
+        },
+        {
+          "id": "tags-only-direct",
+          "says": "Tags report cost only for resources they are directly assigned to, and a new or changed tag shows in Cost Management only after the resource reports activity.",
+          "kind": "guidance"
+        },
+        {
+          "id": "cm-resource-parent",
+          "says": "The cm-resource-parent tag, set to the host pool's resource ID, groups costs by host pool in Cost Management without filters.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "commitment-choice",
+      "title": "Decide between a savings plan and a reservation (Microsoft Cost Management)",
+      "url": "https://learn.microsoft.com/azure/cost-management-billing/savings-plan/decide-between-savings-plan-reservation",
+      "pin": "Learn git_commit_id af8cc48c58d5deb8862962de76985fcc1e34ff0f, updated_at 2026-03-26",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "reservation-for-stable",
+          "says": "Choose reservations for continuous, stable workloads with no expected change of instance family or region.",
+          "kind": "guidance"
+        },
+        {
+          "id": "savings-plan-for-dynamic",
+          "says": "Choose a savings plan when workloads change size, family, service or region.",
+          "kind": "guidance"
+        },
+        {
+          "id": "right-size-first",
+          "says": "Right-size first, fix existing commitments next, and only then buy new ones; discounts reduce rates, not waste.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "cost-management-budgets",
+      "title": "Tutorial, create and manage budgets (Microsoft Cost Management)",
+      "url": "https://learn.microsoft.com/azure/cost-management-billing/costs/tutorial-acm-create-budgets",
+      "pin": "Learn git_commit_id 981d4c7a114a9026e67c1ac75226043c035d2ab5, updated_at 2025-09-26",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "alerts-dont-stop",
+          "says": "A budget alerts on actual or forecast cost; resources aren't affected and consumption isn't stopped.",
+          "kind": "guidance"
+        },
+        {
+          "id": "evaluated-daily",
+          "says": "Cost data is typically available within 8 to 24 hours and budgets are evaluated against it every 24 hours.",
+          "kind": "published"
+        },
+        {
+          "id": "action-group-scopes",
+          "says": "A budget can call an action group only at subscription or resource group scope.",
+          "kind": "guidance"
+        },
+        {
+          "id": "actual-not-amortized",
+          "says": "Budgets evaluate actual cost, not amortized cost.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "cost-management-data",
+      "title": "Understand Cost Management data",
+      "url": "https://learn.microsoft.com/azure/cost-management-billing/costs/understand-cost-mgt-data",
+      "pin": "Learn git_commit_id 346dc210a35a73741cb7fcfa73c562124ab7e2e3, updated_at 2026-06-02",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "data-latency",
+          "says": "Cost and usage data typically appears within 8 to 24 hours for EA and MCA subscriptions, and can take up to 72 hours for pay-as-you-go.",
+          "kind": "published"
+        },
+        {
+          "id": "open-month-estimated",
+          "says": "Open-month data is an estimate; the billing period usually closes up to 72 hours after it ends.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "cost-tag-inheritance",
+      "title": "Group and allocate costs using tag inheritance (Microsoft Cost Management)",
+      "url": "https://learn.microsoft.com/azure/cost-management-billing/costs/enable-tag-inheritance",
+      "pin": "Learn git_commit_id 41cb5173716c2cf6f1f38563aaa1919fc6ec258f, updated_at 2025-09-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "inherit-to-usage-records",
+          "says": "With tag inheritance on, subscription and resource group tags apply to child resources' usage records (not to the resources), for EA, MCA and MPA billing accounts.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "finops-framework",
+      "title": "FinOps Framework overview (Microsoft's guide to the FinOps Foundation framework)",
+      "url": "https://learn.microsoft.com/cloud-computing/finops/framework/finops-framework",
+      "pin": "Learn git_commit_id a74e7c72db9bbdc44d6f3307194cad5e78348cc9, updated_at 2026-02-11",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "scoring"
+      ],
+      "notes": "Microsoft's summary of the FinOps Foundation's framework, with Microsoft's extensions mapped back to it. The Foundation's own site has no immutable pin, so we cite this page and link the Foundation from the method. The framework judges an organization's FinOps practice; an estate assessment judges one workload, so only the workload-level capabilities are used (gap:finops-scope).",
+      "claims": [
+        {
+          "id": "principles",
+          "says": "Six principles, among them that FinOps data should be accessible, timely and accurate, and that teams use the cloud's variable cost model with continuous small adjustments.",
+          "kind": "guidance"
+        },
+        {
+          "id": "lifecycle",
+          "says": "Teams iterate through three phases, Inform (visibility, allocation, budgets, forecasts), Optimize (reduce waste) and Operate (KPIs and governance).",
+          "kind": "guidance"
+        },
+        {
+          "id": "capabilities",
+          "says": "Capabilities are grouped in four domains, understand usage and cost, quantify business value, optimize usage and cost, and manage the FinOps practice; workload optimization, rate optimization, licensing, allocation, budgeting and unit economics are among them.",
+          "kind": "guidance"
+        },
+        {
+          "id": "maturity-per-capability",
+          "says": "Judge maturity per capability against the team's own targets rather than one global Crawl-Walk-Run level, and reassess every three to six months.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "finops-toolkit",
+      "title": "FinOps toolkit overview (Microsoft, open source)",
+      "url": "https://learn.microsoft.com/cloud-computing/finops/toolkit/finops-toolkit-overview",
+      "pin": "Learn git_commit_id a74e7c72db9bbdc44d6f3307194cad5e78348cc9, updated_at 2026-02-11",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only); the toolkit itself is open source",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "notes": "Prior art for cost tooling. Its hubs, workbooks and optimization engine already report and recommend across an organization's cost data; the family doesn't rebuild them, and avd-current-state may cite their output as evidence when an operator runs them.",
+      "claims": [
+        {
+          "id": "tools",
+          "says": "The toolkit offers FinOps hubs for cost reporting, Power BI reports, cost optimization and governance workbooks, the Azure Optimization Engine, a PowerShell module and open data such as pricing units.",
+          "kind": "prior"
+        }
+      ]
+    },
+    {
+      "id": "focus",
+      "title": "What is FOCUS? (FinOps Open Cost and Usage Specification, Microsoft's guide)",
+      "url": "https://learn.microsoft.com/cloud-computing/finops/focus/what-is-focus",
+      "pin": "Learn git_commit_id a74e7c72db9bbdc44d6f3307194cad5e78348cc9, updated_at 2026-02-11",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "notes": "Prior art for the cost data format. The method doesn't define a cost data format of its own; where it reads cost by meter, it names FOCUS columns.",
+      "claims": [
+        {
+          "id": "common-billing-format",
+          "says": "FOCUS is a provider-neutral format for cost and usage data, and Cost Management exports it.",
+          "kind": "prior"
+        },
+        {
+          "id": "list-contracted-effective-billed",
+          "says": "Each FOCUS row carries list, contracted, effective and billed cost, so savings from negotiated and commitment discounts can be quantified.",
+          "kind": "prior"
+        }
+      ]
+    },
+    {
       "id": "perfmon-troubleshooting",
       "title": "Troubleshoot issues using Performance Monitor (Windows Server)",
       "url": "https://learn.microsoft.com/troubleshoot/windows-server/support-tools/troubleshoot-issues-performance-monitor",
@@ -218,6 +575,34 @@
         {
           "id": "patterns-over-days",
           "says": "Log counters over one or two working days, then look for patterns by day and hour rather than reacting to one reading.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "reservations",
+      "title": "What are Azure Reservations? (Microsoft Cost Management)",
+      "url": "https://learn.microsoft.com/azure/cost-management-billing/reservations/save-compute-costs-reservations",
+      "pin": "Learn git_commit_id a96eb393ee50b26b38845d3baaa553f217cf9c17, updated_at 2026-08-18",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "hourly-billing-discount",
+          "says": "A reservation is a one- or three-year billing discount applied hourly to matching usage; it doesn't change the resources, so buy for consistent base usage.",
+          "kind": "guidance"
+        },
+        {
+          "id": "vm-covers-compute-only",
+          "says": "A VM reservation covers compute only, not Windows software, networking or storage; Azure Files has its own capacity reservations.",
+          "kind": "guidance"
+        },
+        {
+          "id": "exchange-and-refund",
+          "says": "Reservations can be exchanged for the same type and refunded within a yearly limit.",
           "kind": "guidance"
         }
       ]
@@ -248,6 +633,34 @@
           "id": "policy-table",
           "says": "Policy assignments are in the PolicyResources table.",
           "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "retail-prices-api",
+      "title": "Azure Retail Prices REST API overview",
+      "url": "https://learn.microsoft.com/rest/api/cost-management/retail-prices/azure-retail-prices",
+      "pin": "Learn git_commit_id de6b152c15ece5c9525b925fce0240f31547c02a, updated_at 2026-01-06",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "unauthenticated-retail",
+          "says": "The API returns retail prices for every Azure service without authentication; USD prices are Microsoft's retail prices and other currencies are for reference.",
+          "kind": "guidance"
+        },
+        {
+          "id": "savings-plan-prices-preview",
+          "says": "Savings plan prices come only from the 2023-01-01-preview API version.",
+          "kind": "guidance"
+        },
+        {
+          "id": "filters-case-sensitive",
+          "says": "Filter values are case-sensitive.",
+          "kind": "guidance"
         }
       ]
     },
@@ -318,6 +731,54 @@
         {
           "id": "H04.03",
           "says": "Review and confirm the configured maximum FSLogix profile size (Cost, high)."
+        },
+        {
+          "id": "C01.01",
+          "says": "Determine the host pool type to use (Cost, high)."
+        },
+        {
+          "id": "E01.04",
+          "says": "Assess the requirements for host pool autoscaling (Reliability, medium)."
+        },
+        {
+          "id": "E01.06",
+          "says": "Evaluate an ad-hoc mechanism to shut down personal session hosts (Cost, low)."
+        },
+        {
+          "id": "E01.07",
+          "says": "Review and adopt the suggested tags for Azure Virtual Desktop (Cost, low)."
+        },
+        {
+          "id": "H04.07",
+          "says": "Review the use of FSLogix redirections (Cost, medium)."
+        }
+      ]
+    },
+    {
+      "id": "savings-plans",
+      "title": "What are savings plans? (Microsoft Cost Management)",
+      "url": "https://learn.microsoft.com/azure/cost-management-billing/savings-plan/savings-plan-compute-overview",
+      "pin": "Learn git_commit_id c6ef6b2600dc9eaa8c1e7e82b0c48d2606e9f8f8, updated_at 2026-09-14",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "hourly-commitment",
+          "says": "A savings plan commits a fixed hourly spend for one or three years; unused commitment in an hour expires.",
+          "kind": "guidance"
+        },
+        {
+          "id": "compute-not-software",
+          "says": "The compute savings plan covers VM infrastructure across sizes and regions, not software, networking or storage.",
+          "kind": "guidance"
+        },
+        {
+          "id": "no-cancellation",
+          "says": "Savings plans can't be canceled or refunded.",
+          "kind": "guidance"
         }
       ]
     },
@@ -355,6 +816,47 @@
       ]
     },
     {
+      "id": "start-vm-on-connect-faq",
+      "title": "Azure Virtual Desktop Start VM on Connect FAQ",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect-faq",
+      "pin": "Learn git_commit_id a2c9d3b52ffe73e75a81d5f757380994c65169e1, updated_at 2026-05-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "no-automatic-deallocation",
+          "says": "Start VM on Connect doesn't deallocate hosts; signing users out or shutting down from the Start menu doesn't either, so deallocation needs autoscale or automation.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "start-vm-on-connect",
+      "title": "Configure Start VM on Connect for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect",
+      "pin": "Learn git_commit_id 9482be6e3db06c8a844a8d6bfbf0cc312a7ba4c3, updated_at 2026-08-31",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "power-on-when-needed",
+          "says": "Start VM on Connect reduces cost by powering session hosts on only when a user connects; in pooled host pools it starts one host when none is on and more only when the first reaches its session limit.",
+          "kind": "guidance"
+        },
+        {
+          "id": "slower-first-connection",
+          "says": "Connecting to a deallocated host takes longer while it powers on.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "vdi-optimization-guide",
       "title": "Optimizing Windows configuration for VDI desktops",
       "url": "https://learn.microsoft.com/windows-server/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration",
@@ -373,6 +875,65 @@
         {
           "id": "sysprep-store-apps",
           "says": "Removing or updating built-in Store apps can make sysprep fail; the guide links the support article.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-cost-optimization-checklist",
+      "title": "Design review checklist for Cost Optimization (Azure Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/cost-optimization/checklist",
+      "pin": "Learn git_commit_id 28a78d22523542beeafc7de5eaa11fad791559b6, updated_at 2025-10-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Fourteen recommendations, CO:01 to CO:14. Claim IDs are the checklist's codes, used to place a cost finding in the pillar as RE:04 does for reliability. Only the codes the FinOps method uses are listed. The page footer showed 2023-11-15 while the page metadata said 2025-10-30; the pin uses the metadata.",
+      "claims": [
+        {
+          "id": "CO:02",
+          "says": "Keep a cost model of initial cost, run rate and ongoing cost, and a budget that covers it with a buffer.",
+          "kind": "guidance"
+        },
+        {
+          "id": "CO:03",
+          "says": "Collect daily cost data, review spend against budget and cost model, and alert at thresholds and on anomalies.",
+          "kind": "guidance"
+        },
+        {
+          "id": "CO:04",
+          "says": "Set spending guardrails, such as release gates, policies, resource limits and access controls, and prefer platform automation.",
+          "kind": "guidance"
+        },
+        {
+          "id": "CO:05",
+          "says": "Get the best rates, reviewing region, tier, consumption against commitment pricing and license portability.",
+          "kind": "guidance"
+        },
+        {
+          "id": "CO:06",
+          "says": "Understand the billing meters and align usage to their increments, validating major cost drivers with a proof of concept.",
+          "kind": "guidance"
+        },
+        {
+          "id": "CO:07",
+          "says": "Regularly remove or optimize unneeded and underused components.",
+          "kind": "guidance"
+        },
+        {
+          "id": "CO:08",
+          "says": "Optimize each environment's cost, including its operating hours; nonproduction should emulate production with deliberate tradeoffs.",
+          "kind": "guidance"
+        },
+        {
+          "id": "CO:12",
+          "says": "Optimize scaling costs against the cost model and the limits of each scale unit.",
+          "kind": "guidance"
+        },
+        {
+          "id": "CO:14",
+          "says": "Consolidate resources and increase density where the workload allows.",
           "kind": "guidance"
         }
       ]
@@ -499,12 +1060,66 @@
   ],
   "observations": [
     {
+      "id": "budget-alert-needs-a-lock",
+      "claim": "ref:cost-management-budgets#alerts-dont-stop",
+      "verdict": "extends",
+      "observed": "Budgets only alert, so the landing zone wires its budget to an action group that runs a Lock runbook, and avd-swarm's spend guard enforces caps before a lab run opens instead of relying on the budget. For AVD a plain deallocate isn't enough either, because Start VM on Connect and the scaling plan start the hosts again at the next sign-in or ramp-up; Lock drains, sets the scaling plan exclusion tag and turns Start VM on Connect off. The budget-to-runbook path hasn't run against a real deployment yet.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0011-auto-shutdown.md",
+        "https://github.com/nickprignano/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "estimate-before-deploy",
+      "claim": "ref:waf-cost-optimization-checklist#CO:02",
+      "verdict": "agrees",
+      "observed": "The landing zone prices the compiled plan from retail prices before anything is deployed, with run hours from the power settings and an upper bound where the schedule rather than use decides (168 hours a week without a scheduled stop). Lab runs in the family don't start without that written estimate, a cap and teardown evidence, and avd-swarm's spend guard refuses a run whose estimate has an unpriced line or passes a cap. Retail prices are list prices, so the estimate is an upper bound for anyone with negotiated rates or commitments.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md",
+        "https://github.com/nickprignano/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
       "id": "region-latency-from-the-user",
       "claim": "ref:avd-prerequisites#rtt-under-150",
       "verdict": "extends",
       "observed": "Latency measured from Cloud Shell says nothing about users, because Cloud Shell runs in an Azure datacenter. Measure round-trip time from the user's device, against endpoints verified to be regional.",
       "evidence": [
         "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "retail-price-lookalike-meters",
+      "claim": "ref:retail-prices-api#unauthenticated-retail",
+      "verdict": "extends",
+      "observed": "A real preflight run priced session hosts and OS disks as unmatched because the API returned lookalike meters with the same SKU and meter name, a CloudServices product at the Windows rate beside Virtual Machines at the base rate, and a Premium Page Blob meter beside Premium SSD Managed Disks. Private Link and NAT Gateway are listed only under the Global region. A price is matched on product, SKU and meter, and a line that matches none or several is reported with what it saw rather than guessed.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/lessons/0025-retail-price-lookalike-meters.md",
+        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "run-cost-settles-late",
+      "claim": "ref:cost-management-data#data-latency",
+      "verdict": "not-yet-tested",
+      "observed": "The run recorder spec keeps each run's expected and actual cost as contract C17 (avd-run-cost/v1), appends a reading until it is unchanged for 72 hours, and reports pending rather than a guess until then. For scale, an earlier one-host sandbox demo cost 0.97 USD for about eight hours. How long the actual took to appear in a pay-as-you-go sandbox hasn't been measured yet (the spec's open question U5).",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/specs/run-recorder-spec.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "scaling-and-start-on-connect-by-default",
+      "claim": "ref:avd-autoscale#scales-to-save-cost",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone deploys a power management scaling plan (depth-first ramp-down that stops hosts at zero sessions, without forcing sign-out) and Start VM on Connect on by default, and every resource group and resource carries workload and environment tags. No run has yet compared a month of running hours with the schedule, so the saving is Microsoft's claim, not our evidence. The landing zone doesn't set the cm-resource-parent tag.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/modules/controlPlane.bicep",
+        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/main.bicep"
       ],
       "date": "2026-10-20"
     },
@@ -571,8 +1186,16 @@
       "title": "where each fact comes from"
     },
     {
+      "id": "commitment-floor",
+      "title": "sizing a compute commitment for an autoscaled host pool"
+    },
+    {
       "id": "decision-readiness",
       "title": "decision readiness"
+    },
+    {
+      "id": "finops-scope",
+      "title": "what a FinOps assessment of an AVD estate covers, and which repo does what"
     },
     {
       "id": "gold-standards",

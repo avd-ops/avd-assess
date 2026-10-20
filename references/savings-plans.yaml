@@ -1,0 +1,17 @@
+id: savings-plans
+title: What are savings plans? (Microsoft Cost Management)
+url: https://learn.microsoft.com/azure/cost-management-billing/savings-plan/savings-plan-compute-overview
+pin: "Learn git_commit_id c6ef6b2600dc9eaa8c1e7e82b0c48d2606e9f8f8, updated_at 2026-09-14"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: hourly-commitment
+    says: A savings plan commits a fixed hourly spend for one or three years; unused commitment in an hour expires.
+    kind: guidance
+  - id: compute-not-software
+    says: The compute savings plan covers VM infrastructure across sizes and regions, not software, networking or storage.
+    kind: guidance
+  - id: no-cancellation
+    says: Savings plans can't be canceled or refunded.
+    kind: guidance

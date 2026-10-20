@@ -1,0 +1,13 @@
+# Gap: sizing a compute commitment for an autoscaled host pool
+
+**Searched (2026-10-20):** what reservations and savings plans cover and how they apply (`ref:reservations#hourly-billing-discount`, `ref:savings-plans#hourly-commitment`), how to choose between them (`ref:commitment-choice#right-size-first`), Microsoft's AVD cost page, which names autoscale, savings plans and reservations side by side (`ref:avd-costs#vm-instances-cost-most`), the autoscale scenarios (`ref:avd-autoscale#capacity-threshold`), and Advisor's commitment advice (`ref:advisor-cost#vm-reservations`). **Not found:** a method that says how much compute to commit for session hosts that a scaling plan turns off for part of each day. Each source treats the two levers separately: autoscale cuts hours, commitments cut the rate on hours that run, and both pay off only on hours that actually run.
+
+**What we write.** A research hypothesis, to be tested by observations like any other claim:
+
+1. **Commit only the floor.** A commitment applies hour by hour and an unused hour is lost (`ref:reservations#hourly-billing-discount`, `ref:savings-plans#hourly-commitment`). The floor is the number of hosts of one size and region that ran in every hour of the look-back: off-peak minimum hosts, personal hosts that never deallocate, and hosts that never scaled. Hours above the floor stay pay-as-you-go.
+2. **Measure the floor, don't read it from the schedule.** Use at least 30 days of running hours by size and region from billing data. A scaling plan's minimum percentage is the intended floor; Start VM on Connect, exclusion tags and hosts left on for updates raise the real one (`ref:avd-autoscale#exclusion-tags`).
+3. **Right-size and schedule before committing.** A commitment bought before the scaling plan and the size are settled locks in waste (`ref:commitment-choice#right-size-first`). In the method's order, the cost checks for scaling, Start VM on Connect and size come first.
+4. **Reservation or savings plan by how stable the size is.** A host pool whose size or region is still changing (a move from D-series to E-series, a second region) fits a savings plan; a settled one fits a reservation (`ref:commitment-choice#reservation-for-stable`, `ref:commitment-choice#savings-plan-for-dynamic`). Neither covers storage or software, so profile storage is judged on its own (`ref:reservations#vm-covers-compute-only`).
+5. **Advisor's advice is per subscription,** and a run may not see commitments bought elsewhere, so the operator's intake answer comes first and the outcome is `unknown` without it (`gap:finops-scope`).
+
+If a floor sized this way leaves commitments underused in our runs, that becomes a `disagrees` observation on this gap.

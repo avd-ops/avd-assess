@@ -1,0 +1,17 @@
+id: commitment-choice
+title: Decide between a savings plan and a reservation (Microsoft Cost Management)
+url: https://learn.microsoft.com/azure/cost-management-billing/savings-plan/decide-between-savings-plan-reservation
+pin: "Learn git_commit_id af8cc48c58d5deb8862962de76985fcc1e34ff0f, updated_at 2026-03-26"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: reservation-for-stable
+    says: Choose reservations for continuous, stable workloads with no expected change of instance family or region.
+    kind: guidance
+  - id: savings-plan-for-dynamic
+    says: Choose a savings plan when workloads change size, family, service or region.
+    kind: guidance
+  - id: right-size-first
+    says: Right-size first, fix existing commitments next, and only then buy new ones; discounts reduce rates, not waste.
+    kind: guidance
