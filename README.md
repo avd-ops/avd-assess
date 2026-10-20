@@ -1,5 +1,7 @@
 # avd-assess
 
+Part of [avd-ops](https://avd-ops.dev/), the open toolkit for Azure Virtual Desktop.
+
 An open, curated methodology for assessing Azure Virtual Desktop estates: what to collect, how to judge it, what good looks like, and how to score it. It is a research index. It links to what Microsoft and the community already publish, pinned so a reader can see exactly what each source said on the day we read it. It adds what our own runs observed about those sources, and it writes new method only where nothing exists.
 
 Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/nickprignano/avd-current-state) is what is there now, and avd-assess is what it should be, and why.
