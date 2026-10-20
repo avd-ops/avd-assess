@@ -1,0 +1,14 @@
+id: avd-connection-quality
+title: Troubleshoot connection quality in Azure Virtual Desktop
+url: https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-connection-quality
+pin: https://github.com/MicrosoftDocs/SupportArticles-docs/blob/2cfae2b375860366506f5497eaca74503382dccf/support/azure/virtual-desktop/troubleshoot-connection-quality.md
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [benchmarks]
+claims:
+  - id: rtt-bands
+    says: Up to 150 ms shouldn't affect work without rendering or video, 150 to 200 ms is fine for text, over 200 ms might affect user experience.
+    kind: published
+  - id: review-region-latency
+    says: Review Azure's network latency statistics every two to three months in case the best region changes.
+    kind: guidance

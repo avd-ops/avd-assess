@@ -1,0 +1,14 @@
+id: waf-review-assessment
+title: Complete an Azure Well-Architected Review assessment
+url: https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations
+pin: "Learn git_commit_id 40bc276f4cbdfeeb32c8325a07b7447afa9be1e3, updated_at 2026-06-04"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, scoring]
+claims:
+  - id: questionnaire
+    says: The Well-Architected Review is a self-assessment of about 60 questions across the pillars, with an Azure Virtual Desktop workload variant listed under specialized reviews.
+  - id: advisor-one-scope
+    says: It can add Azure Advisor recommendations for one subscription or resource group only.
+  - id: milestones
+    says: Brownfield workloads should repeat it on a cadence (every four months is the example), tracked as milestones.

@@ -1,0 +1,11 @@
+id: ari
+title: Azure Resource Inventory (ARI)
+url: https://github.com/microsoft/ARI
+pin: https://github.com/microsoft/ARI/tree/4cc602c36f64ad26eb2bad920a9cae04ac0dd43e
+read: 2026-10-20
+license: MIT in the repo; the PowerShell Gallery listing says otherwise, so check before reuse
+areas: [collection]
+claims:
+  - id: excel-inventory
+    says: Inventories a whole Azure environment into an Excel workbook and a diagram; it has no JSON output.
+    kind: guidance

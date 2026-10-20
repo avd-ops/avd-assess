@@ -1,0 +1,8 @@
+id: wdot-appx-removal-left-off
+claim: ref:vdi-optimization-guide#sysprep-store-apps
+verdict: agrees
+observed: The landing zone's image build keeps WDOT's Appx package removal off for this reason; no sysprep failure has been seen with it off. Not yet tested with it on.
+evidence:
+  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md
+  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/specs/image-pipeline-spec.md
+date: 2026-10-20

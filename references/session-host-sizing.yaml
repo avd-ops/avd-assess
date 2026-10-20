@@ -1,0 +1,20 @@
+id: session-host-sizing
+title: Session host virtual machine sizing guidelines
+url: https://learn.microsoft.com/windows-server/remote/remote-desktop-services/session-host-virtual-machine-sizing-guidelines
+pin: https://github.com/MicrosoftDocs/windowsserverdocs/blob/ad5a77c71f56256d9c306ddd93cc9e076c1a76c5/WindowsServerDocs/remote/remote-desktop-services/session-host-virtual-machine-sizing-guidelines.md
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [benchmarks]
+claims:
+  - id: estimates-only
+    says: The page's numbers are generic guidelines for initial performance estimates only.
+    kind: guidance
+  - id: multisession-users-per-vcpu
+    says: "Multi-session maximum users per vCPU: light 6, medium 4, heavy 2, power 1."
+    kind: prior
+  - id: multisession-vcpu-range
+    says: Keep multi-session VMs between 6 and 24 vCPUs; four cores is the lowest for a stable multi-session VM.
+    kind: published
+  - id: profile-storage-minimum
+    says: Plan at least 30 GB of profile storage per user.
+    kind: prior

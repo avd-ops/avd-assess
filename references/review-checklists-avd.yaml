@@ -1,0 +1,21 @@
+id: review-checklists-avd
+title: Azure review checklists, Azure Virtual Desktop
+url: https://github.com/Azure/review-checklists
+pin: https://github.com/Azure/review-checklists/blob/f131b93418892102b00c247fd9cf685e3d356522/checklists/avd_checklist.en.json
+read: 2026-10-20
+license: MIT
+areas: [assessment]
+notes: 130 items with short ID, category, WAF pillar, severity and Learn link. The AVD items have no Resource Graph query, so mapping evidence to them is ours (gap:checklist-mapping). Cite items by short ID, never by GUID.
+claims:
+  - id: E01.05
+    says: Consider Start VM on Connect for personal host pools (Cost, low).
+  - id: E02.02
+    says: Send diagnostic settings for workspaces, host pools, application groups and host VMs to a Log Analytics workspace (Reliability, medium).
+  - id: F01.10
+    says: Evaluate a private endpoint for the Azure Files share (Security, medium).
+  - id: F01.11
+    says: Evaluate RDP Shortpath for clients on managed internal networks (Performance, medium).
+  - id: H03.05
+    says: Keep the FSLogix profile storage in the same Azure region as the session hosts (Performance, high).
+  - id: H04.03
+    says: Review and confirm the configured maximum FSLogix profile size (Cost, high).

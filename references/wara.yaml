@@ -1,0 +1,15 @@
+id: wara
+title: Well-Architected Reliability Assessment (WARA)
+url: https://github.com/Azure/Well-Architected-Reliability-Assessment
+pin: https://github.com/Azure/Well-Architected-Reliability-Assessment/tree/86832273f857b7298b625b26d18e2e0dbb06714c
+read: 2026-10-20
+license: MIT
+areas: [collection, assessment]
+notes: The owner chose WARA as the rule engine for live reliability checks (2026-10-20). Details as checked on avd-second-brain's landing-zone KB page the same day.
+claims:
+  - id: collector-avd-json
+    says: Start-WARACollector, with -AVD for AVD resource types, runs APRL's queries and writes JSON.
+  - id: reliability-only
+    says: WARA covers the Reliability pillar only.
+  - id: report-needs-windows
+    says: The analyzer writes an Excel action plan; the reporter writes PowerPoint and needs Windows with PowerPoint.

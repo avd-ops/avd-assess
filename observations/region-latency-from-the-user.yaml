@@ -1,0 +1,7 @@
+id: region-latency-from-the-user
+claim: ref:avd-prerequisites#rtt-under-150
+verdict: extends
+observed: Latency measured from Cloud Shell says nothing about users, because Cloud Shell runs in an Azure datacenter. Measure round-trip time from the user's device, against endpoints verified to be regional.
+evidence:
+  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md
+date: 2026-10-20

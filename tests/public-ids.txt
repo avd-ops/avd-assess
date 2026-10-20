@@ -1,0 +1,7 @@
+# Public Microsoft IDs the leak check allows. One per line; a comment says where each comes from.
+# APRL v2 recommendation IDs (Azure/Azure-Proactive-Resiliency-Library-v2, azure-resources/DesktopVirtualization)
+499769ae-67c9-492e-9ca5-cfd4cece5209
+013ac34e-7c4b-425f-9e0c-216f0cc06181
+979ff8be-5f3a-4d8e-9aa3-407ecdd6d6f7
+939cb85c-102a-4e0a-ab82-5c92116d3778
+38721758-2cc2-4d6b-b7b7-8b47dadbf7df

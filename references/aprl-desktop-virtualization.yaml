@@ -1,0 +1,19 @@
+id: aprl-desktop-virtualization
+title: Azure Proactive Resiliency Library v2, Microsoft.DesktopVirtualization
+url: https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2
+pin: https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2/tree/153914b153d9a6c67c4591055f3ebae433a0d175/azure-resources/DesktopVirtualization
+read: 2026-10-20
+license: MIT
+areas: [collection, assessment]
+notes: Reliability only. Each recommendation has a Resource Graph query under kql/ named by its ID. WARA runs these (ref:wara). Claim IDs are APRL's own public IDs.
+claims:
+  - id: 499769ae-67c9-492e-9ca5-cfd4cece5209
+    says: Create scaling plans per region (scaling plans, medium).
+  - id: 013ac34e-7c4b-425f-9e0c-216f0cc06181
+    says: Create a validation host pool (host pools, medium).
+  - id: 979ff8be-5f3a-4d8e-9aa3-407ecdd6d6f7
+    says: Configure scheduled agent updates for host pools (host pools, medium).
+  - id: 939cb85c-102a-4e0a-ab82-5c92116d3778
+    says: Use a unique OU when deploying host pools with domain-joined session hosts (host pools, medium).
+  - id: 38721758-2cc2-4d6b-b7b7-8b47dadbf7df
+    says: Protect stateful session hosts with Azure Site Recovery (host pools, medium).

@@ -1,0 +1,17 @@
+id: avd-insights-glossary
+title: Azure Virtual Desktop Insights glossary
+url: https://learn.microsoft.com/azure/virtual-desktop/insights-glossary
+pin: "Learn git_commit_id 6d2a9179f453f9b31c9795e5c9e84e5c13b1099a, updated_at 2026-05-25"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [benchmarks, collection]
+claims:
+  - id: input-delay-bands
+    says: "Input delay bands: good under 150 ms, acceptable 150 to 500 ms, poor 500 ms to 2 s, bad over 2 s."
+    kind: published
+  - id: time-to-connect-stages
+    says: Time to connect splits into user route, stack connected, logon (profiles, Group Policy, shell start, FSLogix) and shell start to shell ready; no target time is given.
+    kind: guidance
+  - id: perf-counters
+    says: Insights lists the recommended performance counters and their intervals for session hosts.
+    kind: guidance
