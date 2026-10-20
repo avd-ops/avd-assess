@@ -1,12 +1,21 @@
 id: wdot
 title: Windows Desktop Optimization Tool (WDOT)
 url: https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool
-pin: https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool/tree/ff2574c016c6202dbb0303a3728016ad3dbf391c
+pin: https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool/tree/f20d6b7748d01e6e6c55518e8a9496af2749ca41
 read: 2026-10-20
 license: MIT
-areas: [assessment]
-notes: WDOT supersedes VDOT, which has no license. avd-landing-zone's image build runs WDOT at a pinned commit with a reviewed profile (scripts/image/wdot/).
+areas: [collection, assessment]
+notes: The family's image optimization reference. Pinned to release v1.1, the commit avd-landing-zone's image build runs with a reviewed profile (scripts/image/wdot/). main (ff2574c, 2026-05-20) adds only an event log change since. WDOT supersedes VDOT, which has no license.
 claims:
   - id: categories
     says: Optimizations come in categories (services, scheduled tasks, autologgers, default user settings, local policy, network, disk cleanup, Appx packages and more), each item set to apply or skip in a JSON profile.
+    kind: guidance
+  - id: optimization-state
+    says: Only items whose OptimizationState is Apply run; the templates are a starting profile to review, not a verdict on every estate.
+    kind: guidance
+  - id: test-first
+    says: The optimizations change system behavior and should be tested outside production first.
+    kind: guidance
+  - id: license-signals
+    says: The repository's LICENSE file is MIT, while its README and EULA describe sample code terms (illustration only, as is), and a non-interactive run must accept the EULA.
     kind: guidance

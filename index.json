@@ -465,17 +465,33 @@
       "id": "wdot",
       "title": "Windows Desktop Optimization Tool (WDOT)",
       "url": "https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool",
-      "pin": "https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool/tree/ff2574c016c6202dbb0303a3728016ad3dbf391c",
+      "pin": "https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool/tree/f20d6b7748d01e6e6c55518e8a9496af2749ca41",
       "read": "2026-10-20",
       "license": "MIT",
       "areas": [
+        "collection",
         "assessment"
       ],
-      "notes": "WDOT supersedes VDOT, which has no license. avd-landing-zone's image build runs WDOT at a pinned commit with a reviewed profile (scripts/image/wdot/).",
+      "notes": "The family's image optimization reference. Pinned to release v1.1, the commit avd-landing-zone's image build runs with a reviewed profile (scripts/image/wdot/). main (ff2574c, 2026-05-20) adds only an event log change since. WDOT supersedes VDOT, which has no license.",
       "claims": [
         {
           "id": "categories",
           "says": "Optimizations come in categories (services, scheduled tasks, autologgers, default user settings, local policy, network, disk cleanup, Appx packages and more), each item set to apply or skip in a JSON profile.",
+          "kind": "guidance"
+        },
+        {
+          "id": "optimization-state",
+          "says": "Only items whose OptimizationState is Apply run; the templates are a starting profile to review, not a verdict on every estate.",
+          "kind": "guidance"
+        },
+        {
+          "id": "test-first",
+          "says": "The optimizations change system behavior and should be tested outside production first.",
+          "kind": "guidance"
+        },
+        {
+          "id": "license-signals",
+          "says": "The repository's LICENSE file is MIT, while its README and EULA describe sample code terms (illustration only, as is), and a non-interactive run must accept the EULA.",
           "kind": "guidance"
         }
       ]
@@ -530,6 +546,17 @@
       "observed": "WDOT's DiskCleanup category deletes every log, trace and event log file on the system drive, including an image build's own evidence before the image test reads it. The landing zone keeps that category off and cleans narrowly instead.",
       "evidence": [
         "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "wdot-pin-on-image-version",
+      "claim": "ref:wdot#optimization-state",
+      "verdict": "extends",
+      "observed": "What runs inside the guest isn't visible from the control plane, but the landing zone's image build tags each gallery image version with the WDOT release, commit and profile hash it ran, so a Reader can see which pin and profile an image claims. Images built any other way carry no such record.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/images/build.bicep",
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/Test-GoldenImage.ps1"
       ],
       "date": "2026-10-20"
     }

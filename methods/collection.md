@@ -15,4 +15,4 @@ What to collect about an AVD estate, from where, and how private each fact is. a
 ## Not yet known
 
 - Which checklist items need facts the collector doesn't read yet: the profile storage region and diagnostic settings per AVD object (`gap:checklist-mapping`).
-- Image optimization state inside the guest isn't visible from the control plane (`ref:wdot#categories`).
+- Image optimization state inside the guest isn't visible from the control plane (`ref:wdot#categories`). What is visible is the WDOT pin and profile an image version records, when its build tagged it (`obs:wdot-pin-on-image-version`); an untagged image's state stays unknown, not failed.
