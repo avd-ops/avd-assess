@@ -18,3 +18,28 @@ claims:
   - id: profile-storage-minimum
     says: Plan at least 30 GB of profile storage per user.
     kind: prior
+  # Claims read for the deployment dimension register (dimensions.yaml, 2026-10-20); kept after the others so the list grows without reordering.
+  - id: capacity-approaches
+    says: Size capacity by a pilot (load one host while watching CPU, paging, disk and network) or by simulation tools that ramp scripted users until performance degrades.
+    kind: guidance
+  - id: logon-storm-headroom
+    says: Plan for concurrent sign-ins at the start of a shift, which are CPU-heavy, and leave headroom beyond steady state.
+    kind: guidance
+  - id: memory-limits-density
+    says: When memory limits density, adding memory at small sizes helps most; 8 to 16 GB can more than double the users a host supports.
+    kind: guidance
+  - id: single-session-minimums
+    says: "Single-session minimums: light 2 vCPU and 8 GB, medium 4 vCPU and 16 GB, heavy 8 vCPU and 32 GB, each with 32 GB OS storage."
+    kind: prior
+  - id: multisession-minimums
+    says: "Multi-session minimums: 8 vCPU, 16 GB RAM and 32 GB OS storage for light to heavy; 6 vCPU, 56 GB and 340 GB for power."
+    kind: prior
+  - id: gpu-for-graphics
+    says: Use GPU session hosts for graphics-heavy apps or high resolutions; CPU-only hosts encode in software and can show artifacts above 3840 x 2160 total resolution.
+    kind: guidance
+  - id: ssd-storage
+    says: Use high-performance storage such as SSD or NVMe for session hosts.
+    kind: guidance
+  - id: more-smaller-vms
+    says: Many smaller VMs beat a few large ones; they're easier to drain, update and shut down.
+    kind: guidance
