@@ -20,7 +20,7 @@ Every check is a `warn`, not a `gap`. Each item says "consider" or "evaluate", a
 | Item | What it needs |
 |---|---|
 | `ref:review-checklists-avd#H03.05` | The profile storage account's region beside its host pool's. C11 has both regions, but nothing links a share to a pool, and the rule language has no join |
-| `ref:review-checklists-avd#E02.02`, `ref:review-checklists-avd#E02.01` | Diagnostic settings per AVD object (a new C11 fact) |
+| `ref:review-checklists-avd#E02.02`, `ref:review-checklists-avd#E02.01` | Diagnostic settings per AVD object, and the agent and Insights data collection rule per host (proposed facts in `gap:insights-facts`; the standard is `ref:avd-insights#hostpool-diagnostics`, `ref:avd-insights#workspace-diagnostics`, `ref:avd-insights#host-data-ama-dcr`) |
 | `ref:review-checklists-avd#E01.10`, `ref:aprl-desktop-virtualization#979ff8be-5f3a-4d8e-9aa3-407ecdd6d6f7` | The host pool's `agentUpdate` setting (`ref:avd-rest-api#hostpool-properties`; a new C11 fact) |
 | `ref:review-checklists-avd#E01.11`, `ref:aprl-desktop-virtualization#013ac34e-7c4b-425f-9e0c-216f0cc06181` | C11 has `validationEnvironment` per pool, but the item asks for at least one per estate, and the rule language has no "any" |
 | `ref:aprl-desktop-virtualization#499769ae-67c9-492e-9ca5-cfd4cece5209` | Scaling plans and the pools they reference (`ref:avd-rest-api#scalingplan-hostpool-references`; a new C11 fact) |
