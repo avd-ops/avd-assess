@@ -15,3 +15,9 @@ claims:
   - id: utilization-for-scaling
     says: Use session history and idle host counts over time to design a scaling plan, then repeat to validate it.
     kind: guidance
+  - id: high-utilization-resize
+    says: When a session host has extended periods of high resource utilization, consider a larger VM size.
+    kind: guidance
+  - id: input-delay-then-resources
+    says: When input delay is higher than expected, look at CPU, memory and disk activity in the same periods to find the cause.
+    kind: guidance

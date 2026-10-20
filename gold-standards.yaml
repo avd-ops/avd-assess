@@ -51,3 +51,18 @@ entries:
     standing: baseline
     since: 2026-10-20
     why: No published number found.
+  - metric: cpu-headroom-after-resize
+    claim: ref:advisor-vm-rightsize#user-facing-targets
+    standing: candidate
+    since: 2026-10-20
+    why: Advisor's published target for a smaller size on a user-facing workload (P95 CPU 40% or less); used as the floor of the good band in the baseline profile. Not AVD-specific and not yet checked against a multi-session host.
+  - metric: memory-headroom-after-resize
+    claim: ref:advisor-vm-rightsize#user-facing-targets
+    standing: candidate
+    since: 2026-10-20
+    why: Advisor's published target for a smaller size on a user-facing workload (P99 memory 60% or less). It bounds memory utilization, not memory per user, which stays a gap (gap:baseline-profile).
+  - metric: input-delay-user-expectation
+    claim: ref:session-host-sizing#input-delay-expectation
+    standing: candidate
+    since: 2026-10-20
+    why: The sizing guide's outer bound (users expect under 200 ms); the Insights bands stay the reference for grading a session.

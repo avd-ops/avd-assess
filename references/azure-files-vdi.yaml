@@ -1,0 +1,17 @@
+id: azure-files-vdi
+title: Azure Files guidance for virtual desktop workloads
+url: https://learn.microsoft.com/azure/storage/files/virtual-desktop-workloads
+pin: "Learn git_commit_id 21b4b7181ee0e882340a24ca59e1805107a58d64, updated_at 2026-10-19"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [benchmarks]
+claims:
+  - id: handle-limits
+    says: Azure Files allows 2,000 concurrent handles per file and directory and 10,000 on a share's root; on SSD shares these are soft limits.
+    kind: published
+  - id: users-per-share
+    says: The page recommends file share type and count by concurrent FSLogix users (HDD under 2,000; one or two SSD shares with metadata caching to 5,000; more shares beyond).
+    kind: published
+  - id: storm-sizing
+    says: Size for sign-in and sign-out storms separately from steady state; the worked example uses 10 IOPS per user steady and calls its values sample assumptions.
+    kind: prior

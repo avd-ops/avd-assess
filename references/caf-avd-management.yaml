@@ -1,0 +1,21 @@
+id: caf-avd-management
+title: Cloud Adoption Framework, Azure Virtual Desktop management baseline
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-management-and-monitoring
+pin: https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/5c44a2accff2018eba5dd738b648eef4c9db179b/docs/scenarios/azure-virtual-desktop/eslz-management-and-monitoring.md
+read: 2026-10-20
+license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
+areas: [assessment]
+notes: Microsoft is removing the CAF AVD scenario on 2026-10-30 (see caf-avd-assess), so the pin is the public GitHub copy.
+claims:
+  - id: insights-config-workbook
+    says: Configure diagnostics, events and counters through Insights, and use its configuration workbook to stay current when new settings are required.
+    kind: guidance
+  - id: regional-workspace
+    says: Use one Log Analytics workspace for the AVD platform and hosts, in the region of the session hosts.
+    kind: guidance
+  - id: alerting-model
+    says: Set up an alerting model for the collected logs and metrics.
+    kind: guidance
+  - id: long-retention-export
+    says: Send diagnostics to a storage account when retention must go beyond two years.
+    kind: guidance
