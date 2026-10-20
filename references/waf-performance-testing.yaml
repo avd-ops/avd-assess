@@ -1,0 +1,23 @@
+id: waf-performance-testing
+title: Architecture strategies for performance testing (Azure Well-Architected Framework)
+url: https://learn.microsoft.com/azure/well-architected/performance-efficiency/performance-test
+pin: "Learn git_commit_id c96d7decedaf65e86add6d4c063c6b380c1535ef, updated_at 2026-08-04"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+claims:
+  - id: baseline-defined
+    says: A performance baseline is the set of metrics that shows the workload's behavior under normal conditions, validated by testing.
+    kind: guidance
+  - id: regression-and-drift
+    says: A regression is a decline against the baseline caused by a change; drift is a gradual decline that goes unnoticed without regular tests against the baseline.
+    kind: guidance
+  - id: hypothesis-baseline-variant
+    says: State a prediction with measurable success criteria, run the same test against the baseline and the variant, and compare the results.
+    kind: guidance
+  - id: record-baselines
+    says: Record metrics from the first tests as baselines, and use them to tell whether an optimization helped.
+    kind: guidance
+  - id: production-baselines
+    says: Testing in production shows what only real users and data reveal and gives accurate baselines for later optimization.
+    kind: guidance

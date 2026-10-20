@@ -2,6 +2,51 @@
   "schema": "avd-assess-index/v1",
   "references": [
     {
+      "id": "advisor-vm-rightsize",
+      "title": "Optimize VM or scale set spend by resizing or shutting down underutilized instances (Azure Advisor)",
+      "url": "https://learn.microsoft.com/azure/advisor/advisor-cost-recommendations",
+      "pin": "Learn git_commit_id 9b9c50ebb26271d5b86b92d79c2878de15bc6edf, updated_at 2026-04-01",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks",
+        "assessment"
+      ],
+      "notes": "The criteria behind Advisor's right-size and shutdown recommendations. The list of Advisor's cost recommendations is a separate page (advisor-cost in the FinOps method). We use these criteria as published utilization bands, not to recompute Advisor's result.",
+      "claims": [
+        {
+          "id": "lookback",
+          "says": "Advisor reads 7 days of utilization by default, configurable to 14, 21, 30, 60 or 90 days, aggregated to 30-minute points.",
+          "kind": "published"
+        },
+        {
+          "id": "shutdown-criteria",
+          "says": "A shutdown is recommended when P95 of maximum CPU is under 3%, average CPU over the last 3 days is at most 2%, and outbound network is under 2% over seven days.",
+          "kind": "published"
+        },
+        {
+          "id": "user-facing-targets",
+          "says": "A resize is recommended only when the smaller size would keep a user-facing workload at P95 CPU and outbound network of 40% or less and P99 memory of 60% or less.",
+          "kind": "published"
+        },
+        {
+          "id": "non-user-facing-targets",
+          "says": "For non user-facing workloads the targets are P95 CPU and network at 80% or less and P99 memory at 80% or less.",
+          "kind": "published"
+        },
+        {
+          "id": "not-always-applicable",
+          "says": "A recommendation may not apply when capacity is held for coming load, when other metrics matter, during testing, to keep sizes the same, or for recovery.",
+          "kind": "guidance"
+        },
+        {
+          "id": "savings-at-retail",
+          "says": "Savings are estimated at retail rates and ignore reservations and savings plans, so they may be higher than possible.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "amba-avd",
       "title": "Azure Monitor Baseline Alerts, Azure Virtual Desktop pattern",
       "url": "https://azure.github.io/azure-monitor-baseline-alerts/patterns/specialized/avd/index.html",
@@ -333,6 +378,16 @@
           "id": "utilization-for-scaling",
           "says": "Use session history and idle host counts over time to design a scaling plan, then repeat to validate it.",
           "kind": "guidance"
+        },
+        {
+          "id": "high-utilization-resize",
+          "says": "When a session host has extended periods of high resource utilization, consider a larger VM size.",
+          "kind": "guidance"
+        },
+        {
+          "id": "input-delay-then-resources",
+          "says": "When input delay is higher than expected, look at CPU, memory and disk activity in the same periods to find the cause.",
+          "kind": "guidance"
         }
       ]
     },
@@ -640,6 +695,30 @@
           "id": "customer-keys",
           "says": "Customer-managed keys are available through a disk encryption set for server-side encryption and encryption at host.",
           "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "finops-workload-optimization",
+      "title": "Workload optimization (Microsoft's guide to the FinOps Framework capability)",
+      "url": "https://learn.microsoft.com/cloud-computing/finops/framework/optimize/workloads",
+      "pin": "Learn git_commit_id a74e7c72db9bbdc44d6f3307194cad5e78348cc9, updated_at 2026-02-11",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "The FinOps Foundation's own capability page has no immutable pin; this is Microsoft's pinned summary, as for finops-framework.",
+      "claims": [
+        {
+          "id": "definition",
+          "says": "Workload optimization makes sure services are used and tuned to maximize business value and minimize waste.",
+          "kind": "guidance"
+        },
+        {
+          "id": "scale-down-off-peak",
+          "says": "Review usage patterns to see whether resources can be scaled down or shut down off-peak, and consider cheaper alternatives.",
+          "kind": "guidance"
         }
       ]
     },
@@ -1016,6 +1095,21 @@
           "id": "more-smaller-vms",
           "says": "Many smaller VMs beat a few large ones; they're easier to drain, update and shut down.",
           "kind": "guidance"
+        },
+        {
+          "id": "input-delay-expectation",
+          "says": "User input delay is a key experience metric; users generally expect a response under 200 ms, and more than that degrades the experience.",
+          "kind": "published"
+        },
+        {
+          "id": "document-capacity-plan",
+          "says": "Document the capacity planning process, its assumptions, calculations and decisions, and share it with stakeholders.",
+          "kind": "guidance"
+        },
+        {
+          "id": "cpu-scaling-factor",
+          "says": "Doubling cores doesn't double user capacity; the scaling factor is typically 1.5 to 1.9 and falls as core counts rise.",
+          "kind": "published"
         }
       ]
     },
@@ -1061,6 +1155,142 @@
         {
           "id": "sysprep-store-apps",
           "says": "Removing or updating built-in Store apps can make sysprep fail; the guide links the support article.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-continuous-performance",
+      "title": "Architecture strategies for continuous performance optimization (Azure Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/performance-efficiency/continuous-performance-optimize",
+      "pin": "Learn git_commit_id 28a78d22523542beeafc7de5eaa11fad791559b6, updated_at 2025-10-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "over-and-under",
+          "says": "Performance efficiency means capacity matches actual use; overperformance costs money and underperformance hurts users, so both are findings.",
+          "kind": "guidance"
+        },
+        {
+          "id": "test-before-and-after",
+          "says": "Review metrics regularly, adjust, and test every change before and after it is made against the performance targets.",
+          "kind": "guidance"
+        },
+        {
+          "id": "deviation-thresholds",
+          "says": "Make performance targets, baselines and deviation thresholds (how far from the baseline is acceptable) visible to the team.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-performance-checklist",
+      "title": "Design review checklist for Performance Efficiency (Azure Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/performance-efficiency/checklist",
+      "pin": "Learn git_commit_id ce3921ce25f18132fc642077a7e9edfc0fa69cc3, updated_at 2026-05-06",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "notes": "Twelve recommendations, PE:01 to PE:12. Claim IDs are the checklist's codes, as for the reliability and cost checklists. Only the codes the baseline and tuning methods use are listed.",
+      "claims": [
+        {
+          "id": "PE:01",
+          "says": "Set performance targets as numbers tied to the workload's requirements, for every flow.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:02",
+          "says": "Plan capacity before a predicted change in use, such as a season, an update or a new regulation.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:04",
+          "says": "Measure performance the same way over time so it can be compared with baselines and used to find degradation, waste and scaling gaps.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:05",
+          "says": "Make scaling reliable and controlled, built on the workload's scale unit.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:06",
+          "says": "Test performance regularly in a production-like environment to confirm the workload meets its targets.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:12",
+          "says": "Optimize performance continuously, watching for components that degrade over time.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-performance-targets",
+      "title": "Architecture strategies for defining performance targets (Azure Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/performance-efficiency/performance-targets",
+      "pin": "Learn git_commit_id 28a78d22523542beeafc7de5eaa11fad791559b6, updated_at 2025-10-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "measurable-targets",
+          "says": "Give each key metric a target that is measurable, realistic and aligned with the workload's objectives.",
+          "kind": "guidance"
+        },
+        {
+          "id": "percentiles",
+          "says": "Report performance as percentiles such as P50, P95 and P99 over a period, not as averages.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-performance-testing",
+      "title": "Architecture strategies for performance testing (Azure Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/performance-efficiency/performance-test",
+      "pin": "Learn git_commit_id c96d7decedaf65e86add6d4c063c6b380c1535ef, updated_at 2026-08-04",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "baseline-defined",
+          "says": "A performance baseline is the set of metrics that shows the workload's behavior under normal conditions, validated by testing.",
+          "kind": "guidance"
+        },
+        {
+          "id": "regression-and-drift",
+          "says": "A regression is a decline against the baseline caused by a change; drift is a gradual decline that goes unnoticed without regular tests against the baseline.",
+          "kind": "guidance"
+        },
+        {
+          "id": "hypothesis-baseline-variant",
+          "says": "State a prediction with measurable success criteria, run the same test against the baseline and the variant, and compare the results.",
+          "kind": "guidance"
+        },
+        {
+          "id": "record-baselines",
+          "says": "Record metrics from the first tests as baselines, and use them to tell whether an optimization helped.",
+          "kind": "guidance"
+        },
+        {
+          "id": "production-baselines",
+          "says": "Testing in production shows what only real users and data reveal and gives accurate baselines for later optimization.",
           "kind": "guidance"
         }
       ]
@@ -1228,6 +1458,17 @@
       "date": "2026-10-20"
     },
     {
+      "id": "tuning-levers-set-by-hand",
+      "claim": "ref:waf-performance-checklist#PE:05",
+      "verdict": "extends",
+      "observed": "The landing zone sets size, host count and session limit as parameters, but fixes breadth-first load balancing and the scaling plan's capacity thresholds and minimum host shares (60% and 20% at ramp-up, 90% and 10% at ramp-down) in its control plane module, and lists the schedule as set by hand. A tuning loop can change the first three through the landing zone; the scaling levers it can only record until they become parameters.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/modules/controlPlane.bicep",
+        "https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/contracts/target-state-capabilities.json"
+      ],
+      "date": "2026-10-20"
+    },
+    {
       "id": "users-per-vcpu-adopted",
       "claim": "ref:session-host-sizing#multisession-users-per-vcpu",
       "verdict": "not-yet-tested",
@@ -1272,6 +1513,10 @@
   ],
   "gaps": [
     {
+      "id": "baseline-profile",
+      "title": "a baseline profile of what good looks like"
+    },
+    {
       "id": "checklist-mapping",
       "title": "mapping facts to review checklist items"
     },
@@ -1306,6 +1551,10 @@
     {
       "id": "scoring",
       "title": "scoring"
+    },
+    {
+      "id": "tune-loop",
+      "title": "a repeatable tune and rightsize loop for AVD"
     }
   ]
 }

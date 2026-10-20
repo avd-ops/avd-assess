@@ -43,3 +43,13 @@ claims:
   - id: more-smaller-vms
     says: Many smaller VMs beat a few large ones; they're easier to drain, update and shut down.
     kind: guidance
+  # Claims read for the baseline profile and tuning loop (2026-10-20).
+  - id: input-delay-expectation
+    says: User input delay is a key experience metric; users generally expect a response under 200 ms, and more than that degrades the experience.
+    kind: published
+  - id: document-capacity-plan
+    says: Document the capacity planning process, its assumptions, calculations and decisions, and share it with stakeholders.
+    kind: guidance
+  - id: cpu-scaling-factor
+    says: Doubling cores doesn't double user capacity; the scaling factor is typically 1.5 to 1.9 and falls as core counts rise.
+    kind: published

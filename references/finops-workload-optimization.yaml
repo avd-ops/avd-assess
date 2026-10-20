@@ -1,0 +1,15 @@
+id: finops-workload-optimization
+title: Workload optimization (Microsoft's guide to the FinOps Framework capability)
+url: https://learn.microsoft.com/cloud-computing/finops/framework/optimize/workloads
+pin: "Learn git_commit_id a74e7c72db9bbdc44d6f3307194cad5e78348cc9, updated_at 2026-02-11"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: The FinOps Foundation's own capability page has no immutable pin; this is Microsoft's pinned summary, as for finops-framework.
+claims:
+  - id: definition
+    says: Workload optimization makes sure services are used and tuned to maximize business value and minimize waste.
+    kind: guidance
+  - id: scale-down-off-peak
+    says: Review usage patterns to see whether resources can be scaled down or shut down off-peak, and consider cheaper alternatives.
+    kind: guidance
