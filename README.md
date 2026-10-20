@@ -44,7 +44,7 @@ The [gold-standard registry](gold-standards.yaml) names, for each metric, the cl
 
 Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observation as `avd-assess@<commit>:observations/<file>.yaml`, a gap as `avd-assess@<commit>:gaps/<file>.md`, and a check as `avd-assess@<commit>:method.json#<check id>`.
 
-[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, and the scoring. [avd-current-state](https://github.com/nickprignano/avd-current-state) runs a pinned copy. The design is in avd-second-brain's [assess spec](https://github.com/nickprignano/avd-second-brain/blob/main/docs/assess-spec.md).
+[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, and the scoring. [avd-current-state](https://github.com/nickprignano/avd-current-state) runs a pinned copy. The design is in [docs/assess-spec.md](docs/assess-spec.md).
 
 ## Checks
 

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-avd-assess: the AVD family's assessment methodology (collection, assessment, targets and benchmarks, scoring) as a research index. Design: avd-second-brain `docs/assess-spec.md`. Roles: avd-landing-zone is how an estate is built and changed from here, avd-current-state is what is there now, avd-assess is what it should be and why.
+avd-assess: the AVD family's assessment methodology (collection, assessment, targets and benchmarks, scoring) as a research index. Design: `docs/assess-spec.md` (moved here from avd-second-brain). Roles: avd-landing-zone is how an estate is built and changed from here, avd-current-state is what is there now, avd-assess is what it should be and why.
 
 ## Validate before pushing
 ```bash
