@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nickprignano/avd-assess/evidence/schema.json",
+  "title": "avd-assess-evidence/v1",
+  "description": "One evidence submission for the baselines: aggregates from one host pool class over one window, compared with the claims in the gold-standard registry. No names, IDs, regions, dates of the window or free text beyond a short note. Every object is closed (additionalProperties false), so there is nowhere to put anything else. Checked by scripts/check_evidence.py (gap:evidence-intake).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "source", "submitted", "window", "scope", "metrics"],
+  "properties": {
+    "schema": {"const": "avd-assess-evidence/v1"},
+    "id": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9-]{3,48}$", "description": "Date submitted plus a short slug; also the file name. The slug never names an estate, customer or person."},
+    "source": {"enum": ["sandbox", "lab", "estate"], "description": "sandbox: a disposable test environment; lab: a standing non-production environment; estate: a real estate, aggregated, with its owner's consent."},
+    "submitted": {"type": "string", "format": "date"},
+    "consent": {"type": "boolean", "description": "Required true when source is estate: the estate's owner agreed to share these aggregates."},
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool"],
+      "properties": {
+        "tool": {"enum": ["avd-current-state", "manual", "other"]},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "baselines": {"type": "string", "pattern": "^[0-9a-f]{40}$", "description": "The avd-assess commit whose baselines.yaml was used."}
+      }
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["days", "hours", "coverage"],
+      "properties": {
+        "days": {"type": "integer", "minimum": 1, "maximum": 366},
+        "hours": {"enum": ["peak", "working", "all"]},
+        "coverage": {"type": "number", "minimum": 0, "maximum": 1, "description": "Share of planned host-hours that produced data."}
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "hostPoolType", "hosts", "vcpuPerHost", "memoryGiBPerHost"],
+      "properties": {
+        "class": {"enum": ["light", "medium", "heavy", "power"]},
+        "hostPoolType": {"enum": ["pooled", "personal"]},
+        "hosts": {"type": "integer", "minimum": 1},
+        "users": {"type": "integer", "minimum": 1},
+        "vcpuPerHost": {"type": "integer", "minimum": 1, "maximum": 512},
+        "memoryGiBPerHost": {"type": "number", "minimum": 1, "maximum": 4096},
+        "gpu": {"type": "boolean"},
+        "workload": {"enum": ["real-users", "scripted"]}
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["metric", "unit", "verdict"],
+        "properties": {
+          "metric": {"type": "string", "pattern": "^[a-z0-9-]{3,48}$"},
+          "unit": {"enum": ["ms", "s", "percent", "ratio", "count", "mib", "gib", "iops", "users-per-vcpu", "sessions-per-host", "users-per-gpu"]},
+          "p50": {"type": "number"},
+          "p95": {"type": "number"},
+          "p99": {"type": "number"},
+          "claim": {"type": "string", "pattern": "^(ref|gap):[A-Za-z0-9._:#-]+$", "description": "The claim this metric is compared with; the registry's claim for the metric when omitted."},
+          "verdict": {"enum": ["agrees", "disagrees", "extends", "not-yet-tested"]},
+          "note": {"type": "string", "maxLength": 200, "pattern": "^[A-Za-z0-9 ,.;%()+-]*$"}
+        }
+      }
+    }
+  }
+}

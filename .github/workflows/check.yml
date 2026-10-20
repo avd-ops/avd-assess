@@ -21,3 +21,5 @@ jobs:
       - run: python3 tests/check_method.py
       - run: python3 tests/check_dimensions.py
       - run: python3 tests/check_baselines.py
+      - run: python3 scripts/check_evidence.py
+      - run: python3 tests/check_evidence_fixtures.py

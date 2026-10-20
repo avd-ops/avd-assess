@@ -1,0 +1,37 @@
+name: Baseline evidence
+description: Send measured results that agree or disagree with a baseline. Aggregates only, no names or IDs.
+title: "Evidence: <class> <source>"
+labels: [evidence]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Read [evidence/README.md](https://github.com/nickprignano/avd-assess/blob/main/evidence/README.md) first. Paste only a file that passed `python3 scripts/check_evidence.py`. Never paste raw exports, host or user names, tenant or subscription IDs, domains or IP addresses. Issues are public.
+  - type: dropdown
+    id: source
+    attributes:
+      label: Source
+      options: [sandbox, lab, estate]
+    validations:
+      required: true
+  - type: textarea
+    id: file
+    attributes:
+      label: The checked evidence file
+      description: The whole JSON file, after the check passed.
+      render: json
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before you submit
+      options:
+        - label: The file passed scripts/check_evidence.py.
+          required: true
+        - label: It holds aggregates only, with no names, IDs, regions, domains or IP addresses.
+          required: true
+        - label: For an estate, its owner agreed to share these aggregates, and it covers at least 5 hosts and 20 users.
+          required: true
+        - label: I agree my submission is licensed under the repo's MIT License.
+          required: true

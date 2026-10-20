@@ -14,7 +14,7 @@
 ## Rules
 
 1. **A person changes a standing, by pull request,** with the observation or source change that justifies it linked in the entry's `why`. A model may draft the entry; it never decides one (the repo rule).
-2. **Promotion needs evidence from a run,** not agreement between sources. Two sources saying the same number make one candidate stronger; they don't make it gold.
+2. **Promotion needs evidence from a run,** submitted through the evidence intake (`gap:evidence-intake`), not agreement between sources. Two sources saying the same number make one candidate stronger; they don't make it gold.
 3. **Demotion keeps the entry.** A demoted entry stays with its date and reason, and the replacement names it in `replaces`.
 4. **One standing per metric at a time.** Two candidates for one metric are allowed only when they measure different things (for example per host and per session); the entry says which.
 5. **Re-read pins on a cadence.** When a source's pin moves, the entry is checked again; a changed number is a new claim, and the old one is demoted with the reason "source changed".

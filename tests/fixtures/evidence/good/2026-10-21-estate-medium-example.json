@@ -1,0 +1,14 @@
+{
+  "schema": "avd-assess-evidence/v1",
+  "id": "2026-10-21-estate-medium-example",
+  "source": "estate",
+  "submitted": "2026-10-21",
+  "consent": true,
+  "producer": {"tool": "avd-current-state", "commit": "5d1c586aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  "window": {"days": 14, "hours": "peak", "coverage": 0.88},
+  "scope": {"class": "medium", "hostPoolType": "pooled", "hosts": 12, "users": 180, "vcpuPerHost": 8, "memoryGiBPerHost": 64, "workload": "real-users"},
+  "metrics": [
+    {"metric": "input-delay-session", "unit": "ms", "p50": 40, "p95": 130, "verdict": "agrees"},
+    {"metric": "cpu-utilization", "unit": "percent", "p95": 62, "verdict": "extends", "note": "Watch band at peak with the experience gate holding."}
+  ]
+}
