@@ -4,7 +4,6 @@
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
 """
-import hashlib
 import json
 import re
 import sys
@@ -115,14 +114,8 @@ for name in METHODS:
 for path in sorted((ROOT / "gaps").glob("*.md")):
     check_cites(path, path.read_text(encoding="utf-8"))
 
-# method.json and index.json against the vendored avd-second-brain contracts (C15, C20).
+# method.json and index.json against the contracts held here (C15, C20; tests/check_contracts.py checks the contracts).
 contracts = ROOT / "contracts"
-pins = json.loads((contracts / "PINS.json").read_text(encoding="utf-8"))
-for rel, sha in pins["files"].items():
-    f = contracts / rel
-    if not f.exists() or hashlib.sha256(f.read_bytes()).hexdigest() != sha:
-        err(contracts / "PINS.json", f"{rel} isn't byte-identical to avd-second-brain at {pins['brainCommit'][:7]}")
-
 
 def validate(doc_path, schema_name):
     schema = json.loads((contracts / "schemas" / schema_name).read_text(encoding="utf-8"))
@@ -139,7 +132,7 @@ facts = {f["id"]: f for f in register["facts"]}
 decisions = {d["id"]: d for d in register["decisions"]}
 mpath = ROOT / "method.json"
 if method.get("factRegister") != register["version"]:
-    err(mpath, f"factRegister {method.get('factRegister')} but the vendored register is v{register['version']}")
+    err(mpath, f"factRegister {method.get('factRegister')} but the register is v{register['version']}")
 
 
 def check_fact(where, fid, allowed):
@@ -234,6 +227,8 @@ for path in sorted(ROOT.rglob("*")):
     for e in EMAIL.findall(text):
         err(path, f"looks like an email address ({e[:3]}***)")
     for ip in IPV4.findall(text):
+        if ip == "0.0.0.0":  # the default route, not an address
+            continue
         err(path, f"looks like an IP address ({ip.split('.')[0]}.***)")
     if any(ord(ch) > 127 for ch in text):
         err(path, "non-ASCII character")

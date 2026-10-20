@@ -4,7 +4,7 @@ Part of [avd-ops](https://avd-ops.dev/), the open toolkit for Azure Virtual Desk
 
 An open, curated methodology for assessing Azure Virtual Desktop estates: what to collect, how to judge it, what good looks like, and how to score it. It is a research index. It links to what Microsoft and the community already publish, pinned so a reader can see exactly what each source said on the day we read it. It adds what our own runs observed about those sources, and it writes new method only where nothing exists.
 
-Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/nickprignano/avd-current-state) is what is there now, and avd-assess is what it should be, and why.
+Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/nickprignano/avd-current-state) is what is there now, and avd-assess is what it should be, and why: the standards both engines read. It also holds the [foundation contracts](contracts/README.md), the formats those three repos exchange, which work the same with or without the layers above them.
 
 > [!WARNING]
 > **Personal project. Research and learning only. Not for production. No warranty.**
@@ -50,17 +50,18 @@ Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observa
 pip install pyyaml jsonschema
 python3 scripts/build_index.py --check
 python3 tests/check_method.py
+python3 tests/check_contracts.py
 ```
 
-`index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (avd-second-brain contract C20, `avd-assess-index/v1`), so the brain and avd-current-state read it without a YAML parser.
+`index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (contract C20, `avd-assess-index/v1`, in [contracts/](contracts/README.md)), so the brain and avd-current-state read it without a YAML parser.
 
-The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; every registry entry cites a claim that exists and has the evidence its standing needs; `index.json` and `method.json` match avd-second-brain's schemas, vendored byte-identical in [contracts/](contracts/PINS.json); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address.
+The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; every registry entry cites a claim that exists and has the evidence its standing needs; `index.json` and `method.json` match their schemas in [contracts/](contracts/README.md); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address. `tests/check_contracts.py` checks the foundation contracts themselves.
 
 ## Contributing
 
 Contributions and forks are welcome and encouraged. Fork it and make it your own, or send back what you learn: open an issue or a pull request with a new source, a better pin, or an observation from a real run that agrees or disagrees with a source. Small pull requests are easiest to review.
 
-Before you open one, run `python3 scripts/build_index.py` and `python3 tests/check_method.py` as the [check workflow](.github/workflows/check.yml) does. Keep tenant data, IDs and secrets out of the repo, issues and pull requests. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
+Before you open one, run `python3 scripts/build_index.py`, `python3 tests/check_method.py` and `python3 tests/check_contracts.py` as the [check workflow](.github/workflows/check.yml) does. Keep tenant data, IDs and secrets out of the repo, issues and pull requests. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
 
 ## License
 
