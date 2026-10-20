@@ -4,11 +4,17 @@ url: https://learn.microsoft.com/azure/virtual-desktop/insights-costs
 pin: "Learn git_commit_id 6d2a9179f453f9b31c9795e5c9e84e5c13b1099a, updated_at 2026-05-25"
 read: 2026-10-20
 license: Microsoft Learn content (link only)
-areas: [assessment, benchmarks]
+areas: [collection, benchmarks]
 claims:
   - id: counter-set
-    says: Insights' recommended collection is 20 performance counters at stated sample rates and 6 event logs.
+    says: Insights collects 20 performance counters, most every 30 seconds and five every 60 seconds, each multiplied per VM, core, disk, session or process.
     kind: published
-  - id: ingestion-per-vm
-    says: An example VM sends roughly 90 to 130 MB of performance counter data a day from light to power workloads; actual volume varies.
-    kind: prior
+  - id: event-logs
+    says: "Insights collects six event logs: Application, System, two Terminal Services logs and the two FSLogix logs."
+    kind: published
+  - id: per-vm-estimate
+    says: An example host ingests about 92 to 145 MB a day, roughly 3 to 5 GB every 31 days; counters are 80 to 99% of it.
+    kind: published
+  - id: keep-diagnostics
+    says: AVD diagnostics are under 1% of the cost and shouldn't be removed; trim counters first.
+    kind: guidance

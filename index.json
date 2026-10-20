@@ -49,18 +49,39 @@
     {
       "id": "amba-avd",
       "title": "Azure Monitor Baseline Alerts, Azure Virtual Desktop pattern",
-      "url": "https://azure.github.io/azure-monitor-baseline-alerts/patterns/specialized/avd/index.html",
-      "pin": "https://github.com/Azure/azure-monitor-baseline-alerts/tree/ec5e5f3acfcdc52773110517b1f51bd06cf766de",
+      "url": "https://azure.github.io/azure-monitor-baseline-alerts/patterns/specialized/avd/",
+      "pin": "https://github.com/Azure/azure-monitor-baseline-alerts/tree/ec5e5f3acfcdc52773110517b1f51bd06cf766de/patterns/avd",
       "read": "2026-10-20",
       "license": "MIT",
       "areas": [
-        "assessment"
+        "assessment",
+        "benchmarks"
       ],
-      "notes": "Pinned at release v2.2.1 (2025-12-16). The only published alert baseline for AVD we found; the landing zone alerts on a subset (draft avd-landing-zone PR 80 adds the host disk, memory and CPU alerts).",
+      "notes": "Version 2.2.1 (2025-12-16). The only published alert baseline for AVD. Its alerts deploy disabled; a few, such as host pool capacity, run through an Automation runbook.",
       "claims": [
         {
-          "id": "alert-set",
-          "says": "The AVD pattern defines a set of alerts with thresholds and severities for session hosts, host pools, FSLogix profile storage and service health.",
+          "id": "host-resources",
+          "says": "Host alerts at two severities: available memory under 1 GB or 2 GB, CPU over 95% or 85%, C: free space under 5% or 10%.",
+          "kind": "published"
+        },
+        {
+          "id": "host-pool-capacity",
+          "says": "Host pool capacity alerts at 50%, 85% and 95% of sessions against what the pool can hold.",
+          "kind": "published"
+        },
+        {
+          "id": "fslogix",
+          "says": "FSLogix alerts for failed attach, network failure, compaction failure, service disabled and profile disk under 5% or 2% free.",
+          "kind": "published"
+        },
+        {
+          "id": "storage",
+          "says": "Azure Files alerts for low share space, latency over 50 or 100 ms, throttling and availability under 99%.",
+          "kind": "published"
+        },
+        {
+          "id": "service-health",
+          "says": "Service Health alerts for incidents, planned maintenance, advisories and security.",
           "kind": "published"
         }
       ]
@@ -307,19 +328,29 @@
       "read": "2026-10-20",
       "license": "Microsoft Learn content (link only)",
       "areas": [
-        "assessment",
+        "collection",
         "benchmarks"
       ],
       "claims": [
         {
           "id": "counter-set",
-          "says": "Insights' recommended collection is 20 performance counters at stated sample rates and 6 event logs.",
+          "says": "Insights collects 20 performance counters, most every 30 seconds and five every 60 seconds, each multiplied per VM, core, disk, session or process.",
           "kind": "published"
         },
         {
-          "id": "ingestion-per-vm",
-          "says": "An example VM sends roughly 90 to 130 MB of performance counter data a day from light to power workloads; actual volume varies.",
-          "kind": "prior"
+          "id": "event-logs",
+          "says": "Insights collects six event logs: Application, System, two Terminal Services logs and the two FSLogix logs.",
+          "kind": "published"
+        },
+        {
+          "id": "per-vm-estimate",
+          "says": "An example host ingests about 92 to 145 MB a day, roughly 3 to 5 GB every 31 days; counters are 80 to 99% of it.",
+          "kind": "published"
+        },
+        {
+          "id": "keep-diagnostics",
+          "says": "AVD diagnostics are under 1% of the cost and shouldn't be removed; trim counters first.",
+          "kind": "guidance"
         }
       ]
     },
@@ -403,38 +434,74 @@
       ],
       "claims": [
         {
-          "id": "workbook-version",
-          "says": "The latest Insights workbook version listed is 4.3.1; a configuration check should name the version whose requirements it tests.",
+          "id": "latest-version",
+          "says": "The latest public version of Insights is 4.3.1 (2025-01-29), which added Multipath to the Connection Reliability tab.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-insights-workbooks",
+      "title": "AVD Insights workbook source (Application Insights Workbooks repo)",
+      "url": "https://github.com/microsoft/Application-Insights-Workbooks/tree/master/Workbooks/Windows%20Virtual%20Desktop",
+      "pin": "https://github.com/microsoft/Application-Insights-Workbooks/tree/92cdb7c8413332d6b737340e2d0a4262885f3cf5/Workbooks/Windows%20Virtual%20Desktop",
+      "read": "2026-10-20",
+      "license": "MIT",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "notes": "The KQL behind each Insights tab (AVD Insights, AtScale, CheckAMAConfiguration, Connection Diagnostics, Connection Performance, Host Diagnostics, Host Performance and more). A reader of Insights data should take its queries from here, with attribution, rather than write new ones.",
+      "claims": [
+        {
+          "id": "queries-define-measures",
+          "says": "Each Insights measure (round-trip time, time to connect, input delay, utilization) is defined by the KQL in its workbook template.",
+          "kind": "published"
+        },
+        {
+          "id": "config-check",
+          "says": "The configuration check workbook tests diagnostic settings, the Azure Monitor Agent and the association with a data collection rule named microsoft-avdi-* for each host.",
           "kind": "published"
         }
       ]
     },
     {
       "id": "avd-insights",
-      "title": "Enable Azure Virtual Desktop Insights",
+      "title": "Enable Insights to monitor Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/insights",
       "pin": "Learn git_commit_id ec0c680142f45947b0691d842131822e8708beac, updated_at 2025-06-25",
       "read": "2026-10-20",
       "license": "Microsoft Learn content (link only)",
       "areas": [
-        "assessment",
-        "collection"
+        "collection",
+        "assessment"
       ],
+      "notes": "The configuration baseline for AVD monitoring. The configuration workbook checks the same items and is the reference when a check and the workbook disagree.",
       "claims": [
         {
-          "id": "required-diagnostics",
-          "says": "Insights needs diagnostic settings on host pools and workspaces sending the listed log categories (connections, errors, checkpoints, agent health and others) to a Log Analytics workspace.",
+          "id": "hostpool-diagnostics",
+          "says": "Host pool diagnostics send Management Activities, Feed, Connections, Errors, Checkpoints, HostRegistration and AgentHealthStatus to Log Analytics.",
           "kind": "published"
         },
         {
-          "id": "agent-and-dcr",
-          "says": "Session hosts send performance counters and event logs through the Azure Monitor Agent and a data collection rule associated with each host.",
+          "id": "workspace-diagnostics",
+          "says": "AVD workspace diagnostics send Management Activities, Feed, Errors and Checkpoints to Log Analytics.",
+          "kind": "published"
+        },
+        {
+          "id": "host-data-ama-dcr",
+          "says": "Session host data needs the Azure Monitor Agent, a system-assigned managed identity and an association with a data collection rule that sends the recommended counters and event logs to Log Analytics.",
           "kind": "published"
         },
         {
           "id": "designated-workspace",
-          "says": "Use a designated Log Analytics workspace for Insights.",
+          "says": "Use a designated Log Analytics workspace for session hosts so only their counters and events are collected; it can differ from the diagnostics workspace.",
           "kind": "guidance"
+        },
+        {
+          "id": "reader-roles",
+          "says": "Viewing Insights needs Desktop Virtualization Reader on the AVD resources and Log Analytics Reader on the workspace.",
+          "kind": "published"
         }
       ]
     },
@@ -605,6 +672,40 @@
           "id": "storm-sizing",
           "says": "Size for sign-in and sign-out storms separately from steady state; the worked example uses 10 IOPS per user steady and calls its values sample assumptions.",
           "kind": "prior"
+        }
+      ]
+    },
+    {
+      "id": "caf-avd-management",
+      "title": "Cloud Adoption Framework, Azure Virtual Desktop management baseline",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-management-and-monitoring",
+      "pin": "https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/5c44a2accff2018eba5dd738b648eef4c9db179b/docs/scenarios/azure-virtual-desktop/eslz-management-and-monitoring.md",
+      "read": "2026-10-20",
+      "license": "CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Microsoft is removing the CAF AVD scenario on 2026-10-30 (see caf-avd-assess), so the pin is the public GitHub copy.",
+      "claims": [
+        {
+          "id": "insights-config-workbook",
+          "says": "Configure diagnostics, events and counters through Insights, and use its configuration workbook to stay current when new settings are required.",
+          "kind": "guidance"
+        },
+        {
+          "id": "regional-workspace",
+          "says": "Use one Log Analytics workspace for the AVD platform and hosts, in the region of the session hosts.",
+          "kind": "guidance"
+        },
+        {
+          "id": "alerting-model",
+          "says": "Set up an alerting model for the collected logs and metrics.",
+          "kind": "guidance"
+        },
+        {
+          "id": "long-retention-export",
+          "says": "Send diagnostics to a storage account when retention must go beyond two years.",
+          "kind": "guidance"
         }
       ]
     },
@@ -1535,6 +1636,10 @@
     {
       "id": "gold-standards",
       "title": "gold standards"
+    },
+    {
+      "id": "insights-facts",
+      "title": "AVD Insights as evidence"
     },
     {
       "id": "intake",

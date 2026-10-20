@@ -1,12 +1,24 @@
 id: amba-avd
 title: Azure Monitor Baseline Alerts, Azure Virtual Desktop pattern
-url: https://azure.github.io/azure-monitor-baseline-alerts/patterns/specialized/avd/index.html
-pin: https://github.com/Azure/azure-monitor-baseline-alerts/tree/ec5e5f3acfcdc52773110517b1f51bd06cf766de
+url: https://azure.github.io/azure-monitor-baseline-alerts/patterns/specialized/avd/
+pin: https://github.com/Azure/azure-monitor-baseline-alerts/tree/ec5e5f3acfcdc52773110517b1f51bd06cf766de/patterns/avd
 read: 2026-10-20
 license: MIT
-areas: [assessment]
-notes: Pinned at release v2.2.1 (2025-12-16). The only published alert baseline for AVD we found; the landing zone alerts on a subset (draft avd-landing-zone PR 80 adds the host disk, memory and CPU alerts).
+areas: [assessment, benchmarks]
+notes: Version 2.2.1 (2025-12-16). The only published alert baseline for AVD. Its alerts deploy disabled; a few, such as host pool capacity, run through an Automation runbook.
 claims:
-  - id: alert-set
-    says: The AVD pattern defines a set of alerts with thresholds and severities for session hosts, host pools, FSLogix profile storage and service health.
+  - id: host-resources
+    says: "Host alerts at two severities: available memory under 1 GB or 2 GB, CPU over 95% or 85%, C: free space under 5% or 10%."
+    kind: published
+  - id: host-pool-capacity
+    says: Host pool capacity alerts at 50%, 85% and 95% of sessions against what the pool can hold.
+    kind: published
+  - id: fslogix
+    says: FSLogix alerts for failed attach, network failure, compaction failure, service disabled and profile disk under 5% or 2% free.
+    kind: published
+  - id: storage
+    says: Azure Files alerts for low share space, latency over 50 or 100 ms, throttling and availability under 99%.
+    kind: published
+  - id: service-health
+    says: Service Health alerts for incidents, planned maintenance, advisories and security.
     kind: published

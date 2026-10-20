@@ -525,7 +525,7 @@ dimensions:
     home: {decision: proposed:operations.monitoring, facts: [proposed:c11.monitoring.diagnostics, proposed:c11.hostPool.sessionHosts.monitoringAgent, proposed:c11.hostPool.sessionHosts.insightsDcr, proposed:c11.monitoring.workspace.retentionDays, proposed:c11.monitoring.alerts]}
     baseline:
       standing: published
-      claims: [ref:avd-insights#required-diagnostics, ref:avd-insights#agent-and-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#workbook-version, ref:amba-avd#alert-set, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:deployment-dimensions]
+      claims: [ref:avd-insights#hostpool-diagnostics, ref:avd-insights#workspace-diagnostics, ref:avd-insights#host-data-ama-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#latest-version, ref:amba-avd#host-resources, gap:insights-facts, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:deployment-dimensions]
       says: Insights' required diagnostics, agent and data collection rule as published for workbook 4.3.1, alerts against the AMBA pattern; no source sets a retention number, so retention stays a gap.
     measure: rebuild
     landingZone: [logRetentionDays, deploySubscriptionSettings]

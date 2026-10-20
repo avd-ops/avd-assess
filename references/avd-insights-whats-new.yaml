@@ -6,6 +6,6 @@ read: 2026-10-20
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:
-  - id: workbook-version
-    says: The latest Insights workbook version listed is 4.3.1; a configuration check should name the version whose requirements it tests.
+  - id: latest-version
+    says: The latest public version of Insights is 4.3.1 (2025-01-29), which added Multipath to the Connection Reliability tab.
     kind: published
