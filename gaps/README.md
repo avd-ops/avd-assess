@@ -16,6 +16,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [baseline-profile](baseline-profile.md) | One profile per workload class of what good looks like: experience gate, utilization bands, density |
 | [evidence-intake](evidence-intake.md) | One path for anyone, us included, to send measured results back to the baselines |
 | [tune-loop](tune-loop.md) | The order of tuning levers, one change per round, and the record each round leaves |
+| [remediation-plan](remediation-plan.md) | Which change fixes each finding, which findings make plan items, and their order |
 | [discovery](discovery.md) | The interview questions, and which answers become intake facts and which stay private narrative |
 | [use-cases](use-cases.md) | The structured use case record, the decisions it informs, and how it is checked against what is deployed and measured |
 | [use-case-library](use-case-library.md) | Common AVD use cases (base personas and overlays) as cited starting points for that record |

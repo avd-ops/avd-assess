@@ -20,6 +20,7 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 |---|---|
 | [Collection](methods/collection.md) | What to collect about an estate, from where, and how private each fact is |
 | [Assessment](methods/assessment.md) | How to judge what was collected against published recommendations |
+| [Remediation](methods/remediation.md) | How reviewed findings become an ordered plan of landing zone changes (contract C24) |
 | [Targets and benchmarks](methods/targets-benchmarks.md) | What good looks like, as numbers with their sources |
 | [Scoring](methods/scoring.md) | How outcomes roll up, and which design decisions the evidence can support |
 | [Sample check](methods/sample-check.md) | A short, point-in-time health check of measured user experience, built on the four above |
@@ -49,7 +50,7 @@ The [gold-standard registry](gold-standards.yaml) names, for each metric, the cl
 
 Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observation as `avd-assess@<commit>:observations/<file>.yaml`, a gap as `avd-assess@<commit>:gaps/<file>.md`, and a check as `avd-assess@<commit>:method.json#<check id>`.
 
-[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, and the scoring. [avd-current-state](https://github.com/nickprignano/avd-current-state) runs a pinned copy. The design is in [docs/assess-spec.md](docs/assess-spec.md).
+[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, the scoring, and a remediation hint per check (the landing zone parameter or setting that fixes it). [avd-current-state](https://github.com/nickprignano/avd-current-state) runs a pinned copy. The design is in [docs/assess-spec.md](docs/assess-spec.md).
 
 ## Checks
 

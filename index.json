@@ -2782,6 +2782,18 @@
         {
           "id": "avd-workload-review",
           "says": "Specialized reviews, an Azure Virtual Desktop workload review among them, are taken in addition to the core review, not instead of it."
+        },
+        {
+          "id": "export-to-backlog",
+          "says": "The review's recommendations can be exported to CSV, and Microsoft recommends adding them to the workload's backlog so they enter its development lifecycle."
+        },
+        {
+          "id": "prioritize-with-tradeoffs",
+          "says": "Owners and stakeholders prioritize the recommendations through their normal work process, weighing applicability and trade-offs; a recommendation may be assigned an owner, postponed or dismissed."
+        },
+        {
+          "id": "track-until-resolved",
+          "says": "Like all planned work, a recommendation is tracked until it is resolved, and the next milestone uses the prior one as its baseline."
         }
       ]
     },
@@ -3152,6 +3164,10 @@
     {
       "id": "logon-target",
       "title": "a logon time target"
+    },
+    {
+      "id": "remediation-plan",
+      "title": "the remediation plan"
     },
     {
       "id": "sample-check",
