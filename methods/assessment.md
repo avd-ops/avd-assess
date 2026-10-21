@@ -5,6 +5,7 @@ How to judge what was collected against published recommendations. avd-current-s
 ## Method
 
 1. **Start from Microsoft's lists, not ours:** the AVD review checklist for all pillars (`ref:review-checklists-avd`) and APRL through WARA for reliability (`ref:aprl-desktop-virtualization`, `ref:wara#collector-avd-json`).
+   Where PSRule for Azure, which avd-landing-zone runs on its templates, has a rule for the same item, cite its rule ID beside the item so both name one thing (`ref:psrule-azure`, `gap:checklist-mapping`).
 2. **Map each item to the facts that decide it**, and leave the rest `unknown` with the data they would need (`gap:checklist-mapping`).
 3. **Give each check one of four outcomes:** pass, warn (a trade-off to review), gap, or unknown. Unknown is never guessed, and a model never decides an outcome (`gap:scoring`).
 4. **Judge the image against the landing zone's reviewed WDOT profile**, not against every WDOT item: some items destroy evidence or break sysprep (`ref:wdot#categories`, `obs:wdot-disk-cleanup-deletes-evidence`, `obs:wdot-appx-removal-left-off`).
