@@ -1,0 +1,26 @@
+id: avd-autoscale
+title: Autoscale scaling plans and example scenarios in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/autoscale-scenarios
+pin: "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: scales-to-save-cost
+    says: Autoscale turns session hosts on and off on a schedule to optimize deployment cost; ramp-down is usually when VMs shut down to save cost.
+    kind: guidance
+  - id: two-methods
+    says: Power management autoscaling powers hosts on and off; dynamic autoscaling also creates and deletes hosts, for pooled host pools with a session host configuration.
+    kind: guidance
+  - id: one-plan-per-pool
+    says: A host pool has at most one scaling plan, and autoscale must not be combined with Azure Automation or other scaling tools on the same host pool.
+    kind: guidance
+  - id: capacity-threshold
+    says: In a pooled host pool, autoscale keeps the minimum percentage of hosts on and turns on more only when used capacity passes the capacity threshold.
+    kind: published
+  - id: hibernate-personal
+    says: Hibernate is available for personal host pools.
+    kind: guidance
+  - id: exclusion-tags
+    says: Autoscale overwrites drain mode in pooled host pools, so updates use exclusion tags.
+    kind: guidance

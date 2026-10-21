@@ -18,5 +18,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [tune-loop](tune-loop.md) | The order of tuning levers, one change per round, and the record each round leaves |
 | [discovery](discovery.md) | The interview questions, and which answers become intake facts and which stay private narrative |
 | [use-cases](use-cases.md) | The structured use case record, the decisions it informs, and how it is checked against what is deployed and measured |
+| [finops-scope](finops-scope.md) | What a FinOps assessment can judge, from which evidence, and which repo does what |
+| [commitment-floor](commitment-floor.md) | How much compute to commit for host pools a scaling plan turns off |
 
 The parts of these gaps that a tool runs (the collection map, checks, readiness and scoring) are in [method.json](../method.json), avd-second-brain contract C20 (`avd-assess-method/v1`). avd-current-state runs a pinned copy.

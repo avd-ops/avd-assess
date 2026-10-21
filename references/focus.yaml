@@ -1,0 +1,15 @@
+id: focus
+title: What is FOCUS? (FinOps Open Cost and Usage Specification, Microsoft's guide)
+url: https://learn.microsoft.com/cloud-computing/finops/focus/what-is-focus
+pin: "Learn git_commit_id a74e7c72db9bbdc44d6f3307194cad5e78348cc9, updated_at 2026-02-11"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [collection]
+notes: Prior art for the cost data format. The method doesn't define a cost data format of its own; where it reads cost by meter, it names FOCUS columns.
+claims:
+  - id: common-billing-format
+    says: FOCUS is a provider-neutral format for cost and usage data, and Cost Management exports it.
+    kind: prior
+  - id: list-contracted-effective-billed
+    says: Each FOCUS row carries list, contracted, effective and billed cost, so savings from negotiated and commitment discounts can be quantified.
+    kind: prior

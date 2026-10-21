@@ -1,0 +1,8 @@
+id: estimate-before-deploy
+claim: ref:waf-cost-optimization-checklist#CO:02
+verdict: agrees
+observed: The landing zone prices the compiled plan from retail prices before anything is deployed, with run hours from the power settings and an upper bound where the schedule rather than use decides (168 hours a week without a scheduled stop). Lab runs in the family don't start without that written estimate, a cap and teardown evidence, and avd-swarm's spend guard refuses a run whose estimate has an unpriced line or passes a cap. Retail prices are list prices, so the estimate is an upper bound for anyone with negotiated rates or commitments.
+evidence:
+  - https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md
+  - https://github.com/nickprignano/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md
+date: 2026-10-20

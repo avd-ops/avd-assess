@@ -1,0 +1,20 @@
+id: cost-management-budgets
+title: Tutorial, create and manage budgets (Microsoft Cost Management)
+url: https://learn.microsoft.com/azure/cost-management-billing/costs/tutorial-acm-create-budgets
+pin: "Learn git_commit_id 981d4c7a114a9026e67c1ac75226043c035d2ab5, updated_at 2025-09-26"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: alerts-dont-stop
+    says: A budget alerts on actual or forecast cost; resources aren't affected and consumption isn't stopped.
+    kind: guidance
+  - id: evaluated-daily
+    says: Cost data is typically available within 8 to 24 hours and budgets are evaluated against it every 24 hours.
+    kind: published
+  - id: action-group-scopes
+    says: A budget can call an action group only at subscription or resource group scope.
+    kind: guidance
+  - id: actual-not-amortized
+    says: Budgets evaluate actual cost, not amortized cost.
+    kind: guidance
