@@ -458,13 +458,13 @@ dimensions:
   - id: network.client-agents
     area: network
     pillar: networking-client
-    title: Security agents and VPN clients on the user device (extension)
-    decides: How SSE, ZTNA and VPN client categories treat AVD traffic - bypass, split tunneling, inspection, UDP.
-    home: {decision: network, facts: []}
+    title: Security agents and VPN clients on the user device
+    decides: How SSE, ZTNA and VPN client categories, web proxies and TLS inspection on user devices treat AVD traffic - bypass, split tunneling, inspection, UDP.
+    home: {decision: network, facts: [], intake: [intake.clientAgents, intake.agentRdpBypass]}
     baseline:
-      standing: gap
-      claims: [gap:client-network]
-      says: Extension row, filled by the map plan's agent-category work; categories only, no product names.
+      standing: published
+      claims: [ref:rdp-traffic-optimization#bypass-tunnels, ref:rdp-traffic-optimization#no-tls-inspection, ref:rdp-traffic-optimization#local-egress, ref:rdp-traffic-optimization#auth-inspection-ok, ref:avd-proxy#proxy-forces-tcp, ref:rdp-shortpath#public-network-advice, ref:gsa-known-limitations#no-udp-internet-access, gap:client-network, gap:security-agents-scope]
+      says: RDP split out of every tunnel and left uninspected, leaving the user's network locally; sign-in traffic may still be inspected. A path that can't carry UDP leaves RDP on TCP. Categories only; the vendor's own guide is read by the reviewer.
     measure: intake
     landingZone: []
   - id: network.azure-local
@@ -480,19 +480,106 @@ dimensions:
     measure: none
     landingZone: []
 
-  # Security tooling
+  # Endpoint protection and security agents (gap:security-agents-scope)
+  - id: agents.av-edr-present
+    area: security
+    pillar: endpoint-protection
+    title: Antivirus and EDR on every session host
+    decides: Which antivirus and endpoint detection and response products run on the hosts, as categories.
+    home: {decision: proposed:hostPool.security, facts: [c11.subscription.defenderPlans, c11.hostPool.sessionHosts.edrMissing], intake: [intake.hostAgents]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#G02.01, ref:avd-security-guide#endpoint-protection, ref:avd-security-guide#edr-microsoft-or-third-party, ref:mcsb-avd-baseline#ES-1, ref:mcsb-avd-baseline#ES-2, ref:defender-cloud-edr-detection#agentless-edr-check, ref:defender-cloud-edr-detection#third-party-recognized]
+      says: Antivirus and an EDR product on every host, Microsoft's or a third party's; Defender for Cloud's scan sees which hosts have none, and one it can't discover is exempted with a reason.
+    measure: fact
+    landingZone: [enableDefenderForCloud]
+  - id: agents.coexistence
+    area: security
+    pillar: endpoint-protection
+    title: One active antivirus, the others passive
+    decides: Which product provides active protection when more than one security product is installed.
+    home: {decision: proposed:hostPool.security, facts: [proposed:c11.sessionHost.defenderRunningMode], intake: [intake.hostAgents]}
+    baseline:
+      standing: published
+      claims: [ref:defender-av-compatibility#third-party-av-state, ref:defender-av-compatibility#security-center-required, ref:defender-av-compatibility#running-mode-readable, ref:defender-av-compatibility#passive-still-updates, ref:defender-side-by-side#avoid-duplication, ref:defender-side-by-side#mutual-exclusions]
+      says: One product actively protects; Defender Antivirus goes passive beside a third-party antivirus, which needs the Security Center service running; overlapping functions off in one product, mutual exclusions between them.
+    measure: host-side
+    landingZone: []
+  - id: agents.edr-onboarding
+    area: security
+    pillar: endpoint-protection
+    title: EDR onboarding for pooled and reimaged hosts
+    decides: How hosts built from one image join the EDR product without duplicate or stale device entries.
+    home: {decision: proposed:hostPool.security, facts: [], intake: [intake.hostAgents]}
+    baseline:
+      standing: published
+      claims: [ref:defender-endpoint-vdi#never-onboard-image, ref:defender-endpoint-vdi#entry-model, ref:defender-endpoint-vdi#first-report-delay, ref:defender-endpoint-avd#single-entry-recommended, ref:defender-endpoint-avd#script-at-first-boot, ref:defender-endpoint-avd#multi-session-licensing]
+      says: The onboarding script runs at first boot from the image, the image is never onboarded, one entry per host; multi-session hosts licensed through the server plan or per user. Third-party EDR products follow their vendor's VDI guide, read by the reviewer.
+    measure: intake
+    landingZone: []
   - id: security.endpoint-protection-tuning
     area: security
     pillar: endpoint-protection
     title: Antivirus and EDR tuned for multi-session
     decides: How antivirus and EDR are configured on shared and non-persistent hosts.
-    home: {decision: proposed:hostPool.security, facts: []}
+    home: {decision: proposed:hostPool.security, facts: [proposed:c11.sessionHost.defenderVdiSettings]}
     baseline:
       standing: published
-      claims: [ref:defender-av-vdi#vdi-settings, ref:defender-av-vdi#cache-maintenance-before-seal, ref:defender-av-vdi#shared-updates, ref:defender-endpoint-vdi#never-onboard-image, ref:defender-endpoint-vdi#entry-model, ref:fslogix-prerequisites#av-exclusions]
-      says: The published VDI antivirus settings, cache maintenance before sealing the image, no onboarded image, and the FSLogix exclusions. No source gives the per-user CPU cost.
-    measure: none
+      claims: [ref:defender-av-vdi#vdi-settings, ref:defender-av-vdi#cache-maintenance-before-seal, ref:defender-av-vdi#shared-updates, ref:defender-side-by-side#stagger-heavy-tasks, ref:defender-cloud-edr-settings#misconfiguration-checks, ref:defender-cloud-edr-settings#microsoft-edr-only]
+      says: The published VDI antivirus settings, cache maintenance before sealing the image, shared updates, staggered scans. No source gives the per-user CPU cost (agents.measured-cost).
+    observations: [obs:defender-cache-maintenance-not-in-image]
+    measure: host-side
+    landingZone: []
+  - id: agents.exclusions
+    area: security
+    pillar: endpoint-protection
+    title: Profile and app container exclusions in every security layer
+    decides: Which FSLogix and App Attach files, processes and paths each security product leaves alone.
+    home: {decision: proposed:hostPool.security, facts: [proposed:c11.sessionHost.fslogixExclusions], intake: [intake.hostAgents]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#H04.02, ref:fslogix-prerequisites#av-exclusions, ref:fslogix-prerequisites#exclusion-scope, ref:fslogix-prerequisites#all-layers, ref:avd-security-guide#vhd-exclusions, gap:security-agents-scope]
+      says: The whole published FSLogix list excluded in endpoint antivirus, network scanning and data loss prevention, and checked after each policy change. No source lists App Attach exclusions.
+    observations: [obs:fslogix-exclusions-partial]
+    measure: host-side
+    landingZone: []
+  - id: agents.vulnerability-assessment
+    area: security
+    pillar: endpoint-protection
+    title: Vulnerability assessment of session hosts
+    decides: Whether host software is scanned for vulnerabilities and the findings worked.
+    home: {decision: proposed:hostPool.security, facts: [c11.subscription.defenderPlans, c11.hostPool.sessionHosts.vulnerabilityFindings]}
+    baseline:
+      standing: published
+      claims: [ref:avd-security-guide#endpoint-protection, ref:avd-security-guide#edr-microsoft-or-third-party, ref:defender-compute-recommendations#vm-recommendations, ref:review-checklists-avd#G03.04]
+      says: Hosts covered by vulnerability assessment, Defender for Cloud's or a third party's, with findings resolved through the image and servicing.
+    measure: fact
     landingZone: [enableDefenderForCloud]
+  - id: agents.host-network-agents
+    area: security
+    pillar: endpoint-protection
+    title: SSE, ZTNA and VPN clients on session hosts
+    decides: Whether a security service edge, zero trust or VPN client runs on the hosts, and what it must leave alone.
+    home: {decision: network, facts: [], intake: [intake.hostAgents, intake.agentRdpBypass]}
+    baseline:
+      standing: published
+      claims: [ref:rdp-traffic-optimization#bypass-tunnels, ref:rdp-traffic-optimization#host-side-non-rdp, ref:avd-fabric-ips#never-proxy-or-tunnel, ref:avd-fabric-ips#mostly-in-vm, ref:gsa-known-limitations#no-multi-session, ref:gsa-known-limitations#proxy-pac-exclusions, ref:avd-security-guide#gsa-on-hosts, gap:security-agents-scope]
+      says: RDP, activation and the platform addresses never tunneled or proxied from the host; a client in this category only where it supports the host's session model, which Microsoft's own doesn't on multi-session.
+    measure: intake
+    landingZone: []
+  - id: agents.measured-cost
+    area: security
+    pillar: endpoint-protection
+    title: Measured cost of security agents
+    decides: How much CPU, memory and logon time the security agents take per user, and so how many users a host carries with them on.
+    home: {decision: hostPool.maxSessions, facts: [c12.group.perUser.p95CpuPercentOfCore, c12.group.logonSeconds.p95]}
+    baseline:
+      standing: gap
+      claims: [gap:security-agents-scope]
+      says: No source measures it; the settings that reduce it are published, its size isn't. Filled by a measured run with the agents on and off.
+    measure: measured
+    landingZone: []
+  # Security posture
   - id: security.posture
     area: security
     pillar: security-posture

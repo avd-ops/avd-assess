@@ -340,6 +340,28 @@
       "evidences": []
     },
     {
+      "id": "c11.hostPool.sessionHosts.edrMissing",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/edrMissing",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.vulnerabilityFindings",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/vulnerabilityFindings",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c11.hostPool.vmSizes",
       "tier": "azure",
       "contract": "C11",
@@ -926,6 +948,43 @@
       "privacy": "public",
       "status": "built",
       "evidences": []
+    },
+    {
+      "id": "intake.hostAgents",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/hostAgents",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.clientAgents",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/clientAgents",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [
+        "network"
+      ]
+    },
+    {
+      "id": "intake.agentRdpBypass",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/agentRdpBypass",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [
+        "network"
+      ]
     }
   ]
 }
