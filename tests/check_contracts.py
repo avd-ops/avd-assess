@@ -19,6 +19,7 @@ EXAMPLES = {
     "examples/assess/index.example.json": "assess-index.schema.json",
     "examples/assess/method.example.json": "assess-method.schema.json",
     "examples/assess/map.example.json": "assess-map.schema.json",
+    "examples/assess/endpoints.example.json": "assess-endpoints.schema.json",
     "examples/assess/intake.example.json": "intake.schema.json",
     "examples/assess/assessment.example.json": "assessment.schema.json",
     "examples/assess/review.example.json": "assessment-review.schema.json",

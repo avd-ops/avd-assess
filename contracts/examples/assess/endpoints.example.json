@@ -1,0 +1,155 @@
+{
+  "schema": "avd-assess-endpoints/v1",
+  "version": 1,
+  "cloud": "azure-public",
+  "readAt": {
+    "avd-required-fqdn": "05df299786103f3d5886146cf73fab142cda335a",
+    "avd-fabric-ips": "9df01472230d01bf9bb36b02e508abd74e4dc029",
+    "avd-url-check-tool": "c0f1884420aae53e640ac0be2683cc30b519e621",
+    "rdp-shortpath": "41dcc5bdc9210cae5b9151f9851568b917ad77db"
+  },
+  "lists": [
+    {
+      "id": "client",
+      "title": "End-user devices",
+      "claim": "ref:avd-required-fqdn#client-list",
+      "dimension": "network.client",
+      "source": {
+        "claim": "ref:avd-required-fqdn#client-list",
+        "url": "https://learn.microsoft.com/azure/virtual-desktop/required-fqdn-endpoint",
+        "pin": "Learn git_commit_id 05df299786103f3d5886146cf73fab142cda335a, updated_at 2026-09-22"
+      }
+    },
+    {
+      "id": "host",
+      "title": "Session hosts",
+      "claim": "ref:avd-required-fqdn#host-list",
+      "dimension": "network.required-endpoints",
+      "source": {
+        "claim": "ref:avd-required-fqdn#host-list",
+        "url": "https://learn.microsoft.com/azure/virtual-desktop/required-fqdn-endpoint",
+        "pin": "Learn git_commit_id 05df299786103f3d5886146cf73fab142cda335a, updated_at 2026-09-22"
+      }
+    },
+    {
+      "id": "platform",
+      "title": "Azure platform addresses on session hosts",
+      "claim": "ref:avd-fabric-ips#two-platform-ips",
+      "dimension": "network.required-endpoints",
+      "source": {
+        "claim": "ref:avd-fabric-ips#two-platform-ips",
+        "url": "https://learn.microsoft.com/azure/virtual-desktop/azurecommunicationips",
+        "pin": "Learn git_commit_id 9df01472230d01bf9bb36b02e508abd74e4dc029, updated_at 2026-05-25"
+      }
+    }
+  ],
+  "endpoints": [
+    {
+      "id": "client.sign-in",
+      "list": "client",
+      "kind": "fqdn",
+      "host": "login.microsoftonline.com",
+      "protocol": "tcp",
+      "port": 443,
+      "purpose": "sign-in",
+      "verdict": "required",
+      "probeFrom": [
+        "browser",
+        "device"
+      ],
+      "source": {
+        "claim": "ref:avd-required-fqdn#client-list",
+        "url": "https://learn.microsoft.com/azure/virtual-desktop/required-fqdn-endpoint",
+        "pin": "Learn git_commit_id 05df299786103f3d5886146cf73fab142cda335a, updated_at 2026-09-22"
+      }
+    },
+    {
+      "id": "client.wvd",
+      "list": "client",
+      "kind": "wildcard",
+      "host": "*.wvd.microsoft.com",
+      "protocol": "tcp",
+      "port": 443,
+      "purpose": "service",
+      "verdict": "required",
+      "probeFrom": [],
+      "note": "Feed, broker and gateway. No concrete name is listed at the pin; older names are not probed (avd-linecheck spec Q5).",
+      "source": {
+        "claim": "ref:avd-required-fqdn#client-list",
+        "url": "https://learn.microsoft.com/azure/virtual-desktop/required-fqdn-endpoint",
+        "pin": "Learn git_commit_id 05df299786103f3d5886146cf73fab142cda335a, updated_at 2026-09-22"
+      }
+    },
+    {
+      "id": "host.cert-ocsp",
+      "list": "host",
+      "kind": "fqdn",
+      "host": "oneocsp.microsoft.com",
+      "protocol": "tcp",
+      "port": 80,
+      "purpose": "certificates",
+      "verdict": "required",
+      "probeFrom": [
+        "host"
+      ],
+      "serviceTag": "AzureFrontDoor.FirstParty",
+      "source": {
+        "claim": "ref:avd-required-fqdn#host-list",
+        "url": "https://learn.microsoft.com/azure/virtual-desktop/required-fqdn-endpoint",
+        "pin": "Learn git_commit_id 05df299786103f3d5886146cf73fab142cda335a, updated_at 2026-09-22"
+      }
+    },
+    {
+      "id": "platform.metadata",
+      "list": "platform",
+      "kind": "address",
+      "protocol": "tcp",
+      "port": 80,
+      "purpose": "platform",
+      "verdict": "required",
+      "probeFrom": [],
+      "note": "Instance metadata.",
+      "source": {
+        "claim": "ref:avd-fabric-ips#two-platform-ips",
+        "url": "https://learn.microsoft.com/azure/virtual-desktop/azurecommunicationips",
+        "pin": "Learn git_commit_id 9df01472230d01bf9bb36b02e508abd74e4dc029, updated_at 2026-05-25"
+      }
+    }
+  ],
+  "views": {
+    "browser": {
+      "lists": [
+        "client"
+      ],
+      "probe": [
+        "client.sign-in"
+      ],
+      "notTested": [
+        "client.wvd"
+      ]
+    },
+    "device": {
+      "lists": [
+        "client"
+      ],
+      "probe": [
+        "client.sign-in"
+      ],
+      "notTested": [
+        "client.wvd"
+      ]
+    },
+    "host": {
+      "lists": [
+        "host",
+        "platform"
+      ],
+      "probe": [
+        "host.cert-ocsp"
+      ],
+      "notTested": [
+        "platform.metadata"
+      ]
+    }
+  }
+}

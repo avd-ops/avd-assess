@@ -25,4 +25,5 @@ jobs:
       - run: python3 tests/check_use_cases.py
       - run: python3 scripts/check_evidence.py
       - run: python3 tests/check_evidence_fixtures.py
+      - run: python3 tests/check_endpoints.py
       - run: python3 tests/check_wording.py
