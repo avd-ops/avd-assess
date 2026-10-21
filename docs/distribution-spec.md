@@ -123,13 +123,13 @@ Every asset gets a build provenance attestation (`actions/attest-build-provenanc
 |---|---|---|
 | `https://github.com/avd-ops/avd-assess/releases/download/v<version>/<asset>` | no (immutable release) | the canonical copy; what a consumer downloads at re-pin |
 | `https://github.com/avd-ops/avd-assess/releases/latest/download/<asset>` | yes | people only; nothing pins it |
-| `https://avd-ops.github.io/avd-assess/catalog.json` | yes | every release: version, tag, commit, date, manifest SHA-256, asset URLs, and which documents changed major |
-| `https://avd-ops.github.io/avd-assess/schemas/<schema-name>/v<major>.json` | yes, within a major | each schema's `$id`; holds the newest minor of that major, which is backward compatible by section 6 |
-| `https://avd-ops.github.io/avd-assess/v/<version>/<path>` | Pages can change | a mirror for browser tools: GitHub Pages answers cross-origin requests and release downloads may not (assumption to verify in phase 1); every reader still checks the manifest hash |
+| `https://assess.avd-ops.dev/catalog.json` | yes | every release: version, tag, commit, date, manifest SHA-256, asset URLs, and which documents changed major |
+| `https://assess.avd-ops.dev/schemas/<schema-name>/v<major>.json` | yes, within a major | each schema's `$id`; holds the newest minor of that major, which is backward compatible by section 6 |
+| `https://assess.avd-ops.dev/v/<version>/<path>` | Pages can change | a mirror for browser tools: GitHub Pages answers cross-origin requests and release downloads may not (assumption to verify in phase 1); every reader still checks the manifest hash |
 
 Pages is published by a `pages` job inside `release.yml` that runs after the publish job (a release published with the workflow's own token starts no other workflow, so a separate `release: published` trigger would never fire), and by `workflow_dispatch` to rerun it if a deploy fails after publishing. It builds from release assets only, never from a working tree. A Pages page is a convenience, never a trust anchor: section 9's pins are hashes, so a changed mirror fails the check.
 
-**Schema `$id`.** Phase 1 gives every schema an `$id` of the form above (`https://avd-ops.github.io/avd-assess/schemas/avd-assess-map/v1.json`). Adding `$id` changes the schemas' bytes, so consumers pick it up at their next re-pin; nothing breaks before that, because pins name a commit. `$id` is an identifier: no reader resolves it over the network.
+**Schema `$id`.** Phase 1 gives every schema an `$id` of the form above (`https://assess.avd-ops.dev/schemas/avd-assess-map/v1.json`). Adding `$id` changes the schemas' bytes, so consumers pick it up at their next re-pin; nothing breaks before that, because pins name a commit. `$id` is an identifier: no reader resolves it over the network.
 
 ## 6. Versioning
 
@@ -305,8 +305,8 @@ A Claude code review of the PR then found ten more (a leftover `git archive` in 
 
 ## 16. Open questions for the owner
 
-1. **First release:** `v1.0.0`, cut after the endpoints and governance pillar (#34), the security review map (#38) and the endpoint map (#39) merge, so the planned single re-pin lands on it? Recommended.
-2. **Pages address:** `avd-ops.github.io/avd-assess/` (owned by this repo, recommended) or a path under `avd-ops.dev`, which the avd-ops repo would have to publish?
+1. **First release:** `v1.0.0`, cut after the endpoints and governance pillar (#34), the security review map (#38) and the endpoint map (#39) merge, so the planned single re-pin lands on it. **Answered (owner, 2026-10-21): yes.**
+2. **Pages address:** **answered (owner, 2026-10-21): `assess.avd-ops.dev`**, a custom domain on this repo's own Pages. Phase 2 adds a DNS `CNAME` record `assess` pointing at `avd-ops.github.io` and verifies `avd-ops.dev` for the organization in GitHub, so no other account can claim the subdomain. Section 5 uses this address; every `$id` is under it.
 3. **Immutable releases:** turn on for avd-assess only, or for the whole avd-ops organization (decision 0008 wants it on every repo with releases)?
 4. **Release gate:** a `release` environment with you as required reviewer, so a tag alone publishes nothing? Recommended.
 5. **Method and gap pages in the bundle** (zip only, about 1 MB in all)? Recommended yes, so the method travels with the data.
