@@ -5,8 +5,12 @@ pin: "Learn git_commit_id 28ba1f62eadc3d9b096c20ec4ea8e84cdc550d86, updated_at 2
 read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment]
-pillars: [profiles]
+pillars: [profiles, reliability]
+notes: The checklist's link for A03.06 (cross-region-replication-create-peering) belongs to this page's family; the replication overview URL resolves to the same page. How the multiregion guide applies it to AVD is ref:avd-multiregion-bcdr#anf-zone-or-region.
 claims:
   - id: three-models
     says: Azure NetApp Files replicates volumes cross-zone, cross-region or both, chosen per reliability plan; cross-region replication is billed on data replicated.
+    kind: published
+  - id: zone-and-region-together
+    says: One source volume can carry both a cross-zone and a cross-region replication relationship (cross-zone-region replication), with at most two destination volumes.
     kind: published

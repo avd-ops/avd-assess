@@ -1,0 +1,13 @@
+id: files-backup-portal
+title: Back up Azure Files in the Azure portal
+url: https://learn.microsoft.com/azure/backup/backup-azure-files
+pin: "Learn git_commit_id e9b0ca20cc1701ab1bf6865b58179e4c9abafb8b, updated_at 2026-09-23"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability, profiles]
+notes: Its prerequisite differs from the support matrix (ref:files-backup-support#key-access-needed); the landing zone's recovery spec records both (facts F14 and F19, open question U1).
+claims:
+  - id: keys-or-private
+    says: As a prerequisite, the storage account either permits access with account keys or has public network access disabled.
+    kind: published

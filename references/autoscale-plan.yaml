@@ -1,0 +1,40 @@
+id: autoscale-plan
+title: Create and assign an autoscale scaling plan for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/autoscale-create-assign-scaling-plan
+pin: "Learn git_commit_id 9482be6e3db06c8a844a8d6bfbf0cc312a7ba4c3, updated_at 2026-08-31"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [scaling]
+notes: The prerequisites and the meaning of each schedule field. The concepts page (ref:avd-autoscale) says what autoscale is for; this one says what a correct plan needs.
+claims:
+  - id: max-session-limit-required
+    says: Autoscale on a pooled host pool needs a host pool session limit set by the operator, not left at the default.
+    kind: published
+  - id: role-at-subscription
+    says: Autoscale needs the power on and off role (and for dynamic autoscaling the VM contributor role) granted to the service or the host pool's identity at subscription scope; a narrower scope stops it working properly.
+    kind: published
+  - id: no-other-scaling-tool
+    says: Autoscale and scaling through Automation or Logic Apps can't share a host pool.
+    kind: published
+  - id: dynamic-needs-host-config
+    says: Dynamic autoscaling works only on pooled host pools with a session host configuration; other pools use power management autoscaling.
+    kind: published
+  - id: hibernate-not-with-profiles
+    says: Hibernation in personal autoscale isn't supported with FSLogix or App Attach.
+    kind: published
+  - id: exclusion-tag
+    says: Hosts carrying the plan's exclusion tag are not started, stopped or drained by autoscale, but still count toward the minimum percentage of hosts.
+    kind: published
+  - id: ramp-up-before-peak
+    says: Ramp-up starts preparing hosts before peak hours, with breadth-first load balancing recommended in ramp-up.
+    kind: guidance
+  - id: capacity-threshold-example
+    says: The capacity threshold is the share of available sessions in use that makes autoscale start another host; the minimum percentage of hosts stays on whatever the load.
+    kind: published
+  - id: ramp-down-consolidates
+    says: Ramp-down only shuts hosts down when all sessions, active and disconnected, fit on fewer hosts under the capacity threshold; without forced sign-out it waits for hosts with no sessions.
+    kind: published
+  - id: off-peak-depth-first
+    says: Depth-first load balancing is recommended off peak, so hosts empty and can be turned off.
+    kind: guidance

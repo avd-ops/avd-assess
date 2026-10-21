@@ -1,0 +1,16 @@
+id: defender-cloud-edr-detection
+title: Detecting endpoint detection and response solutions (Defender for Cloud)
+url: https://learn.microsoft.com/azure/defender-for-cloud/detect-endpoint-detection-response-solutions
+pin: "Learn git_commit_id 04e79f7f40fbd03851607740eb3109f049919434, updated_at 2026-09-24"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [endpoint-protection]
+notes: The page lists the third-party EDR products it recognizes by name; this repo doesn't copy the list (tests/wording.json). Read it at the pin.
+claims:
+  - id: agentless-edr-check
+    says: With Defender for Servers Plan 2 or Defender CSPM on, an agentless scan checks whether each Azure VM runs a supported EDR product and raises a recommendation when it doesn't.
+    kind: published
+  - id: third-party-recognized
+    says: The scan recognizes Microsoft's EDR and a published list of third-party EDR products; one it can't discover can be exempted rather than reported as missing.
+    kind: published

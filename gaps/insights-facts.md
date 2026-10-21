@@ -26,17 +26,17 @@ No source sets a retention number. Retention stays the estate's choice and is re
 
 | Fact | Type | Read from |
 |---|---|---|
-| `c11.monitoring.diagnostics` | count map: host pools, app groups and workspaces by diagnostic setting (all logs, the listed categories, off) | REST `diagnosticSettings` per object |
+| `c11.hostPool.diagnosticsSetting`, `c11.monitoring.diagnostics` | per host pool, and per other AVD object kind as a count map: sends all logs, the required categories, part of them, or nothing | REST `diagnosticSettings` per object |
 | `c11.hostPool.sessionHosts.monitoringAgent` | hosts with the Azure Monitor Agent `Succeeded`, out of the total | Resource Graph VM extensions |
 | `c11.hostPool.sessionHosts.insightsDcr` | hosts associated with a rule whose name starts `microsoft-avdi-` | Resource Graph `InsightsResources` |
 | `c11.logAnalytics.retentionDays` | count map, workspaces by retention days (built) | Resource Graph workspaces |
-| `c11.monitoring.alerts` | enabled log and metric alert rules on the workspace or the hosts' resource groups: a count, never their receivers | Resource Graph `scheduledqueryrules`, `metricalerts` |
+| `c11.monitoring.alerts` | alert rules on the workspace, the hosts' resource groups or the host pools, counted by kind and by state (enabled with a receiver, enabled without, disabled); never their receivers | Resource Graph `scheduledqueryrules`, `metricalerts`, `activitylogalerts` |
 
 With these, two checks can run:
 - E02.02: every AVD object sends the listed categories.
 - E02.01: every host sends Insights data.
 
-They join `method.json` once avd-current-state collects these facts and they are built in the register.
+These are in the register (retention built, the rest specified), defined in full in `gap:monitoring-scope` with the storage alert and Service Health facts beside them. The checks join `method.json` once avd-current-state builds them.
 
 ## Measured facts (proposed)
 

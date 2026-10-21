@@ -1,0 +1,18 @@
+id: avd-service-resilience
+title: Azure Virtual Desktop service architecture and resilience
+url: https://learn.microsoft.com/azure/virtual-desktop/service-architecture-resilience
+pin: "Learn git_commit_id 2448264961c9205321bb4012907ade9122c2871a, updated_at 2026-09-30"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability]
+claims:
+  - id: control-plane-microsoft
+    says: The web, broker, gateway and resource directory services and the metadata databases are Microsoft's and fail over without customer action; a database failover briefly fails new connections but not existing ones.
+    kind: published
+  - id: customer-owns-hosts
+    says: The customer creates and manages session hosts, their images, network, resiliency, backup and recovery, and the user identities.
+    kind: published
+  - id: deployment-scope-fixed
+    says: A host pool's deployment scope (geographical or regional) decides where its metadata is kept, can't be changed after creation, and regional and geographical objects can't be mixed.
+    kind: published

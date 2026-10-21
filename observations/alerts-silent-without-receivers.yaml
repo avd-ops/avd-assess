@@ -1,0 +1,7 @@
+id: alerts-silent-without-receivers
+claim: ref:caf-avd-management#alerting-model
+verdict: extends
+observed: An alerting model needs someone to receive the alerts, not only alert rules. The landing zone creates its six log alerts (unhealthy hosts, FSLogix errors, connection errors, low disk, low memory, high CPU) on every deployment, enabled, but attaches an action group only when alert addresses are given; without them the rules fire with nobody notified, and the Service Health alert isn't created at all. An assessment that counts alert rules alone would score that estate as alerted, so the alert fact counts rules with and without an action group separately (gap:monitoring-scope). The landing zone also has no Azure Files metric alert (throttling or capacity, review checklist E02.03); its FSLogix alert reads host event logs only.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/monitoring.bicep
+date: 2026-10-21

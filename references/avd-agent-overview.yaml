@@ -1,0 +1,21 @@
+id: avd-agent-overview
+title: Get started with the Azure Virtual Desktop Agent
+url: https://learn.microsoft.com/azure/virtual-desktop/agent-overview
+pin: "Learn git_commit_id a2c9d3b52ffe73e75a81d5f757380994c65169e1, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [images, diagnostics]
+claims:
+  - id: latest-stable
+    says: Hosts must always run the latest stable agent; the service updates it as versions are released.
+    kind: guidance
+  - id: flights
+    says: New agent versions roll out in flights over five-day periods, about 24 hours per broker region, so hosts in one pool can update at different times.
+    kind: published
+  - id: failed-update-event
+    says: Event 3277 in a host's Application log means its agent update failed; without it, the host is in a later flight.
+    kind: published
+  - id: keeps-three-versions
+    says: Each host keeps three versions of the agent and side-by-side stack for rollback; removing them early stops a rollback.
+    kind: published
