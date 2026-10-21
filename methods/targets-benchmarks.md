@@ -13,7 +13,8 @@ What good looks like, as numbers with their sources. A benchmark is `published` 
 7. **CPU on session hosts:** under 50% healthy, over 80% critical, and a queue of two or more per core with high CPU worth investigating (published for Windows generally, not AVD, `ref:perfmon-troubleshooting#cpu-bands`, `ref:perfmon-troubleshooting#pql-per-processor`).
 8. **Which number is the reference** for each metric, and its standing, is in the gold-standard registry (`gap:gold-standards`).
 9. **Reliability and recovery targets** are the workload's own, set first (`ref:waf-reliability-checklist#RE:04`).
-10. **Together, per workload class,** these numbers make the [baseline profile](baseline-profile.md), with the utilization bands a host should run in (`gap:baseline-profile`).
+10. **Before the estate has users,** a pilot or scripted load test replaces the users-per-vCPU and size priors for a class; how it is run and where its result goes is ours, because no open workload or pass threshold is published (`gap:workload-benchmark`, `ref:review-checklists-avd#C01.10`).
+11. **Together, per workload class,** these numbers make the [baseline profile](baseline-profile.md), with the utilization bands a host should run in (`gap:baseline-profile`).
 
 ## Not yet known
 

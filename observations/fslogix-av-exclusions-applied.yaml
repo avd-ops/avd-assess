@@ -1,0 +1,7 @@
+id: fslogix-av-exclusions-applied
+claim: ref:fslogix-prerequisites#av-exclusions
+verdict: agrees
+observed: The landing zone applies the published FSLogix file and process exclusions to Microsoft Defender Antivirus on every host and doesn't fail the host when tamper protection or an endpoint policy owns exclusions, which means an assessment has to read the effective exclusions on the host rather than trust the deployment.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1
+date: 2026-10-21

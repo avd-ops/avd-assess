@@ -1,0 +1,22 @@
+id: defender-av-compatibility
+title: Microsoft Defender Antivirus compatibility with other security products
+url: https://learn.microsoft.com/defender-endpoint/microsoft-defender-antivirus-compatibility
+pin: "Learn git_commit_id ad3972b20dc3eb4ed0a821b852962545a0335bdf, updated_at 2026-09-11"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [endpoint-protection]
+notes: Windows Enterprise multi-session is a Windows client edition, so the client rows of the page's tables apply to it.
+claims:
+  - id: third-party-av-state
+    says: With a non-Microsoft antivirus as the primary product, Defender Antivirus runs in passive mode on a client OS onboarded to Defender for Endpoint (or with Smart App Control on), and is disabled otherwise.
+    kind: published
+  - id: security-center-required
+    says: If the Windows Security Center service is disabled on a client, Defender Antivirus can't see the other antivirus and stays active; two active products is unsupported and hurts performance.
+    kind: published
+  - id: running-mode-readable
+    says: The page reads Defender Antivirus's running mode (normal, passive or EDR block mode) on the machine with Get-MpComputerStatus.
+    kind: published
+  - id: passive-still-updates
+    says: Keep Defender Antivirus updates flowing even in passive mode.
+    kind: published

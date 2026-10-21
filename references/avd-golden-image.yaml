@@ -1,0 +1,31 @@
+id: avd-golden-image
+title: Create a golden image in Azure
+url: https://learn.microsoft.com/azure/virtual-desktop/set-up-golden-image
+pin: "Learn git_commit_id e068c70dd336a6d917cc4649ebe53f9a85ba4c37, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [images]
+notes: The checklist's link for B01.01, B01.02 and B01.06. The page walks through a manual capture; the method treats it as the list of rules any build process must keep, whatever tool runs it.
+claims:
+  - id: approaches
+    says: A golden image holding the apps and settings is one approach; device management tools or an automated image build are others, and which fits depends on the estate's size, complexity and current app deployment process.
+    kind: guidance
+  - id: gen1-or-gen2
+    says: Either VM generation can be used for the image VM, and generation 2 supports features generation 1 doesn't.
+    kind: published
+  - id: no-agent-in-image
+    says: Don't install the AVD agent or join a host pool in the image VM; hosts built from it later fail to register because the token has expired.
+    kind: published
+  - id: uwf-unsupported
+    says: The Unified Write Filter isn't supported on session hosts and must be off in the image.
+    kind: published
+  - id: updates-and-cleanup
+    says: Install the latest Windows updates and clean up (temporary files, disk optimization, stray user profiles) before the final snapshot and sysprep.
+    kind: guidance
+  - id: gallery-for-production
+    says: Use Azure Compute Gallery images for production, for replication and versioning; a standalone managed image suits only a simpler deployment.
+    kind: guidance
+  - id: fresh-source-vm
+    says: Never capture a VM that's in a host pool, never capture the same VM twice, and don't build a new base VM from an existing custom image; start from a new source VM or the last snapshot.
+    kind: guidance

@@ -2,6 +2,43 @@
   "schema": "avd-assess-index/v1",
   "references": [
     {
+      "id": "accelerated-networking",
+      "title": "Accelerated Networking overview",
+      "url": "https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview",
+      "pin": "Learn git_commit_id 12abaa80882d937c25bddcc8a9793b357e9551ee, updated_at 2026-09-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "capacity"
+      ],
+      "notes": "The checklist's link for C01.13.",
+      "claims": [
+        {
+          "id": "lower-latency-jitter-cpu",
+          "says": "Accelerated Networking bypasses the host's virtual switch, lowering latency, jitter and CPU use on the VM that has it.",
+          "kind": "published"
+        },
+        {
+          "id": "supported-sizes",
+          "says": "Most general-purpose and compute-optimized sizes with two or more vCPUs support it, or four or more where the size has hyperthreading.",
+          "kind": "published"
+        },
+        {
+          "id": "not-nc-nv",
+          "says": "NC and NV sizes don't support it, and enabling it on them has no effect.",
+          "kind": "published"
+        },
+        {
+          "id": "deallocated-to-enable",
+          "says": "It can be turned on only while the VM is stopped and deallocated.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "advisor-cost",
       "title": "Cost recommendations (Azure Advisor)",
       "url": "https://learn.microsoft.com/azure/advisor/advisor-reference-cost-recommendations",
@@ -122,15 +159,191 @@
       ]
     },
     {
-      "id": "app-attach",
-      "title": "App Attach in Azure Virtual Desktop",
-      "url": "https://learn.microsoft.com/azure/virtual-desktop/app-attach-overview",
-      "pin": "Learn git_commit_id 18f8ed292f3df23081d1cb2446c480105abdbaf9, updated_at 2026-08-26",
-      "read": "2026-10-20",
+      "id": "anf-ad-connections",
+      "title": "Create and manage Active Directory connections for Azure NetApp Files",
+      "url": "https://learn.microsoft.com/azure/azure-netapp-files/create-active-directory-connections",
+      "pin": "Learn git_commit_id 273bab81571d488f4a5f0ad079e22177dd4c9b10, updated_at 2026-09-29",
+      "read": "2026-10-21",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
       ],
+      "pillars": [
+        "profiles"
+      ],
+      "claims": [
+        {
+          "id": "site-name-required",
+          "says": "The AD site name is required and is how Azure NetApp Files finds domain controllers; the default is Default-First-Site-Name.",
+          "kind": "published"
+        },
+        {
+          "id": "aes-256-for-2025-dcs",
+          "says": "AES-256 encryption is required on the connection if the domain uses Windows Server 2025 domain controllers.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "anf-continuous-availability",
+      "title": "Enable Continuous Availability on existing Azure NetApp Files SMB volumes",
+      "url": "https://learn.microsoft.com/azure/azure-netapp-files/enable-continuous-availability-existing-smb",
+      "pin": "Learn git_commit_id 43591dd58af46486c4f2e162c3f5d8253fc60e12, updated_at 2025-07-02",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles",
+        "app-delivery"
+      ],
+      "claims": [
+        {
+          "id": "supported-workloads",
+          "says": "Continuous Availability is supported only for FSLogix profile and ODFC containers, App Attach containers, an app layering product's shares, and SQL Server; no other workloads.",
+          "kind": "published"
+        },
+        {
+          "id": "reboot-after-enable",
+          "says": "Turning it on for an existing volume doesn't protect existing SMB sessions until the clients reconnect after a reboot.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "anf-fslogix",
+      "title": "Configure FSLogix profile containers on Azure NetApp Files",
+      "url": "https://learn.microsoft.com/fslogix/how-to-configure-profile-container-netapp",
+      "pin": "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles"
+      ],
+      "notes": "The checklist's H02.02 link (azure/virtual-desktop/create-fslogix-profile-container) redirects here (checked 2026-10-21).",
+      "claims": [
+        {
+          "id": "needs-ad-ds-identities",
+          "says": "Azure NetApp Files holds profiles for Entra joined or hybrid joined hosts only when user identities come from AD DS.",
+          "kind": "published"
+        },
+        {
+          "id": "enable-continuous-availability",
+          "says": "Enable Continuous Availability on the SMB volume that holds FSLogix profile containers.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "anf-replication",
+      "title": "Azure NetApp Files replication (cross-zone and cross-region)",
+      "url": "https://learn.microsoft.com/azure/azure-netapp-files/cross-region-replication-introduction",
+      "pin": "Learn git_commit_id 28ba1f62eadc3d9b096c20ec4ea8e84cdc550d86, updated_at 2026-04-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles",
+        "reliability"
+      ],
+      "notes": "The checklist's link for A03.06 (cross-region-replication-create-peering) belongs to this page's family; the replication overview URL resolves to the same page. How the multiregion guide applies it to AVD is ref:avd-multiregion-bcdr#anf-zone-or-region.",
+      "claims": [
+        {
+          "id": "three-models",
+          "says": "Azure NetApp Files replicates volumes cross-zone, cross-region or both, chosen per reliability plan; cross-region replication is billed on data replicated.",
+          "kind": "published"
+        },
+        {
+          "id": "zone-and-region-together",
+          "says": "One source volume can carry both a cross-zone and a cross-region replication relationship (cross-zone-region replication), with at most two destination volumes.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "app-attach-msix-image",
+      "title": "Create an image for App Attach in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/app-attach-create-msix-image",
+      "pin": "Learn git_commit_id d2034cb48034470e11ffe6cebde33d761f9a932b, updated_at 2026-05-22",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "app-delivery"
+      ],
+      "claims": [
+        {
+          "id": "cim-recommended",
+          "says": "Convert MSIX packages to CIM images for the best performance, particularly on Windows 11; use VHDX over VHD.",
+          "kind": "guidance"
+        },
+        {
+          "id": "build-on-older-windows",
+          "says": "Build CIM images on a Windows version no newer than the hosts that run them; images built on Windows 11 may not work on Windows 10.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "app-attach-setup",
+      "title": "Add and manage App Attach applications in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/app-attach-setup",
+      "pin": "Learn git_commit_id d3cfc7bae558344fa9de1867ba11fbec56683de1, updated_at 2026-09-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "app-delivery"
+      ],
+      "claims": [
+        {
+          "id": "supported-os",
+          "says": "Session hosts must run a supported Windows client or server OS; Windows Server 2022 and 2025 are supported from 14 April 2026.",
+          "kind": "published"
+        },
+        {
+          "id": "packages-are-resources",
+          "says": "Each package is an Azure resource (an App Attach package) carrying its image path, version, active state, registration type and host pool assignments, readable through the management plane.",
+          "kind": "published"
+        },
+        {
+          "id": "health-check-on-failure",
+          "says": "A package sets what the session host health check reports when it fails to stage, so a staging failure can show as host health.",
+          "kind": "published"
+        },
+        {
+          "id": "disable-auto-update",
+          "says": "Disable automatic updates for MSIX and Appx apps on session hosts (Store auto-download and content delivery settings), through Group Policy, Intune or the image.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "app-attach",
+      "title": "App Attach in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/app-attach-overview",
+      "pin": "Learn git_commit_id 18f8ed292f3df23081d1cb2446c480105abdbaf9, updated_at 2026-08-26",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "app-delivery"
+      ],
+      "notes": "The old app-attach-file-share and app-attach-faq pages that the review checklist links for B02 now redirect here (checked 2026-10-21).",
       "claims": [
         {
           "id": "per-user-per-host-pool",
@@ -141,6 +354,71 @@
           "id": "share-same-region",
           "says": "The app package share should be in the session hosts' region and not the share used for profile containers.",
           "kind": "guidance"
+        },
+        {
+          "id": "package-formats",
+          "says": "App Attach takes MSIX and Appx packages and bundles, and App-V packages, mounted from a file share instead of installed in the image.",
+          "kind": "published"
+        },
+        {
+          "id": "cimfs-for-windows-11",
+          "says": "CimFS images mount and unmount faster and use less CPU and memory than VHDX; CimFS is recommended only for Windows 11 hosts, and VHD not at all.",
+          "kind": "published"
+        },
+        {
+          "id": "on-demand-registration",
+          "says": "On-demand registration is the default and recommended because it doesn't add to sign-in time; log-on blocking registration does.",
+          "kind": "published"
+        },
+        {
+          "id": "identity-providers",
+          "says": "App Attach supports Entra ID and AD DS identities, not Entra Domain Services.",
+          "kind": "published"
+        },
+        {
+          "id": "host-read-access",
+          "says": "Each session host's computer identity needs read access to the package share; how you grant it depends on the storage and the join type.",
+          "kind": "published"
+        },
+        {
+          "id": "dedicated-storage-account",
+          "says": "Granting the AVD ARM provider service principal access to a storage account gives the service all data in it, so the account should hold only App Attach packages, with keys rotated.",
+          "kind": "guidance"
+        },
+        {
+          "id": "anf-needs-domain",
+          "says": "Azure NetApp Files can hold packages only when session hosts are joined to AD DS or Entra Domain Services.",
+          "kind": "published"
+        },
+        {
+          "id": "performance-example",
+          "says": "An example 1 GB image needs about 1 IOPS steady, 10 at boot and sign-in, and 400 ms latency per session host; real needs come from testing.",
+          "kind": "prior"
+        },
+        {
+          "id": "av-exclude-images",
+          "says": "Exclude the read-only package images from antivirus scans.",
+          "kind": "guidance"
+        },
+        {
+          "id": "handle-per-host",
+          "says": "Disk images are mounted by the host's computer account, so Azure Files opens one handle per host per image, not per user.",
+          "kind": "published"
+        },
+        {
+          "id": "dr-replicate-share",
+          "says": "A disaster recovery plan must replicate the package share to the failover location and keep its path reachable there.",
+          "kind": "published"
+        },
+        {
+          "id": "trusted-certificate-chain",
+          "says": "Every MSIX or Appx package is signed, the whole chain must be trusted on the hosts, self-signed only for test, and packages should be timestamped to outlive the certificate.",
+          "kind": "published"
+        },
+        {
+          "id": "in-place-or-side-by-side",
+          "says": "A new app version arrives as a new image, side by side or in place; users get it at their next sign-in, and the old image stays until no one uses it.",
+          "kind": "published"
         }
       ]
     },
@@ -253,6 +531,38 @@
           "id": "diagram-from-rows",
           "says": "Its draw.io diagram functions (Modules/Public/PublicFunctions/Diagram/) make no Azure calls and draw from the Resource Graph rows they are given, with no AVD host pool placement.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "asr-zone-to-zone",
+      "title": "Enable Azure VM disaster recovery between availability zones (Site Recovery)",
+      "url": "https://learn.microsoft.com/azure/site-recovery/azure-to-azure-how-to-enable-zone-to-zone-disaster-recovery",
+      "pin": "Learn git_commit_id 5e88feaf574a0f668f71c00fbea1026485d672c0, updated_at 2026-09-03",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "notes": "The checklist's link for A01.06 (a local recovery strategy for personal host pools).",
+      "claims": [
+        {
+          "id": "limited-regions",
+          "says": "Zone-to-zone recovery works only in a listed subset of regions with availability zones, and not for VMs on zone-redundant managed disks or Ultra Disks.",
+          "kind": "published"
+        },
+        {
+          "id": "may-fall-short-region-wide",
+          "says": "Zone-to-zone recovery can fall short of resilience requirements in a region-wide disaster.",
+          "kind": "published"
+        },
+        {
+          "id": "rto-sla-not-rpo",
+          "says": "Site Recovery's SLA promises an RTO of up to one hour; there is no SLA for RPO.",
+          "kind": "published"
         }
       ]
     },
@@ -397,6 +707,32 @@
       ]
     },
     {
+      "id": "availability-zones",
+      "title": "What are Azure availability zones?",
+      "url": "https://learn.microsoft.com/azure/reliability/availability-zones-overview",
+      "pin": "Learn git_commit_id 2f7ee4c8b45127943bcd615810dc882f9ddd598e, updated_at 2026-10-13",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "claims": [
+        {
+          "id": "zonal-needs-multiple",
+          "says": "A zonal resource isn't resilient to a zone outage on its own; resilience needs instances spread across zones or a zone-redundant configuration.",
+          "kind": "published"
+        },
+        {
+          "id": "nonzonal-placement",
+          "says": "A resource not configured for zones may be placed in any zone of the region and can go down with whichever zone fails.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-advisor",
       "title": "How to resolve Azure Advisor recommendations for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/azure-advisor-recommendations",
@@ -431,6 +767,44 @@
           "id": "twice-a-day",
           "says": "Advisor refreshes twice a day, so a fixed setting clears from its list with a delay; letting it clear on its own is preferred to dismissing it.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-agent-overview",
+      "title": "Get started with the Azure Virtual Desktop Agent",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/agent-overview",
+      "pin": "Learn git_commit_id a2c9d3b52ffe73e75a81d5f757380994c65169e1, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "images",
+        "diagnostics"
+      ],
+      "claims": [
+        {
+          "id": "latest-stable",
+          "says": "Hosts must always run the latest stable agent; the service updates it as versions are released.",
+          "kind": "guidance"
+        },
+        {
+          "id": "flights",
+          "says": "New agent versions roll out in flights over five-day periods, about 24 hours per broker region, so hosts in one pool can update at different times.",
+          "kind": "published"
+        },
+        {
+          "id": "failed-update-event",
+          "says": "Event 3277 in a host's Application log means its agent update failed; without it, the host is in a later flight.",
+          "kind": "published"
+        },
+        {
+          "id": "keeps-three-versions",
+          "says": "Each host keeps three versions of the agent and side-by-side stack for rollback; removing them early stops a rollback.",
+          "kind": "published"
         }
       ]
     },
@@ -608,6 +982,76 @@
       ]
     },
     {
+      "id": "avd-custom-image-templates",
+      "title": "Use custom image templates to create custom images in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/create-custom-image-templates",
+      "pin": "Learn git_commit_id e068c70dd336a6d917cc4649ebe53f9a85ba4c37, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for B01.05. The landing zone's own image build uses Azure Image Builder directly with the family's optimization tool (ref:wdot), not the portal's templates.",
+      "claims": [
+        {
+          "id": "built-on-image-builder",
+          "says": "Custom image templates are built on Azure Image Builder and tailored for AVD, so a host pool's image configuration is standardized and repeatable.",
+          "kind": "guidance"
+        },
+        {
+          "id": "dedicated-identity",
+          "says": "The build runs as a user-assigned managed identity, ideally one made for the purpose, with a custom role scoped to the image resource group.",
+          "kind": "guidance"
+        },
+        {
+          "id": "generation-must-match",
+          "says": "A gallery image definition names generation 1 or 2, and the source image's generation must match it.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-data-locations",
+      "title": "Data locations for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/data-locations",
+      "pin": "Learn git_commit_id ebbe087e9ad40882b4901691bb5c93bab04a149c, updated_at 2026-09-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "capacity",
+        "governance"
+      ],
+      "notes": "The checklist's link for C03.02.",
+      "claims": [
+        {
+          "id": "geographical-default",
+          "says": "By default a host pool's deployment scope is geographical, and its metadata is stored in the geography of the region chosen, with no dependency on that region.",
+          "kind": "published"
+        },
+        {
+          "id": "regional-scope",
+          "says": "A regional deployment scope keeps the metadata of the host pool and its service objects in one region, where the region offers it; elsewhere host pools are geographical.",
+          "kind": "published"
+        },
+        {
+          "id": "arm-paths-outside",
+          "says": "Resource Manager paths count as organizational information, not customer data, and are stored outside the chosen geography.",
+          "kind": "published"
+        },
+        {
+          "id": "no-user-data",
+          "says": "The service stores object names, VM names and user principal names, but no user documents or app data.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-deploy-host-pool",
       "title": "Deploy Azure Virtual Desktop (host pools and session hosts)",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/deploy-azure-virtual-desktop",
@@ -671,6 +1115,39 @@
           "id": "service-error-escalate",
           "says": "In the errors table, ServiceError false marks issues an admin can fix; true marks ones to escalate to Microsoft with the correlation ID.",
           "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-disaster-recovery",
+      "title": "Azure Virtual Desktop business continuity and disaster recovery concepts",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/disaster-recovery-concepts",
+      "pin": "Learn git_commit_id 1775de02212032150bdac28deed32d92c928e8b8, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles",
+        "reliability"
+      ],
+      "notes": "The checklist's disaster-recovery links (A01.03, A01.05, A02.02, A03.02, A03.03) point at an older URL that now redirects here. The page is an index; the detail is in the multiregion guide (ref:avd-multiregion-bcdr).",
+      "claims": [
+        {
+          "id": "no-native-dr",
+          "says": "AVD has no native disaster recovery feature; profiles and their storage are protected with Azure's own redundancy, backup and replication services.",
+          "kind": "published"
+        },
+        {
+          "id": "customer-managed-components",
+          "says": "Session hosts, profile management, applications, user data and user identities are the customer's or partner's to make resilient; the rest is Microsoft's.",
+          "kind": "published"
+        },
+        {
+          "id": "ha-bc-dr",
+          "says": "A recovery plan covers high availability, business continuity and disaster recovery as three different things.",
+          "kind": "guidance"
         }
       ]
     },
@@ -746,6 +1223,35 @@
       ]
     },
     {
+      "id": "avd-faq",
+      "title": "Azure Virtual Desktop FAQ",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/faq",
+      "pin": "Learn git_commit_id ec03f3009f339ca1c57ac22bf993f6c90a7965ff, updated_at 2025-12-04",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles",
+        "images",
+        "scaling"
+      ],
+      "notes": "Also the checklist's link for E01.13 (token-90-days, read by the capacity and images pillars at the same pin).",
+      "claims": [
+        {
+          "id": "backup-by-storage",
+          "says": "Profile backup follows the storage, Azure Backup for Azure Files shares, snapshots or Azure NetApp Files backup for ANF; VM backup is recommended only for personal pools.",
+          "kind": "published"
+        },
+        {
+          "id": "token-90-days",
+          "says": "A host's registration certificate is valid for 90 days, so a host should be on for 20 minutes every 90 days to refresh its token and update its agent and stack.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-fslogix-storage",
       "title": "Storage options for FSLogix profile containers in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/store-fslogix-profile",
@@ -794,6 +1300,58 @@
         {
           "id": "monitor-then-resize",
           "says": "Its sizes are initial estimates; monitor actual use after deployment and resize up or down.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-golden-image",
+      "title": "Create a golden image in Azure",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/set-up-golden-image",
+      "pin": "Learn git_commit_id e068c70dd336a6d917cc4649ebe53f9a85ba4c37, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for B01.01, B01.02 and B01.06. The page walks through a manual capture; the method treats it as the list of rules any build process must keep, whatever tool runs it.",
+      "claims": [
+        {
+          "id": "approaches",
+          "says": "A golden image holding the apps and settings is one approach; device management tools or an automated image build are others, and which fits depends on the estate's size, complexity and current app deployment process.",
+          "kind": "guidance"
+        },
+        {
+          "id": "gen1-or-gen2",
+          "says": "Either VM generation can be used for the image VM, and generation 2 supports features generation 1 doesn't.",
+          "kind": "published"
+        },
+        {
+          "id": "no-agent-in-image",
+          "says": "Don't install the AVD agent or join a host pool in the image VM; hosts built from it later fail to register because the token has expired.",
+          "kind": "published"
+        },
+        {
+          "id": "uwf-unsupported",
+          "says": "The Unified Write Filter isn't supported on session hosts and must be off in the image.",
+          "kind": "published"
+        },
+        {
+          "id": "updates-and-cleanup",
+          "says": "Install the latest Windows updates and clean up (temporary files, disk optimization, stray user profiles) before the final snapshot and sysprep.",
+          "kind": "guidance"
+        },
+        {
+          "id": "gallery-for-production",
+          "says": "Use Azure Compute Gallery images for production, for replication and versioning; a standalone managed image suits only a simpler deployment.",
+          "kind": "guidance"
+        },
+        {
+          "id": "fresh-source-vm",
+          "says": "Never capture a VM that's in a host pool, never capture the same VM twice, and don't build a new base VM from an existing custom image; start from a new source VM or the last snapshot.",
           "kind": "guidance"
         }
       ]
@@ -1120,6 +1678,38 @@
       ]
     },
     {
+      "id": "avd-language-packs",
+      "title": "Add languages to a Windows 11 Enterprise image",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/windows-11-language-packs",
+      "pin": "Learn git_commit_id c1cff1160f21c7796f1396c26bdda0c0e5edcc4e, updated_at 2026-10-01",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for B01.11.",
+      "claims": [
+        {
+          "id": "personal-self-service",
+          "says": "From Windows 11, users without admin rights can add a display language and its features, so personal pools don't need languages preinstalled.",
+          "kind": "published"
+        },
+        {
+          "id": "pooled-preinstall",
+          "says": "For pooled host pools, add the languages users need to the custom image.",
+          "kind": "guidance"
+        },
+        {
+          "id": "pool-per-language-or-shared",
+          "says": "Either one host pool with its own image per language, or one multi-language image shared by all; the shared image costs less but takes more build steps.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "avd-licensing",
       "title": "Licensing Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/licensing",
@@ -1186,11 +1776,15 @@
       "title": "Multiregion BCDR for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/architecture/example-scenario/azure-virtual-desktop/azure-virtual-desktop-multi-region-bcdr",
       "pin": "Learn git_commit_id d6054b5b6a0fda90d06619b94a3c5c2ce89c4513, updated_at 2026-10-05",
-      "read": "2026-10-20",
+      "read": "2026-10-21",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
         "benchmarks"
+      ],
+      "pillars": [
+        "reliability",
+        "profiles"
       ],
       "claims": [
         {
@@ -1232,6 +1826,96 @@
           "id": "selective-failover-test",
           "says": "Test failover by moving a subset of users or application groups to the secondary pool.",
           "kind": "guidance"
+        },
+        {
+          "id": "zones-not-dr",
+          "says": "Availability zones are a high availability feature; don't treat them as disaster recovery for a region-wide event.",
+          "kind": "published"
+        },
+        {
+          "id": "spread-and-overprovision",
+          "says": "Spread session hosts across zones (an availability set where the region has none) and consider extra hosts so the pool still serves users with one zone lost.",
+          "kind": "guidance"
+        },
+        {
+          "id": "dependencies-zone-resilient",
+          "says": "Review each dependency for a single zone outage, for example domain controllers, gateways and other resources users reach, and deploy them across zones.",
+          "kind": "guidance"
+        },
+        {
+          "id": "networking-in-both-regions",
+          "says": "Before multiregion recovery, deploy the landing zone in both regions, each spoke on a hub in its own region with connectivity between the hubs, and confirm line-of-business apps and dependent resources are available in the recovery region.",
+          "kind": "guidance"
+        },
+        {
+          "id": "personal-site-recovery",
+          "says": "Personal host pools recover with Site Recovery per VM, failed over and back by an administrator at the VM level; VM extensions aren't kept and must be set up again.",
+          "kind": "published"
+        },
+        {
+          "id": "no-asr-test-failover",
+          "says": "Don't use Site Recovery test failover for session hosts, because the duplicate VM registers with the control plane and conflicts with the original; start secondary hosts on a schedule and run the failover procedure with a test group instead.",
+          "kind": "published"
+        },
+        {
+          "id": "rto-rpo-by-model",
+          "says": "Microsoft's estimates are near-zero RTO for active-active, 15 to 60 minutes for active-passive with Cloud Cache (RPO seconds to minutes), and an RPO of 5 to 15 minutes for personal pools with Site Recovery.",
+          "kind": "prior"
+        },
+        {
+          "id": "token-refresh-90-days",
+          "says": "Each standby session host must start for a few hours at least every 90 days to refresh its control plane token.",
+          "kind": "published"
+        },
+        {
+          "id": "log-workspace-per-region",
+          "says": "One Log Analytics workspace for both regions gives one view but is lost to the recovery region if the primary fails; a workspace per region or workspace replication avoids that.",
+          "kind": "guidance"
+        },
+        {
+          "id": "premium-files-no-grs",
+          "says": "Premium Azure Files has no geo-redundant storage, so profiles needing Premium performance rely on Cloud Cache for cross-region copies.",
+          "kind": "published"
+        },
+        {
+          "id": "anf-zone-or-region",
+          "says": "The guide treats Azure NetApp Files cross-zone and cross-region replication as mutually exclusive per volume, and failover as not transparent.",
+          "kind": "published"
+        },
+        {
+          "id": "msix-account-per-region",
+          "says": "Keep App Attach and MSIX packages in their own storage account in each region, zone-redundant at least in the primary, with every package copied to and registered in both pools.",
+          "kind": "guidance"
+        },
+        {
+          "id": "identity-in-recovery-region",
+          "says": "Entra ID needs no recovery action; AD DS needs domain controllers in the recovery region with DNS and global catalog roles, Entra Connect a staging server there, and Domain Services a replica set.",
+          "kind": "guidance"
+        },
+        {
+          "id": "office-container-no-backup",
+          "says": "Office containers that hold only cached Microsoft 365 data needn't be backed up; separate them from profile containers to give each its own backup policy.",
+          "kind": "guidance"
+        },
+        {
+          "id": "back-up-primary-only",
+          "says": "Back up primary region storage; the recovery environment usually needs no backup of its own. The vault uses ZRS unless an offsite or cross-region copy is needed, then GRS.",
+          "kind": "guidance"
+        },
+        {
+          "id": "automate-and-align",
+          "says": "Automate failover, test the full failover and failback periodically, and check regularly that the two regions' host pools stay aligned.",
+          "kind": "guidance"
+        },
+        {
+          "id": "pool-types-state",
+          "says": "A personal host can store user data, so its state is replicated and backed up; pooled hosts are stateless, with user data and profiles kept in external storage or OneDrive.",
+          "kind": "published"
+        },
+        {
+          "id": "pools-per-requirement",
+          "says": "Users with different recovery requirements get separate host pools, for example a fully redundant pool with geo recovery for a mission-critical app and a development pool with none.",
+          "kind": "guidance"
         }
       ]
     },
@@ -1254,6 +1938,76 @@
       ]
     },
     {
+      "id": "avd-office-image",
+      "title": "Install Office on a custom VHD image",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/install-office-on-wvd-master-image",
+      "pin": "Learn git_commit_id e66f972dcf1825b0aaad3e2f10dfa6e0080d1bb0, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for B01.09.",
+      "claims": [
+        {
+          "id": "shared-computer-activation",
+          "says": "Install Microsoft 365 Apps in shared computer activation mode on images for hosts many users share.",
+          "kind": "published"
+        },
+        {
+          "id": "onedrive-per-machine",
+          "says": "OneDrive normally installs per user; on session hosts install it per machine.",
+          "kind": "published"
+        },
+        {
+          "id": "line-of-business-after",
+          "says": "Install line-of-business apps after the Office and OneDrive steps.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-personal-assignment",
+      "title": "Configure personal desktop assignment",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/configure-host-pool-personal-desktop-assignment-type",
+      "pin": "Learn git_commit_id 5b2dc7cd3aaebacccff1fc1ccd5145f8fa89dbe7, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "capacity",
+        "profiles"
+      ],
+      "notes": "The checklist's link for C01.03 and C01.09.",
+      "claims": [
+        {
+          "id": "one-to-one",
+          "says": "A personal desktop maps to one user, and every sign-in goes to that user's host.",
+          "kind": "published"
+        },
+        {
+          "id": "automatic-default",
+          "says": "Automatic assignment, the default for new personal pools, gives a user any free desktop at first connection; direct assignment names the host before the user connects.",
+          "kind": "published"
+        },
+        {
+          "id": "reassign",
+          "says": "A personal desktop can be reassigned to another user through the portal or the REST API, not the CLI.",
+          "kind": "published"
+        },
+        {
+          "id": "fslogix-multiple-connections",
+          "says": "With FSLogix and one profile container location for a personal pool, allow multiple connections to the container to avoid errors.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-prerequisites",
       "title": "Prerequisites for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/prerequisites",
@@ -1268,6 +2022,21 @@
         {
           "id": "rtt-under-150",
           "says": "Round-trip time from the client's network to the host pool's Azure region should be under 150 ms; put session hosts in the region closest to users.",
+          "kind": "published"
+        },
+        {
+          "id": "supported-os",
+          "says": "Session hosts run 64-bit Windows 11 or 10 Enterprise (multi-session or single-session) or Windows Server 2016 to 2025; different pools can run different OSes.",
+          "kind": "published"
+        },
+        {
+          "id": "unsupported-hosts",
+          "says": "Not supported for session hosts, among others, 32-bit and LTSC, N or KN editions, Ultra disks for the OS disk, ephemeral OS disks, scale sets and Arm64 VMs.",
+          "kind": "published"
+        },
+        {
+          "id": "image-sources",
+          "says": "Hosts can use Marketplace images or custom images kept in an Azure Compute Gallery or as managed images.",
           "kind": "published"
         }
       ]
@@ -1508,6 +2277,38 @@
       ]
     },
     {
+      "id": "avd-scheduled-agent-updates",
+      "title": "Scheduled Agent Updates for Azure Virtual Desktop host pools",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/scheduled-agent-updates",
+      "pin": "Learn git_commit_id 4dcb5ff3082014aa907a3d4327649e7705d8fba5, updated_at 2025-06-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for E01.10.",
+      "claims": [
+        {
+          "id": "off-by-default",
+          "says": "Scheduled agent updates are off by default, so the agent, side-by-side stack and monitoring agent can update at any time; the setting is per host pool, with one or two maintenance windows.",
+          "kind": "published"
+        },
+        {
+          "id": "two-hour-windows",
+          "says": "Each maintenance window lasts two hours, in a set time zone or each host's local time.",
+          "kind": "published"
+        },
+        {
+          "id": "hosts-on-during-window",
+          "says": "An update fails on a host that is shut down or deallocated during the window, so every host must be on then; after four failed windows, or for a critical update, the broker installs it by force.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-security-guide",
       "title": "Security recommendations for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/security-guide",
@@ -1573,6 +2374,21 @@
           "id": "device-redirection",
           "says": "Restrict device redirection (drives, clipboard, printers, USB) to what each group of users needs.",
           "kind": "guidance"
+        },
+        {
+          "id": "vhd-exclusions",
+          "says": "For FSLogix or any profile solution that mounts virtual disk files, exclude those file extensions from antivirus scanning.",
+          "kind": "published"
+        },
+        {
+          "id": "edr-microsoft-or-third-party",
+          "says": "Endpoint protection and EDR can be Microsoft's or a third-party product; vulnerability assessment can also come from a third party, though Microsoft recommends its own.",
+          "kind": "published"
+        },
+        {
+          "id": "gsa-on-hosts",
+          "says": "Configure Global Secure Access on session hosts to apply the same access controls to private, internet and Microsoft 365 apps, external identities included.",
+          "kind": "guidance"
         }
       ]
     },
@@ -1595,6 +2411,84 @@
           "id": "issue-and-advisory",
           "says": "Create Service Health alerts for at least service issues (connectivity or management of AVD) and health advisories (such as insecure configuration or deprecations).",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-service-limits",
+      "title": "Azure subscription and service limits, Azure Virtual Desktop service limits",
+      "url": "https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-virtual-desktop-service-limits",
+      "pin": "Learn git_commit_id b925adaad71e273e5a1379e52d082568ef8fbf6f, updated_at 2026-09-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "capacity"
+      ],
+      "notes": "Read for C01.07, C01.08 and C01.11. The checklist links those to the AVD architecture example scenario, which no longer lists limits at the date read; this section is where they now are. VMs, storage and networks have their own limits on the same page.",
+      "claims": [
+        {
+          "id": "workspaces-per-tenant",
+          "says": "At most 1,300 workspaces per Microsoft Entra tenant.",
+          "kind": "published"
+        },
+        {
+          "id": "host-pools-per-workspace",
+          "says": "At most 400 host pools per workspace.",
+          "kind": "published"
+        },
+        {
+          "id": "app-groups-per-tenant",
+          "says": "At most 1,000 application groups per tenant, more only through a support request.",
+          "kind": "published"
+        },
+        {
+          "id": "remoteapps-per-group",
+          "says": "At most 500 RemoteApps per application group.",
+          "kind": "published"
+        },
+        {
+          "id": "role-assignments",
+          "says": "At most 200 role assignments per AVD object.",
+          "kind": "published"
+        },
+        {
+          "id": "hosts-per-pool",
+          "says": "At most 10,000 session hosts per host pool.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-service-resilience",
+      "title": "Azure Virtual Desktop service architecture and resilience",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/service-architecture-resilience",
+      "pin": "Learn git_commit_id 2448264961c9205321bb4012907ade9122c2871a, updated_at 2026-09-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "claims": [
+        {
+          "id": "control-plane-microsoft",
+          "says": "The web, broker, gateway and resource directory services and the metadata databases are Microsoft's and fail over without customer action; a database failover briefly fails new connections but not existing ones.",
+          "kind": "published"
+        },
+        {
+          "id": "customer-owns-hosts",
+          "says": "The customer creates and manages session hosts, their images, network, resiliency, backup and recovery, and the user identities.",
+          "kind": "published"
+        },
+        {
+          "id": "deployment-scope-fixed",
+          "says": "A host pool's deployment scope (geographical or regional) decides where its metadata is kept, can't be changed after creation, and regional and geographical objects can't be mixed.",
+          "kind": "published"
         }
       ]
     },
@@ -1717,6 +2611,51 @@
       ]
     },
     {
+      "id": "avd-terminology",
+      "title": "Azure Virtual Desktop terminology (host pools, application groups, workspaces)",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/terminology",
+      "pin": "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "app-delivery",
+        "capacity",
+        "images"
+      ],
+      "notes": "The checklist's link for C01.01, C01.02 and C01.06.",
+      "claims": [
+        {
+          "id": "remoteapp-pooled-only",
+          "says": "RemoteApp application groups are available on pooled host pools only.",
+          "kind": "published"
+        },
+        {
+          "id": "one-desktop-group",
+          "says": "A host pool has at most one desktop application group and may have several RemoteApp groups; a user in several RemoteApp groups on one pool sees all their apps.",
+          "kind": "published"
+        },
+        {
+          "id": "preferred-type-hides-other",
+          "says": "A user given both a desktop and a RemoteApp group on the same pool sees only the pool's preferred application group type.",
+          "kind": "published"
+        },
+        {
+          "id": "same-image-per-pool",
+          "says": "All session hosts in a host pool should come from the same image, for a consistent user experience.",
+          "kind": "guidance"
+        },
+        {
+          "id": "pooled-vs-personal",
+          "says": "Personal pools give each user an assigned host for performance and data separation; pooled pools load-balance users across shared hosts for lower cost.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-update-methods",
       "title": "Windows update management methodologies for Azure Virtual Desktop session hosts",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/windows-update-management-methodologies-session-hosts",
@@ -1773,6 +2712,38 @@
       ]
     },
     {
+      "id": "avd-validation-pool",
+      "title": "Configure a host pool as a validation environment",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/create-validation-host-pool",
+      "pin": "Learn git_commit_id d1e9580817ae2fbb7313885c84b01ba1911e4234, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for E01.11.",
+      "claims": [
+        {
+          "id": "service-updates-first",
+          "says": "A validation host pool receives service updates before the rest, and Microsoft highly recommends having one.",
+          "kind": "guidance"
+        },
+        {
+          "id": "like-production",
+          "says": "Keep the validation pool as close to production pools as possible, used as often, with the same automated tests.",
+          "kind": "guidance"
+        },
+        {
+          "id": "test-only",
+          "says": "Leave the validation pool in place for every future update and use it only for testing, never for production.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "avd-whats-new",
       "title": "What's new in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/whats-new",
@@ -1796,6 +2767,40 @@
       ]
     },
     {
+      "id": "azure-files-backup",
+      "title": "About Azure Files backup",
+      "url": "https://learn.microsoft.com/azure/backup/azure-file-share-backup-overview",
+      "pin": "Learn git_commit_id 212480dfa1539e795b65c4bbf2588eebfe648ad1, updated_at 2026-02-17",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "profiles",
+        "reliability"
+      ],
+      "notes": "The checklist's link for A03.04 (backup-afs) now lands on this family of pages. Prerequisites and region support are on the support matrix (ref:files-backup-support).",
+      "claims": [
+        {
+          "id": "snapshot-and-vaulted",
+          "says": "Azure Backup protects file shares with snapshot and vaulted tiers; vaulted backup keeps an offsite copy with cross-region recovery.",
+          "kind": "published"
+        },
+        {
+          "id": "soft-delete",
+          "says": "Azure Backup turns on share soft delete with 14 days' retention and leases its snapshots against accidental deletion.",
+          "kind": "published"
+        },
+        {
+          "id": "vaulted-survives-source-loss",
+          "says": "Only the vaulted tier protects against loss of the source account itself, with no dependency on the source data being available.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "azure-files-networking",
       "title": "Azure Files networking considerations",
       "url": "https://learn.microsoft.com/azure/storage/files/storage-files-networking-overview",
@@ -1809,6 +2814,29 @@
         {
           "id": "smb-445",
           "says": "SMB uses TCP 445, which some organizations and ISPs block outbound; private connectivity over VPN or ExpressRoute is the alternative.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "azure-files-smb",
+      "title": "SMB file shares in Azure Files",
+      "url": "https://learn.microsoft.com/azure/storage/files/files-smb-protocol",
+      "pin": "Learn git_commit_id 950ee5e997d79ae583f3b68272322c637732fc9a, updated_at 2026-09-22",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "profiles"
+      ],
+      "notes": "The checklist's H01.02 link (storage-files-smb-multichannel-performance) is the performance page; this page states support and defaults.",
+      "claims": [
+        {
+          "id": "multichannel-ssd-only",
+          "says": "Azure Files supports SMB Multichannel on SSD (premium) shares only; it helps most multithreaded workloads and may be turned off for single-threaded ones.",
           "kind": "published"
         }
       ]
@@ -1920,6 +2948,53 @@
         {
           "id": "isv-discovery",
           "says": "Where the team lacks user, desktop and app data, the page points to third-party discovery tools listed with Azure Migrate rather than a first-party tool.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "caf-avd-bcdr",
+      "title": "Business continuity and disaster recovery considerations for Azure Virtual Desktop (Cloud Adoption Framework)",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-business-continuity-and-disaster-recovery",
+      "pin": "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "notes": "Deprecated; Microsoft removes it on 2026-10-30. Three claims have no living source yet (no-financial-sla, availability-option-at-create, hosts-stateless-no-vm-backup); when the page goes, each moves to a living source or becomes a gap (gap:reliability-scope).",
+      "claims": [
+        {
+          "id": "no-financial-sla",
+          "says": "Microsoft offers no financially backed SLA for the AVD service itself and aims for at least 99.9 percent availability of its URLs; the hosts' own SLA follows from their availability option and disks.",
+          "kind": "published"
+        },
+        {
+          "id": "availability-option-at-create",
+          "says": "A VM's availability option is chosen at creation and can't be changed later, so the pool's resiliency option is a build-time decision.",
+          "kind": "published"
+        },
+        {
+          "id": "separate-critical-apps",
+          "says": "Decide which applications are critical and consider separate host pools for them, each with its own recovery approach.",
+          "kind": "guidance"
+        },
+        {
+          "id": "hosts-stateless-no-vm-backup",
+          "says": "Pooled hosts should be stateless, so backing up their VM state isn't recommended even though it is supported.",
+          "kind": "guidance"
+        },
+        {
+          "id": "assess-what-to-protect",
+          "says": "Assess which profile and Office container data needs protecting; with OneDrive or another external store it may need none.",
+          "kind": "guidance"
+        },
+        {
+          "id": "dependencies-in-recovery-region",
+          "says": "Network, hybrid connectivity and Active Directory authentication must be available in the recovery region, and dependent applications need their own recovery plans.",
           "kind": "guidance"
         }
       ]
@@ -2140,6 +3215,29 @@
       ]
     },
     {
+      "id": "capacity-reservation",
+      "title": "On-demand capacity reservation in Azure",
+      "url": "https://learn.microsoft.com/azure/virtual-machines/capacity-reservation-overview",
+      "pin": "Learn git_commit_id df3374f199244806e2eb8f52b25fcd3afd9c3f8c, updated_at 2026-09-22",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "capacity"
+      ],
+      "notes": "The multiregion guide's capacity claims (ref:avd-multiregion-bcdr#capacity-not-guaranteed) point here.",
+      "claims": [
+        {
+          "id": "reserves-capacity",
+          "says": "An on-demand capacity reservation holds compute capacity for a VM size in a region or zone, billed whether or not VMs use it.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "commitment-choice",
       "title": "Decide between a savings plan and a reservation (Microsoft Cost Management)",
       "url": "https://learn.microsoft.com/azure/cost-management-billing/savings-plan/decide-between-savings-plan-reservation",
@@ -2164,6 +3262,59 @@
           "id": "right-size-first",
           "says": "Right-size first, fix existing commitments next, and only then buy new ones; discounts reduce rates, not waste.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "compute-gallery",
+      "title": "Store and share resources in an Azure Compute Gallery",
+      "url": "https://learn.microsoft.com/azure/virtual-machines/azure-compute-gallery",
+      "pin": "Learn git_commit_id 40aaa64a2771acda033ca09289e1e777241f201e, updated_at 2026-06-24",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images",
+        "reliability"
+      ],
+      "notes": "The checklist's link for B01.04 (the old shared-image-galleries URL redirects here) and A02.01.",
+      "claims": [
+        {
+          "id": "versioning-and-replication",
+          "says": "A gallery versions images and replicates each version to the regions chosen for it.",
+          "kind": "published"
+        },
+        {
+          "id": "not-global",
+          "says": "A gallery isn't a global resource; for disaster recovery keep at least two galleries in separate regions.",
+          "kind": "guidance"
+        },
+        {
+          "id": "replica-per-20-vms",
+          "says": "Keep one replica per 20 VMs created at the same time, and one per scale set created at the same time; overprovision rather than under.",
+          "kind": "guidance"
+        },
+        {
+          "id": "zrs-in-zone-regions",
+          "says": "Replicas default to Standard LRS; Standard ZRS is available in regions with availability zones and survives a zone failure.",
+          "kind": "published"
+        },
+        {
+          "id": "replicate-latest-only",
+          "says": "Replicating only the latest version to every region, and keeping older versions in one, saves storage cost.",
+          "kind": "guidance"
+        },
+        {
+          "id": "replication-takes-time",
+          "says": "Replication can take hours, and a version can be deployed in a region only once its replication there completes.",
+          "kind": "published"
+        },
+        {
+          "id": "limits",
+          "says": "At most 10,000 image versions per subscription per region and 100 replicas per version.",
+          "kind": "published"
         }
       ]
     },
@@ -2399,6 +3550,44 @@
       ]
     },
     {
+      "id": "defender-av-compatibility",
+      "title": "Microsoft Defender Antivirus compatibility with other security products",
+      "url": "https://learn.microsoft.com/defender-endpoint/microsoft-defender-antivirus-compatibility",
+      "pin": "Learn git_commit_id ad3972b20dc3eb4ed0a821b852962545a0335bdf, updated_at 2026-09-11",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "notes": "Windows Enterprise multi-session is a Windows client edition, so the client rows of the page's tables apply to it.",
+      "claims": [
+        {
+          "id": "third-party-av-state",
+          "says": "With a non-Microsoft antivirus as the primary product, Defender Antivirus runs in passive mode on a client OS onboarded to Defender for Endpoint (or with Smart App Control on), and is disabled otherwise.",
+          "kind": "published"
+        },
+        {
+          "id": "security-center-required",
+          "says": "If the Windows Security Center service is disabled on a client, Defender Antivirus can't see the other antivirus and stays active; two active products is unsupported and hurts performance.",
+          "kind": "published"
+        },
+        {
+          "id": "running-mode-readable",
+          "says": "The page reads Defender Antivirus's running mode (normal, passive or EDR block mode) on the machine with Get-MpComputerStatus.",
+          "kind": "published"
+        },
+        {
+          "id": "passive-still-updates",
+          "says": "Keep Defender Antivirus updates flowing even in passive mode.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "defender-av-vdi",
       "title": "Configure Microsoft Defender Antivirus on a remote desktop or virtual desktop infrastructure environment",
       "url": "https://learn.microsoft.com/defender-endpoint/deployment-vdi-microsoft-defender-antivirus",
@@ -2428,6 +3617,61 @@
       ]
     },
     {
+      "id": "defender-cloud-edr-detection",
+      "title": "Detecting endpoint detection and response solutions (Defender for Cloud)",
+      "url": "https://learn.microsoft.com/azure/defender-for-cloud/detect-endpoint-detection-response-solutions",
+      "pin": "Learn git_commit_id 04e79f7f40fbd03851607740eb3109f049919434, updated_at 2026-09-24",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "notes": "The page lists the third-party EDR products it recognizes by name; this repo doesn't copy the list (tests/wording.json). Read it at the pin.",
+      "claims": [
+        {
+          "id": "agentless-edr-check",
+          "says": "With Defender for Servers Plan 2 or Defender CSPM on, an agentless scan checks whether each Azure VM runs a supported EDR product and raises a recommendation when it doesn't.",
+          "kind": "published"
+        },
+        {
+          "id": "third-party-recognized",
+          "says": "The scan recognizes Microsoft's EDR and a published list of third-party EDR products; one it can't discover can be exempted rather than reported as missing.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "defender-cloud-edr-settings",
+      "title": "Assess Defender for Endpoint EDR settings (Defender for Cloud)",
+      "url": "https://learn.microsoft.com/azure/defender-for-cloud/endpoint-detection-response",
+      "pin": "Learn git_commit_id f07c691cf167c5e961559bb8949081f07aae8bc2, updated_at 2026-08-08",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "claims": [
+        {
+          "id": "misconfiguration-checks",
+          "says": "Where Microsoft's EDR runs, the agentless scan also flags scans older than seven days, outdated signatures and antivirus turned off or partly configured.",
+          "kind": "published"
+        },
+        {
+          "id": "microsoft-edr-only",
+          "says": "These configuration checks run only on machines whose EDR is Microsoft's.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "defender-compute-recommendations",
       "title": "Defender for Cloud compute security recommendations",
       "url": "https://learn.microsoft.com/azure/defender-for-cloud/recommendations-reference-compute",
@@ -2443,6 +3687,43 @@
         {
           "id": "vm-recommendations",
           "says": "Defender for Cloud assesses VMs for an EDR solution, vulnerability findings, Secure Boot and vTPM on supported VMs, and the Guest Attestation extension, among others.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "defender-endpoint-avd",
+      "title": "Onboard Windows devices in Azure Virtual Desktop (Microsoft Defender for Endpoint)",
+      "url": "https://learn.microsoft.com/defender-endpoint/onboard-windows-multi-session-device",
+      "pin": "Learn git_commit_id 1921f1568b8048d2412095738e2d5043c926f7ca, updated_at 2026-05-22",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "notes": "The AVD-specific companion to ref:defender-endpoint-vdi. Microsoft's EDR, named as Microsoft names it; a third-party EDR has no equivalent page on Learn.",
+      "claims": [
+        {
+          "id": "single-entry-recommended",
+          "says": "Onboard AVD hosts as a single entry per virtual desktop, especially where hosts are deleted and redeployed often, so an investigation sees one device per machine name.",
+          "kind": "published"
+        },
+        {
+          "id": "script-at-first-boot",
+          "says": "Put the onboarding script in the golden image as a startup script that runs as early as possible at first boot, without onboarding the image itself.",
+          "kind": "published"
+        },
+        {
+          "id": "multi-session-licensing",
+          "says": "Multi-session hosts are licensed through Defender for Servers, or by licensing every AVD user with one of the per-user plans the page lists.",
+          "kind": "published"
+        },
+        {
+          "id": "wmi-asr-rule",
+          "says": "Where Configuration Manager manages the hosts, don't use the attack surface reduction rule that blocks process creation from PsExec and WMI.",
           "kind": "guidance"
         }
       ]
@@ -2471,6 +3752,42 @@
         {
           "id": "first-report-delay",
           "says": "A VDI device's first onboarding can delay client reporting by about three to four hours.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "defender-side-by-side",
+      "title": "Microsoft Defender for Endpoint alongside other security solutions",
+      "url": "https://learn.microsoft.com/defender-endpoint/mde-side-by-side",
+      "pin": "Learn git_commit_id e5e024df2189c2f05c8a7a66f60fff59a0c0bfd8, updated_at 2026-04-13",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "claims": [
+        {
+          "id": "avoid-duplication",
+          "says": "Don't run two security products for the same function; turn the overlapping capabilities off in one of them and leave each function to one product.",
+          "kind": "guidance"
+        },
+        {
+          "id": "mutual-exclusions",
+          "says": "Products running side by side need mutual exclusions, limited to processes and paths known to be benign, and those gaps are managed as products change.",
+          "kind": "guidance"
+        },
+        {
+          "id": "stagger-heavy-tasks",
+          "says": "Even well configured products are limited by the system underneath; meet hardware requirements and stagger resource-heavy tasks such as scans.",
+          "kind": "guidance"
+        },
+        {
+          "id": "remove-to-troubleshoot",
+          "says": "Support may ask for a conflicting product to be removed temporarily while a performance or reliability problem is isolated.",
           "kind": "published"
         }
       ]
@@ -2580,6 +3897,79 @@
       ]
     },
     {
+      "id": "entra-recoverability",
+      "title": "Recoverability best practices in Microsoft Entra ID",
+      "url": "https://learn.microsoft.com/entra/architecture/recoverability-overview",
+      "pin": "Learn git_commit_id 572a585809c1b6f1c66792dc7e79a7c52cdddb43, updated_at 2026-06-26",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "identity"
+      ],
+      "claims": [
+        {
+          "id": "soft-then-hard-delete",
+          "says": "Only some object types (users, Microsoft 365 groups, cloud security groups, applications) are soft deleted for 30 days; everything else is hard deleted at once and must be recreated.",
+          "kind": "published"
+        },
+        {
+          "id": "document-known-good",
+          "says": "Export and keep a known-good state of the directory configuration so a deletion or misconfiguration can be compared and reapplied.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "files-backup-portal",
+      "title": "Back up Azure Files in the Azure portal",
+      "url": "https://learn.microsoft.com/azure/backup/backup-azure-files",
+      "pin": "Learn git_commit_id e9b0ca20cc1701ab1bf6865b58179e4c9abafb8b, updated_at 2026-09-23",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "profiles"
+      ],
+      "notes": "Its prerequisite differs from the support matrix (ref:files-backup-support#key-access-needed); the landing zone's recovery spec records both (facts F14 and F19, open question U1).",
+      "claims": [
+        {
+          "id": "keys-or-private",
+          "says": "As a prerequisite, the storage account either permits access with account keys or has public network access disabled.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "files-backup-support",
+      "title": "Support matrix for Azure Files backup",
+      "url": "https://learn.microsoft.com/azure/backup/azure-file-share-support-matrix",
+      "pin": "Learn git_commit_id 61a22ef60bd18c850befbd4c64c118893ae42770, updated_at 2026-09-23",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "profiles"
+      ],
+      "notes": "Read with the landing zone's recovery spec (fact F14 and open question U1 there), which found that the page asks for storage account key access.",
+      "claims": [
+        {
+          "id": "key-access-needed",
+          "says": "Azure Files backup uses key-based access to the storage account, so the account must allow storage account key access for backup and restore, even when identity-based access is configured.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "files-monitoring-alerts",
       "title": "Create monitoring alerts for Azure Files",
       "url": "https://learn.microsoft.com/azure/storage/files/files-monitoring-alerts",
@@ -2613,6 +4003,39 @@
         {
           "id": "per-share-needs-provisioned",
           "says": "Pay-as-you-go shares have no per-share metrics, so a throttling alert can't say which share was throttled; provisioned shares can.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "files-redundancy",
+      "title": "Azure Files data redundancy",
+      "url": "https://learn.microsoft.com/azure/storage/files/files-redundancy",
+      "pin": "Learn git_commit_id 1d15a8e33868d3040cdb321fa98ca4a15fe3292d, updated_at 2026-07-17",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles",
+        "reliability"
+      ],
+      "notes": "The checklist's link for A03.05.",
+      "claims": [
+        {
+          "id": "zrs-for-availability",
+          "says": "ZRS keeps a share readable and writable through a zone loss without remounting, and is recommended in the primary region where high availability matters.",
+          "kind": "published"
+        },
+        {
+          "id": "ssd-no-geo",
+          "says": "SSD (premium) shares support only LRS or ZRS; geo-redundancy is for HDD shares, so premium profiles reach a second region some other way.",
+          "kind": "published"
+        },
+        {
+          "id": "zrs-not-regional",
+          "says": "Zone-redundant storage keeps a share available through a zone loss but may not protect against a regional disaster.",
           "kind": "published"
         }
       ]
@@ -2762,6 +4185,37 @@
       ]
     },
     {
+      "id": "fslogix-azure-files",
+      "title": "FSLogix profile containers and Azure Files",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/fslogix-containers-azure-files",
+      "pin": "Learn git_commit_id 0a6264f8ba5a6e9bec9d75ba81b9a712a204a784, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles"
+      ],
+      "claims": [
+        {
+          "id": "files-or-anf",
+          "says": "Store profile containers on Azure Files or Azure NetApp Files.",
+          "kind": "guidance"
+        },
+        {
+          "id": "same-region",
+          "says": "The profile storage account must be in the same region as the session hosts.",
+          "kind": "published"
+        },
+        {
+          "id": "uniform-hosts",
+          "says": "Every VM in a host pool is the same type and size from the same image, in the same resource group.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "fslogix-bcdr",
       "title": "Business continuity and disaster recovery options for FSLogix",
       "url": "https://learn.microsoft.com/fslogix/concepts-container-recovery-business-continuity",
@@ -2781,6 +4235,115 @@
           "id": "events-rarely-graceful",
           "says": "Disaster events are rarely graceful; profiles may be lost or corrupted on failover, so critical data belongs in OneDrive or SharePoint.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-concurrent-connections",
+      "title": "FSLogix concurrent and multiple connections",
+      "url": "https://learn.microsoft.com/fslogix/concepts-multi-concurrent-connections",
+      "pin": "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles"
+      ],
+      "claims": [
+        {
+          "id": "concurrent-not-in-avd",
+          "says": "Concurrent connections (two sessions on one computer with one container) aren't supported on Azure Virtual Desktop session hosts.",
+          "kind": "published"
+        },
+        {
+          "id": "onedrive-never",
+          "says": "OneDrive doesn't support concurrent or multiple connections to the same container.",
+          "kind": "published"
+        },
+        {
+          "id": "multiple-needs-differencing",
+          "says": "Multiple connections (sessions on different computers) need differencing disks and ProfileType 3.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-configuration-examples",
+      "title": "FSLogix configuration examples",
+      "url": "https://learn.microsoft.com/fslogix/concepts-configuration-examples",
+      "pin": "Learn git_commit_id d91140933b18b132be63ef5f8b2f17568aa0885a, updated_at 2026-09-01",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles"
+      ],
+      "claims": [
+        {
+          "id": "simplest-config",
+          "says": "Pick the simplest configuration that meets the need; the Standard example is what most estates should consider.",
+          "kind": "guidance"
+        },
+        {
+          "id": "standard-items",
+          "says": "Standard is one VHD location, a single container with no ODFC, no concurrent connections and no custom redirections, with VHDX and the recommended retry and local-profile cleanup values.",
+          "kind": "published"
+        },
+        {
+          "id": "cloud-cache-for-availability",
+          "says": "Cloud Cache across storage providers is the high availability example, and its behavior depends on each provider's performance.",
+          "kind": "published"
+        },
+        {
+          "id": "dr-without-profile-recovery",
+          "says": "A disaster recovery example accepts new, empty profiles in the second region instead of recovering them.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-container-types",
+      "title": "FSLogix container types (profile and ODFC)",
+      "url": "https://learn.microsoft.com/fslogix/concepts-container-types",
+      "pin": "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles"
+      ],
+      "notes": "The review checklist's link for A03.01 (manage-profile-content-cncpt) redirects here (checked 2026-10-21).",
+      "claims": [
+        {
+          "id": "single-container-recommended",
+          "says": "Unless configured otherwise, the profile container holds profile and Office data in one disk, and that is the recommended configuration.",
+          "kind": "published"
+        },
+        {
+          "id": "odfc-optional",
+          "says": "The Office (ODFC) container is optional and mostly used beside another roaming profile solution, which must then exclude the Office data.",
+          "kind": "published"
+        },
+        {
+          "id": "odfc-when",
+          "says": "Split profile and Office containers only for a reason (separate storage, isolation from corruption, choosing Office components, different sizes for synced data).",
+          "kind": "guidance"
+        },
+        {
+          "id": "odfc-not-backed-up",
+          "says": "Office container data is recoverable from its source services, so it isn't backed up or replicated.",
+          "kind": "guidance"
+        },
+        {
+          "id": "cloud-cache-not-a-type",
+          "says": "Cloud Cache is an optional configuration of profile and ODFC containers, not a container type.",
+          "kind": "published"
         }
       ]
     },
@@ -2839,8 +4402,97 @@
           "kind": "published"
         },
         {
+          "id": "exclusion-scope",
+          "says": "The exclusion table covers FSLogix executables, filter drivers, program and data folders, per-user local data, Cloud Cache folders, temporary VHD files, the containers on the share, the FSLogix registry keys and the mount points.",
+          "kind": "published"
+        },
+        {
+          "id": "all-layers",
+          "says": "Apply the exclusions in every security layer (endpoint antivirus, network scanning, data loss prevention) and check them after each policy deployment.",
+          "kind": "published"
+        },
+        {
           "id": "storage-latency",
           "says": "Network latency, bandwidth and proximity to the storage provider are pivotal to the user's experience.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-redirections",
+      "title": "FSLogix custom profile redirections (redirections.xml)",
+      "url": "https://learn.microsoft.com/fslogix/concepts-redirections-xml",
+      "pin": "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "profiles"
+      ],
+      "claims": [
+        {
+          "id": "exclude-only-with-knowledge",
+          "says": "Profile data isn't designed to be excluded; exclude only stateless data such as browser caches, and only with knowledge of the app.",
+          "kind": "guidance"
+        },
+        {
+          "id": "profile-containers-only",
+          "says": "redirections.xml applies to profile containers only, has no effect on ODFC, and removing an entry later doesn't remove data already in the container.",
+          "kind": "published"
+        },
+        {
+          "id": "read-only-source",
+          "says": "When the file is shared centrally, users must have read-only access to it.",
+          "kind": "published"
+        },
+        {
+          "id": "kerberos-aes-sha1",
+          "says": "The April 2026 Windows Server update moves the default Kerberos encryption from RC4 to AES-SHA1; shares holding FSLogix containers must support AES-SHA1 first or sign-in can fail.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-settings-reference",
+      "title": "FSLogix configuration settings reference",
+      "url": "https://learn.microsoft.com/fslogix/reference-configuration-settings",
+      "pin": "Learn git_commit_id d91140933b18b132be63ef5f8b2f17568aa0885a, updated_at 2026-09-01",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "profiles"
+      ],
+      "notes": "The checklist's links for H04.03 and H04.06 (profile-container-configuration-reference, cloud-cache-configuration-reference) redirect here (checked 2026-10-21). Settings are registry values on each host, so only a host-side read sees them.",
+      "claims": [
+        {
+          "id": "size-default",
+          "says": "SizeInMBs, the maximum container size, defaults to 30000 MB; existing containers grow to a raised value at sign-in but can't be shrunk by it.",
+          "kind": "published"
+        },
+        {
+          "id": "volume-type-default",
+          "says": "VolumeType defaults to VHD; set VHDX to create VHDX containers.",
+          "kind": "published"
+        },
+        {
+          "id": "dynamic-default",
+          "says": "IsDynamic defaults to on, so containers take disk space only as they grow.",
+          "kind": "published"
+        },
+        {
+          "id": "ccd-or-vhd-locations",
+          "says": "CCDLocations (Cloud Cache) and VHDLocations must not both be set, and Cloud Cache settings apply only with CCDLocations, which takes up to four SMB or Blob locations.",
+          "kind": "published"
+        },
+        {
+          "id": "cache-on-fast-available-storage",
+          "says": "The Cloud Cache local cache must sit on highly available, high-performing storage, comparable to SSD or NVMe attached disks.",
           "kind": "guidance"
         }
       ]
@@ -2905,6 +4557,44 @@
         {
           "id": "codecs",
           "says": "RDP can encode with AVC (H.264) and, on a suitable GPU host, HEVC (H.265), decoded in hardware on the client.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "gsa-known-limitations",
+      "title": "Known limitations for Global Secure Access",
+      "url": "https://learn.microsoft.com/entra/global-secure-access/reference-current-known-limitations",
+      "pin": "Learn git_commit_id 1ca14c78a8a89186343ee999044f5db598b1e555, updated_at 2026-09-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection",
+        "networking-client"
+      ],
+      "notes": "Microsoft's own security service edge client, named as Microsoft names it, and the only one whose AVD support Learn documents; other products in the category are judged by intake. AVD's security page suggests it on hosts with no multi-session caveat (ref:avd-security-guide#gsa-on-hosts); this page is the narrower word.",
+      "claims": [
+        {
+          "id": "no-multi-session",
+          "says": "The Windows client doesn't support concurrent sessions on one machine, so it isn't supported on multi-session AVD hosts; Azure VMs and single-session AVD are supported.",
+          "kind": "published"
+        },
+        {
+          "id": "no-udp-internet-access",
+          "says": "Internet Access doesn't tunnel UDP yet (QUIC included); that traffic goes direct or is blocked by the forwarding profile's fallback rule.",
+          "kind": "published"
+        },
+        {
+          "id": "connection-fallback",
+          "says": "When the client can't reach the service, traffic either goes direct or is blocked, depending on the hardening setting of the matching rule.",
+          "kind": "published"
+        },
+        {
+          "id": "proxy-pac-exclusions",
+          "says": "Where a proxy is also configured, a PAC file must exclude what the client tunnels, so the two don't fight over the same traffic.",
           "kind": "published"
         }
       ]
@@ -3388,6 +5078,106 @@
       ]
     },
     {
+      "id": "rdp-traffic-optimization",
+      "title": "Optimization of RDP traffic (Windows 365 and Azure Virtual Desktop)",
+      "url": "https://learn.microsoft.com/windows-365/enterprise/optimization-of-rdp",
+      "pin": "Learn git_commit_id b0c12cb818a1bcedf8a5b2d8999918ee62e0cf7c, updated_at 2026-10-07",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "networking-client",
+        "endpoint-protection"
+      ],
+      "notes": "Filed under Windows 365, but the page says the gateway and TURN ranges it lists are dedicated to Windows 365 and Azure Virtual Desktop, and it names AVD deployments directly. It is the one Microsoft page that treats VPN, secure web gateway and SSE agents as a category. The address table itself stays on the page and in ref:avd-required-fqdn.",
+      "claims": [
+        {
+          "id": "bypass-tunnels",
+          "says": "Send RDP traffic to the gateway and TURN ranges directly, outside VPN, secure web gateway and proxy tunnels, on both the user's device and the host; other traffic can keep using the tunnel.",
+          "kind": "published"
+        },
+        {
+          "id": "no-tls-inspection",
+          "says": "TLS inspection of RDP traffic isn't supported; RDP already nests one encrypted session inside another, so inspection adds jitter, latency and load and reduces throughput with no security benefit.",
+          "kind": "published"
+        },
+        {
+          "id": "local-egress",
+          "says": "Let RDP leave the user's network as close to the user as possible; backhauling it through a tunnel picks gateways and relays near the tunnel's exit instead of near the user.",
+          "kind": "published"
+        },
+        {
+          "id": "auth-inspection-ok",
+          "says": "The bypass covers only the RDP flows; Entra ID sign-in traffic can still be inspected, for example where tenant restrictions need it.",
+          "kind": "published"
+        },
+        {
+          "id": "host-side-non-rdp",
+          "says": "On the host side, activation (KMS) traffic and the two platform addresses must not go through a proxy, VPN or web gateway tunnel either, or connections fail.",
+          "kind": "published"
+        },
+        {
+          "id": "prioritize-rdp",
+          "says": "Where the network supports it, prioritize RDP the way Teams media is prioritized.",
+          "kind": "guidance"
+        },
+        {
+          "id": "vendor-bypass-options",
+          "says": "Some secure web gateway products offer a simplified RDP bypass setting; the page links one vendor's community post rather than documenting any product.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "reliability-virtual-machines",
+      "title": "Reliability in Azure Virtual Machines",
+      "url": "https://learn.microsoft.com/azure/reliability/reliability-virtual-machines",
+      "pin": "Learn git_commit_id 9ea41d3dff532f82f59b5077dea7917e443ca5ad, updated_at 2026-09-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "claims": [
+        {
+          "id": "sla-rises-with-zones",
+          "says": "The VM SLA gives a base availability that rises with two or more VMs spread across availability zones or placed in an availability set.",
+          "kind": "published"
+        },
+        {
+          "id": "backup-not-availability",
+          "says": "VM backups give recovery points for deletion or corruption but don't keep an application available through an infrastructure failure.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "remoteapp-publish",
+      "title": "Publish applications with RemoteApp in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/publish-applications-stream-remoteapp",
+      "pin": "Learn git_commit_id b05bdc349ce47830c41647baf4f5242adea5d8f7, updated_at 2026-08-31",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "app-delivery"
+      ],
+      "claims": [
+        {
+          "id": "two-ways",
+          "says": "Apps reach users as part of a full desktop or as individual RemoteApps, and a RemoteApp can be installed on the hosts or delivered by App Attach.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "reservations",
       "title": "What are Azure Reservations? (Microsoft Cost Management)",
       "url": "https://learn.microsoft.com/azure/cost-management-billing/reservations/save-compute-costs-reservations",
@@ -3440,6 +5230,11 @@
         {
           "id": "policy-table",
           "says": "Policy assignments are in the PolicyResources table.",
+          "kind": "published"
+        },
+        {
+          "id": "recovery-services-table",
+          "says": "Backup protected items and backup jobs, and Site Recovery replication protected items, are in the RecoveryServicesResources table.",
           "kind": "published"
         }
       ]
@@ -3751,6 +5546,162 @@
         {
           "id": "C02.04",
           "says": "Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high)."
+        },
+        {
+          "id": "B01.01",
+          "says": "Determine how applications will be deployed to host pools (Operations, high)."
+        },
+        {
+          "id": "B01.02",
+          "says": "Estimate the number of golden images needed (Operations, medium)."
+        },
+        {
+          "id": "B01.04",
+          "says": "Select the store for custom images (Reliability, low)."
+        },
+        {
+          "id": "B01.05",
+          "says": "Design the build process for custom images (Operations, low)."
+        },
+        {
+          "id": "B01.06",
+          "says": "If a custom image is used, follow the recommended practices for building it (Operations, medium)."
+        },
+        {
+          "id": "B01.09",
+          "says": "Determine whether OneDrive will be part of the deployment (Operations, low)."
+        },
+        {
+          "id": "B01.11",
+          "says": "Assess the need to support multiple languages (Reliability, low)."
+        },
+        {
+          "id": "C01.02",
+          "says": "Estimate the number of different host pools to deploy (Performance, high)."
+        },
+        {
+          "id": "C01.03",
+          "says": "For personal host pools, select the assignment type (Operations, low)."
+        },
+        {
+          "id": "C01.07",
+          "says": "Estimate the number of application groups needed across all host pools in the tenant (Reliability, medium)."
+        },
+        {
+          "id": "C01.08",
+          "says": "Estimate the number of applications in each application group (Reliability, low)."
+        },
+        {
+          "id": "C01.09",
+          "says": "Evaluate FSLogix for personal host pools (Reliability, low)."
+        },
+        {
+          "id": "C01.11",
+          "says": "Verify the environment against AVD scalability limits (Reliability, high)."
+        },
+        {
+          "id": "C03.01",
+          "says": "Determine which Azure regions host pools will be deployed in (Performance, high)."
+        },
+        {
+          "id": "C03.02",
+          "says": "Determine the metadata location for the AVD service (Reliability, medium)."
+        },
+        {
+          "id": "B02.01",
+          "says": "Don't put App Attach packages on the storage account or share that holds FSLogix profiles (Performance, medium)."
+        },
+        {
+          "id": "B02.02",
+          "says": "Review the performance considerations for App Attach packages (Performance, medium)."
+        },
+        {
+          "id": "B02.03",
+          "says": "Give session hosts the right permissions on the App Attach share (Security, medium)."
+        },
+        {
+          "id": "B02.04",
+          "says": "Consider vendor MSIX packages for third-party applications (Cost, low)."
+        },
+        {
+          "id": "B02.05",
+          "says": "Turn off automatic updates for MSIX packages (Operations, low)."
+        },
+        {
+          "id": "B02.06",
+          "says": "Review which operating systems App Attach supports (Reliability, medium)."
+        },
+        {
+          "id": "H01.01",
+          "says": "Follow the Azure Files best practices for FSLogix on AVD (Performance, medium)."
+        },
+        {
+          "id": "H02.01",
+          "says": "If Azure NetApp Files is needed, check it is available in the region (Reliability, medium)."
+        },
+        {
+          "id": "H02.02",
+          "says": "On Azure NetApp Files, turn on Continuous Availability for profile volumes (Reliability, medium)."
+        },
+        {
+          "id": "H02.03",
+          "says": "On Azure NetApp Files, check the AD site name in the Active Directory connection (Reliability, high)."
+        },
+        {
+          "id": "H03.03",
+          "says": "Don't share profile storage between host pools (Performance, high)."
+        },
+        {
+          "id": "H04.01",
+          "says": "Don't use Office (ODFC) containers unless they are needed and justified (Reliability, high)."
+        },
+        {
+          "id": "H04.04",
+          "says": "Review the FSLogix registry settings and choose which to apply (Reliability, high)."
+        },
+        {
+          "id": "H04.05",
+          "says": "Avoid concurrent or multiple FSLogix connections (Reliability, high)."
+        },
+        {
+          "id": "A03.01",
+          "says": "Decide which data in profile and Office containers needs protecting (Reliability, medium)."
+        },
+        {
+          "id": "A03.03",
+          "says": "Assess profile storage replication and resiliency needs for disaster recovery (Reliability, medium)."
+        },
+        {
+          "id": "A03.04",
+          "says": "Review the Azure Files disaster recovery strategy (Reliability, medium)."
+        },
+        {
+          "id": "A03.06",
+          "says": "Review the Azure NetApp Files disaster recovery strategy (Reliability, medium)."
+        },
+        {
+          "id": "A01.01",
+          "says": "Determine the expected high availability SLA for the apps and desktops published through AVD (Reliability, high)."
+        },
+        {
+          "id": "A01.02",
+          "says": "Assess the geo disaster recovery requirements for the host pools (Reliability, medium)."
+        },
+        {
+          "id": "A01.03",
+          "says": "Separate critical applications into different host pools (Reliability, low)."
+        },
+        {
+          "id": "A01.05",
+          "says": "Assess whether session host VMs need backing up (Reliability, medium)."
+        },
+        {
+          "id": "A02.01",
+          "says": "Plan for the golden image to be available across regions (Reliability, low)."
+        },
+        {
+          "id": "A02.02",
+          "says": "Assess infrastructure and application dependencies (Reliability, medium)."
         },
         {
           "id": "E01.08",
@@ -4458,6 +6409,34 @@
       ]
     },
     {
+      "id": "vm-generation-2",
+      "title": "Support for generation 2 VMs on Azure",
+      "url": "https://learn.microsoft.com/azure/virtual-machines/generation-2",
+      "pin": "Learn git_commit_id 9ed072b872e388c785f750f825050cc26912b715, updated_at 2026-09-26",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images",
+        "security-posture"
+      ],
+      "notes": "The checklist's link for B03.01.",
+      "claims": [
+        {
+          "id": "gen2-features",
+          "says": "Generation 2 VMs support features generation 1 doesn't; Secure Boot and vTPM, as part of Trusted launch, are among them.",
+          "kind": "published"
+        },
+        {
+          "id": "upgrade-to-trusted-launch",
+          "says": "An existing generation 1 VM can be upgraded to generation 2 with Trusted launch.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "vnet-flow-logs",
       "title": "Virtual network flow logs",
       "url": "https://learn.microsoft.com/azure/network-watcher/vnet-flow-logs-overview",
@@ -4560,6 +6539,37 @@
         {
           "id": "CO:14",
           "says": "Consolidate resources and increase density where the workload allows.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-disaster-recovery",
+      "title": "Architecture strategies for disaster recovery (Well-Architected Framework, RE:09)",
+      "url": "https://learn.microsoft.com/azure/well-architected/reliability/disaster-recovery",
+      "pin": "Learn git_commit_id f28b7d43eeabdd2fc945944b071c1109b20b75d1, updated_at 2026-08-20",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "claims": [
+        {
+          "id": "RE:09",
+          "says": "Implement structured, tested and documented recovery plans that match the recovery targets and cover every component and the system as a whole.",
+          "kind": "guidance"
+        },
+        {
+          "id": "drills-prove-targets",
+          "says": "Only production-level drills show that the plan meets its RTO and RPO; tabletop and non-production runs come first, and test results feed back into the plan.",
+          "kind": "guidance"
+        },
+        {
+          "id": "plan-reachable-in-outage",
+          "says": "Keep recovery plans, scripts and the tools to run them where they stay available during a regional outage.",
           "kind": "guidance"
         }
       ]
@@ -4899,6 +6909,43 @@
       ]
     },
     {
+      "id": "windows-multisession-faq",
+      "title": "Windows Enterprise multi-session FAQ",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/windows-multisession-faq",
+      "pin": "Learn git_commit_id e66f972dcf1825b0aaad3e2f10dfa6e0080d1bb0, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "app-delivery",
+        "profiles"
+      ],
+      "claims": [
+        {
+          "id": "reports-as-server",
+          "says": "Multi-session Windows reports the same product type as Windows Server, so some installers refuse to install; the fix is a vendor update.",
+          "kind": "published"
+        },
+        {
+          "id": "validate-density",
+          "says": "How many sessions a host carries depends on its hardware and the users' apps; validate performance for the workload.",
+          "kind": "guidance"
+        },
+        {
+          "id": "user-installs-lost",
+          "says": "With a profile solution that deletes local profiles at sign-out, apps a user installs in a session disappear; apps that must stay are provisioned for every profile.",
+          "kind": "published"
+        },
+        {
+          "id": "fslogix-preinstalled",
+          "says": "FSLogix comes preinstalled on the multi-session marketplace images, and FSLogix profile containers are recommended for non-persistent hosts.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "windows-security-baselines",
       "title": "Windows security baselines guide",
       "url": "https://learn.microsoft.com/windows/security/operating-system-security/device-management/windows-security-configuration-framework/windows-security-baselines",
@@ -5086,6 +7133,17 @@
   ],
   "observations": [
     {
+      "id": "agent-update-window-while-hosts-off",
+      "claim": "ref:avd-scheduled-agent-updates#hosts-on-during-window",
+      "verdict": "extends",
+      "observed": "The landing zone schedules agent updates for Saturday 02:00 in each host's local time, one window, while its scaling plan can leave a pooled pool with no running host overnight and at weekends (the weekend schedule's minimum is 0%) and its optional auto shutdown deallocates hosts at night; nothing starts hosts for the window. On a pool with no host running at 02:00 the scheduled update can't run, and after four missed windows the broker installs it by force at a time nobody chose. The schedule needs a second window inside hours when hosts are on, or a step that starts the hosts for the window. Read from the code, not yet seen in a run.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/controlPlane.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
       "id": "alerts-silent-without-receivers",
       "claim": "ref:caf-avd-management#alerting-model",
       "verdict": "extends",
@@ -5105,6 +7163,17 @@
         "https://github.com/avd-ops/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
       ],
       "date": "2026-10-20"
+    },
+    {
+      "id": "defender-cache-maintenance-not-in-image",
+      "claim": "ref:defender-av-vdi#cache-maintenance-before-seal",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone's image build brings Microsoft Defender Antivirus signatures up to date and fails the build if they stay older than a day, but it doesn't run the cache maintenance task before the image is sealed, which the source says avoids higher CPU on each new host while the task runs. How much CPU and logon time that costs on the first sessions of a new host is unmeasured (gap:security-agents-scope).",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/images/build.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/image/Update-DefenderSignature.ps1"
+      ],
+      "date": "2026-10-21"
     },
     {
       "id": "encryption-at-host-by-default",
@@ -5136,6 +7205,48 @@
         "https://github.com/avd-ops/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
       ],
       "date": "2026-10-20"
+    },
+    {
+      "id": "files-backup-key-access-off",
+      "claim": "ref:files-backup-support#key-access-needed",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone keeps storage account key access off on its profile account for the default snapshot-tier backup and turns it on only for the vaulted tier, because two Microsoft pages differ: the support matrix asks for key access, the portal guide accepts key access off when public network access is disabled (ref:files-backup-portal#keys-or-private), which the landing zone does (its recovery spec, facts F14 and F19, open question U1). No real backup job has run with keys off, so whether the default profile backup works at all is unproven. The first landing zone run that reads the last backup job answers it; until then a reviewer treats a key-access-off share with a snapshot policy as unknown, not as backed up.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/specs/recovery-spec.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
+      "id": "fslogix-av-exclusions-applied",
+      "claim": "ref:fslogix-prerequisites#av-exclusions",
+      "verdict": "agrees",
+      "observed": "The landing zone applies the published FSLogix file and process exclusions to Microsoft Defender Antivirus on every host and doesn't fail the host when tamper protection or an endpoint policy owns exclusions, which means an assessment has to read the effective exclusions on the host rather than trust the deployment.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1"
+      ],
+      "date": "2026-10-21"
+    },
+    {
+      "id": "fslogix-exclusions-partial",
+      "claim": "ref:fslogix-prerequisites#exclusion-scope",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone's host configuration sets part of the published list, in Microsoft Defender Antivirus's local preferences only: the temporary and share VHD and VHDX files and three FSLogix processes, one no longer on the list. Folders, Cloud Cache, drivers, registry keys and mount points aren't set; a third-party antivirus or a network or data loss prevention layer gets nothing; a central policy that owns exclusions only draws a warning. Logon impact untested.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1"
+      ],
+      "date": "2026-10-21"
+    },
+    {
+      "id": "fslogix-standard-example-adopted",
+      "claim": "ref:fslogix-configuration-examples#standard-items",
+      "verdict": "extends",
+      "observed": "The landing zone writes the Standard example on every host (one VHD location, VHDX, no ODFC, ProfileType unset, no redirections.xml, the recommended retry and local-profile values) and adds PreventLoginWithFailure and PreventLoginWithTempProfile, so a user whose container fails to attach can't sign in to a temporary profile and lose work silently. Its readiness script reads only Enabled and VHDLocations back on the host; no family tool reads the rest.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/ops/host/Test-SessionHostReadiness.ps1"
+      ],
+      "date": "2026-10-21"
     },
     {
       "id": "hub-route-without-avd-bypass",
@@ -5197,6 +7308,16 @@
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/controlPlane.bicep",
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/docs/design-decisions.md"
+      ],
+      "date": "2026-10-21"
+    },
+    {
+      "id": "recovery-tiers-not-yet-tested",
+      "claim": "ref:avd-multiregion-bcdr#rto-rpo-by-model",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone's same-tenant recovery design (recovery spec, scope and section 4) chooses a tier per landing zone, R0 rebuild, R1 restore anywhere or R2 warm standby (active-passive), and takes its RTO and RPO from Microsoft's estimates; active-active is a non-goal there. Its status check, configuration snapshot and profile recovery test are built and tested offline only: no recovery test has run against a real tenant, so none of the tier targets is measured. The first profile recovery test needs a written estimate and the owner's go; its run record (C17, use case recovery) becomes the evidence that turns this into agrees or disagrees.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/specs/recovery-spec.md"
       ],
       "date": "2026-10-21"
     },
@@ -5358,9 +7479,23 @@
         "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/Test-GoldenImage.ps1"
       ],
       "date": "2026-10-20"
+    },
+    {
+      "id": "zones-by-default",
+      "claim": "ref:avd-multiregion-bcdr#spread-and-overprovision",
+      "verdict": "extends",
+      "observed": "The landing zone spreads session hosts across zones 1, 2 and 3 by default (availabilityZones; an empty list deploys them regional) and keeps its profile share on zone-redundant storage, which follows the source. It doesn't add hosts for a lost zone: the host count is the operator's, so the n-1 headroom the source asks for is a sizing decision left to compute.host-count, and a two-host pool loses half its capacity with one zone.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep"
+      ],
+      "date": "2026-10-21"
     }
   ],
   "gaps": [
+    {
+      "id": "app-delivery-scope",
+      "title": "what an app delivery and profile assessment can judge, and from where"
+    },
     {
       "id": "baseline-profile",
       "title": "a baseline profile of what good looks like"
@@ -5438,6 +7573,10 @@
       "title": "what a network assessment covers, what it can measure, and which repo does what"
     },
     {
+      "id": "reliability-scope",
+      "title": "what a reliability assessment covers, what it can measure, and which repo does what"
+    },
+    {
       "id": "remediation-plan",
       "title": "the remediation plan"
     },
@@ -5452,6 +7591,10 @@
     {
       "id": "scoring",
       "title": "scoring"
+    },
+    {
+      "id": "security-agents-scope",
+      "title": "assessing security agents on session hosts and user devices"
     },
     {
       "id": "security-scope",
@@ -5492,6 +7635,10 @@
     {
       "id": "use-cases",
       "title": "use cases"
+    },
+    {
+      "id": "workload-benchmark",
+      "title": "a workload benchmark before sizing"
     }
   ]
 }
