@@ -1,0 +1,590 @@
+# The deployment dimension register (gap:deployment-dimensions). One row per thing that matters when an
+# AVD estate is deployed or changed: what it decides, where it lives in the contracts, the baseline that
+# says what good looks like and its source, what avd-current-state can see of it today, and which
+# avd-landing-zone parameters set it. Changed only by a pull request a person merges.
+#
+# home.decision / home.facts: IDs from contracts/fact-register.json, or "proposed:<id>" for ones the
+#   register doesn't have yet. home.checks: check IDs in method.json.
+# baseline.standing: published (a source states it) | prior (a source states it but calls it an estimate)
+#   | guidance (a source gives direction, no number) | gap (no source; our method in the gap page)
+#   | owned (another method in this repo owns the baseline; see seeAlso).
+# measure: fact (a built C11 fact) | rebuild (in avd-current-state's private rebuild package, not a C11
+#   fact) | measured (needs performance or in-guest data) | intake (only the operator knows) | none.
+# landingZone: parameter names in avd-landing-zone bicep/main.bicep at the commit below. Every one of the
+#   57 is either set by a dimension or listed in notDimensions with a reason (tests/check_dimensions.py).
+schema: avd-assess-dimensions/v1
+landingZone:
+  commit: ae5c2877d53d9af8e1efbf47b85cfdef06c51364
+  source: https://github.com/nickprignano/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep
+  parameters: [namePrefix, environmentName, location, tags, avdUsersGroupObjectId, avdAdminsGroupObjectId,
+    avdServicePrincipalObjectId, enrollInIntune, connectivityMode, spokeAddressPrefix, sessionHostSubnetPrefix,
+    privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix,
+    hubVnetResourceId, createHubToSpokePeering, hubFirewallPrivateIp, dnsServers, centralPrivateDnsZoneResourceIds,
+    enableAvdPrivateLink, sessionHostCount, sessionHostVmSize, sessionHostNamePrefix, availabilityZones,
+    sessionHostImage, maxSessionLimit, encryptionAtHost, localAdminUsername, localAdminPassword, rdpProperties,
+    validationEnvironment, profileStorageSku, profileShareQuotaGiB, fslogixProfileSizeMiB, enableProfileBackup,
+    profileBackupRetentionDays, profileBackupTier, startVmOnConnect, scalingTimeZone, logRetentionDays, alertEmailAddresses,
+    monthlyBudgetAmount, budgetStartDate, enableAutoShutdown, autoShutdownTime, autoShutdownDays,
+    autoShutdownTimeZone, autoShutdownScheduleAction, autoShutdownBudgetAction, autoShutdownBudgetPercent,
+    autoShutdownRunbookUri, enableDefenderForCloud, deploySubscriptionSettings, enablePolicyGuardrails,
+    recoveryLocation, allowedLocations]
+  notDimensions:
+    namePrefix: Naming only.
+    environmentName: A label; its one effect (validation pool default) is under updates.validation-pool.
+    sessionHostNamePrefix: Naming only.
+    avdUsersGroupObjectId: Wiring to the operator's own group, not a design choice with a baseline.
+    avdAdminsGroupObjectId: Wiring to the operator's own group, not a design choice with a baseline.
+    avdServicePrincipalObjectId: The service's own identity in the tenant; fixed, not chosen.
+    localAdminUsername: Break-glass account name; the security method covers local admin rights.
+    localAdminPassword: A secret, recreated on every rebuild and never carried.
+    alertEmailAddresses: Contact data, kept out of shared facts; monitoring itself is ops.monitoring.
+
+dimensions:
+  # Compute and density
+  - id: compute.vm-size
+    area: compute
+    title: Session host VM size and family
+    decides: The vCPU, memory and family of each host pool's VMs.
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes, c12.group.perHost.p95CpuPercent, c12.group.perHost.p95MemoryPercent]}
+    baseline:
+      standing: prior
+      claims: [ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#multisession-vcpu-range, ref:session-host-sizing#single-session-minimums, ref:review-checklists-avd#C01.05, ref:review-checklists-avd#C01.10]
+      says: Multi-session hosts of 8 vCPU and 16 GB or more, between 6 and 24 vCPU and never over 32 cores; single-session from 2 vCPU and 8 GB. Estimates to replace with a workload test.
+    observations: [obs:sizing-floor-not-measured]
+    measure: fact
+    landingZone: [sessionHostVmSize]
+  - id: compute.memory-per-user
+    area: compute
+    title: Memory per user
+    decides: Whether memory or CPU limits a host, and so the family (general purpose or memory-optimized).
+    home: {decision: hostPool.vmSize, facts: [c12.group.perUser.p95MemoryMiB, c12.group.perUser.p50MemoryMiB]}
+    baseline:
+      standing: gap
+      claims: [ref:session-host-sizing#memory-limits-density, gap:deployment-dimensions, gap:sample-check]
+      says: The source says memory can limit density but gives no memory per user; the estate's own measurement sets it.
+    measure: measured
+    landingZone: [sessionHostVmSize]
+  - id: compute.host-count
+    area: compute
+    title: Host count and headroom
+    decides: How many hosts each pool has, including headroom for sign-in storms and a spare.
+    home: {decision: hostPool.hosts, facts: [c11.hostPool.sessionHosts.total, c12.group.concurrency.peak, c12.group.concurrency.byHour], checks: [asm-pooled-host-redundancy]}
+    baseline:
+      standing: guidance
+      claims: [ref:waf-reliability-checklist#RE:05, ref:session-host-sizing#logon-storm-headroom, ref:session-host-sizing#more-smaller-vms]
+      says: At least two hosts per pooled pool, headroom for concurrent sign-ins, and more smaller hosts over fewer large ones; no headroom number is published.
+    measure: fact
+    landingZone: [sessionHostCount]
+  - id: density.sessions-per-host
+    area: density
+    title: User to host density
+    decides: The maximum sessions per host.
+    home: {decision: hostPool.maxSessions, facts: [c11.hostPool.maxSessionLimit, c11.hostPool.sessionHosts.sessions, c12.group.perHost.peakSessionsPerHost, c12.group.perUser.p95CpuPercentOfCore]}
+    baseline:
+      standing: prior
+      claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#estimates-only, ref:avd-host-pool-types#limit-can-be-exceeded]
+      says: "Users per vCPU: light 6, medium 4, heavy 2, power 1, as estimates; the limit can be exceeded under a connection storm."
+    observations: [obs:users-per-vcpu-adopted]
+    measure: fact
+    landingZone: [maxSessionLimit]
+  - id: density.load-balancing
+    area: density
+    title: Load balancing algorithm
+    decides: Breadth-first (performance) or depth-first (cost) placement of new sessions.
+    home: {decision: proposed:hostPool.loadBalancing, facts: [proposed:c11.hostPool.loadBalancerType]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-load-balancing#breadth-first-performance, ref:avd-load-balancing#depth-first-cost, ref:avd-load-balancing#set-limit-from-insights, ref:review-checklists-avd#C01.04]
+      says: Breadth-first favors session performance, depth-first favors cost and needs a measured session limit.
+    measure: rebuild
+    landingZone: []
+    note: The landing zone fixes breadth-first in its control plane module; there is no parameter.
+  - id: compute.workload-benchmark
+    area: performance
+    title: Workload benchmark before sizing
+    decides: How the size and density above are proven for this estate's workload.
+    home: {decision: hostPool.vmSize, facts: [c12.group.perUser.p95CpuPercentOfCore, c12.group.logonSeconds.p95]}
+    baseline:
+      standing: gap
+      claims: [ref:review-checklists-avd#C01.10, ref:session-host-sizing#capacity-approaches, gap:deployment-dimensions]
+      says: Run a pilot or a simulated load test before fixing size and density; no open, published workload or pass threshold exists, so the method is ours.
+    measure: measured
+    landingZone: []
+
+  # Graphics
+  - id: graphics.gpu-need
+    area: graphics
+    title: Whether hosts need a GPU
+    decides: GPU or CPU-only hosts for each workload.
+    home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes], intake: [proposed:intake.graphicsWorkloads]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#C01.12, ref:session-host-sizing#gpu-for-graphics]
+      says: Use GPU hosts for graphics-heavy apps and high resolutions; CPU-only hosts show artifacts above 3840 x 2160 total resolution.
+    measure: intake
+    landingZone: [sessionHostVmSize]
+  - id: graphics.gpu-size
+    area: graphics
+    title: GPU size and driver
+    decides: Which GPU series and fraction, and which driver.
+    home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes]}
+    baseline:
+      standing: published
+      claims: [ref:avd-gpu-acceleration#supported-sizes, ref:avd-gpu-acceleration#no-compute-gpus, ref:avd-gpu-acceleration#grid-driver-only]
+      says: Only the NV-family sizes the page lists, never NC or ND compute sizes, with Azure-distributed drivers (GRID on NVIDIA).
+    measure: fact
+    landingZone: [sessionHostVmSize]
+    note: The source's size table lists series that retired on 2026-09-30 (see the reference's notes).
+  - id: graphics.users-per-gpu
+    area: graphics
+    title: Users per GPU
+    decides: How many sessions share one GPU or GPU fraction.
+    home: {decision: hostPool.maxSessions, facts: [c12.group.perHost.peakSessionsPerHost]}
+    baseline:
+      standing: gap
+      claims: [ref:avd-gpu-acceleration#density-tradeoff, ref:avd-gpu-acceleration#grid-license-25, gap:deployment-dimensions]
+      says: No published users-per-GPU number; the GRID license caps a VM at 25 concurrent users, and the estate's measurement sets the rest.
+    measure: measured
+    landingZone: [maxSessionLimit]
+
+  # Disks
+  - id: disk.os-disk-type
+    area: disks
+    title: OS disk type
+    decides: Premium SSD, Standard SSD or an ephemeral OS disk for session hosts.
+    home: {decision: proposed:hostPool.osDisk, facts: [proposed:c11.sessionHost.osDiskType]}
+    baseline:
+      standing: published
+      claims: [ref:avd-deploy-host-pool#premium-ssd-os-disk, ref:review-checklists-avd#H03.01, ref:session-host-sizing#ssd-storage]
+      says: Premium SSD for production hosts.
+    observations: [obs:premium-ssd-os-disk-default]
+    measure: rebuild
+    landingZone: []
+    note: The landing zone fixes Premium SSD in its session host module; there is no parameter.
+  - id: disk.ephemeral-os
+    area: disks
+    title: Ephemeral OS disks for stateless pools
+    decides: Whether a pooled, stateless pool uses ephemeral OS disks.
+    home: {decision: proposed:hostPool.osDisk, facts: [proposed:c11.sessionHost.osDiskType]}
+    baseline:
+      standing: published
+      claims: [ref:avd-ephemeral-os-disks#stateless-only, ref:avd-ephemeral-os-disks#pooled-with-configuration, ref:avd-ephemeral-os-disks#unsupported-features, ref:avd-ephemeral-os-disks#size-must-fit-image, ref:avd-ephemeral-os-disks#autoscale-full-active]
+      says: Only for pooled pools with a session host configuration, on a size whose temp disk or cache fits the image, with autoscale creating and deleting hosts instead of deallocating them.
+    measure: rebuild
+    landingZone: []
+  - id: disk.latency
+    area: disks
+    title: Disk latency on hosts
+    decides: Whether host disks are fast enough for the workload.
+    home: {decision: hostPool.vmSize, facts: [c12.group.perUser.p95DiskIops]}
+    baseline:
+      standing: gap
+      claims: [gap:sample-check, gap:deployment-dimensions]
+      says: No published latency number for session hosts; the estate's own baseline sets it (gold-standards.yaml, disk-latency).
+    measure: measured
+    landingZone: []
+
+  # Profiles
+  - id: profile.storage-backend
+    area: storage
+    title: Profile storage service and tier
+    decides: Azure Files standard or premium, or Azure NetApp Files, in the hosts' region.
+    home: {decision: proposed:profile.storage, facts: [c11.storage.kind, c11.storage.sku]}
+    baseline:
+      standing: published
+      claims: [ref:avd-fslogix-storage#azure-files-default, ref:avd-fslogix-storage#tier-by-workload, ref:review-checklists-avd#H03.02, ref:review-checklists-avd#H03.05, ref:fslogix-prerequisites#storage-latency]
+      says: Azure Files for most estates; premium for anything above light workloads under 200 users; always in the hosts' region.
+    measure: fact
+    landingZone: [profileStorageSku]
+  - id: profile.storage-performance
+    area: storage
+    title: Profile storage IOPS and scale
+    decides: Provisioned IOPS, share count and handle headroom for sign-in storms.
+    home: {decision: hostPool.profileQuotaGiB, facts: [c12.group.profile.logonIopsPerUser, c12.group.users]}
+    baseline:
+      standing: prior
+      claims: [ref:fslogix-storage-options#iops-per-user, ref:azure-files-vdi#storm-sizing, ref:azure-files-vdi#users-per-share, ref:azure-files-vdi#handle-limits, ref:review-checklists-avd#H01.02, ref:review-checklists-avd#H03.04, ref:review-checklists-avd#E02.03]
+      says: About 10 IOPS per user steady and 50 at sign-in, as an example; share count by concurrent users; SMB multichannel on premium; alert on throttling.
+    measure: measured
+    landingZone: [profileShareQuotaGiB]
+  - id: profile.capacity
+    area: storage
+    title: Profile size and share capacity
+    decides: The per-user container limit and the share quota.
+    home: {decision: hostPool.profileQuotaGiB, facts: [c12.group.profile.p95SizeGiB, c11.storage.count]}
+    baseline:
+      standing: prior
+      claims: [ref:session-host-sizing#profile-storage-minimum, ref:review-checklists-avd#H04.03]
+      says: Plan at least 30 GB per user and confirm the configured maximum profile size.
+    measure: rebuild
+    landingZone: [profileShareQuotaGiB, fslogixProfileSizeMiB]
+  - id: profile.resilience
+    area: reliability
+    title: Profile redundancy and backup
+    decides: Storage redundancy and backup of profile containers.
+    home: {decision: proposed:profile.storage, facts: [c11.storage.sku], checks: [asm-files-zone-redundant]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#A03.05, ref:review-checklists-avd#A03.02]
+      says: Zone-redundant storage for Azure Files, and a backup strategy for profile containers.
+    measure: rebuild
+    landingZone: [profileStorageSku, enableProfileBackup, profileBackupRetentionDays, profileBackupTier]
+
+  # Performance optimizations
+  - id: perf.image-optimization
+    area: performance
+    title: Image optimization
+    decides: Which OS optimizations the image applies, from a reviewed profile.
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images]}
+    baseline:
+      standing: guidance
+      claims: [ref:wdot#categories, ref:wdot#optimization-state, ref:wdot#test-first, ref:vdi-optimization-guide#test-cleanup-first, ref:review-checklists-avd#B01.08]
+      says: Apply a reviewed optimization profile, tested before production; the templates are a start, not a verdict.
+    observations: [obs:wdot-appx-removal-left-off, obs:wdot-disk-cleanup-deletes-evidence, obs:wdot-pin-on-image-version]
+    measure: fact
+    landingZone: []
+    note: Set in the landing zone's image build, not a template parameter.
+  - id: perf.transport
+    area: performance
+    title: RDP transport
+    decides: Whether sessions use the UDP transport (RDP Shortpath) on managed and public networks.
+    home: {decision: network, facts: [c12.group.rttMsP95]}
+    baseline:
+      standing: published
+      claims: [ref:rdp-shortpath#udp-transport, ref:review-checklists-avd#F01.11]
+      says: UDP transport where the network allows it, with TCP reverse connect as the fallback.
+    measure: measured
+    landingZone: []
+  - id: perf.media
+    area: performance
+    title: Teams and browser media
+    decides: Media optimization for Teams and multimedia redirection for browser video.
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images]}
+    baseline:
+      standing: published
+      claims: [ref:teams-on-avd#media-optimization, ref:teams-on-avd#classic-teams-end, ref:review-checklists-avd#B01.10, ref:review-checklists-avd#B03.02]
+      says: Teams calls and meetings redirected to the local device; classic Teams for VDI is past end of support.
+    measure: none
+    landingZone: []
+  - id: perf.accelerated-networking
+    area: performance
+    title: Accelerated networking
+    decides: Whether host NICs use accelerated networking.
+    home: {decision: hostPool.vmSize, facts: [proposed:c11.sessionHost.acceleratedNetworking]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#C01.13]
+      says: Choose sizes that support accelerated networking.
+    measure: rebuild
+    landingZone: []
+  - id: perf.experience-targets
+    area: performance
+    title: User experience targets
+    decides: The round-trip, input delay and logon targets a deployment is judged against.
+    home: {decision: region, facts: [c12.group.rttMsP95, c12.group.logonSeconds.p95, c12.group.uxScoreMedian]}
+    baseline:
+      standing: published
+      claims: [ref:avd-prerequisites#rtt-under-150, ref:avd-insights-glossary#input-delay-bands, gap:logon-target]
+      says: Round trip under 150 ms, input delay bands as published, logon against the estate's own baseline (gold-standards.yaml).
+    observations: [obs:region-latency-from-the-user]
+    measure: measured
+    landingZone: []
+  - id: network.bandwidth
+    area: network
+    title: Bandwidth per user
+    decides: Whether user networks and host sizes carry the expected RDP traffic.
+    home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
+    baseline:
+      standing: prior
+      claims: [ref:rdp-bandwidth#per-scenario-estimates, ref:rdp-bandwidth#monitor-real-users, ref:review-checklists-avd#F01.09]
+      says: Per-activity estimates for one 1080p monitor as a start, replaced by measuring real users.
+    measure: measured
+    landingZone: []
+
+  # Security tooling
+  - id: security.endpoint-protection-tuning
+    area: security
+    title: Antivirus and EDR tuned for multi-session
+    decides: How antivirus and EDR are configured on shared and non-persistent hosts.
+    home: {decision: proposed:hostPool.security, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:defender-av-vdi#vdi-settings, ref:defender-av-vdi#cache-maintenance-before-seal, ref:defender-av-vdi#shared-updates, ref:defender-endpoint-vdi#never-onboard-image, ref:defender-endpoint-vdi#entry-model, ref:fslogix-prerequisites#av-exclusions]
+      says: The published VDI antivirus settings, cache maintenance before sealing the image, no onboarded image, and the FSLogix exclusions. No source gives the per-user CPU cost.
+    measure: none
+    landingZone: [enableDefenderForCloud]
+  - id: security.posture
+    area: security
+    title: Security posture and guardrails
+    decides: Defender plans, policy guardrails and the rest of the security baseline.
+    home: {decision: proposed:hostPool.security, facts: [c11.policy.assignments]}
+    baseline:
+      standing: owned
+      claims: []
+      says: Owned by the security method.
+    seeAlso: https://github.com/nickprignano/avd-assess/pull/6
+    measure: fact
+    landingZone: [enablePolicyGuardrails]
+  - id: security.host-type
+    area: security
+    title: Trusted launch and VM generation
+    decides: Gen2 with Trusted launch, or confidential VMs.
+    home: {decision: proposed:hostPool.security, facts: [proposed:c11.sessionHost.securityType]}
+    baseline:
+      standing: published
+      claims: [ref:avd-deploy-host-pool#trusted-launch-default, ref:review-checklists-avd#B03.01]
+      says: Gen2 with Trusted launch, the default for new hosts; the security method holds the rest.
+    seeAlso: https://github.com/nickprignano/avd-assess/pull/6
+    measure: rebuild
+    landingZone: []
+  - id: security.redirection
+    area: security
+    title: Device redirection and RDP properties
+    decides: Which devices, drives and clipboard a session can redirect.
+    home: {decision: proposed:hostPool.security, facts: []}
+    baseline:
+      standing: owned
+      claims: []
+      says: Owned by the security method.
+    seeAlso: https://github.com/nickprignano/avd-assess/pull/6
+    measure: rebuild
+    landingZone: [rdpProperties]
+
+  # Encryption
+  - id: encryption.disks
+    area: encryption
+    title: Disk encryption
+    decides: Server-side encryption only, encryption at host, or confidential disk encryption.
+    home: {decision: proposed:hostPool.encryption, facts: [proposed:c11.sessionHost.encryptionAtHost]}
+    baseline:
+      standing: published
+      claims: [ref:disk-encryption-options#encryption-at-host, ref:disk-encryption-options#sse-always-on, ref:disk-encryption-options#ade-retirement]
+      says: Encryption at host for new VMs (temp disks and caches too); no new Azure Disk Encryption, which retires on 2028-09-15.
+    observations: [obs:encryption-at-host-by-default]
+    measure: rebuild
+    landingZone: [encryptionAtHost]
+  - id: encryption.keys
+    area: encryption
+    title: Key ownership
+    decides: Platform-managed or customer-managed keys.
+    home: {decision: proposed:hostPool.encryption, facts: [], intake: [proposed:intake.keyRequirements]}
+    baseline:
+      standing: guidance
+      claims: [ref:disk-encryption-options#customer-keys]
+      says: Customer-managed keys through a disk encryption set when a requirement asks for them; no source says they're needed by default.
+    measure: intake
+    landingZone: []
+  - id: encryption.profile-transit
+    area: encryption
+    title: Profile traffic encryption
+    decides: SMB channel encryption and Kerberos settings on the profile share.
+    home: {decision: proposed:profile.storage, facts: []}
+    baseline:
+      standing: owned
+      claims: []
+      says: Owned by the security method.
+    seeAlso: https://github.com/nickprignano/avd-assess/pull/6
+    measure: rebuild
+    landingZone: []
+
+  # Updates
+  - id: updates.os-servicing
+    area: updates
+    title: OS servicing method
+    decides: Patch in place or replace from an updated image, by OS and pool type.
+    home: {decision: proposed:hostPool.updates, facts: [c11.hostPool.type, c11.hostPool.images]}
+    baseline:
+      standing: published
+      claims: [ref:avd-update-methods#method-by-os, ref:avd-update-methods#multisession-image-based, ref:avd-update-methods#server-update-manager, ref:avd-update-methods#pooled-image-servicing, ref:avd-host-pool-types#pooled-updated-by-redeploy, ref:avd-session-host-update#initial-then-batches, ref:review-checklists-avd#E01.09]
+      says: Multi-session and pooled hosts are replaced from an updated image (session host update or a new gallery version), not patched in place; plan for emergency patches.
+    measure: fact
+    landingZone: []
+  - id: updates.image-currency
+    area: updates
+    title: Image source and currency
+    decides: Which OS image the hosts run and how current it is.
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#B01.03, ref:review-checklists-avd#B01.07, ref:avd-update-methods#hotpatch, gap:deployment-dimensions]
+      says: A chosen OS image kept current, FSLogix included in each image update; the security guide's monthly rebuild is owned by the security method, and no source sets a maximum image age.
+    seeAlso: https://github.com/nickprignano/avd-assess/pull/6
+    observations: [obs:wdot-pin-on-image-version]
+    measure: fact
+    landingZone: [sessionHostImage]
+  - id: updates.image-rollout
+    area: updates
+    title: Image rollout to hosts
+    decides: How a new image version reaches a pool - canary first, how many hosts at a time, how users move off old hosts, and what to roll back to.
+    home: {decision: proposed:hostPool.updates, facts: [c11.hostPool.images]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-session-host-update#initial-then-batches, ref:avd-session-host-update#test-on-aligned-pool, ref:avd-session-host-update#autoscale-off-during-update, ref:review-checklists-avd#E01.09, ref:review-checklists-avd#E01.11]
+      says: Test on a pool aligned to production first; replace one host before the rest, in batches or alongside the old ones; drain and notify before removing; keep the previous version to roll back to. With the native session host update, autoscale is off for the update.
+    measure: rebuild
+    landingZone: []
+    note: Set by the landing zone's image pipeline and rotation script (spec section 6), not a template parameter.
+  - id: updates.agent
+    area: updates
+    title: AVD agent updates and token refresh
+    decides: The agent update window and keeping idle hosts registered.
+    home: {decision: hostPool.power, facts: [c11.hostPool.startVmOnConnect]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#E01.10, ref:review-checklists-avd#E01.13]
+      says: Schedule agent updates, and turn every host on at least every 90 days.
+    measure: rebuild
+    landingZone: []
+  - id: updates.validation-pool
+    area: updates
+    title: Validation pool
+    decides: Whether a canary pool takes service updates first.
+    home: {decision: proposed:hostPool.updates, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#E01.11]
+      says: Keep a validation host pool.
+    measure: rebuild
+    landingZone: [validationEnvironment]
+
+  # Reliability, region and network
+  - id: region
+    area: network
+    title: Region
+    decides: Which region hosts each pool.
+    home: {decision: region, facts: [c11.subscription.regions, c11.hostPool.region, c11.policy.assignments], intake: [intake.residency, intake.preferredRegions]}
+    baseline:
+      standing: published
+      claims: [ref:avd-prerequisites#rtt-under-150, ref:review-checklists-avd#C03.03]
+      says: The region with round trip under 150 ms from the users, with quota for the chosen sizes.
+    observations: [obs:region-latency-from-the-user]
+    measure: fact
+    landingZone: [location, allowedLocations]
+  - id: reliability.zones
+    area: reliability
+    title: Availability zones
+    decides: Whether hosts spread across zones.
+    home: {decision: proposed:hostPool.zones, facts: [proposed:c11.sessionHost.zone]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#A01.04]
+      says: Choose the resiliency option per host pool; zones where the region has them.
+    measure: rebuild
+    landingZone: [availabilityZones]
+  - id: reliability.dr-model
+    area: reliability
+    title: Disaster recovery model
+    decides: Per pool, how it comes back after a region loss - rebuild, restore, warm standby (active-passive) or active-active - and where.
+    home: {decision: region, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#A01.06, ref:avd-multiregion-bcdr#active-active-vs-passive, ref:avd-multiregion-bcdr#estimates-to-test, ref:avd-multiregion-bcdr#capacity-not-guaranteed, ref:avd-multiregion-bcdr#image-in-both-regions, ref:avd-multiregion-bcdr#selective-failover-test]
+      says: A recovery model per pool type with targets treated as estimates until tested; the same image in both regions; recovery-region capacity is not guaranteed; test with a subset of users first.
+    measure: none
+    landingZone: [recoveryLocation]
+  - id: profile.cross-region
+    area: reliability
+    title: Profiles across regions
+    decides: How profile containers reach a second region and how failover avoids profile conflicts.
+    home: {decision: proposed:profile.storage, facts: [c11.storage.sku]}
+    baseline:
+      standing: published
+      claims: [ref:avd-multiregion-bcdr#cloud-cache-over-storage-replication, ref:avd-multiregion-bcdr#one-pool-at-a-time, ref:avd-multiregion-bcdr#cache-disk-sizing, ref:fslogix-bcdr#options, ref:fslogix-bcdr#events-rarely-graceful]
+      says: FSLogix Cloud Cache, not storage replication (Premium Files has no GRS); users in one pool at a time; a local cache disk at least as large as the largest profile; critical data in OneDrive or SharePoint.
+    measure: none
+    landingZone: []
+  - id: network.mode
+    area: network
+    title: Network mode and addressing
+    decides: Standalone or hub-peered, address space, DNS and egress.
+    home: {decision: network, facts: [c11.network.virtualNetworks, c11.network.customDnsVirtualNetworks, c11.network.defaultRoutes], intake: [intake.existingHub]}
+    baseline:
+      standing: gap
+      claims: [gap:decision-readiness, gap:intake]
+      says: Decided from the estate and the operator's answers; the published network design guidance isn't pinned here yet.
+    measure: fact
+    landingZone: [connectivityMode, spokeAddressPrefix, sessionHostSubnetPrefix, privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix, hubVnetResourceId, createHubToSpokePeering, hubFirewallPrivateIp, dnsServers, centralPrivateDnsZoneResourceIds]
+  - id: network.private-access
+    area: network
+    title: Private endpoints
+    decides: Private Link for AVD and private endpoints for profile storage.
+    home: {decision: network, facts: [c11.network.privateEndpoints, c11.storage.privateEndpoint], checks: [asm-files-private-endpoint]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#F01.10]
+      says: Evaluate a private endpoint for the profile share; the security method covers Private Link for AVD itself.
+    seeAlso: https://github.com/nickprignano/avd-assess/pull/6
+    measure: fact
+    landingZone: [enableAvdPrivateLink]
+
+  # Host pool shape, operations and cost
+  - id: hostpool.type
+    area: hostpool
+    title: Host pool type
+    decides: Pooled or personal, per user group.
+    home: {decision: hostPool.type, facts: [c11.hostPool.type, c11.hostPool.count]}
+    baseline:
+      standing: owned
+      claims: []
+      says: Owned by the use case method (personas to pool type).
+    seeAlso: https://github.com/nickprignano/avd-assess/pull/10
+    measure: fact
+    landingZone: []
+  - id: hostpool.app-group
+    area: hostpool
+    title: Desktop or RemoteApp
+    decides: The application group type each user group gets.
+    home: {decision: hostPool.appGroup, facts: [c11.hostPool.preferredAppGroupType, c11.hostPool.appGroups]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#C01.06]
+      says: Never offer both full desktops and RemoteApps to the same users from one pool.
+    measure: fact
+    landingZone: []
+  - id: ops.monitoring
+    area: operations
+    title: Monitoring, Insights and alerts
+    decides: Insights wiring (diagnostics per AVD object, agent and data collection rule per host), log retention and alerts.
+    home: {decision: proposed:operations.monitoring, facts: [proposed:c11.monitoring.diagnostics, proposed:c11.hostPool.sessionHosts.monitoringAgent, proposed:c11.hostPool.sessionHosts.insightsDcr, proposed:c11.monitoring.workspace.retentionDays, proposed:c11.monitoring.alerts]}
+    baseline:
+      standing: published
+      claims: [ref:avd-insights#hostpool-diagnostics, ref:avd-insights#workspace-diagnostics, ref:avd-insights#host-data-ama-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#latest-version, ref:amba-avd#host-resources, gap:insights-facts, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:deployment-dimensions]
+      says: Insights' required diagnostics, agent and data collection rule as published for workbook 4.3.1, alerts against the AMBA pattern; no source sets a retention number, so retention stays a gap.
+    measure: rebuild
+    landingZone: [logRetentionDays, deploySubscriptionSettings]
+    note: Alerts are fixed in the landing zone's monitoring module. Alert facts carry counts and state only, never receivers.
+  - id: ops.config-management
+    area: operations
+    title: Host configuration management
+    decides: How host settings are delivered (Intune or Group Policy).
+    home: {decision: proposed:operations.configuration, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#E01.03]
+      says: Evaluate Intune for session host management.
+    measure: rebuild
+    landingZone: [enrollInIntune]
+  - id: cost.power
+    area: cost
+    title: Power management
+    decides: Autoscale, Start VM on Connect and shutdown schedules.
+    home: {decision: hostPool.power, facts: [c11.hostPool.startVmOnConnect, intake.workingHours], checks: [asm-personal-start-vm-on-connect]}
+    baseline:
+      standing: owned
+      claims: [ref:review-checklists-avd#E01.05]
+      says: Owned by the FinOps method; Start VM on Connect for personal pools is the one check today.
+    seeAlso: https://github.com/nickprignano/avd-assess/pull/8
+    measure: fact
+    landingZone: [startVmOnConnect, scalingTimeZone, enableAutoShutdown, autoShutdownTime, autoShutdownDays, autoShutdownTimeZone, autoShutdownScheduleAction, autoShutdownRunbookUri]
+  - id: cost.budget
+    area: cost
+    title: Budgets, tags and cost guardrails
+    decides: Budgets, budget actions and cost allocation tags.
+    home: {decision: proposed:cost.budget, facts: []}
+    baseline:
+      standing: owned
+      claims: []
+      says: Owned by the FinOps method.
+    seeAlso: https://github.com/nickprignano/avd-assess/pull/8
+    measure: rebuild
+    landingZone: [monthlyBudgetAmount, budgetStartDate, autoShutdownBudgetAction, autoShutdownBudgetPercent, tags]

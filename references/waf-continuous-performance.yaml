@@ -1,0 +1,17 @@
+id: waf-continuous-performance
+title: Architecture strategies for continuous performance optimization (Azure Well-Architected Framework)
+url: https://learn.microsoft.com/azure/well-architected/performance-efficiency/continuous-performance-optimize
+pin: "Learn git_commit_id 28a78d22523542beeafc7de5eaa11fad791559b6, updated_at 2025-10-30"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+claims:
+  - id: over-and-under
+    says: Performance efficiency means capacity matches actual use; overperformance costs money and underperformance hurts users, so both are findings.
+    kind: guidance
+  - id: test-before-and-after
+    says: Review metrics regularly, adjust, and test every change before and after it is made against the performance targets.
+    kind: guidance
+  - id: deviation-thresholds
+    says: Make performance targets, baselines and deviation thresholds (how far from the baseline is acceptable) visible to the team.
+    kind: guidance

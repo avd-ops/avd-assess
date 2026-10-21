@@ -1,0 +1,11 @@
+id: rdp-shortpath
+title: RDP Shortpath for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/rdp-shortpath
+pin: "Learn git_commit_id 41dcc5bdc9210cae5b9151f9851568b917ad77db, updated_at 2026-09-15"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: udp-transport
+    says: RDP Shortpath sets up a UDP transport between client and host, with more reliable connections and more consistent latency; TCP reverse connect stays the fallback.
+    kind: published

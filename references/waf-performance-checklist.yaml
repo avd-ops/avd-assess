@@ -1,0 +1,27 @@
+id: waf-performance-checklist
+title: Design review checklist for Performance Efficiency (Azure Well-Architected Framework)
+url: https://learn.microsoft.com/azure/well-architected/performance-efficiency/checklist
+pin: "Learn git_commit_id ce3921ce25f18132fc642077a7e9edfc0fa69cc3, updated_at 2026-05-06"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+notes: Twelve recommendations, PE:01 to PE:12. Claim IDs are the checklist's codes, as for the reliability and cost checklists. Only the codes the baseline and tuning methods use are listed.
+claims:
+  - id: PE:01
+    says: Set performance targets as numbers tied to the workload's requirements, for every flow.
+    kind: guidance
+  - id: PE:02
+    says: Plan capacity before a predicted change in use, such as a season, an update or a new regulation.
+    kind: guidance
+  - id: PE:04
+    says: Measure performance the same way over time so it can be compared with baselines and used to find degradation, waste and scaling gaps.
+    kind: guidance
+  - id: PE:05
+    says: Make scaling reliable and controlled, built on the workload's scale unit.
+    kind: guidance
+  - id: PE:06
+    says: Test performance regularly in a production-like environment to confirm the workload meets its targets.
+    kind: guidance
+  - id: PE:12
+    says: Optimize performance continuously, watching for components that degrade over time.
+    kind: guidance

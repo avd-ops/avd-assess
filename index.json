@@ -2,6 +2,91 @@
   "schema": "avd-assess-index/v1",
   "references": [
     {
+      "id": "advisor-vm-rightsize",
+      "title": "Optimize VM or scale set spend by resizing or shutting down underutilized instances (Azure Advisor)",
+      "url": "https://learn.microsoft.com/azure/advisor/advisor-cost-recommendations",
+      "pin": "Learn git_commit_id 9b9c50ebb26271d5b86b92d79c2878de15bc6edf, updated_at 2026-04-01",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks",
+        "assessment"
+      ],
+      "notes": "The criteria behind Advisor's right-size and shutdown recommendations. The list of Advisor's cost recommendations is a separate page (advisor-cost in the FinOps method). We use these criteria as published utilization bands, not to recompute Advisor's result.",
+      "claims": [
+        {
+          "id": "lookback",
+          "says": "Advisor reads 7 days of utilization by default, configurable to 14, 21, 30, 60 or 90 days, aggregated to 30-minute points.",
+          "kind": "published"
+        },
+        {
+          "id": "shutdown-criteria",
+          "says": "A shutdown is recommended when P95 of maximum CPU is under 3%, average CPU over the last 3 days is at most 2%, and outbound network is under 2% over seven days.",
+          "kind": "published"
+        },
+        {
+          "id": "user-facing-targets",
+          "says": "A resize is recommended only when the smaller size would keep a user-facing workload at P95 CPU and outbound network of 40% or less and P99 memory of 60% or less.",
+          "kind": "published"
+        },
+        {
+          "id": "non-user-facing-targets",
+          "says": "For non user-facing workloads the targets are P95 CPU and network at 80% or less and P99 memory at 80% or less.",
+          "kind": "published"
+        },
+        {
+          "id": "not-always-applicable",
+          "says": "A recommendation may not apply when capacity is held for coming load, when other metrics matter, during testing, to keep sizes the same, or for recovery.",
+          "kind": "guidance"
+        },
+        {
+          "id": "savings-at-retail",
+          "says": "Savings are estimated at retail rates and ignore reservations and savings plans, so they may be higher than possible.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "amba-avd",
+      "title": "Azure Monitor Baseline Alerts, Azure Virtual Desktop pattern",
+      "url": "https://azure.github.io/azure-monitor-baseline-alerts/patterns/specialized/avd/",
+      "pin": "https://github.com/Azure/azure-monitor-baseline-alerts/tree/ec5e5f3acfcdc52773110517b1f51bd06cf766de/patterns/avd",
+      "read": "2026-10-20",
+      "license": "MIT",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "notes": "Version 2.2.1 (2025-12-16). The only published alert baseline for AVD. Its alerts deploy disabled; a few, such as host pool capacity, run through an Automation runbook.",
+      "claims": [
+        {
+          "id": "host-resources",
+          "says": "Host alerts at two severities: available memory under 1 GB or 2 GB, CPU over 95% or 85%, C: free space under 5% or 10%.",
+          "kind": "published"
+        },
+        {
+          "id": "host-pool-capacity",
+          "says": "Host pool capacity alerts at 50%, 85% and 95% of sessions against what the pool can hold.",
+          "kind": "published"
+        },
+        {
+          "id": "fslogix",
+          "says": "FSLogix alerts for failed attach, network failure, compaction failure, service disabled and profile disk under 5% or 2% free.",
+          "kind": "published"
+        },
+        {
+          "id": "storage",
+          "says": "Azure Files alerts for low share space, latency over 50 or 100 ms, throttling and availability under 99%.",
+          "kind": "published"
+        },
+        {
+          "id": "service-health",
+          "says": "Service Health alerts for incidents, planned maintenance, advisories and security.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "aprl-desktop-virtualization",
       "title": "Azure Proactive Resiliency Library v2, Microsoft.DesktopVirtualization",
       "url": "https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2",
@@ -83,6 +168,193 @@
       ]
     },
     {
+      "id": "avd-deploy-host-pool",
+      "title": "Deploy Azure Virtual Desktop (host pools and session hosts)",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/deploy-azure-virtual-desktop",
+      "pin": "Learn git_commit_id d823adcfe80080adb47686ee827ee5b3ff8e397f, updated_at 2026-09-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "premium-ssd-os-disk",
+          "says": "Premium SSD is the recommended OS disk type for production session hosts.",
+          "kind": "published"
+        },
+        {
+          "id": "trusted-launch-default",
+          "says": "Trusted launch is the default security type for new session hosts; confidential VMs are the other non-standard option.",
+          "kind": "published"
+        },
+        {
+          "id": "no-public-inbound",
+          "says": "Azure Virtual Desktop needs no public inbound ports on session hosts.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-ephemeral-os-disks",
+      "title": "Ephemeral OS disks on Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/deploy/session-hosts/ephemeral-os-disks",
+      "pin": "Learn git_commit_id 0ca58b69d33dd38d477d381b053cdf9ee92917e2, updated_at 2026-09-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "stateless-only",
+          "says": "Ephemeral OS disks suit stateless hosts; the VM can't be deallocated, only restarted, reimaged or deleted.",
+          "kind": "guidance"
+        },
+        {
+          "id": "pooled-with-configuration",
+          "says": "Supported only for pooled host pools that use a session host configuration.",
+          "kind": "published"
+        },
+        {
+          "id": "unsupported-features",
+          "says": "Not supported with an ephemeral OS disk, among others, VM deallocation, image capture, disk snapshots, Azure Disk Encryption, Azure Backup and Site Recovery.",
+          "kind": "published"
+        },
+        {
+          "id": "size-must-fit-image",
+          "says": "The VM size's temp disk or cache must be at least the image's OS disk size (127 GiB for the marketplace multi-session image).",
+          "kind": "published"
+        },
+        {
+          "id": "autoscale-full-active",
+          "says": "With ephemeral OS disks, set every scaling plan phase's minimum active hosts to 100% so autoscale creates and deletes hosts instead of starting and deallocating them.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-fslogix-storage",
+      "title": "Storage options for FSLogix profile containers in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/store-fslogix-profile",
+      "pin": "Learn git_commit_id 0a6264f8ba5a6e9bec9d75ba81b9a712a204a784, updated_at 2026-05-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "azure-files-default",
+          "says": "Azure Files is the recommended FSLogix profile store for most customers.",
+          "kind": "guidance"
+        },
+        {
+          "id": "tier-by-workload",
+          "says": "Standard file shares for light workloads under 200 users; premium for light over 200 users (or several standard shares), and for medium, heavy and power workloads.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-gpu-acceleration",
+      "title": "Enable GPU acceleration for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/graphics-enable-gpu-acceleration",
+      "pin": "Learn git_commit_id 4f40ccf54f4fb78f6d54951def316b2021aa2064, updated_at 2025-08-29",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "notes": "On 2026-10-20 the supported-size table still listed the NVv3 and NVv4 series, which the NV family page says retired on 2026-09-30, and didn't list NVads V710 v5. Read the table together with the current VM size pages before choosing a size.",
+      "claims": [
+        {
+          "id": "supported-sizes",
+          "says": "The page names the GPU-optimized VM series supported as session hosts and, for each, whether it supports GPU rendering and which codecs it can encode in hardware.",
+          "kind": "published"
+        },
+        {
+          "id": "no-compute-gpus",
+          "says": "NC, NCv2, NCv3, ND and NDv2 sizes are generally not appropriate as session hosts; they suit compute and machine learning, not the Windows user interface.",
+          "kind": "published"
+        },
+        {
+          "id": "density-tradeoff",
+          "says": "Larger GPUs give a better experience at a given user density, and fractional GPU sizes give finer control over cost and quality; the page gives no users-per-GPU number.",
+          "kind": "guidance"
+        },
+        {
+          "id": "grid-license-25",
+          "says": "VM sizes with an NVIDIA GPU come with a GRID license for 25 concurrent users.",
+          "kind": "published"
+        },
+        {
+          "id": "grid-driver-only",
+          "says": "Only Azure-distributed drivers are supported; on NVIDIA sizes only the GRID driver accelerates applications and the Windows user interface.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-host-pool-types",
+      "title": "Azure Virtual Desktop terminology (host pools)",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/terminology",
+      "pin": "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "pooled-updated-by-redeploy",
+          "says": "Pooled hosts are updated by redeploying from updated images; personal hosts are updated in place.",
+          "kind": "published"
+        },
+        {
+          "id": "limit-can-be-exceeded",
+          "says": "Under high concurrent connection load, sessions on a host can exceed the maximum session limit.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-insights-costs",
+      "title": "Estimate Azure Virtual Desktop monitoring costs",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/insights-costs",
+      "pin": "Learn git_commit_id 6d2a9179f453f9b31c9795e5c9e84e5c13b1099a, updated_at 2026-05-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "counter-set",
+          "says": "Insights collects 20 performance counters, most every 30 seconds and five every 60 seconds, each multiplied per VM, core, disk, session or process.",
+          "kind": "published"
+        },
+        {
+          "id": "event-logs",
+          "says": "Insights collects six event logs: Application, System, two Terminal Services logs and the two FSLogix logs.",
+          "kind": "published"
+        },
+        {
+          "id": "per-vm-estimate",
+          "says": "An example host ingests about 92 to 145 MB a day, roughly 3 to 5 GB every 31 days; counters are 80 to 99% of it.",
+          "kind": "published"
+        },
+        {
+          "id": "keep-diagnostics",
+          "says": "AVD diagnostics are under 1% of the cost and shouldn't be removed; trim counters first.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "avd-insights-glossary",
       "title": "Azure Virtual Desktop Insights glossary",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/insights-glossary",
@@ -136,6 +408,181 @@
         {
           "id": "utilization-for-scaling",
           "says": "Use session history and idle host counts over time to design a scaling plan, then repeat to validate it.",
+          "kind": "guidance"
+        },
+        {
+          "id": "high-utilization-resize",
+          "says": "When a session host has extended periods of high resource utilization, consider a larger VM size.",
+          "kind": "guidance"
+        },
+        {
+          "id": "input-delay-then-resources",
+          "says": "When input delay is higher than expected, look at CPU, memory and disk activity in the same periods to find the cause.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-insights-whats-new",
+      "title": "What's new in Azure Virtual Desktop Insights",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/whats-new-insights",
+      "pin": "Learn git_commit_id 4fdc1dca34d1fa7147fb1406df29d3ece36533fb, updated_at 2025-06-21",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "latest-version",
+          "says": "The latest public version of Insights is 4.3.1 (2025-01-29), which added Multipath to the Connection Reliability tab.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-insights-workbooks",
+      "title": "AVD Insights workbook source (Application Insights Workbooks repo)",
+      "url": "https://github.com/microsoft/Application-Insights-Workbooks/tree/master/Workbooks/Windows%20Virtual%20Desktop",
+      "pin": "https://github.com/microsoft/Application-Insights-Workbooks/tree/92cdb7c8413332d6b737340e2d0a4262885f3cf5/Workbooks/Windows%20Virtual%20Desktop",
+      "read": "2026-10-20",
+      "license": "MIT",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "notes": "The KQL behind each Insights tab (AVD Insights, AtScale, CheckAMAConfiguration, Connection Diagnostics, Connection Performance, Host Diagnostics, Host Performance and more). A reader of Insights data should take its queries from here, with attribution, rather than write new ones.",
+      "claims": [
+        {
+          "id": "queries-define-measures",
+          "says": "Each Insights measure (round-trip time, time to connect, input delay, utilization) is defined by the KQL in its workbook template.",
+          "kind": "published"
+        },
+        {
+          "id": "config-check",
+          "says": "The configuration check workbook tests diagnostic settings, the Azure Monitor Agent and the association with a data collection rule named microsoft-avdi-* for each host.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-insights",
+      "title": "Enable Insights to monitor Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/insights",
+      "pin": "Learn git_commit_id ec0c680142f45947b0691d842131822e8708beac, updated_at 2025-06-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "notes": "The configuration baseline for AVD monitoring. The configuration workbook checks the same items and is the reference when a check and the workbook disagree.",
+      "claims": [
+        {
+          "id": "hostpool-diagnostics",
+          "says": "Host pool diagnostics send Management Activities, Feed, Connections, Errors, Checkpoints, HostRegistration and AgentHealthStatus to Log Analytics.",
+          "kind": "published"
+        },
+        {
+          "id": "workspace-diagnostics",
+          "says": "AVD workspace diagnostics send Management Activities, Feed, Errors and Checkpoints to Log Analytics.",
+          "kind": "published"
+        },
+        {
+          "id": "host-data-ama-dcr",
+          "says": "Session host data needs the Azure Monitor Agent, a system-assigned managed identity and an association with a data collection rule that sends the recommended counters and event logs to Log Analytics.",
+          "kind": "published"
+        },
+        {
+          "id": "designated-workspace",
+          "says": "Use a designated Log Analytics workspace for session hosts so only their counters and events are collected; it can differ from the diagnostics workspace.",
+          "kind": "guidance"
+        },
+        {
+          "id": "reader-roles",
+          "says": "Viewing Insights needs Desktop Virtualization Reader on the AVD resources and Log Analytics Reader on the workspace.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-load-balancing",
+      "title": "Configure host pool load balancing in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/configure-host-pool-load-balancing",
+      "pin": "Learn git_commit_id a2a9e65a51ae1c976e7dc98dfea2ca6d522e5028, updated_at 2025-06-24",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "breadth-first-performance",
+          "says": "Breadth-first spreads new sessions across hosts to favor session performance.",
+          "kind": "guidance"
+        },
+        {
+          "id": "depth-first-cost",
+          "says": "Depth-first fills one host at a time to favor cost and needs a maximum session limit.",
+          "kind": "guidance"
+        },
+        {
+          "id": "set-limit-from-insights",
+          "says": "Set the maximum session limit from measured sessions per host and host performance in Insights; the page gives no number.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-multiregion-bcdr",
+      "title": "Multiregion BCDR for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/architecture/example-scenario/azure-virtual-desktop/azure-virtual-desktop-multi-region-bcdr",
+      "pin": "Learn git_commit_id d6054b5b6a0fda90d06619b94a3c5c2ce89c4513, updated_at 2026-10-05",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "active-active-vs-passive",
+          "says": "Each pooled host pool takes an active-active model (a second pool in another region serving users, near-zero RTO, no failover step) or active-passive (a standby pool users are moved to by reassigning application groups).",
+          "kind": "guidance"
+        },
+        {
+          "id": "estimates-to-test",
+          "says": "The recovery time and data loss figures per model are estimates to validate by disaster recovery testing.",
+          "kind": "prior"
+        },
+        {
+          "id": "one-pool-at-a-time",
+          "says": "Users must use only one host pool at a time to avoid profile conflicts; fail over every application group together.",
+          "kind": "published"
+        },
+        {
+          "id": "cloud-cache-over-storage-replication",
+          "says": "Use FSLogix Cloud Cache rather than storage replication for profiles across regions; Premium Azure Files has no geo-redundant storage.",
+          "kind": "published"
+        },
+        {
+          "id": "cache-disk-sizing",
+          "says": "Size the Cloud Cache local disk at least as large as the largest profile, starting from about 30 GB per concurrent user on Premium disks.",
+          "kind": "prior"
+        },
+        {
+          "id": "capacity-not-guaranteed",
+          "says": "Deallocated hosts and new deployments in the recovery region don't have guaranteed capacity; only running resources or on-demand capacity reservations do.",
+          "kind": "published"
+        },
+        {
+          "id": "image-in-both-regions",
+          "says": "Replicate the gallery image to both regions so both pools deploy the same golden image.",
+          "kind": "guidance"
+        },
+        {
+          "id": "selective-failover-test",
+          "says": "Test failover by moving a subset of users or application groups to the secondary pool.",
           "kind": "guidance"
         }
       ]
@@ -194,6 +641,105 @@
       ]
     },
     {
+      "id": "avd-session-host-update",
+      "title": "Session host update for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/session-host-update",
+      "pin": "Learn git_commit_id 552819d10384f25e8ce4031b6e928fd1bafdc3c6, updated_at 2026-07-02",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "initial-then-batches",
+          "says": "An update replaces one host first, then the rest in batches of a size the operator sets, so the rest of the pool stays available.",
+          "kind": "published"
+        },
+        {
+          "id": "replaces-vms",
+          "says": "Session host update replaces VMs from the host pool's session host configuration (image, size, disk type and more); local data on the old hosts is not kept.",
+          "kind": "published"
+        },
+        {
+          "id": "autoscale-off-during-update",
+          "says": "Autoscale must be disabled on the host pool for the whole update, or the update can fail.",
+          "kind": "published"
+        },
+        {
+          "id": "test-on-aligned-pool",
+          "says": "Test the update process and the new image on a test host pool aligned to the one being updated before updating production.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-update-methods",
+      "title": "Windows update management methodologies for Azure Virtual Desktop session hosts",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/windows-update-management-methodologies-session-hosts",
+      "pin": "Learn git_commit_id c972d4459371656583cdf255f87778a5ffc75fa4, updated_at 2026-10-08",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "method-by-os",
+          "says": "The recommended update method depends on the session host OS (Enterprise, multi-session or Server), the kind of update and the servicing model (patch in place or image-based).",
+          "kind": "guidance"
+        },
+        {
+          "id": "multisession-image-based",
+          "says": "For multi-session hosts, monthly and feature updates are recommended through session host update or new Azure Compute Gallery image versions; Windows Update and Autopatch are not recommended.",
+          "kind": "published"
+        },
+        {
+          "id": "server-update-manager",
+          "says": "For Windows Server session hosts, Azure Update Manager and automatic guest patching are the recommended monthly update methods.",
+          "kind": "published"
+        },
+        {
+          "id": "pooled-image-servicing",
+          "says": "Image-based servicing through session host update is recommended for pooled host pools; it keeps hosts consistent and eases rollback.",
+          "kind": "published"
+        },
+        {
+          "id": "hotpatch",
+          "says": "Hotpatch applies eligible monthly security updates without a reboot on supported editions, including multi-session.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "azure-files-vdi",
+      "title": "Azure Files guidance for virtual desktop workloads",
+      "url": "https://learn.microsoft.com/azure/storage/files/virtual-desktop-workloads",
+      "pin": "Learn git_commit_id 21b4b7181ee0e882340a24ca59e1805107a58d64, updated_at 2026-10-19",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "handle-limits",
+          "says": "Azure Files allows 2,000 concurrent handles per file and directory and 10,000 on a share's root; on SSD shares these are soft limits.",
+          "kind": "published"
+        },
+        {
+          "id": "users-per-share",
+          "says": "The page recommends file share type and count by concurrent FSLogix users (HDD under 2,000; one or two SSD shares with metadata caching to 5,000; more shares beyond).",
+          "kind": "published"
+        },
+        {
+          "id": "storm-sizing",
+          "says": "Size for sign-in and sign-out storms separately from steady state; the worked example uses 10 IOPS per user steady and calls its values sample assumptions.",
+          "kind": "prior"
+        }
+      ]
+    },
+    {
       "id": "caf-avd-assess",
       "title": "Cloud Adoption Framework, Azure Virtual Desktop assessment (migration scenario)",
       "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/migrate-assess",
@@ -229,6 +775,223 @@
       ]
     },
     {
+      "id": "caf-avd-management",
+      "title": "Cloud Adoption Framework, Azure Virtual Desktop management baseline",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-management-and-monitoring",
+      "pin": "https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/5c44a2accff2018eba5dd738b648eef4c9db179b/docs/scenarios/azure-virtual-desktop/eslz-management-and-monitoring.md",
+      "read": "2026-10-20",
+      "license": "CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Microsoft is removing the CAF AVD scenario on 2026-10-30 (see caf-avd-assess), so the pin is the public GitHub copy.",
+      "claims": [
+        {
+          "id": "insights-config-workbook",
+          "says": "Configure diagnostics, events and counters through Insights, and use its configuration workbook to stay current when new settings are required.",
+          "kind": "guidance"
+        },
+        {
+          "id": "regional-workspace",
+          "says": "Use one Log Analytics workspace for the AVD platform and hosts, in the region of the session hosts.",
+          "kind": "guidance"
+        },
+        {
+          "id": "alerting-model",
+          "says": "Set up an alerting model for the collected logs and metrics.",
+          "kind": "guidance"
+        },
+        {
+          "id": "long-retention-export",
+          "says": "Send diagnostics to a storage account when retention must go beyond two years.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "defender-av-vdi",
+      "title": "Configure Microsoft Defender Antivirus on a remote desktop or virtual desktop infrastructure environment",
+      "url": "https://learn.microsoft.com/defender-endpoint/deployment-vdi-microsoft-defender-antivirus",
+      "pin": "Learn git_commit_id f785aeabb1b2f510738a8b2cd07f06b3dbdfc19c, updated_at 2026-08-21",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "The page's settings are the published baseline for tuning antivirus on multi-session and non-persistent hosts. It gives no measured overhead per user.",
+      "claims": [
+        {
+          "id": "vdi-settings",
+          "says": "The page lists recommended antivirus settings for VDI that balance protection and performance (randomized scans, headless UI, cloud protection and others).",
+          "kind": "published"
+        },
+        {
+          "id": "cache-maintenance-before-seal",
+          "says": "Run the Defender cache maintenance task on the image before sealing it, or each VM can see higher CPU while it runs.",
+          "kind": "published"
+        },
+        {
+          "id": "shared-updates",
+          "says": "Security intelligence updates can come from a dedicated VDI file share instead of each VM downloading them.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "defender-endpoint-vdi",
+      "title": "Onboard non-persistent VDI devices to Microsoft Defender for Endpoint",
+      "url": "https://learn.microsoft.com/defender-endpoint/configure-endpoints-vdi",
+      "pin": "Learn git_commit_id 0509959827002d2bcd212896fe9f5385ee82fe62, updated_at 2026-09-22",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "entry-model",
+          "says": "Choose a single entry or multiple entries per device before configuring the image.",
+          "kind": "guidance"
+        },
+        {
+          "id": "never-onboard-image",
+          "says": "Don't onboard the primary image or template VMs; a cloned onboarded image duplicates the sensor identity.",
+          "kind": "published"
+        },
+        {
+          "id": "first-report-delay",
+          "says": "A VDI device's first onboarding can delay client reporting by about three to four hours.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "disk-encryption-options",
+      "title": "Overview of managed disk encryption options",
+      "url": "https://learn.microsoft.com/azure/virtual-machines/disk-encryption-overview",
+      "pin": "Learn git_commit_id fe259248937e88769914cfeb84ecbdcc6121d70e, updated_at 2026-09-16",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "sse-always-on",
+          "says": "Server-side encryption encrypts managed disks at rest by default, but not temp disks or disk caches.",
+          "kind": "published"
+        },
+        {
+          "id": "encryption-at-host",
+          "says": "Encryption at host adds temp disks, caches and the data flow to storage, without using the VM's CPU.",
+          "kind": "published"
+        },
+        {
+          "id": "ade-retirement",
+          "says": "Azure Disk Encryption retires on 2028-09-15; new VMs should use encryption at host, and ADE VMs must migrate before then.",
+          "kind": "published"
+        },
+        {
+          "id": "customer-keys",
+          "says": "Customer-managed keys are available through a disk encryption set for server-side encryption and encryption at host.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "finops-workload-optimization",
+      "title": "Workload optimization (Microsoft's guide to the FinOps Framework capability)",
+      "url": "https://learn.microsoft.com/cloud-computing/finops/framework/optimize/workloads",
+      "pin": "Learn git_commit_id a74e7c72db9bbdc44d6f3307194cad5e78348cc9, updated_at 2026-02-11",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "The FinOps Foundation's own capability page has no immutable pin; this is Microsoft's pinned summary, as for finops-framework.",
+      "claims": [
+        {
+          "id": "definition",
+          "says": "Workload optimization makes sure services are used and tuned to maximize business value and minimize waste.",
+          "kind": "guidance"
+        },
+        {
+          "id": "scale-down-off-peak",
+          "says": "Review usage patterns to see whether resources can be scaled down or shut down off-peak, and consider cheaper alternatives.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-bcdr",
+      "title": "Business continuity and disaster recovery options for FSLogix",
+      "url": "https://learn.microsoft.com/fslogix/concepts-container-recovery-business-continuity",
+      "pin": "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "options",
+          "says": "Profile recovery options are no profile recovery, Cloud Cache primary and failover, and Cloud Cache active-active.",
+          "kind": "guidance"
+        },
+        {
+          "id": "events-rarely-graceful",
+          "says": "Disaster events are rarely graceful; profiles may be lost or corrupted on failover, so critical data belongs in OneDrive or SharePoint.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-prerequisites",
+      "title": "FSLogix prerequisites",
+      "url": "https://learn.microsoft.com/fslogix/overview-prerequisites",
+      "pin": "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "av-exclusions",
+          "says": "Configure antivirus and security tools to exclude the FSLogix container files and paths the page lists.",
+          "kind": "published"
+        },
+        {
+          "id": "storage-latency",
+          "says": "Network latency, bandwidth and proximity to the storage provider are pivotal to the user's experience.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-storage-options",
+      "title": "FSLogix container storage options",
+      "url": "https://learn.microsoft.com/fslogix/concepts-container-storage-options",
+      "pin": "Learn git_commit_id 6110649daa9e8855bc6a333cada7625a74e8c7a5, updated_at 2026-05-20",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "iops-per-user",
+          "says": "An example FSLogix profile needs about 10 IOPS per user in steady state and 50 at sign-in and sign-out.",
+          "kind": "prior"
+        },
+        {
+          "id": "latency-first",
+          "says": "Proximity (latency) to the hosts and performance against the user workload are the most important factors in choosing container storage.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "perfmon-troubleshooting",
       "title": "Troubleshoot issues using Performance Monitor (Windows Server)",
       "url": "https://learn.microsoft.com/troubleshoot/windows-server/support-tools/troubleshoot-issues-performance-monitor",
@@ -254,6 +1017,69 @@
           "id": "patterns-over-days",
           "says": "Log counters over one or two working days, then look for patterns by day and hour rather than reacting to one reading.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "psrule-azure",
+      "title": "PSRule for Azure, rule reference",
+      "url": "https://github.com/Azure/PSRule.Rules.Azure",
+      "pin": "https://github.com/Azure/PSRule.Rules.Azure/tree/ee878876de6554b75d9fdff974f9ef6fdc88391c/docs/en/rules",
+      "read": "2026-10-21",
+      "license": "MIT",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Well-Architected rules for Azure resources, run on templates and on exported live resources. avd-landing-zone runs this version (v1.47.0) in CI on its templates and in its live Well-Architected review. Claim IDs are the rules' AZR IDs, so a finding there and an assessment item here name the same thing. Only one rule is AVD-specific; the AVD review checklist and APRL stay the main lists.",
+      "claims": [
+        {
+          "id": "AZR-000437",
+          "says": "Azure.AVD.ScheduleAgentUpdate, define a maintenance window for host pool agent updates (Reliability, important)."
+        },
+        {
+          "id": "AZR-000195",
+          "says": "Azure.Storage.UseReplication, a storage account on locally redundant storage lives in one zone; use zone or geo replication (Reliability, important)."
+        }
+      ]
+    },
+    {
+      "id": "rdp-bandwidth",
+      "title": "Remote Desktop Protocol (RDP) bandwidth requirements",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-bandwidth",
+      "pin": "Learn git_commit_id f2b8fc269ef10993c35918c2b14890ecb52de9c0, updated_at 2026-05-25",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "monitor-real-users",
+          "says": "The best way to know bandwidth needs is to monitor real user connections.",
+          "kind": "guidance"
+        },
+        {
+          "id": "per-scenario-estimates",
+          "says": "The page gives per-user bandwidth estimates by activity for one 1080p monitor, from idle to full-screen video.",
+          "kind": "prior"
+        }
+      ]
+    },
+    {
+      "id": "rdp-shortpath",
+      "title": "RDP Shortpath for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-shortpath",
+      "pin": "Learn git_commit_id 41dcc5bdc9210cae5b9151f9851568b917ad77db, updated_at 2026-09-15",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "udp-transport",
+          "says": "RDP Shortpath sets up a UDP transport between client and host, with more reliable connections and more consistent latency; TCP reverse connect stays the fallback.",
+          "kind": "published"
         }
       ]
     },
@@ -353,6 +1179,94 @@
         {
           "id": "H04.03",
           "says": "Review and confirm the configured maximum FSLogix profile size (Cost, high)."
+        },
+        {
+          "id": "A01.04",
+          "says": "Plan the best resiliency option for the host pool deployment (Reliability, high)."
+        },
+        {
+          "id": "A03.02",
+          "says": "Build a backup protection strategy for profile and Office containers (Reliability, medium)."
+        },
+        {
+          "id": "B01.03",
+          "says": "Determine which OS images to use for host pool deployment (Reliability, medium)."
+        },
+        {
+          "id": "B01.07",
+          "says": "Include the latest FSLogix version in the golden image update process (Reliability, high)."
+        },
+        {
+          "id": "B01.08",
+          "says": "Evaluate the desktop optimization tool for the image (Performance, low)."
+        },
+        {
+          "id": "B01.10",
+          "says": "Determine whether Microsoft Teams will be part of the deployment (Performance, low)."
+        },
+        {
+          "id": "B03.01",
+          "says": "Evaluate Gen2 VMs for host pool deployment (Performance, medium)."
+        },
+        {
+          "id": "B03.02",
+          "says": "Consider multimedia redirection for better browser video performance (Performance, low)."
+        },
+        {
+          "id": "C01.04",
+          "says": "For pooled host pools, select the best load balancing method (Performance, low)."
+        },
+        {
+          "id": "C01.10",
+          "says": "Run a workload performance test to determine the best VM SKU and size (Performance, high)."
+        },
+        {
+          "id": "C01.12",
+          "says": "Determine whether session hosts need a GPU (Performance, low)."
+        },
+        {
+          "id": "C01.13",
+          "says": "Use VM SKUs that support Accelerated Networking (Performance, low)."
+        },
+        {
+          "id": "C03.03",
+          "says": "Check quotas and availability for the VM sizes and types in the chosen regions (Reliability, low)."
+        },
+        {
+          "id": "E01.03",
+          "says": "Evaluate Intune for session host management (Operations, medium)."
+        },
+        {
+          "id": "E01.09",
+          "says": "Plan an emergency patching and update strategy for session hosts (Operations, medium)."
+        },
+        {
+          "id": "E02.03",
+          "says": "Alert on profile storage high usage and throttling (Reliability, medium)."
+        },
+        {
+          "id": "F01.09",
+          "says": "Check the network bandwidth needed per user and in total for the VM SKU (Performance, low)."
+        },
+        {
+          "id": "H01.02",
+          "says": "Enable SMB multichannel on premium file shares that hold FSLogix profiles (Performance, low)."
+        },
+        {
+          "id": "H03.01",
+          "says": "Determine which managed disk type session hosts will use (Performance, medium)."
+        },
+        {
+          "id": "H03.02",
+          "says": "Determine the storage backend for FSLogix profiles (Performance, high)."
+        },
+        {
+          "id": "H03.04",
+          "says": "Verify storage scalability limits against host pool requirements (Reliability, high)."
+        },
+        {
+          "id": "H04.06",
+          "says": "With FSLogix Cloud Cache, consider putting the cache on the VM's temporary drive (Performance, low)."
         }
       ]
     },
@@ -386,6 +1300,84 @@
           "id": "profile-storage-minimum",
           "says": "Plan at least 30 GB of profile storage per user.",
           "kind": "prior"
+        },
+        {
+          "id": "capacity-approaches",
+          "says": "Size capacity by a pilot (load one host while watching CPU, paging, disk and network) or by simulation tools that ramp scripted users until performance degrades.",
+          "kind": "guidance"
+        },
+        {
+          "id": "logon-storm-headroom",
+          "says": "Plan for concurrent sign-ins at the start of a shift, which are CPU-heavy, and leave headroom beyond steady state.",
+          "kind": "guidance"
+        },
+        {
+          "id": "memory-limits-density",
+          "says": "When memory limits density, adding memory at small sizes helps most; 8 to 16 GB can more than double the users a host supports.",
+          "kind": "guidance"
+        },
+        {
+          "id": "single-session-minimums",
+          "says": "Single-session minimums: light 2 vCPU and 8 GB, medium 4 vCPU and 16 GB, heavy 8 vCPU and 32 GB, each with 32 GB OS storage.",
+          "kind": "prior"
+        },
+        {
+          "id": "multisession-minimums",
+          "says": "Multi-session minimums: 8 vCPU, 16 GB RAM and 32 GB OS storage for light to heavy; 6 vCPU, 56 GB and 340 GB for power.",
+          "kind": "prior"
+        },
+        {
+          "id": "gpu-for-graphics",
+          "says": "Use GPU session hosts for graphics-heavy apps or high resolutions; CPU-only hosts encode in software and can show artifacts above 3840 x 2160 total resolution.",
+          "kind": "guidance"
+        },
+        {
+          "id": "ssd-storage",
+          "says": "Use high-performance storage such as SSD or NVMe for session hosts.",
+          "kind": "guidance"
+        },
+        {
+          "id": "more-smaller-vms",
+          "says": "Many smaller VMs beat a few large ones; they're easier to drain, update and shut down.",
+          "kind": "guidance"
+        },
+        {
+          "id": "input-delay-expectation",
+          "says": "User input delay is a key experience metric; users generally expect a response under 200 ms, and more than that degrades the experience.",
+          "kind": "published"
+        },
+        {
+          "id": "document-capacity-plan",
+          "says": "Document the capacity planning process, its assumptions, calculations and decisions, and share it with stakeholders.",
+          "kind": "guidance"
+        },
+        {
+          "id": "cpu-scaling-factor",
+          "says": "Doubling cores doesn't double user capacity; the scaling factor is typically 1.5 to 1.9 and falls as core counts rise.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "teams-on-avd",
+      "title": "Use Microsoft Teams on Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/teams-on-avd",
+      "pin": "Learn git_commit_id 34aad1fd443eb396735b6899c8e66e63a8009de3, updated_at 2026-06-17",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "media-optimization",
+          "says": "With media optimization, Teams calls and meetings are redirected to the local device; without it they run on the session host.",
+          "kind": "published"
+        },
+        {
+          "id": "classic-teams-end",
+          "says": "The classic Teams app for VDI reaches end of support on 2026-10-01 and end of availability on 2027-04-01.",
+          "kind": "published"
         }
       ]
     },
@@ -408,6 +1400,142 @@
         {
           "id": "sysprep-store-apps",
           "says": "Removing or updating built-in Store apps can make sysprep fail; the guide links the support article.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-continuous-performance",
+      "title": "Architecture strategies for continuous performance optimization (Azure Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/performance-efficiency/continuous-performance-optimize",
+      "pin": "Learn git_commit_id 28a78d22523542beeafc7de5eaa11fad791559b6, updated_at 2025-10-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "over-and-under",
+          "says": "Performance efficiency means capacity matches actual use; overperformance costs money and underperformance hurts users, so both are findings.",
+          "kind": "guidance"
+        },
+        {
+          "id": "test-before-and-after",
+          "says": "Review metrics regularly, adjust, and test every change before and after it is made against the performance targets.",
+          "kind": "guidance"
+        },
+        {
+          "id": "deviation-thresholds",
+          "says": "Make performance targets, baselines and deviation thresholds (how far from the baseline is acceptable) visible to the team.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-performance-checklist",
+      "title": "Design review checklist for Performance Efficiency (Azure Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/performance-efficiency/checklist",
+      "pin": "Learn git_commit_id ce3921ce25f18132fc642077a7e9edfc0fa69cc3, updated_at 2026-05-06",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "notes": "Twelve recommendations, PE:01 to PE:12. Claim IDs are the checklist's codes, as for the reliability and cost checklists. Only the codes the baseline and tuning methods use are listed.",
+      "claims": [
+        {
+          "id": "PE:01",
+          "says": "Set performance targets as numbers tied to the workload's requirements, for every flow.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:02",
+          "says": "Plan capacity before a predicted change in use, such as a season, an update or a new regulation.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:04",
+          "says": "Measure performance the same way over time so it can be compared with baselines and used to find degradation, waste and scaling gaps.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:05",
+          "says": "Make scaling reliable and controlled, built on the workload's scale unit.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:06",
+          "says": "Test performance regularly in a production-like environment to confirm the workload meets its targets.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PE:12",
+          "says": "Optimize performance continuously, watching for components that degrade over time.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-performance-targets",
+      "title": "Architecture strategies for defining performance targets (Azure Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/performance-efficiency/performance-targets",
+      "pin": "Learn git_commit_id 28a78d22523542beeafc7de5eaa11fad791559b6, updated_at 2025-10-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "measurable-targets",
+          "says": "Give each key metric a target that is measurable, realistic and aligned with the workload's objectives.",
+          "kind": "guidance"
+        },
+        {
+          "id": "percentiles",
+          "says": "Report performance as percentiles such as P50, P95 and P99 over a period, not as averages.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-performance-testing",
+      "title": "Architecture strategies for performance testing (Azure Well-Architected Framework)",
+      "url": "https://learn.microsoft.com/azure/well-architected/performance-efficiency/performance-test",
+      "pin": "Learn git_commit_id c96d7decedaf65e86add6d4c063c6b380c1535ef, updated_at 2026-08-04",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "baseline-defined",
+          "says": "A performance baseline is the set of metrics that shows the workload's behavior under normal conditions, validated by testing.",
+          "kind": "guidance"
+        },
+        {
+          "id": "regression-and-drift",
+          "says": "A regression is a decline against the baseline caused by a change; drift is a gradual decline that goes unnoticed without regular tests against the baseline.",
+          "kind": "guidance"
+        },
+        {
+          "id": "hypothesis-baseline-variant",
+          "says": "State a prediction with measurable success criteria, run the same test against the baseline and the variant, and compare the results.",
+          "kind": "guidance"
+        },
+        {
+          "id": "record-baselines",
+          "says": "Record metrics from the first tests as baselines, and use them to tell whether an optimization helped.",
+          "kind": "guidance"
+        },
+        {
+          "id": "production-baselines",
+          "says": "Testing in production shows what only real users and data reveal and gives accurate baselines for later optimization.",
           "kind": "guidance"
         }
       ]
@@ -538,6 +1666,27 @@
   ],
   "observations": [
     {
+      "id": "encryption-at-host-by-default",
+      "claim": "ref:disk-encryption-options#encryption-at-host",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone turns encryption at host on by default and registers the subscription feature it needs, so it never uses Azure Disk Encryption. No run has measured whether it changes host performance, which the source says it doesn't.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "premium-ssd-os-disk-default",
+      "claim": "ref:avd-deploy-host-pool#premium-ssd-os-disk",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone's session hosts use Premium SSD OS disks, as the source recommends for production. No run has compared disk latency on Standard SSD or an ephemeral OS disk, so the choice rests on the source, not our evidence.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/modules/sessionHosts.bicep",
+        "https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
       "id": "region-latency-from-the-user",
       "claim": "ref:avd-prerequisites#rtt-under-150",
       "verdict": "extends",
@@ -554,6 +1703,17 @@
       "observed": "The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.",
       "evidence": [
         "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "tuning-levers-set-by-hand",
+      "claim": "ref:waf-performance-checklist#PE:05",
+      "verdict": "extends",
+      "observed": "The landing zone sets size, host count and session limit as parameters, but fixes breadth-first load balancing and the scaling plan's capacity thresholds and minimum host shares (60% and 20% at ramp-up, 90% and 10% at ramp-down) in its control plane module, and lists the schedule as set by hand. A tuning loop can change the first three through the landing zone; the scaling levers it can only record until they become parameters.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/modules/controlPlane.bicep",
+        "https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/contracts/target-state-capabilities.json"
       ],
       "date": "2026-10-20"
     },
@@ -602,6 +1762,10 @@
   ],
   "gaps": [
     {
+      "id": "baseline-profile",
+      "title": "a baseline profile of what good looks like"
+    },
+    {
       "id": "checklist-mapping",
       "title": "mapping facts to review checklist items"
     },
@@ -614,8 +1778,20 @@
       "title": "decision readiness"
     },
     {
+      "id": "deployment-dimensions",
+      "title": "a register of deployment dimensions and their baselines"
+    },
+    {
+      "id": "evidence-intake",
+      "title": "one evidence intake for everyone"
+    },
+    {
       "id": "gold-standards",
       "title": "gold standards"
+    },
+    {
+      "id": "insights-facts",
+      "title": "AVD Insights as evidence"
     },
     {
       "id": "intake",
@@ -632,6 +1808,10 @@
     {
       "id": "scoring",
       "title": "scoring"
+    },
+    {
+      "id": "tune-loop",
+      "title": "a repeatable tune and rightsize loop for AVD"
     }
   ]
 }

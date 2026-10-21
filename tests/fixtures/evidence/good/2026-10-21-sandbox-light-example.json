@@ -1,0 +1,13 @@
+{
+  "schema": "avd-assess-evidence/v1",
+  "id": "2026-10-21-sandbox-light-example",
+  "source": "sandbox",
+  "submitted": "2026-10-21",
+  "producer": {"tool": "manual"},
+  "window": {"days": 1, "hours": "peak", "coverage": 0.95},
+  "scope": {"class": "light", "hostPoolType": "pooled", "hosts": 1, "users": 24, "vcpuPerHost": 4, "memoryGiBPerHost": 32, "workload": "scripted"},
+  "metrics": [
+    {"metric": "users-per-vcpu", "unit": "users-per-vcpu", "p95": 6, "verdict": "agrees", "note": "Experience gate held at 6 users per vCPU; an example, not a real run."},
+    {"metric": "memory-per-user", "unit": "mib", "p50": 900, "p95": 1400, "verdict": "not-yet-tested"}
+  ]
+}

@@ -1,0 +1,23 @@
+id: avd-ephemeral-os-disks
+title: Ephemeral OS disks on Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/deploy/session-hosts/ephemeral-os-disks
+pin: "Learn git_commit_id 0ca58b69d33dd38d477d381b053cdf9ee92917e2, updated_at 2026-09-30"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: stateless-only
+    says: Ephemeral OS disks suit stateless hosts; the VM can't be deallocated, only restarted, reimaged or deleted.
+    kind: guidance
+  - id: pooled-with-configuration
+    says: Supported only for pooled host pools that use a session host configuration.
+    kind: published
+  - id: unsupported-features
+    says: Not supported with an ephemeral OS disk, among others, VM deallocation, image capture, disk snapshots, Azure Disk Encryption, Azure Backup and Site Recovery.
+    kind: published
+  - id: size-must-fit-image
+    says: The VM size's temp disk or cache must be at least the image's OS disk size (127 GiB for the marketplace multi-session image).
+    kind: published
+  - id: autoscale-full-active
+    says: With ephemeral OS disks, set every scaling plan phase's minimum active hosts to 100% so autoscale creates and deletes hosts instead of starting and deallocating them.
+    kind: guidance
