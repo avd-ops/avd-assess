@@ -854,7 +854,7 @@ dimensions:
     note: Alerts are fixed in the landing zone's monitoring module. Alert facts carry counts and state only, never receivers.
   - id: ops.config-management
     area: operations
-    pillar: governance
+    pillar: intune
     title: Host configuration management
     decides: How host settings are delivered (Intune or Group Policy).
     home: {decision: proposed:operations.configuration, facts: []}

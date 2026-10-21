@@ -61,7 +61,7 @@ pillars:
     status: partial
   - id: endpoints
     title: Endpoints and clients
-    scope: Client apps per OS, client OS versions, thin clients and kiosks, managed against unmanaged devices, peripherals, printing, multi-monitor and resolution.
+    scope: Client apps per OS, client OS versions, thin clients and kiosks, managed against unmanaged devices (the management itself is the intune pillar), peripherals, printing, multi-monitor and resolution.
     checklist: [C02.03, C02.05, G02.06]
     status: missing
   - id: ux-measurement
@@ -83,9 +83,9 @@ pillars:
     status: partial
   - id: governance
     title: Governance, policy and compliance
-    scope: Azure Policy guardrails, allowed locations and sizes, tagging and naming, Intune against Group Policy for host configuration, security baselines, audit logging and retention, benchmark control mapping, compliance frameworks as mappings, change control, tenant and subscription prerequisites.
-    checklist: [E01.01, E01.02, E01.03, G03.05, G03.06, C03, D03.01]
-    status: partial
+    scope: Azure Policy guardrails, allowed locations and sizes, tagging and naming, audit logging and retention, benchmark control mapping, compliance frameworks as mappings, change control, tenant and subscription prerequisites. Host configuration delivery is the intune pillar.
+    checklist: [E01.01, E01.02, G03.05, G03.06, C03, D03.01]
+    status: missing
   - id: monitoring
     title: Monitoring and operations
     scope: Insights wiring, alerts, workbooks, log retention, agent and token health, day-2 runbooks, capacity reviews and cadence.
@@ -123,3 +123,8 @@ pillars:
     scope: Triage flows per symptom; the data sources (Insights, the diagnostic tables, agent health and logs, event, profile and client logs, Resource Graph); tools as categories; error-code maps; the diagnostic facts the collector reads.
     checklist: []
     status: missing
+  - id: intune
+    title: Intune and host management
+    scope: Microsoft Intune for session hosts and client devices as the owner asked (2026-10-21), against Group Policy where an estate keeps it; enrollment of multi-session and Entra-joined hosts, configuration profiles and the settings catalog, security baselines for session hosts, compliance policies for hosts and for the client devices Conditional Access checks, app deployment to hosts, update rings and Autopatch against image-based servicing, remote actions and reporting.
+    checklist: [E01.03]
+    status: partial
