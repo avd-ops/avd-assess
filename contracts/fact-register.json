@@ -192,9 +192,7 @@
       "unit": "count",
       "privacy": "count",
       "status": "specified",
-      "evidences": [
-        "hostPool.appGroup"
-      ]
+      "evidences": []
     },
     {
       "id": "c11.hostPool.appAttachLogonBlocking",
@@ -1014,8 +1012,9 @@
       "grain": "estate",
       "unit": "enum",
       "privacy": "public",
-      "status": "specified",
-      "evidences": []
+      "status": "built",
+      "evidences": [],
+      "aggregate": "distinct"
     },
     {
       "id": "intake.appCompatibility",
@@ -1025,7 +1024,7 @@
       "grain": "estate",
       "unit": "enum",
       "privacy": "public",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -1036,7 +1035,7 @@
       "grain": "estate",
       "unit": "enum",
       "privacy": "public",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     }
   ]

@@ -334,7 +334,7 @@ dimensions:
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#H04.02, ref:fslogix-prerequisites#av-exclusions, ref:app-attach#av-exclude-images]
-      says: Apply FSLogix's published exclusions, including not scanning container disks on connect, and exclude the read-only package images.
+      says: Apply FSLogix's published file and process exclusions on every host, and exclude the read-only package images.
     observations: [obs:fslogix-av-exclusions-applied]
     measure: host-side
     landingZone: []
@@ -343,15 +343,15 @@ dimensions:
     area: storage
     pillar: profiles
     title: Kerberos encryption on profile shares
-    decides: Whether profile shares accept AES Kerberos tickets before RC4 goes away.
+    decides: Whether profile shares accept AES Kerberos tickets now that RC4 is no longer the default.
     home: {decision: identity, facts: [c11.storage.filesIdentity, c11.storage.kerberosTicketEncryption]}
     baseline:
       standing: published
       claims: [ref:fslogix-redirections#kerberos-aes-sha1, ref:anf-ad-connections#aes-256-for-2025-dcs]
-      says: Shares holding containers must accept AES Kerberos tickets before the April 2026 Windows Server update makes AES-SHA1 the default; ANF needs AES-256 with Windows Server 2025 domain controllers.
+      says: Since the April 2026 Windows Server update made AES-SHA1 the default, a share holding containers that doesn't accept AES tickets can fail sign-in; ANF needs AES-256 with Windows Server 2025 domain controllers.
     measure: fact
     landingZone: []
-    note: Both facts must be built before a check runs; until then the row reads unknown.
+    note: c11.storage.kerberosTicketEncryption must be built before a check runs; until then the row reads unknown.
   - id: profile.netapp
     area: storage
     pillar: profiles
@@ -470,7 +470,7 @@ dimensions:
     pillar: app-delivery
     title: App Attach host settings
     decides: Package auto-update, certificate trust and the supported OS on the hosts.
-    home: {decision: proposed:hostPool.appDelivery, facts: [c11.hostPool.images]}
+    home: {decision: proposed:hostPool.appDelivery, facts: []}
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#B02.05, ref:review-checklists-avd#B02.06, ref:app-attach-setup#disable-auto-update, ref:app-attach-setup#supported-os, ref:app-attach#trusted-certificate-chain, ref:app-attach-setup#health-check-on-failure]

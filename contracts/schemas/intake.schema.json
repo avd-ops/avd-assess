@@ -67,7 +67,9 @@
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {"enum": ["image", "app-attach", "host-deployment", "app-layering", "user-installed", "undecided"]}
+      "items": {"enum": ["image", "app-attach", "host-deployment", "app-layering", "user-installed", "undecided"]},
+      "if": {"contains": {"const": "undecided"}},
+      "then": {"maxItems": 1}
     },
     "appCompatibility": {
       "description": "Fact intake.appCompatibility (optional). Whether the estate's apps are known to run on multi-session hosts.",
@@ -76,6 +78,11 @@
     "profileSolution": {
       "description": "Fact intake.profileSolution (optional). What carries the user profile between sessions; other-profile-product is a third-party profile management product, as a category.",
       "enum": ["fslogix", "other-profile-product", "local-only", "undecided"]
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Optional, for upper layers only, keyed by namespace (contracts/README.md rule 1). A foundation reader ignores it.",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9-]{1,30}$" }
     }
   }
 }
