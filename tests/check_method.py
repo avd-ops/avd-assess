@@ -165,7 +165,7 @@ for c in method.get("checks", []):
     hint = c.get("remediation")
     if not hint:
         err(mpath, f"{c['id']} has no remediation hint (use kind manual with a code when nothing is known)")
-    elif hint["kind"] != "manual" and not method.get("landingZoneCommit"):
+    elif hint.get("kind", "manual") != "manual" and not method.get("landingZoneCommit"):
         err(mpath, f"{c['id']} names a landing zone {hint['kind']}, but method.json has no landingZoneCommit")
 rows = [r["decision"] for r in method.get("readiness", [])]
 if sorted(rows) != sorted(decisions):

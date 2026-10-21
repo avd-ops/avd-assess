@@ -114,10 +114,17 @@ if plan_schema:
             err(plan_path, "a check has more than one item")
         if sorted(i["order"] for i in items) != list(range(1, len(items) + 1)):
             err(plan_path, "orders must run 1, 2, 3 ... with no gaps or repeats")
+        # The order rule (methods/remediation.md step 6): outcome, then severity, then check ID.
+        rank = {"gap": 0, "warn": 1, "unknown": 2, "high": 0, "medium": 1, "low": 2}
+        by_rule = sorted(items, key=lambda i: (rank[i["outcome"]], rank[i["severity"]], i["check"]))
+        if [i["check"] for i in by_rule] != [i["check"] for i in sorted(items, key=lambda i: i["order"])]:
+            err(plan_path, "items aren't in rule order: gap, warn, unknown; then high, medium, low; then check ID")
         for bad in ({"kind": "manual"}, {"kind": "manual", "code": "process", "name": "startVmOnConnect"},
                     {"kind": "lz-parameter", "to": True}, {"kind": "lz-parameter", "name": "x", "code": "process"},
                     {"kind": "lz-setting", "name": "trusted-launch", "to": True},
                     {"kind": "lz-parameter", "name": "spokeAddressPrefix", "to": "subnet/22"},
+                    {"kind": "lz-parameter", "name": "dnsServer", "to": ".".join(["10", "20", "30", "4"])},
+                    {"kind": "lz-parameter", "name": "resourceGroup", "to": "contoso-avd-rg"},
                     {"kind": "manual", "code": "process", "note": "free text"}):
             doc = json.loads(json.dumps(plan))
             doc["items"][0]["change"] = bad
@@ -127,6 +134,19 @@ if plan_schema:
         doc["items"][0]["outcome"] = "pass"
         if pv.is_valid(doc):
             err(plan_path, "the C24 schema accepts an item for a passing check")
+        doc = json.loads(json.dumps(plan))
+        doc["items"][0]["outcome"] = "unknown"
+        if pv.is_valid(doc):
+            err(plan_path, "the C24 schema accepts a fix for an unknown outcome (it must plan collect-evidence)")
+    # C20's remediation hint and C24's change share their values and codes; keep the copies equal.
+    method_schema = schemas.get("assess-method.schema.json", {})
+    hint = method_schema.get("$defs", {}).get("remediation", {}).get("properties", {})
+    change = plan_schema["properties"]["items"]["items"]["properties"]["change"]["properties"]
+    for key in ("kind", "name", "code"):
+        if hint.get(key) != change.get(key):
+            err(SCHEMAS / "remediation-plan.schema.json", f"change.{key} differs from assess-method's remediation.{key}")
+    if method_schema.get("$defs", {}).get("publicValue") != plan_schema["$defs"]["publicValue"]:
+        err(SCHEMAS / "remediation-plan.schema.json", "publicValue differs from assess-method's")
 
 
 def schema_has(schema, pointer):

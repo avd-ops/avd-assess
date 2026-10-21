@@ -12,7 +12,7 @@ Recommendation and remediation planning is the fifth stage of an assessment. It 
 |---|---|---|
 | `lz-parameter` | An avd-landing-zone parameter fixes it | The parameter's name and, where it is one public value, the value |
 | `lz-setting` | The landing zone always applies the fix, so redeploying from it fixes the finding | A short name for the setting |
-| `manual` | Outside the landing zone's reach | A code: `collect-evidence` (the outcome was unknown), `private-value` (needs a value only the operator holds), `outside-landing-zone`, `process` (an operating practice, not a setting), `no-known-change` |
+| `manual` | Outside what a landing zone redeploy fixes | A code: `collect-evidence` (the outcome was unknown), `rebuild-hosts` (hosts the landing zone deploys have it; existing hosts must be replaced), `private-value` (needs a value only the operator holds), `outside-landing-zone`, `process` (an operating practice, not a setting), `no-known-change` |
 
 Values are public only: a SKU, a count, a boolean, a region. Anything that needs a name, a prefix or an address is `manual` with `private-value`, and the operator puts it in their own parameter file.
 
@@ -24,16 +24,18 @@ Values are public only: a SKU, a count, a boolean, a region. Anything that needs
 | `asm-pooled-host-redundancy` | lz-parameter | `sessionHostCount`, 2 | [main.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
 | `asm-files-private-endpoint` | lz-setting | `profile-storage-private-endpoint` | [storage.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/storage.bicep) (private endpoint on the profile share) |
 | `asm-files-zone-redundant` | lz-parameter | `profileStorageSku`, Premium_ZRS | [main.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
-| `asm-hosts-trusted-launch` | lz-setting | `session-host-trusted-launch` | [sessionHosts.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/sessionHosts.bicep) (`securityType`) |
+| `asm-hosts-trusted-launch` | manual, `rebuild-hosts` | none: the security type is set when a VM is created, so a redeploy doesn't convert existing hosts | [sessionHosts.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/sessionHosts.bicep) (`securityType`) |
 | `asm-drive-usb-redirection-off` | lz-parameter | `rdpProperties` (its default leaves drive and USB redirection empty) | [main.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
 | `asm-defender-servers` | lz-parameter | `enableDefenderForCloud`, true | [governance.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/governance.bicep) |
 | `asm-files-smb-gcm` | lz-setting | `profile-storage-smb-gcm` | [storage.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/storage.bicep) (`channelEncryption`) |
 
-**The order of the plan.** Items are numbered 1, 2, 3 by a rule a tool applies with no judgment: gap before warn before unknown, then severity (high, medium, low), then the check ID. Within one landing zone redeploy, every `lz-parameter` and `lz-setting` item lands at once; `manual` items follow in their own order. A person reorders in the review (C23), not in the plan.
+**The order of the plan.** Items are numbered 1, 2, 3 by a rule a tool applies with no judgment: gap before warn before unknown, then severity (high, medium, low), then the check ID. The order says what matters most, not when it is done: every `lz-parameter` and `lz-setting` item lands in the same landing zone redeploy. A person changes priorities in the review (C23), not in the plan.
 
-**Which findings make items.** The review's Fix rows. With no review, every check that isn't a pass, marked `unreviewed`, so a plan never hides a finding nobody looked at. Accept and Defer rows make no item; their reasons stay in the review.
+**Which subject a hint covers.** A landing zone hint fixes what the landing zone deployed: its host pools and its profile storage account. A check can fail on a resource the landing zone doesn't own, such as another team's storage account in the same subscription; for that subject the plan item is `manual` with `outside-landing-zone`, whatever the check's hint says.
+
+**Which findings make items.** The review's Fix rows, plus every check that isn't a pass and has no review row (or every such check when there is no review), marked `unreviewed`, as contract C23 says. A plan never hides a finding nobody looked at. Accept and Defer rows make no item; their reasons stay in the review. An `unknown` outcome always plans `manual` with `collect-evidence`, and the C24 schema refuses anything else for it.
 
 ## Not yet known
 
-- Whether one landing zone redeploy can apply every `lz-setting` in place, or some need hosts rebuilt (trusted launch is set at VM creation), is not yet tested. Until it is, the plan says what to change, not how disruptive the change is.
+- Whether one landing zone redeploy applies every `lz-setting` in place is not yet tested. Trusted launch, set at VM creation, is already `rebuild-hosts`; another setting may turn out the same. Until a run shows it, the plan says what to change, not how disruptive the change is.
 - An effort or disruption field would let the order weigh cost against benefit, as the Well-Architected Review leaves to the team (`ref:waf-review-assessment#prioritize-with-tradeoffs`). We add it only when a run gives evidence for the values.

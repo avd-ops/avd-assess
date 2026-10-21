@@ -592,8 +592,8 @@
       },
       "informs": [],
       "remediation": {
-        "kind": "lz-setting",
-        "name": "session-host-trusted-launch"
+        "kind": "manual",
+        "code": "rebuild-hosts"
       }
     },
     {

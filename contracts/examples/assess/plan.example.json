@@ -9,8 +9,56 @@
     "landingZoneCommit": "ae6e80b574cccde570d0053d4c62b519d31052a8"
   },
   "items": [
-    { "order": 1, "check": "asm-files-zone-redundant", "outcome": "warn", "pillar": "reliability", "severity": "high", "claims": ["ref:review-checklists-avd#A03.05"], "source": "review-fix", "change": { "kind": "lz-parameter", "name": "profileStorageSku", "from": "Premium_LRS", "to": "Premium_ZRS" } },
-    { "order": 2, "check": "asm-defender-servers", "outcome": "unknown", "pillar": "security", "severity": "medium", "claims": ["ref:review-checklists-avd#G03.04"], "source": "unreviewed", "change": { "kind": "manual", "code": "collect-evidence" } },
-    { "order": 3, "check": "asm-personal-start-vm-on-connect", "outcome": "warn", "pillar": "cost", "severity": "low", "claims": ["ref:review-checklists-avd#E01.05"], "source": "review-fix", "change": { "kind": "lz-parameter", "name": "startVmOnConnect", "from": false, "to": true } }
+    {
+      "order": 1,
+      "check": "asm-files-zone-redundant",
+      "outcome": "warn",
+      "pillar": "reliability",
+      "severity": "high",
+      "claims": [
+        "ref:review-checklists-avd#A03.05",
+        "ref:psrule-azure#AZR-000195"
+      ],
+      "source": "unreviewed",
+      "change": {
+        "kind": "lz-parameter",
+        "name": "profileStorageSku",
+        "from": "Premium_LRS",
+        "to": "Premium_ZRS"
+      }
+    },
+    {
+      "order": 2,
+      "check": "asm-personal-start-vm-on-connect",
+      "outcome": "warn",
+      "pillar": "cost",
+      "severity": "low",
+      "claims": [
+        "ref:review-checklists-avd#E01.05"
+      ],
+      "source": "review-fix",
+      "change": {
+        "kind": "lz-parameter",
+        "name": "startVmOnConnect",
+        "from": false,
+        "to": true
+      }
+    },
+    {
+      "order": 3,
+      "check": "asm-defender-servers",
+      "outcome": "unknown",
+      "pillar": "security",
+      "severity": "medium",
+      "claims": [
+        "ref:review-checklists-avd#G03.04",
+        "ref:avd-security-guide#defender-for-cloud"
+      ],
+      "source": "unreviewed",
+      "change": {
+        "kind": "manual",
+        "code": "collect-evidence"
+      }
+    }
   ]
 }
