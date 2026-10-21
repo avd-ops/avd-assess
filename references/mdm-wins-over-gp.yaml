@@ -1,0 +1,21 @@
+id: mdm-wins-over-gp
+title: Policy CSP - ControlPolicyConflict (MDMWinsOverGP)
+url: https://learn.microsoft.com/windows/client-management/mdm/policy-csp-controlpolicyconflict
+pin: "Learn git_commit_id a0d5f1399171210809959ea5d44801cc57b5ad30, updated_at 2026-10-16"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [intune]
+claims:
+  - id: default-gp-wins
+    says: MDMWinsOverGP defaults to 0; set to 1, an MDM policy in the Policy CSP blocks its Group Policy equivalent.
+    kind: published
+  - id: policy-csp-only
+    says: MDMWinsOverGP covers only the Policy CSP; for settings in other CSPs configured by both Group Policy and MDM there's a race and no guarantee which wins, so don't configure the same setting through both.
+    kind: published
+  - id: update-gp-ignore
+    says: For Windows Update settings, IgnoreWindowsUpdateGroupPolicies is the switch that makes MDM values apply over Group Policy.
+    kind: published
+  - id: diagnostic-report
+    says: The device's MDM diagnostic report lists applied policies and the Group Policy settings blocked because an MDM equivalent is set.
+    kind: published

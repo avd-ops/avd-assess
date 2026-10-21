@@ -257,6 +257,32 @@
       ]
     },
     {
+      "id": "autopatch-avd",
+      "title": "Register devices with Windows Autopatch groups (Azure Virtual Desktop workloads)",
+      "url": "https://learn.microsoft.com/windows/deployment/windows-autopatch/deploy/windows-autopatch-register-devices",
+      "pin": "Learn git_commit_id 3a73c6400cf417288a011312fa6705789ba33114, updated_at 2026-05-14",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "personal-only",
+          "says": "Windows Autopatch supports personal persistent AVD VMs; multi-session hosts, pooled non-persistent VMs and RemoteApp streaming aren't supported.",
+          "kind": "published"
+        },
+        {
+          "id": "exclude-multisession",
+          "says": "Register AVD VMs through a dynamic device group that excludes multi-session hosts; AVD-specific issues go to Azure support.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "autoscale-faq",
       "title": "Azure Virtual Desktop autoscale FAQ",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-faq",
@@ -471,6 +497,28 @@
         {
           "id": "no-public-inbound",
           "says": "Azure Virtual Desktop needs no public inbound ports on session hosts.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-entra-joined-hosts",
+      "title": "Microsoft Entra joined session hosts in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/azure-ad-joined-session-hosts",
+      "pin": "Learn git_commit_id 56121a97d2baa489be592daaeede59f7e9148999, updated_at 2026-05-19",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "notes": "The identity pillar owns join types; this pillar cites the enrollment option only.",
+      "claims": [
+        {
+          "id": "enroll-on-deploy",
+          "says": "When a host is deployed Entra joined, the deployment offers to enroll it in Intune automatically; the join only reaches the tenant the subscription belongs to.",
           "kind": "published"
         }
       ]
@@ -964,6 +1012,37 @@
           "id": "set-limit-from-insights",
           "says": "Set the maximum session limit from measured sessions per host and host performance in Insights; the page gives no number.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-management",
+      "title": "Manage session hosts with Microsoft Intune",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/management",
+      "pin": "Learn git_commit_id dd46df7408629964cd4e6e9a3185dffcf0bbda70, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "intune-recommended",
+          "says": "Microsoft recommends Intune to manage AVD session hosts; it manages Entra joined and hybrid joined hosts, device and user configuration on multi-session included.",
+          "kind": "guidance"
+        },
+        {
+          "id": "configuration-manager",
+          "says": "Configuration Manager 1906 and later manages domain joined and hybrid joined session hosts.",
+          "kind": "published"
+        },
+        {
+          "id": "clouds",
+          "says": "Managing session hosts with Intune is supported in Azure public and Azure Government clouds.",
+          "kind": "published"
         }
       ]
     },
@@ -1583,6 +1662,33 @@
           "id": "admin-path",
           "says": "Bastion gives RDP and SSH to VMs over TLS without public IPs on the VMs; it comes in Developer, Basic, Standard and Premium SKUs.",
           "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "ca-require-compliant-device",
+      "title": "Require a compliant device, hybrid joined device or MFA for all users (Conditional Access)",
+      "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-all-users-device-compliance",
+      "pin": "Learn git_commit_id cf1507d526cc288b20dcda79d2a5661407790f43, updated_at 2026-03-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "notes": "Conditional Access belongs to the identity pillar; this pillar cites it for the compliance signal Intune feeds it.",
+      "claims": [
+        {
+          "id": "compliance-signal",
+          "says": "Conditional Access can require that a device be marked compliant by Intune compliance policies; without a compliance policy in Intune such a policy doesn't work as intended.",
+          "kind": "published"
+        },
+        {
+          "id": "exclude-break-glass",
+          "says": "Exclude emergency access accounts and directory synchronization accounts from device-compliance Conditional Access policies.",
+          "kind": "guidance"
         }
       ]
     },
@@ -2217,6 +2323,32 @@
       ]
     },
     {
+      "id": "entra-device-identity-vdi",
+      "title": "Device identity and desktop virtualization",
+      "url": "https://learn.microsoft.com/entra/identity/devices/howto-device-identity-virtual-desktop-infrastructure",
+      "pin": "Learn git_commit_id 1af636bd75a78a050c1698ca296ddfaca7ede9c1, updated_at 2026-06-24",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "hosts-persistent-by-default",
+          "says": "AVD session hosts in pooled and personal pools are persistent VMs by default; stale device records pile up only when automation recreates or resets them without cleanup.",
+          "kind": "published"
+        },
+        {
+          "id": "stale-records-quota",
+          "says": "Recreated or reset VMs that register again leave stale device records that consume tenant quota; manage stale devices or keep device names unique.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "finops-framework",
       "title": "FinOps Framework overview (Microsoft's guide to the FinOps Foundation framework)",
       "url": "https://learn.microsoft.com/cloud-computing/finops/framework/finops-framework",
@@ -2407,6 +2539,28 @@
       ]
     },
     {
+      "id": "fslogix-settings",
+      "title": "FSLogix configuration settings reference",
+      "url": "https://learn.microsoft.com/fslogix/reference-configuration-settings",
+      "pin": "Learn git_commit_id d91140933b18b132be63ef5f8b2f17568aa0885a, updated_at 2026-09-01",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "notes": "The profiles pillar owns FSLogix; this pillar cites the one setting Intune depends on.",
+      "claims": [
+        {
+          "id": "roamidentity-off",
+          "says": "RoamIdentity defaults to 0 (don't roam identity data, recommended); 1 turns on legacy roaming of identity data.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "fslogix-storage-options",
       "title": "FSLogix container storage options",
       "url": "https://learn.microsoft.com/fslogix/concepts-container-storage-options",
@@ -2426,6 +2580,48 @@
           "id": "latency-first",
           "says": "Proximity (latency) to the hosts and performance against the user workload are the most important factors in choosing container storage.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "graph-device-management-settings",
+      "title": "deviceManagementSettings resource type (Microsoft Graph)",
+      "url": "https://learn.microsoft.com/graph/api/resources/intune-deviceconfig-devicemanagementsettings",
+      "pin": "Learn git_commit_id e345b7affa31798542828393bc40023465af9069, updated_at 2025-10-11",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "secure-by-default",
+          "says": "The tenant's secureByDefault flag is true when devices with no compliance policy are noncompliant; deviceComplianceCheckinThresholdDays is the validity period.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "graph-intune-managed-device",
+      "title": "managedDevice resource type (Microsoft Graph)",
+      "url": "https://learn.microsoft.com/graph/api/resources/intune-devices-manageddevice",
+      "pin": "Learn git_commit_id e8eace7fa9bfa9e7afacfe9f5dec1ba42ffd493f, updated_at 2025-12-03",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "device-fields",
+          "says": "Each Intune managed device carries complianceState, managementAgent, deviceEnrollmentType, operatingSystem, osVersion and lastSyncDateTime, readable through Graph with Intune read permissions.",
+          "kind": "published"
         }
       ]
     },
@@ -2494,20 +2690,344 @@
       ]
     },
     {
-      "id": "intune-security-baselines",
-      "title": "Intune security baselines for Windows devices",
-      "url": "https://learn.microsoft.com/mem/intune/protect/security-baselines",
-      "pin": "Learn git_commit_id 63ff44f43d17d04e8cbcf5c1ab60f7614f49762e, updated_at 2026-10-05",
-      "read": "2026-10-20",
+      "id": "intune-avd-multisession",
+      "title": "Using Azure Virtual Desktop multi-session with Microsoft Intune",
+      "url": "https://learn.microsoft.com/intune/solutions/azure-virtual-desktop-multi-session",
+      "pin": "Learn git_commit_id a5e9242650217721f235f2864d110c429542db15, updated_at 2026-10-12",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "notes": "The one Microsoft page that says what Intune can and can't do on Windows Enterprise multi-session hosts. Most of this pillar's limits come from it.",
+      "claims": [
+        {
+          "id": "device-and-user-scope",
+          "says": "Intune manages multi-session hosts with device-scope configuration assigned to device groups and user-scope configuration assigned to user groups; a device setting assigned to users, or the reverse, reports Error or Not applicable.",
+          "kind": "published"
+        },
+        {
+          "id": "enrollment-prerequisites",
+          "says": "Supported hosts are in a host pool deployed through Azure Resource Manager, in the same tenant as Intune, run AVD agent 1.0.2944.1400 or later, and are Entra joined with Intune enrollment turned on, or hybrid joined and enrolled with device credentials through Group Policy or co-management.",
+          "kind": "published"
+        },
+        {
+          "id": "device-credentials",
+          "says": "Hybrid joined multi-session hosts must enroll with device credentials; enrollment with user credentials isn't supported and settings catalog policies fail on such hosts.",
+          "kind": "published"
+        },
+        {
+          "id": "one-mdm-provider",
+          "says": "Enrollment fails when the tenant has more than one MDM provider, or when the VM isn't part of a host pool created through Azure Resource Manager.",
+          "kind": "published"
+        },
+        {
+          "id": "no-entra-ds",
+          "says": "Session hosts joined to Microsoft Entra Domain Services can't be managed with Intune.",
+          "kind": "published"
+        },
+        {
+          "id": "no-cloned-enrolled-image",
+          "says": "Intune doesn't support a cloned image of a machine that is already enrolled; replicated enrollment or identity tokens cause enrollment and sync failures, so images are captured before enrollment.",
+          "kind": "published"
+        },
+        {
+          "id": "no-token-roaming",
+          "says": "Intune doesn't support token roaming between devices; with FSLogix or similar profile tools, identity tokens must not roam (FSLogix RoamIdentity off).",
+          "kind": "published"
+        },
+        {
+          "id": "settings-catalog-only",
+          "says": "Configure multi-session hosts through the settings catalog filtered to the Enterprise multi-session edition; the only templates supported are trusted, SCEP and PKCS certificates and device-tunnel VPN, and other templates report Not applicable.",
+          "kind": "published"
+        },
+        {
+          "id": "admx-supported",
+          "says": "ADMX-backed and ADMX-ingested administrative templates in the settings catalog work on multi-session, with some settings not yet available or not applicable.",
+          "kind": "published"
+        },
+        {
+          "id": "compliance-settings-supported",
+          "says": "Only OS version and build, password and Defender antimalware, firewall, antivirus, antispyware, real-time protection and risk score compliance settings apply to multi-session; the rest report Not applicable.",
+          "kind": "published"
+        },
+        {
+          "id": "compliance-device-targeted",
+          "says": "Compliance policies for multi-session hosts must target a device group; user-targeted compliance isn't supported, while Conditional Access supports user and device based configuration.",
+          "kind": "published"
+        },
+        {
+          "id": "endpoint-security-windows",
+          "says": "Endpoint security profiles apply to multi-session when created for the Windows platform; profiles without that platform aren't supported.",
+          "kind": "published"
+        },
+        {
+          "id": "apps-system-required",
+          "says": "Apps on multi-session must install in system context, be targeted to devices, and use Required or Uninstall intent; Available isn't supported, and a system app that depends on or supersedes a user-context app won't install.",
+          "kind": "published"
+        },
+        {
+          "id": "no-remoteapp-app-attach",
+          "says": "AVD RemoteApp and MSIX app attach aren't supported in Intune; they are delivered through AVD itself.",
+          "kind": "published"
+        },
+        {
+          "id": "scripts-both-contexts",
+          "says": "Scripts run in system context when assigned to devices and in user context when assigned to users.",
+          "kind": "published"
+        },
+        {
+          "id": "quality-updates-catalog-only",
+          "says": "Windows Update rings aren't supported on multi-session; quality update settings (deferral, deadlines, active hours, pause) are set through the settings catalog's Windows Update for Business category.",
+          "kind": "published"
+        },
+        {
+          "id": "remote-actions-unsupported",
+          "says": "Autopilot reset, BitLocker key rotation, Fresh Start, remote lock, reset password, wipe and retire are disabled for multi-session hosts in the admin center and in Graph.",
+          "kind": "published"
+        },
+        {
+          "id": "orphaned-records",
+          "says": "Deleting a host VM in Azure leaves its device record in Intune; Intune tries to remove records inactive for 60 days or more, separately from the tenant's cleanup rules, with no guarantee of timing.",
+          "kind": "published"
+        },
+        {
+          "id": "baselines-available",
+          "says": "Security baselines are available for multi-session; review them and configure the recommended values in the settings catalog.",
+          "kind": "guidance"
+        },
+        {
+          "id": "no-oobe",
+          "says": "Out-of-box enrollment isn't supported on multi-session, so Windows Autopilot and the enrollment status page don't apply.",
+          "kind": "published"
+        },
+        {
+          "id": "license-required",
+          "says": "An Intune license is needed for every user or device that benefits from the service, in addition to AVD licensing.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "intune-avd-personal",
+      "title": "Using Azure Virtual Desktop with Microsoft Intune (single session)",
+      "url": "https://learn.microsoft.com/intune/solutions/azure-virtual-desktop",
+      "pin": "Learn git_commit_id 33abeb2a1b2ebf656960ad63747edf509b3f019e, updated_at 2026-07-31",
+      "read": "2026-10-21",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "personal-like-physical",
+          "says": "Intune treats single-session personal AVD VMs like physical Windows Enterprise desktops, so existing configuration, compliance and Conditional Access apply; Intune doesn't interfere with AVD's own management of the VM.",
+          "kind": "published"
+        },
+        {
+          "id": "personal-prerequisites",
+          "says": "Supported single-session VMs run Windows Enterprise as personal desktops, in a subscription in the same tenant as Intune, Entra joined with Intune enrollment or hybrid joined and enrolled; cross-cloud enrollment isn't supported.",
+          "kind": "published"
+        },
+        {
+          "id": "personal-unsupported-profiles",
+          "says": "Domain join and Wi-Fi profiles aren't supported on AVD VMs, and the policy allowing users to connect remotely must not be disabled.",
+          "kind": "published"
+        },
+        {
+          "id": "personal-cleanup-rules",
+          "says": "Deleting a personal VM leaves its Intune device record, which the tenant's device cleanup rules remove.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "intune-compliance",
+      "title": "Device compliance policies in Microsoft Intune",
+      "url": "https://learn.microsoft.com/intune/device-security/compliance/overview",
+      "pin": "Learn git_commit_id 1b83f6d870d809f066d936cd87c37634c74b283d, updated_at 2026-07-27",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "no-policy-default-compliant",
+          "says": "By default the tenant setting \"Mark devices with no compliance policy assigned as\" is Compliant, so a device with no compliance policy counts as compliant.",
+          "kind": "published"
+        },
+        {
+          "id": "set-not-compliant-with-ca",
+          "says": "When Conditional Access uses device compliance, set devices with no compliance policy to Not compliant so only devices confirmed compliant get access.",
+          "kind": "guidance"
+        },
+        {
+          "id": "validity-period",
+          "says": "A device that doesn't report compliance within the tenant's validity period is treated as noncompliant.",
+          "kind": "published"
+        },
+        {
+          "id": "actions-for-noncompliance",
+          "says": "Every compliance policy marks a failing device noncompliant; more actions (notify, remote lock, retire) can follow on a schedule.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "intune-device-actions",
+      "title": "Device actions in Microsoft Intune",
+      "url": "https://learn.microsoft.com/intune/device-management/actions/",
+      "pin": "Learn git_commit_id 73d3f16e19f4e30a39496fe4bb4ff0be85c4f296, updated_at 2026-09-28",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "enrolled-and-online",
+          "says": "Device actions (sync, restart, scans, diagnostics and the rest) need the device enrolled in Intune and online, and some need specific Intune roles.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "intune-group-policy-analytics",
+      "title": "Analyze on-premises Group Policy Objects with Group Policy analytics in Microsoft Intune",
+      "url": "https://learn.microsoft.com/intune/device-configuration/import-group-policy-analytics",
+      "pin": "Learn git_commit_id a60f43f6f562ded6195ddd8d888335f2d8e11e73, updated_at 2026-07-01",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "mdm-support-percentage",
+          "says": "Group Policy analytics imports GPOs and shows, per GPO, the percentage of settings that have an Intune equivalent, plus deprecated and unknown settings.",
+          "kind": "published"
+        },
+        {
+          "id": "migrate-to-catalog",
+          "says": "Supported settings migrate into a settings catalog policy; review them first, because some Group Policy settings don't apply to cloud-managed devices.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "intune-reports",
+      "title": "Microsoft Intune reports",
+      "url": "https://learn.microsoft.com/intune/device-management/reports/overview",
+      "pin": "Learn git_commit_id a6e85fce52359c58245c729c6a820e0a669b7cda, updated_at 2026-07-16",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "report-families",
+          "says": "Intune reports cover device compliance (with a 30-day trend), configuration, enrollment and software updates, as operational, organizational and historical reports.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "intune-security-baselines",
+      "title": "Intune security baselines for Windows devices",
+      "url": "https://learn.microsoft.com/intune/device-security/security-baselines/overview",
+      "pin": "Learn git_commit_id 63ff44f43d17d04e8cbcf5c1ab60f7614f49762e, updated_at 2026-10-05",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
       ],
       "claims": [
         {
           "id": "baselines-in-intune",
           "says": "Intune ships versioned security baselines (Windows, Defender for Endpoint, Edge and others) that enrolled devices, session hosts included, can be assigned and reported against.",
           "kind": "guidance"
+        },
+        {
+          "id": "most-restrictive-defaults",
+          "says": "Baseline defaults are almost always the most restrictive values; confirm they don't conflict with other policies or features before assigning them.",
+          "kind": "guidance"
+        },
+        {
+          "id": "versioned-per-release",
+          "says": "Windows baselines are versioned per Windows release (24H2, 25H2, 26H2 and so on), and moving a profile to a newer baseline version is a one-time migration.",
+          "kind": "published"
+        },
+        {
+          "id": "no-preview-in-production",
+          "says": "Preview baseline versions aren't recommended in production, because their settings can change.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "intune-settings-catalog",
+      "title": "Use the settings catalog to configure settings on devices with Microsoft Intune",
+      "url": "https://learn.microsoft.com/intune/device-configuration/settings-catalog/",
+      "pin": "Learn git_commit_id d7d0fe53d55f70241056b9c9cfb3937d7504b5fb, updated_at 2026-09-23",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "one-place",
+          "says": "The settings catalog lists every configurable setting in one place; a policy starts empty and holds only the settings it manages, the cloud counterpart of a granular Group Policy Object.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "intune-update-rings",
+      "title": "Manage Windows update rings in Microsoft Intune",
+      "url": "https://learn.microsoft.com/intune/device-updates/windows/manage-update-rings",
+      "pin": "Learn git_commit_id 8fc35ccd02eee458dd0759b2199a819235e09924, updated_at 2026-05-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "rings-control-client-behavior",
+          "says": "Update rings control how and when Windows updates install (deferrals, restarts, deadlines, active hours, notifications); devices managed by Windows Autopatch get rings from the service and shouldn't get custom ones.",
+          "kind": "published"
         }
       ]
     },
@@ -2582,6 +3102,43 @@
           "id": "ES-2",
           "says": "Use modern anti-malware on session hosts.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "mdm-wins-over-gp",
+      "title": "Policy CSP - ControlPolicyConflict (MDMWinsOverGP)",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-controlpolicyconflict",
+      "pin": "Learn git_commit_id a0d5f1399171210809959ea5d44801cc57b5ad30, updated_at 2026-10-16",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "default-gp-wins",
+          "says": "MDMWinsOverGP defaults to 0; set to 1, an MDM policy in the Policy CSP blocks its Group Policy equivalent.",
+          "kind": "published"
+        },
+        {
+          "id": "policy-csp-only",
+          "says": "MDMWinsOverGP covers only the Policy CSP; for settings in other CSPs configured by both Group Policy and MDM there's a race and no guarantee which wins, so don't configure the same setting through both.",
+          "kind": "published"
+        },
+        {
+          "id": "update-gp-ignore",
+          "says": "For Windows Update settings, IgnoreWindowsUpdateGroupPolicies is the switch that makes MDM values apply over Group Policy.",
+          "kind": "published"
+        },
+        {
+          "id": "diagnostic-report",
+          "says": "The device's MDM diagnostic report lists applied policies and the Group Policy settings blocked because an MDM equivalent is set.",
+          "kind": "published"
         }
       ]
     },
@@ -3175,6 +3732,14 @@
         {
           "id": "H04.07",
           "says": "Review the use of FSLogix redirections (Cost, medium)."
+        },
+        {
+          "id": "D01.03",
+          "says": "Review the domain GPOs applied to the session hosts' OU for settings that affect host functions (Operations, medium)."
+        },
+        {
+          "id": "D01.04",
+          "says": "Configure FSLogix settings with the provided ADMX template (Operations, medium)."
         },
         {
           "id": "D02.01",
@@ -3974,6 +4539,37 @@
       ]
     },
     {
+      "id": "windows-app-device-compliance",
+      "title": "Require local client device security compliance with Intune and Conditional Access for Windows App",
+      "url": "https://learn.microsoft.com/windows-app/require-device-security-compliance-intune",
+      "pin": "Learn git_commit_id c09348fcde75580f3bd615935b370033eb6065c4, updated_at 2026-04-27",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "app-protection-for-clients",
+          "says": "Intune app protection policies with Conditional Access can require that the client device meets security conditions before connecting to AVD, on iOS and iPadOS and Android (managed or unmanaged) and in Edge on Windows (unmanaged only); ChromeOS isn't covered.",
+          "kind": "published"
+        },
+        {
+          "id": "redirection-needs-compliance",
+          "says": "Managing local device redirection (camera, microphone, storage, clipboard) from Intune on iOS and Android requires client device security compliance first.",
+          "kind": "published"
+        },
+        {
+          "id": "filters-managed-unmanaged",
+          "says": "Assignment filters let different requirements apply to managed and unmanaged client devices; without a filter the same requirements apply to both.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "windows-app-platforms",
       "title": "Compare Windows App features across platforms and devices",
       "url": "https://learn.microsoft.com/windows-app/compare-platforms-features",
@@ -4124,6 +4720,17 @@
       "date": "2026-10-20"
     },
     {
+      "id": "device-records-outlive-hosts",
+      "claim": "ref:intune-avd-multisession#orphaned-records",
+      "verdict": "agrees",
+      "observed": "Deleting the landing zone's demo hosts left their Entra ID and Intune device records behind until the cleanup script deleted them through Graph; a cleanup whose Graph sign-in timed out couldn't find the names on a second run until the fix kept the deployment record. Anything that recreates hosts (session host update, a rebuild) leaves the same records unless a step removes them.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/lessons/0029-device-cleanup-rerun.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/ops/Remove-AvdDemo.ps1"
+      ],
+      "date": "2026-10-21"
+    },
+    {
       "id": "encryption-at-host-by-default",
       "claim": "ref:disk-encryption-options#encryption-at-host",
       "verdict": "not-yet-tested",
@@ -4161,6 +4768,17 @@
       "observed": "In hub-peered mode the landing zone routes 0.0.0.0/0 from the host subnet to the hub firewall and adds no route for the WindowsVirtualDesktop service tag to the internet, the bypass the source gives against disconnections during firewall scale-in. With AVD Private Link on, the session host's gateway connection goes through the private endpoint, which may cover the main path; other service traffic still crosses the firewall. Not yet run against a hub firewall.",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/network.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
+      "id": "intune-enrolled-policies-left-to-owner",
+      "claim": "ref:avd-management#intune-recommended",
+      "verdict": "extends",
+      "observed": "The landing zone enrolls its Entra joined hosts in Intune by default (the Entra login extension carries Intune's MDM ID) but assigns no configuration, compliance, baseline or update policy; its scope page leaves those to the organization. An enrolled host is therefore not yet a managed one, and under the tenant's default compliance setting it counts as compliant with no policy at all. Enrollment and policy are separate rows for that reason.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/sessionHosts.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/docs/out-of-scope.md"
       ],
       "date": "2026-10-21"
     },
@@ -4422,6 +5040,10 @@
     {
       "id": "intake",
       "title": "intake"
+    },
+    {
+      "id": "intune-scope",
+      "title": "what an Intune and host management assessment can judge, and from where"
     },
     {
       "id": "logon-target",

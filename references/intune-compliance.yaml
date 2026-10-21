@@ -1,0 +1,21 @@
+id: intune-compliance
+title: Device compliance policies in Microsoft Intune
+url: https://learn.microsoft.com/intune/device-security/compliance/overview
+pin: "Learn git_commit_id 1b83f6d870d809f066d936cd87c37634c74b283d, updated_at 2026-07-27"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [intune]
+claims:
+  - id: no-policy-default-compliant
+    says: By default the tenant setting "Mark devices with no compliance policy assigned as" is Compliant, so a device with no compliance policy counts as compliant.
+    kind: published
+  - id: set-not-compliant-with-ca
+    says: When Conditional Access uses device compliance, set devices with no compliance policy to Not compliant so only devices confirmed compliant get access.
+    kind: guidance
+  - id: validity-period
+    says: A device that doesn't report compliance within the tenant's validity period is treated as noncompliant.
+    kind: published
+  - id: actions-for-noncompliance
+    says: Every compliance policy marks a failing device noncompliant; more actions (notify, remote lock, retire) can follow on a schedule.
+    kind: published

@@ -92,6 +92,10 @@ claims:
   - id: H04.07
     says: Review the use of FSLogix redirections (Cost, medium).
   # Security items read for methods/security.md (2026-10-20); kept here, after the others, so the list grows without reordering.
+  - id: D01.03
+    says: Review the domain GPOs applied to the session hosts' OU for settings that affect host functions (Operations, medium).
+  - id: D01.04
+    says: Configure FSLogix settings with the provided ADMX template (Operations, medium).
   - id: D02.01
     says: Configure the Azure Files share for Entra Kerberos authentication on Entra joined hosts (Security, medium).
   - id: F01.04

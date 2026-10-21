@@ -1,0 +1,12 @@
+id: graph-device-management-settings
+title: deviceManagementSettings resource type (Microsoft Graph)
+url: https://learn.microsoft.com/graph/api/resources/intune-deviceconfig-devicemanagementsettings
+pin: "Learn git_commit_id e345b7affa31798542828393bc40023465af9069, updated_at 2025-10-11"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection]
+pillars: [intune]
+claims:
+  - id: secure-by-default
+    says: The tenant's secureByDefault flag is true when devices with no compliance policy are noncompliant; deviceComplianceCheckinThresholdDays is the validity period.
+    kind: published

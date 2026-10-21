@@ -13,3 +13,11 @@
 | `intake.workingHours` | When do people work (start, end, time zone)? | Power settings and scaling (`ref:avd-insights-use-cases#utilization-for-scaling`) |
 | `intake.hostSharing` (optional) | Who shares a session host (`one-org-standard`, `needs-admin`, `multi-org`, `undecided`)? | The security guide's trust boundary decides between pooled, personal and a separate tenant (`ref:avd-security-guide#trust-boundary`) |
 | `intake.avdMfa` (optional) | Does sign-in to AVD require MFA (`required`, `not-required`, `unknown`)? | Stands in for a directory read until one exists (`ref:review-checklists-avd#G04.01`, `gap:security-scope`) |
+
+**Proposed, not yet in the schema (2026-10-21).** Three optional answers for the Intune and host management pillar (`gap:intune-scope`). They are `specified` in the fact register and join `contracts/schemas/intake.schema.json` when avd-current-state reads them, so readers pinned to today's schema keep working.
+
+| Fact | Question | Why it matters |
+|---|---|---|
+| `intake.hostManagement` (optional) | What manages host settings (`intune`, `group-policy`, `both`, `co-management`, `other`, `undecided`)? | Decides whether missing Intune enrollment is a gap or expected, and whether one-owner-per-setting applies (`ref:avd-management#intune-recommended`, `ref:mdm-wins-over-gp#policy-csp-only`) |
+| `intake.hostServicing` (optional) | How do hosts get Windows updates (`image`, `in-place`, `mixed`, `undecided`)? | Decides whether update rings, Autopatch or nothing is right for each pool (`ref:avd-update-methods#multisession-image-based`, `ref:autopatch-avd#personal-only`) |
+| `intake.clientDevices` (optional) | What must a client device prove to connect (`compliant`, `compliant-or-app-protected`, `any`, `undecided`)? | Whether Conditional Access should require a compliant device or app protection, until a directory read can see the policies (`ref:windows-app-device-compliance#app-protection-for-clients`) |

@@ -1,0 +1,15 @@
+id: entra-device-identity-vdi
+title: Device identity and desktop virtualization
+url: https://learn.microsoft.com/entra/identity/devices/howto-device-identity-virtual-desktop-infrastructure
+pin: "Learn git_commit_id 1af636bd75a78a050c1698ca296ddfaca7ede9c1, updated_at 2026-06-24"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [intune]
+claims:
+  - id: hosts-persistent-by-default
+    says: AVD session hosts in pooled and personal pools are persistent VMs by default; stale device records pile up only when automation recreates or resets them without cleanup.
+    kind: published
+  - id: stale-records-quota
+    says: Recreated or reset VMs that register again leave stale device records that consume tenant quota; manage stale devices or keep device names unique.
+    kind: guidance

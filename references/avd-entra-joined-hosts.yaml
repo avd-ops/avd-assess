@@ -1,0 +1,13 @@
+id: avd-entra-joined-hosts
+title: Microsoft Entra joined session hosts in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/azure-ad-joined-session-hosts
+pin: "Learn git_commit_id 56121a97d2baa489be592daaeede59f7e9148999, updated_at 2026-05-19"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [intune]
+notes: The identity pillar owns join types; this pillar cites the enrollment option only.
+claims:
+  - id: enroll-on-deploy
+    says: When a host is deployed Entra joined, the deployment offers to enroll it in Intune automatically; the join only reaches the tenant the subscription belongs to.
+    kind: published

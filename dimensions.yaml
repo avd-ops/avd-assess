@@ -813,6 +813,162 @@ dimensions:
     measure: fact
     landingZone: []
 
+  # Intune and host management (pillar intune, methods/intune.md). Everything delivered to a host or a
+  # client device through Intune, against Group Policy where an estate keeps it. Governance keeps the
+  # Azure side; the identity pillar owns Conditional Access, the images pillar the servicing model.
+  - id: ops.config-management
+    area: management
+    pillar: intune
+    title: Host configuration channel (Intune or Group Policy)
+    decides: Which channel delivers host settings (Intune, Group Policy, both, or co-management) and which one wins where they overlap.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneEnrollRequested, c11.hostPool.sessionHosts.intuneManaged], intake: [intake.hostManagement]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-management#intune-recommended, ref:avd-management#configuration-manager, ref:review-checklists-avd#E01.03, ref:review-checklists-avd#D01.03, ref:mdm-wins-over-gp#default-gp-wins, ref:mdm-wins-over-gp#policy-csp-only]
+      says: Microsoft recommends Intune for session hosts. Where Group Policy stays, review the GPOs on the hosts' OU, and never set one setting through both channels unless MDMWinsOverGP covers it; by default Group Policy wins.
+    observations: [obs:intune-enrolled-policies-left-to-owner]
+    measure: directory
+    landingZone: [enrollInIntune]
+  - id: intune.enrollment
+    area: management
+    pillar: intune
+    title: Host enrollment in Intune
+    decides: Whether every host enrolls, by which path (Entra join with enrollment, or hybrid join with device credentials), and whether images are captured before enrollment.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneEnrollRequested, c11.hostPool.sessionHosts.intuneManaged, c11.hostPool.sessionHosts.total]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#enrollment-prerequisites, ref:intune-avd-multisession#device-credentials, ref:intune-avd-multisession#one-mdm-provider, ref:intune-avd-multisession#no-entra-ds, ref:intune-avd-multisession#no-cloned-enrolled-image, ref:intune-avd-multisession#no-oobe, ref:intune-avd-multisession#license-required, ref:intune-avd-personal#personal-prerequisites, ref:avd-entra-joined-hosts#enroll-on-deploy]
+      says: Every host in a pool deployed through Azure Resource Manager, in Intune's tenant, on agent 1.0.2944.1400 or later, with one MDM provider; Entra join with enrollment, or hybrid join enrolled with device credentials. Hosts joined to Entra Domain Services can't enroll, an enrolled machine is never captured as an image, and Autopilot and the enrollment status page don't apply.
+    measure: directory
+    landingZone: [enrollInIntune]
+    note: Reader sees only the enrollment request (the Entra login extension's MDM ID); whether the host enrolled needs an Intune read through Graph.
+  - id: intune.configuration-profiles
+    area: management
+    pillar: intune
+    title: Configuration profiles and the settings catalog
+    decides: How settings reach hosts - settings catalog policies by scope (device or user), administrative templates, and which groups they target.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneConfigErrors]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#settings-catalog-only, ref:intune-avd-multisession#device-and-user-scope, ref:intune-avd-multisession#admx-supported, ref:intune-avd-multisession#endpoint-security-windows, ref:intune-settings-catalog#one-place, ref:review-checklists-avd#D01.04]
+      says: Multi-session hosts take settings catalog policies filtered to the multi-session edition, device settings to device groups and user settings to user groups; only certificate and device-tunnel VPN templates apply. FSLogix and other ADMX settings come through the catalog the same way.
+    measure: directory
+    landingZone: []
+  - id: intune.group-policy
+    area: management
+    pillar: intune
+    title: Group Policy alongside or instead of Intune
+    decides: Whether Group Policy stays, moves to the settings catalog, or runs beside it, and how conflicts are kept out.
+    home: {decision: proposed:operations.configuration, facts: [], intake: [intake.hostManagement]}
+    baseline:
+      standing: guidance
+      claims: [ref:intune-group-policy-analytics#mdm-support-percentage, ref:intune-group-policy-analytics#migrate-to-catalog, ref:mdm-wins-over-gp#policy-csp-only, ref:mdm-wins-over-gp#update-gp-ignore, ref:mdm-wins-over-gp#diagnostic-report, ref:review-checklists-avd#D01.03]
+      says: Group Policy is a supported alternative for hybrid joined hosts. Moving off it starts with Group Policy analytics, migrating reviewed settings only; while both run, each setting has one owner, and the host's MDM diagnostic report shows which Group Policy settings MDM blocked.
+    measure: host-side
+    landingZone: []
+  - id: intune.security-baseline
+    area: management
+    pillar: intune
+    title: Security baselines for session hosts
+    decides: Which Intune security baseline version hosts get, and the departures recorded for multi-session.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneBaselineApplied]}
+    baseline:
+      standing: guidance
+      claims: [ref:intune-avd-multisession#baselines-available, ref:intune-security-baselines#baselines-in-intune, ref:intune-security-baselines#most-restrictive-defaults, ref:intune-security-baselines#versioned-per-release, ref:intune-security-baselines#no-preview-in-production, gap:host-baseline-profile]
+      says: The baseline for the hosts' Windows release, never a preview, assigned with the departures the host baseline profile records; defaults are the most restrictive values, so conflicts are checked first.
+    measure: directory
+    landingZone: []
+    note: What the baseline should contain is the security pillar's host baseline profile; this row is how Intune delivers and reports it.
+  - id: intune.host-compliance
+    area: management
+    pillar: intune
+    title: Compliance policies for session hosts
+    decides: Which compliance policy judges the hosts, targeted at devices, and what a host with no policy counts as.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneCompliant, c11.hostPool.sessionHosts.intuneNoncompliant, c11.hostPool.sessionHosts.intuneSyncStale, c11.intune.noPolicyMeansNoncompliant]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#compliance-settings-supported, ref:intune-avd-multisession#compliance-device-targeted, ref:intune-compliance#no-policy-default-compliant, ref:intune-compliance#set-not-compliant-with-ca, ref:intune-compliance#validity-period, ref:graph-device-management-settings#secure-by-default, ref:graph-intune-managed-device#device-fields]
+      says: A device-targeted compliance policy using the settings multi-session supports, and the tenant set so a device with no policy is noncompliant; by default it counts as compliant.
+    observations: [obs:intune-enrolled-policies-left-to-owner]
+    measure: directory
+    landingZone: []
+  - id: intune.client-compliance
+    area: management
+    pillar: intune
+    title: Client device compliance for connecting
+    decides: What a user's own device must prove before it connects - Intune compliance for managed devices, app protection for unmanaged phones, tablets and the browser - enforced by Conditional Access.
+    home: {decision: identity, facts: [], intake: [intake.clientDevices]}
+    baseline:
+      standing: guidance
+      claims: [ref:ca-require-compliant-device#compliance-signal, ref:ca-require-compliant-device#exclude-break-glass, ref:windows-app-device-compliance#app-protection-for-clients, ref:windows-app-device-compliance#redirection-needs-compliance, ref:windows-app-device-compliance#filters-managed-unmanaged, ref:intune-compliance#set-not-compliant-with-ca, ref:review-checklists-avd#G04.01]
+      says: Require a compliant device where clients are managed and app protection where they aren't, through Conditional Access with break-glass accounts excluded; redirection control on mobile clients depends on it.
+    measure: intake
+    landingZone: []
+    note: The identity pillar owns the Conditional Access policy and the endpoints pillar the client apps; this row owns the device signal Intune gives them.
+  - id: intune.host-apps
+    area: management
+    pillar: intune
+    title: App deployment to hosts through Intune
+    decides: Which apps Intune installs on hosts, and how (system context, required, targeted to devices).
+    home: {decision: proposed:operations.configuration, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#apps-system-required, ref:intune-avd-multisession#no-remoteapp-app-attach, ref:intune-avd-multisession#scripts-both-contexts]
+      says: On multi-session, apps install in system context, targeted to devices, as Required or Uninstall; Available and user-context dependencies don't work, and RemoteApp and app attach stay with AVD.
+    measure: directory
+    landingZone: []
+    note: Whether an app goes in the image, through app attach or through Intune is the app delivery pillar's decision.
+  - id: intune.host-updates
+    area: management
+    pillar: intune
+    title: Windows updates through Intune
+    decides: What Intune does for updates under the chosen servicing model - quality update settings on multi-session, update rings or Autopatch on personal single-session hosts, or nothing because the image carries them.
+    home: {decision: proposed:hostPool.updates, facts: [c11.hostPool.type], intake: [intake.hostServicing]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#quality-updates-catalog-only, ref:intune-update-rings#rings-control-client-behavior, ref:autopatch-avd#personal-only, ref:autopatch-avd#exclude-multisession, ref:avd-update-methods#multisession-image-based, ref:avd-update-methods#hotpatch, ref:mdm-wins-over-gp#update-gp-ignore, ref:review-checklists-avd#E01.09]
+      says: Update rings and Autopatch don't apply to multi-session; there the image carries updates and Intune only sets quality update behavior from the catalog. Autopatch fits personal single-session hosts only. Plan the emergency patch path either way.
+    measure: intake
+    landingZone: []
+    note: The servicing model itself (image or in place) is the images pillar's updates.os-servicing row.
+  - id: intune.device-lifecycle
+    area: management
+    pillar: intune
+    title: Remote actions and device records
+    decides: Which remote actions are used on hosts, and how device records go when hosts are replaced.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.intuneOrphans]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#remote-actions-unsupported, ref:intune-avd-multisession#orphaned-records, ref:intune-avd-personal#personal-cleanup-rules, ref:intune-device-actions#enrolled-and-online, ref:entra-device-identity-vdi#hosts-persistent-by-default, ref:entra-device-identity-vdi#stale-records-quota]
+      says: Wipe, retire, lock and reset don't exist for multi-session hosts; sync, restart and scans do. Replacing hosts leaves Entra ID and Intune records, so the step that removes a host removes its records too.
+    observations: [obs:device-records-outlive-hosts]
+    measure: directory
+    landingZone: []
+  - id: intune.reporting
+    area: management
+    pillar: intune
+    title: What the assessment reads from Intune
+    decides: Which Intune reports and Graph reads stand for a host pool, and with what permission.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneManaged, c11.hostPool.sessionHosts.intuneSyncStale]}
+    baseline:
+      standing: gap
+      claims: [ref:intune-reports#report-families, ref:graph-intune-managed-device#device-fields, gap:intune-scope]
+      says: Intune reports cover compliance, configuration, enrollment and updates, and Graph carries each device's state; no source says which an AVD assessment reads or how devices map to pools, so the scope page sets it.
+    measure: directory
+    landingZone: []
+  - id: intune.identity-roaming
+    area: management
+    pillar: intune
+    title: Identity tokens in roaming profiles
+    decides: Whether the profile tool roams identity tokens between hosts.
+    home: {decision: proposed:operations.configuration, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#no-token-roaming, ref:fslogix-settings#roamidentity-off]
+      says: Identity data never roams between hosts (FSLogix RoamIdentity left at 0); Intune doesn't support roamed tokens.
+    measure: host-side
+    landingZone: []
+    note: The profiles pillar owns FSLogix; this is the one profile setting Intune depends on.
   # Host pool shape, operations and cost
   - id: hostpool.type
     area: hostpool
@@ -852,18 +1008,6 @@ dimensions:
     measure: rebuild
     landingZone: [logRetentionDays, deploySubscriptionSettings]
     note: Alerts are fixed in the landing zone's monitoring module. Alert facts carry counts and state only, never receivers.
-  - id: ops.config-management
-    area: operations
-    pillar: intune
-    title: Host configuration management
-    decides: How host settings are delivered (Intune or Group Policy).
-    home: {decision: proposed:operations.configuration, facts: []}
-    baseline:
-      standing: guidance
-      claims: [ref:review-checklists-avd#E01.03]
-      says: Evaluate Intune for session host management.
-    measure: rebuild
-    landingZone: [enrollInIntune]
   - id: cost.power
     area: cost
     pillar: scaling

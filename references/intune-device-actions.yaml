@@ -1,0 +1,12 @@
+id: intune-device-actions
+title: Device actions in Microsoft Intune
+url: https://learn.microsoft.com/intune/device-management/actions/
+pin: "Learn git_commit_id 73d3f16e19f4e30a39496fe4bb4ff0be85c4f296, updated_at 2026-09-28"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [intune]
+claims:
+  - id: enrolled-and-online
+    says: Device actions (sync, restart, scans, diagnostics and the rest) need the device enrolled in Intune and online, and some need specific Intune roles.
+    kind: published

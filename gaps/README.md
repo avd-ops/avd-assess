@@ -27,6 +27,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [remote-protocols-scope](remote-protocols-scope.md) | What a remote protocol and session assessment can judge from where, intent before outcome, and the split with the networking pillars |
 | [transport-classification](transport-classification.md) | One family name for the transport a connection used, mapped to the three vocabularies Microsoft uses |
 | [network-scope](network-scope.md) | What a network assessment can judge, from which evidence, the draft network checks, and which repo does what |
+| [intune-scope](intune-scope.md) | What an Intune and host management assessment can judge from where, how devices map to pools, and what is not applicable on multi-session |
 | [client-network](client-network.md) | Judging the networks users connect from, AVD Private Link from the client included |
 
 The parts of these gaps that a tool runs (the collection map, checks, readiness and scoring) are in [method.json](../method.json), avd-second-brain contract C20 (`avd-assess-method/v1`). avd-current-state runs a pinned copy.
