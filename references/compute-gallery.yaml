@@ -6,7 +6,7 @@ read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment]
 pillars: [images, reliability]
-notes: The checklist's link for B01.04 (the old shared-image-galleries URL redirects here).
+notes: The checklist's link for B01.04 (the old shared-image-galleries URL redirects here) and A02.01.
 claims:
   - id: versioning-and-replication
     says: A gallery versions images and replicates each version to the regions chosen for it.

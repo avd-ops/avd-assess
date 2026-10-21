@@ -32,6 +32,7 @@ Where it sits in the family: [avd-landing-zone](https://github.com/avd-ops/avd-l
 | [Remote protocol and session](methods/remote-protocols.md) | How sessions reach their hosts: RDP transport, Shortpath and Multipath, judged against the networks users connect from, plus the session settings that ride on it |
 | [Troubleshooting and diagnostics](methods/diagnostics.md) | Which source answers which symptom, the triage flow per symptom, the error-code map, and the diagnostic facts proposed for the collector |
 | [Network](methods/network.md) | How to judge an estate's network, Azure side and client side (AVD Private Link on both), and what can be measured from outside |
+| [Reliability](methods/reliability.md) | How to judge zones, backup, continuity and disaster recovery against the workload's own targets, and why only a test proves recovery |
 
 Every step on those pages cites one of three things:
 

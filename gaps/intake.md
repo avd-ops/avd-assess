@@ -26,3 +26,5 @@
 | `intake.appDelivery` (optional) | Every way apps reach the hosts (`image`, `app-attach`, `host-deployment`, `app-layering`, `user-installed`, `undecided`)? | Which app delivery rows apply; an app layering product is a category (`gap:app-delivery-scope`) |
 | `intake.appCompatibility` (optional) | Are the apps known to run on multi-session (`all-tested`, `some-untested`, `known-blockers`, `unknown`)? | Pooled against personal, and what to test first (`ref:windows-multisession-faq#reports-as-server`) |
 | `intake.profileSolution` (optional) | What carries the profile (`fslogix`, `other-profile-product`, `local-only`, `undecided`)? | Which profile rows apply (`ref:fslogix-azure-files#files-or-anf`) |
+
+**Proposed for the reliability pillar (2026-10-21).** Five more optional answers, `specified` in the register and not yet in the schema: `intake.recoveryTime`, `intake.recoveryPoint`, `intake.regionRecovery`, `intake.recoveryDependencies` and `intake.profileData`. Their questions and enums are in `gap:reliability-scope`; they join the schema as optional fields, so an intake file written today stays valid.

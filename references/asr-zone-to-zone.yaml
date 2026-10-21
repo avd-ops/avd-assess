@@ -1,0 +1,19 @@
+id: asr-zone-to-zone
+title: Enable Azure VM disaster recovery between availability zones (Site Recovery)
+url: https://learn.microsoft.com/azure/site-recovery/azure-to-azure-how-to-enable-zone-to-zone-disaster-recovery
+pin: "Learn git_commit_id 5e88feaf574a0f668f71c00fbea1026485d672c0, updated_at 2026-09-03"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability]
+notes: The checklist's link for A01.06 (a local recovery strategy for personal host pools).
+claims:
+  - id: limited-regions
+    says: Zone-to-zone recovery works only in a listed subset of regions with availability zones, and not for VMs on zone-redundant managed disks or Ultra Disks.
+    kind: published
+  - id: may-fall-short-region-wide
+    says: Zone-to-zone recovery can fall short of resilience requirements in a region-wide disaster.
+    kind: published
+  - id: rto-sla-not-rpo
+    says: Site Recovery's SLA promises an RTO of up to one hour; there is no SLA for RPO.
+    kind: published

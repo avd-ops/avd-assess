@@ -212,3 +212,16 @@ claims:
     says: Review the Azure Files disaster recovery strategy (Reliability, medium).
   - id: A03.06
     says: Review the Azure NetApp Files disaster recovery strategy (Reliability, medium).
+  # Items read for the reliability pillar (2026-10-21), at the same pin: the A01 and A02 items not already above; every A01 to A03 item is now in this list.
+  - id: A01.01
+    says: Determine the expected high availability SLA for the apps and desktops published through AVD (Reliability, high).
+  - id: A01.02
+    says: Assess the geo disaster recovery requirements for the host pools (Reliability, medium).
+  - id: A01.03
+    says: Separate critical applications into different host pools (Reliability, low).
+  - id: A01.05
+    says: Assess whether session host VMs need backing up (Reliability, medium).
+  - id: A02.01
+    says: Plan for the golden image to be available across regions (Reliability, low).
+  - id: A02.02
+    says: Assess infrastructure and application dependencies (Reliability, medium).
