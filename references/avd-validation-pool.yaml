@@ -1,0 +1,19 @@
+id: avd-validation-pool
+title: Configure a host pool as a validation environment
+url: https://learn.microsoft.com/azure/virtual-desktop/create-validation-host-pool
+pin: "Learn git_commit_id d1e9580817ae2fbb7313885c84b01ba1911e4234, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [images]
+notes: The checklist's link for E01.11.
+claims:
+  - id: service-updates-first
+    says: A validation host pool receives service updates before the rest, and Microsoft highly recommends having one.
+    kind: guidance
+  - id: like-production
+    says: Keep the validation pool as close to production pools as possible, used as often, with the same automated tests.
+    kind: guidance
+  - id: test-only
+    says: Leave the validation pool in place for every future update and use it only for testing, never for production.
+    kind: guidance

@@ -1,0 +1,8 @@
+id: agent-update-window-while-hosts-off
+claim: ref:avd-scheduled-agent-updates#hosts-on-during-window
+verdict: extends
+observed: The landing zone schedules agent updates for Saturday 02:00 in each host's local time, one window, while its scaling plan can leave a pooled pool with no running host overnight and at weekends (the weekend schedule's minimum is 0%) and its optional auto shutdown deallocates hosts at night; nothing starts hosts for the window. On a pool with no host running at 02:00 the scheduled update can't run, and after four missed windows the broker installs it by force at a time nobody chose. The schedule needs a second window inside hours when hosts are on, or a step that starts the hosts for the window. Read from the code, not yet seen in a run.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/controlPlane.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep
+date: 2026-10-21

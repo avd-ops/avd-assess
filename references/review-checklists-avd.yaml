@@ -144,3 +144,34 @@ claims:
     says: No proxy, SSL termination or deep packet inspection for AVD control plane traffic (Reliability, high).
   - id: C02.04
     says: Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high).
+  # Capacity and images items read for the capacity and images pillars (2026-10-21); kept here, after the others, so the list grows without reordering.
+  - id: B01.01
+    says: Determine how applications will be deployed to host pools (Operations, high).
+  - id: B01.02
+    says: Estimate the number of golden images needed (Operations, medium).
+  - id: B01.04
+    says: Select the store for custom images (Reliability, low).
+  - id: B01.05
+    says: Design the build process for custom images (Operations, low).
+  - id: B01.06
+    says: If a custom image is used, follow the recommended practices for building it (Operations, medium).
+  - id: B01.09
+    says: Determine whether OneDrive will be part of the deployment (Operations, low).
+  - id: B01.11
+    says: Assess the need to support multiple languages (Reliability, low).
+  - id: C01.02
+    says: Estimate the number of different host pools to deploy (Performance, high).
+  - id: C01.03
+    says: For personal host pools, select the assignment type (Operations, low).
+  - id: C01.07
+    says: Estimate the number of application groups needed across all host pools in the tenant (Reliability, medium).
+  - id: C01.08
+    says: Estimate the number of applications in each application group (Reliability, low).
+  - id: C01.09
+    says: Evaluate FSLogix for personal host pools (Reliability, low).
+  - id: C01.11
+    says: Verify the environment against AVD scalability limits (Reliability, high).
+  - id: C03.01
+    says: Determine which Azure regions host pools will be deployed in (Performance, high).
+  - id: C03.02
+    says: Determine the metadata location for the AVD service (Reliability, medium).

@@ -1,0 +1,16 @@
+id: vm-generation-2
+title: Support for generation 2 VMs on Azure
+url: https://learn.microsoft.com/azure/virtual-machines/generation-2
+pin: "Learn git_commit_id 9ed072b872e388c785f750f825050cc26912b715, updated_at 2026-09-26"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [images, security-posture]
+notes: The checklist's link for B03.01.
+claims:
+  - id: gen2-features
+    says: Generation 2 VMs support features generation 1 doesn't; Secure Boot and vTPM, as part of Trusted launch, are among them.
+    kind: published
+  - id: upgrade-to-trusted-launch
+    says: An existing generation 1 VM can be upgraded to generation 2 with Trusted launch.
+    kind: published

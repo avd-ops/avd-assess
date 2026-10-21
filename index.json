@@ -2,6 +2,43 @@
   "schema": "avd-assess-index/v1",
   "references": [
     {
+      "id": "accelerated-networking",
+      "title": "Accelerated Networking overview",
+      "url": "https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview",
+      "pin": "Learn git_commit_id 12abaa80882d937c25bddcc8a9793b357e9551ee, updated_at 2026-09-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "capacity"
+      ],
+      "notes": "The checklist's link for C01.13.",
+      "claims": [
+        {
+          "id": "lower-latency-jitter-cpu",
+          "says": "Accelerated Networking bypasses the host's virtual switch, lowering latency, jitter and CPU use on the VM that has it.",
+          "kind": "published"
+        },
+        {
+          "id": "supported-sizes",
+          "says": "Most general-purpose and compute-optimized sizes with two or more vCPUs support it, or four or more where the size has hyperthreading.",
+          "kind": "published"
+        },
+        {
+          "id": "not-nc-nv",
+          "says": "NC and NV sizes don't support it, and enabling it on them has no effect.",
+          "kind": "published"
+        },
+        {
+          "id": "deallocated-to-enable",
+          "says": "It can be turned on only while the VM is stopped and deallocated.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "advisor-cost",
       "title": "Cost recommendations (Azure Advisor)",
       "url": "https://learn.microsoft.com/azure/advisor/advisor-reference-cost-recommendations",
@@ -275,6 +312,44 @@
       ]
     },
     {
+      "id": "avd-agent-overview",
+      "title": "Get started with the Azure Virtual Desktop Agent",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/agent-overview",
+      "pin": "Learn git_commit_id a2c9d3b52ffe73e75a81d5f757380994c65169e1, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "images",
+        "diagnostics"
+      ],
+      "claims": [
+        {
+          "id": "latest-stable",
+          "says": "Hosts must always run the latest stable agent; the service updates it as versions are released.",
+          "kind": "guidance"
+        },
+        {
+          "id": "flights",
+          "says": "New agent versions roll out in flights over five-day periods, about 24 hours per broker region, so hosts in one pool can update at different times.",
+          "kind": "published"
+        },
+        {
+          "id": "failed-update-event",
+          "says": "Event 3277 in a host's Application log means its agent update failed; without it, the host is in a later flight.",
+          "kind": "published"
+        },
+        {
+          "id": "keeps-three-versions",
+          "says": "Each host keeps three versions of the agent and side-by-side stack for rollback; removing them early stops a rollback.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-auto-reconnect",
       "title": "Modern auto-reconnect in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/fast-reconnect",
@@ -448,6 +523,76 @@
       ]
     },
     {
+      "id": "avd-custom-image-templates",
+      "title": "Use custom image templates to create custom images in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/create-custom-image-templates",
+      "pin": "Learn git_commit_id e068c70dd336a6d917cc4649ebe53f9a85ba4c37, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for B01.05. The landing zone's own image build uses Azure Image Builder directly with the family's optimization tool (ref:wdot), not the portal's templates.",
+      "claims": [
+        {
+          "id": "built-on-image-builder",
+          "says": "Custom image templates are built on Azure Image Builder and tailored for AVD, so a host pool's image configuration is standardized and repeatable.",
+          "kind": "guidance"
+        },
+        {
+          "id": "dedicated-identity",
+          "says": "The build runs as a user-assigned managed identity, ideally one made for the purpose, with a custom role scoped to the image resource group.",
+          "kind": "guidance"
+        },
+        {
+          "id": "generation-must-match",
+          "says": "A gallery image definition names generation 1 or 2, and the source image's generation must match it.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-data-locations",
+      "title": "Data locations for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/data-locations",
+      "pin": "Learn git_commit_id ebbe087e9ad40882b4901691bb5c93bab04a149c, updated_at 2026-09-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "capacity",
+        "governance"
+      ],
+      "notes": "The checklist's link for C03.02.",
+      "claims": [
+        {
+          "id": "geographical-default",
+          "says": "By default a host pool's deployment scope is geographical, and its metadata is stored in the geography of the region chosen, with no dependency on that region.",
+          "kind": "published"
+        },
+        {
+          "id": "regional-scope",
+          "says": "A regional deployment scope keeps the metadata of the host pool and its service objects in one region, where the region offers it; elsewhere host pools are geographical.",
+          "kind": "published"
+        },
+        {
+          "id": "arm-paths-outside",
+          "says": "Resource Manager paths count as organizational information, not customer data, and are stored outside the chosen geography.",
+          "kind": "published"
+        },
+        {
+          "id": "no-user-data",
+          "says": "The service stores object names, VM names and user principal names, but no user documents or app data.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-deploy-host-pool",
       "title": "Deploy Azure Virtual Desktop (host pools and session hosts)",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/deploy-azure-virtual-desktop",
@@ -547,6 +692,29 @@
       ]
     },
     {
+      "id": "avd-faq",
+      "title": "Azure Virtual Desktop frequently asked questions",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/faq",
+      "pin": "Learn git_commit_id ec03f3009f339ca1c57ac22bf993f6c90a7965ff, updated_at 2025-12-04",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images",
+        "scaling"
+      ],
+      "notes": "The checklist's link for E01.13.",
+      "claims": [
+        {
+          "id": "token-90-days",
+          "says": "A host's registration certificate is valid for 90 days, so a host should be on for 20 minutes every 90 days to refresh its token and update its agent and stack.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-fslogix-storage",
       "title": "Storage options for FSLogix profile containers in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/store-fslogix-profile",
@@ -595,6 +763,58 @@
         {
           "id": "monitor-then-resize",
           "says": "Its sizes are initial estimates; monitor actual use after deployment and resize up or down.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-golden-image",
+      "title": "Create a golden image in Azure",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/set-up-golden-image",
+      "pin": "Learn git_commit_id e068c70dd336a6d917cc4649ebe53f9a85ba4c37, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for B01.01, B01.02 and B01.06. The page walks through a manual capture; the method treats it as the list of rules any build process must keep, whatever tool runs it.",
+      "claims": [
+        {
+          "id": "approaches",
+          "says": "A golden image holding the apps and settings is one approach; device management tools or an automated image build are others, and which fits depends on the estate's size, complexity and current app deployment process.",
+          "kind": "guidance"
+        },
+        {
+          "id": "gen1-or-gen2",
+          "says": "Either VM generation can be used for the image VM, and generation 2 supports features generation 1 doesn't.",
+          "kind": "published"
+        },
+        {
+          "id": "no-agent-in-image",
+          "says": "Don't install the AVD agent or join a host pool in the image VM; hosts built from it later fail to register because the token has expired.",
+          "kind": "published"
+        },
+        {
+          "id": "uwf-unsupported",
+          "says": "The Unified Write Filter isn't supported on session hosts and must be off in the image.",
+          "kind": "published"
+        },
+        {
+          "id": "updates-and-cleanup",
+          "says": "Install the latest Windows updates and clean up (temporary files, disk optimization, stray user profiles) before the final snapshot and sysprep.",
+          "kind": "guidance"
+        },
+        {
+          "id": "gallery-for-production",
+          "says": "Use Azure Compute Gallery images for production, for replication and versioning; a standalone managed image suits only a simpler deployment.",
+          "kind": "guidance"
+        },
+        {
+          "id": "fresh-source-vm",
+          "says": "Never capture a VM that's in a host pool, never capture the same VM twice, and don't build a new base VM from an existing custom image; start from a new source VM or the last snapshot.",
           "kind": "guidance"
         }
       ]
@@ -906,6 +1126,38 @@
       ]
     },
     {
+      "id": "avd-language-packs",
+      "title": "Add languages to a Windows 11 Enterprise image",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/windows-11-language-packs",
+      "pin": "Learn git_commit_id c1cff1160f21c7796f1396c26bdda0c0e5edcc4e, updated_at 2026-10-01",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for B01.11.",
+      "claims": [
+        {
+          "id": "personal-self-service",
+          "says": "From Windows 11, users without admin rights can add a display language and its features, so personal pools don't need languages preinstalled.",
+          "kind": "published"
+        },
+        {
+          "id": "pooled-preinstall",
+          "says": "For pooled host pools, add the languages users need to the custom image.",
+          "kind": "guidance"
+        },
+        {
+          "id": "pool-per-language-or-shared",
+          "says": "Either one host pool with its own image per language, or one multi-language image shared by all; the shared image costs less but takes more build steps.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "avd-licensing",
       "title": "Licensing Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/licensing",
@@ -1040,6 +1292,76 @@
       ]
     },
     {
+      "id": "avd-office-image",
+      "title": "Install Office on a custom VHD image",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/install-office-on-wvd-master-image",
+      "pin": "Learn git_commit_id e66f972dcf1825b0aaad3e2f10dfa6e0080d1bb0, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for B01.09.",
+      "claims": [
+        {
+          "id": "shared-computer-activation",
+          "says": "Install Microsoft 365 Apps in shared computer activation mode on images for hosts many users share.",
+          "kind": "published"
+        },
+        {
+          "id": "onedrive-per-machine",
+          "says": "OneDrive normally installs per user; on session hosts install it per machine.",
+          "kind": "published"
+        },
+        {
+          "id": "line-of-business-after",
+          "says": "Install line-of-business apps after the Office and OneDrive steps.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-personal-assignment",
+      "title": "Configure personal desktop assignment",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/configure-host-pool-personal-desktop-assignment-type",
+      "pin": "Learn git_commit_id 5b2dc7cd3aaebacccff1fc1ccd5145f8fa89dbe7, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "capacity",
+        "profiles"
+      ],
+      "notes": "The checklist's link for C01.03 and C01.09.",
+      "claims": [
+        {
+          "id": "one-to-one",
+          "says": "A personal desktop maps to one user, and every sign-in goes to that user's host.",
+          "kind": "published"
+        },
+        {
+          "id": "automatic-default",
+          "says": "Automatic assignment, the default for new personal pools, gives a user any free desktop at first connection; direct assignment names the host before the user connects.",
+          "kind": "published"
+        },
+        {
+          "id": "reassign",
+          "says": "A personal desktop can be reassigned to another user through the portal or the REST API, not the CLI.",
+          "kind": "published"
+        },
+        {
+          "id": "fslogix-multiple-connections",
+          "says": "With FSLogix and one profile container location for a personal pool, allow multiple connections to the container to avoid errors.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-prerequisites",
       "title": "Prerequisites for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/prerequisites",
@@ -1054,6 +1376,21 @@
         {
           "id": "rtt-under-150",
           "says": "Round-trip time from the client's network to the host pool's Azure region should be under 150 ms; put session hosts in the region closest to users.",
+          "kind": "published"
+        },
+        {
+          "id": "supported-os",
+          "says": "Session hosts run 64-bit Windows 11 or 10 Enterprise (multi-session or single-session) or Windows Server 2016 to 2025; different pools can run different OSes.",
+          "kind": "published"
+        },
+        {
+          "id": "unsupported-hosts",
+          "says": "Not supported for session hosts, among others, 32-bit and LTSC, N or KN editions, Ultra disks for the OS disk, ephemeral OS disks, scale sets and Arm64 VMs.",
+          "kind": "published"
+        },
+        {
+          "id": "image-sources",
+          "says": "Hosts can use Marketplace images or custom images kept in an Azure Compute Gallery or as managed images.",
           "kind": "published"
         }
       ]
@@ -1294,6 +1631,38 @@
       ]
     },
     {
+      "id": "avd-scheduled-agent-updates",
+      "title": "Scheduled Agent Updates for Azure Virtual Desktop host pools",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/scheduled-agent-updates",
+      "pin": "Learn git_commit_id 4dcb5ff3082014aa907a3d4327649e7705d8fba5, updated_at 2025-06-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for E01.10.",
+      "claims": [
+        {
+          "id": "off-by-default",
+          "says": "Scheduled agent updates are off by default, so the agent, side-by-side stack and monitoring agent can update at any time; the setting is per host pool, with one or two maintenance windows.",
+          "kind": "published"
+        },
+        {
+          "id": "two-hour-windows",
+          "says": "Each maintenance window lasts two hours, in a set time zone or each host's local time.",
+          "kind": "published"
+        },
+        {
+          "id": "hosts-on-during-window",
+          "says": "An update fails on a host that is shut down or deallocated during the window, so every host must be on then; after four failed windows, or for a critical update, the broker installs it by force.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-security-guide",
       "title": "Security recommendations for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/security-guide",
@@ -1359,6 +1728,53 @@
           "id": "device-redirection",
           "says": "Restrict device redirection (drives, clipboard, printers, USB) to what each group of users needs.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-service-limits",
+      "title": "Azure subscription and service limits, Azure Virtual Desktop service limits",
+      "url": "https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-virtual-desktop-service-limits",
+      "pin": "Learn git_commit_id b925adaad71e273e5a1379e52d082568ef8fbf6f, updated_at 2026-09-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "capacity"
+      ],
+      "notes": "Read for C01.07, C01.08 and C01.11. The checklist links those to the AVD architecture example scenario, which no longer lists limits at the date read; this section is where they now are. VMs, storage and networks have their own limits on the same page.",
+      "claims": [
+        {
+          "id": "workspaces-per-tenant",
+          "says": "At most 1,300 workspaces per Microsoft Entra tenant.",
+          "kind": "published"
+        },
+        {
+          "id": "host-pools-per-workspace",
+          "says": "At most 400 host pools per workspace.",
+          "kind": "published"
+        },
+        {
+          "id": "app-groups-per-tenant",
+          "says": "At most 1,000 application groups per tenant, more only through a support request.",
+          "kind": "published"
+        },
+        {
+          "id": "remoteapps-per-group",
+          "says": "At most 500 RemoteApps per application group.",
+          "kind": "published"
+        },
+        {
+          "id": "role-assignments",
+          "says": "At most 200 role assignments per AVD object.",
+          "kind": "published"
+        },
+        {
+          "id": "hosts-per-pool",
+          "says": "At most 10,000 session hosts per host pool.",
+          "kind": "published"
         }
       ]
     },
@@ -1444,6 +1860,34 @@
       ]
     },
     {
+      "id": "avd-terminology",
+      "title": "Azure Virtual Desktop terminology",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/terminology",
+      "pin": "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "capacity",
+        "images"
+      ],
+      "notes": "The checklist's link for C01.01, C01.02 and C01.06.",
+      "claims": [
+        {
+          "id": "same-image-per-pool",
+          "says": "All session hosts in a host pool should come from the same image, for a consistent user experience.",
+          "kind": "guidance"
+        },
+        {
+          "id": "pooled-vs-personal",
+          "says": "Personal pools give each user an assigned host for performance and data separation; pooled pools load-balance users across shared hosts for lower cost.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-update-methods",
       "title": "Windows update management methodologies for Azure Virtual Desktop session hosts",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/windows-update-management-methodologies-session-hosts",
@@ -1496,6 +1940,38 @@
           "id": "run-on-host",
           "says": "The Agent URL Tool ships with the agent and runs on a session host, reporting which required endpoints that host can reach.",
           "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-validation-pool",
+      "title": "Configure a host pool as a validation environment",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/create-validation-host-pool",
+      "pin": "Learn git_commit_id d1e9580817ae2fbb7313885c84b01ba1911e4234, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images"
+      ],
+      "notes": "The checklist's link for E01.11.",
+      "claims": [
+        {
+          "id": "service-updates-first",
+          "says": "A validation host pool receives service updates before the rest, and Microsoft highly recommends having one.",
+          "kind": "guidance"
+        },
+        {
+          "id": "like-production",
+          "says": "Keep the validation pool as close to production pools as possible, used as often, with the same automated tests.",
+          "kind": "guidance"
+        },
+        {
+          "id": "test-only",
+          "says": "Leave the validation pool in place for every future update and use it only for testing, never for production.",
+          "kind": "guidance"
         }
       ]
     },
@@ -1854,6 +2330,59 @@
           "id": "right-size-first",
           "says": "Right-size first, fix existing commitments next, and only then buy new ones; discounts reduce rates, not waste.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "compute-gallery",
+      "title": "Store and share resources in an Azure Compute Gallery",
+      "url": "https://learn.microsoft.com/azure/virtual-machines/azure-compute-gallery",
+      "pin": "Learn git_commit_id 40aaa64a2771acda033ca09289e1e777241f201e, updated_at 2026-06-24",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images",
+        "reliability"
+      ],
+      "notes": "The checklist's link for B01.04 (the old shared-image-galleries URL redirects here).",
+      "claims": [
+        {
+          "id": "versioning-and-replication",
+          "says": "A gallery versions images and replicates each version to the regions chosen for it.",
+          "kind": "published"
+        },
+        {
+          "id": "not-global",
+          "says": "A gallery isn't a global resource; for disaster recovery keep at least two galleries in separate regions.",
+          "kind": "guidance"
+        },
+        {
+          "id": "replica-per-20-vms",
+          "says": "Keep one replica per 20 VMs created at the same time, and one per scale set created at the same time; overprovision rather than under.",
+          "kind": "guidance"
+        },
+        {
+          "id": "zrs-in-zone-regions",
+          "says": "Replicas default to Standard LRS; Standard ZRS is available in regions with availability zones and survives a zone failure.",
+          "kind": "published"
+        },
+        {
+          "id": "replicate-latest-only",
+          "says": "Replicating only the latest version to every region, and keeping older versions in one, saves storage cost.",
+          "kind": "guidance"
+        },
+        {
+          "id": "replication-takes-time",
+          "says": "Replication can take hours, and a version can be deployed in a region only once its replication there completes.",
+          "kind": "published"
+        },
+        {
+          "id": "limits",
+          "says": "At most 10,000 image versions per subscription per region and 100 replicas per version.",
+          "kind": "published"
         }
       ]
     },
@@ -3279,6 +3808,66 @@
         {
           "id": "C02.04",
           "says": "Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high)."
+        },
+        {
+          "id": "B01.01",
+          "says": "Determine how applications will be deployed to host pools (Operations, high)."
+        },
+        {
+          "id": "B01.02",
+          "says": "Estimate the number of golden images needed (Operations, medium)."
+        },
+        {
+          "id": "B01.04",
+          "says": "Select the store for custom images (Reliability, low)."
+        },
+        {
+          "id": "B01.05",
+          "says": "Design the build process for custom images (Operations, low)."
+        },
+        {
+          "id": "B01.06",
+          "says": "If a custom image is used, follow the recommended practices for building it (Operations, medium)."
+        },
+        {
+          "id": "B01.09",
+          "says": "Determine whether OneDrive will be part of the deployment (Operations, low)."
+        },
+        {
+          "id": "B01.11",
+          "says": "Assess the need to support multiple languages (Reliability, low)."
+        },
+        {
+          "id": "C01.02",
+          "says": "Estimate the number of different host pools to deploy (Performance, high)."
+        },
+        {
+          "id": "C01.03",
+          "says": "For personal host pools, select the assignment type (Operations, low)."
+        },
+        {
+          "id": "C01.07",
+          "says": "Estimate the number of application groups needed across all host pools in the tenant (Reliability, medium)."
+        },
+        {
+          "id": "C01.08",
+          "says": "Estimate the number of applications in each application group (Reliability, low)."
+        },
+        {
+          "id": "C01.09",
+          "says": "Evaluate FSLogix for personal host pools (Reliability, low)."
+        },
+        {
+          "id": "C01.11",
+          "says": "Verify the environment against AVD scalability limits (Reliability, high)."
+        },
+        {
+          "id": "C03.01",
+          "says": "Determine which Azure regions host pools will be deployed in (Performance, high)."
+        },
+        {
+          "id": "C03.02",
+          "says": "Determine the metadata location for the AVD service (Reliability, medium)."
         }
       ]
     },
@@ -3602,6 +4191,34 @@
         {
           "id": "managed-transit",
           "says": "Virtual WAN is a Microsoft-managed hub-and-spoke with transitive routing between branches, user VPN, ExpressRoute and virtual networks.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "vm-generation-2",
+      "title": "Support for generation 2 VMs on Azure",
+      "url": "https://learn.microsoft.com/azure/virtual-machines/generation-2",
+      "pin": "Learn git_commit_id 9ed072b872e388c785f750f825050cc26912b715, updated_at 2026-09-26",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images",
+        "security-posture"
+      ],
+      "notes": "The checklist's link for B03.01.",
+      "claims": [
+        {
+          "id": "gen2-features",
+          "says": "Generation 2 VMs support features generation 1 doesn't; Secure Boot and vTPM, as part of Trusted launch, are among them.",
+          "kind": "published"
+        },
+        {
+          "id": "upgrade-to-trusted-launch",
+          "says": "An existing generation 1 VM can be upgraded to generation 2 with Trusted launch.",
           "kind": "published"
         }
       ]
@@ -4113,6 +4730,17 @@
   ],
   "observations": [
     {
+      "id": "agent-update-window-while-hosts-off",
+      "claim": "ref:avd-scheduled-agent-updates#hosts-on-during-window",
+      "verdict": "extends",
+      "observed": "The landing zone schedules agent updates for Saturday 02:00 in each host's local time, one window, while its scaling plan can leave a pooled pool with no running host overnight and at weekends (the weekend schedule's minimum is 0%) and its optional auto shutdown deallocates hosts at night; nothing starts hosts for the window. On a pool with no host running at 02:00 the scheduled update can't run, and after four missed windows the broker installs it by force at a time nobody chose. The schedule needs a second window inside hours when hosts are on, or a step that starts the hosts for the window. Read from the code, not yet seen in a run.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/controlPlane.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
       "id": "budget-alert-needs-a-lock",
       "claim": "ref:cost-management-budgets#alerts-dont-stop",
       "verdict": "extends",
@@ -4466,6 +5094,10 @@
     {
       "id": "use-cases",
       "title": "use cases"
+    },
+    {
+      "id": "workload-benchmark",
+      "title": "a workload benchmark before sizing"
     }
   ]
 }
