@@ -1,0 +1,21 @@
+id: troubleshoot-sso-conditional-access
+title: Troubleshoot single sign-on and Conditional Access for Azure Virtual Desktop
+url: https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-sso-conditional-access
+pin: "Learn git_commit_id 0dc406fd2ddf13fa4c69d6051e23c04acdedc146, updated_at 2026-06-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [diagnostics, identity]
+claims:
+  - id: sign-in-logs-first
+    says: For any sign-in failure, read the user's Entra sign-in log entries for the AVD and Windows Cloud Login apps; each gives an AADSTS code, the Conditional Access result and the method used.
+    kind: published
+  - id: frequency-mismatch
+    says: Repeated prompts often come from different sign-in frequencies on the AVD and Windows Cloud Login apps, or from per-user MFA left on beside Conditional Access.
+    kind: published
+  - id: aadsts-codes
+    says: AADSTS50058 (no usable session), AADSTS50076 (MFA required), AADSTS530002 (device not compliant), AADSTS530032 (blocked by tenant policy) and AADSTS65001 (consent required) each have their own fix.
+    kind: published
+  - id: compliance-on-client
+    says: A compliant-device requirement on the connection-time apps applies to the client device, not the session host.
+    kind: published

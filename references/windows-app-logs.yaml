@@ -1,0 +1,12 @@
+id: windows-app-logs
+title: Collect logs from Windows App
+url: https://learn.microsoft.com/windows-app/troubleshoot-collect-logs
+pin: "Learn git_commit_id c09348fcde75580f3bd615935b370033eb6065c4, updated_at 2026-04-27"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection]
+pillars: [diagnostics, endpoints]
+claims:
+  - id: per-platform
+    says: Windows App keeps logs in the user's temp folder on Windows, collects them from the app's troubleshooting settings on macOS, iOS and Android, and captures them from the session toolbar in a browser.
+    kind: published

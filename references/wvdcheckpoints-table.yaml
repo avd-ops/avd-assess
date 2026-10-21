@@ -1,0 +1,12 @@
+id: wvdcheckpoints-table
+title: WVDCheckpoints table reference
+url: https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdcheckpoints
+pin: "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection]
+pillars: [diagnostics]
+claims:
+  - id: named-steps
+    says: Each checkpoint row names a step in an activity, the component that emitted it and its parameters, keyed by the activity's CorrelationId.
+    kind: published

@@ -1,0 +1,8 @@
+id: landing-zone-alerts-read-the-wvd-tables
+claim: ref:diagnostics-log-analytics#service-error-split
+verdict: extends
+observed: The landing zone sends every diagnostic category of its host pool, application group and workspace to its workspace and ships three log alerts a triage can start from - more than 10 admin-fixable errors (ServiceError false) by code in the window, a running host whose latest agent health status is neither Available nor Upgrading, and any FSLogix error event. The split by ServiceError follows the source; the threshold of 10 and the Upgrading exclusion are the family's own choices, not published numbers, and no run has yet checked that the alerts fire on a broken host.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/monitoring.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/controlPlane.bicep
+date: 2026-10-21
