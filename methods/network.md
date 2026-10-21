@@ -23,7 +23,7 @@ How RDP itself behaves on the network (reverse connect, Shortpath, STUN and TURN
 2. **Proxies on the user network** are bypassed for AVD or sit in the same geography; client proxy support differs by platform (`ref:avd-proxy#bypass-proxies`, `ref:avd-proxy#same-geography`, `ref:avd-proxy#client-proxy-support`).
 3. **AVD Private Link, client side.** Where users connect privately, each user network resolves the discovery, feed and gateway names to the endpoints over VPN or ExpressRoute; discovery stays public by design; no mixed public and private feeds on a network without internet; clients at the supported versions (`ref:avd-private-link#client-dns-sequence`, `ref:avd-private-link#global-workspace`, `ref:avd-private-link#mixed-feed-limit`, `ref:avd-private-link-setup#client-versions`, `ref:dns-private-resolver#hybrid-resolution`, `gap:client-network`). Row `network.client-private-link`.
 4. **Bandwidth** per user and in total, estimated first and then measured (`ref:rdp-bandwidth#per-scenario-estimates`, `ref:review-checklists-avd#F01.09`). Row `network.bandwidth`.
-5. **Device VPN and security agents** (SSE, ZTNA, VPN client categories): an extension row, `network.client-agents`, filled later; categories only.
+5. **Device VPN and security agents** (SSE, ZTNA, VPN client categories, web proxies, TLS inspection): RDP split out of every tunnel and left uninspected, sign-in traffic excepted (`ref:rdp-traffic-optimization#bypass-tunnels`, `ref:rdp-traffic-optimization#no-tls-inspection`, `ref:rdp-traffic-optimization#auth-inspection-ok`); a path that can't carry UDP leaves RDP on TCP (`ref:avd-proxy#proxy-forces-tcp`). Intake `intake.clientAgents` and `intake.agentRdpBypass`; categories only (`gap:security-agents-scope`). Row `network.client-agents`.
 6. **Prove it with users**: a proof of concept from the real networks before the move (`ref:review-checklists-avd#C02.04`).
 
 Client-side steps are intake or a reviewer's test on the user's network (`gap:client-network`); nothing reads them automatically.
@@ -31,7 +31,6 @@ Client-side steps are intake or a reviewer's test on the user's network (`gap:cl
 ## Extension points
 
 - **AVD on Azure Local** (`network.azure-local`): a host pool is all Azure or all Azure Local (`ref:avd-azure-local#no-mixed-pools`); no method yet.
-- **Device agents** (`network.client-agents`), above.
 
 ## Where the network lives in the family
 

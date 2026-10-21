@@ -78,9 +78,9 @@ pillars:
     status: mapped
   - id: endpoint-protection
     title: Endpoint protection and security agents
-    scope: Antivirus and endpoint detection and response on multi-session hosts, as categories; VDI settings, image sealing, exclusions for profiles and App Attach, update sharing, measured cost; vulnerability assessment.
-    checklist: [G03.04]
-    status: partial
+    scope: Antivirus and endpoint detection and response on multi-session hosts, as categories; coexistence of several products, EDR onboarding, VDI settings, image sealing, exclusions for profiles and App Attach, update sharing, measured cost; vulnerability assessment; security service edge, zero trust and VPN clients on the hosts (their effect on the user's side is in networking-client).
+    checklist: [G02.01, G03.04, H04.02]
+    status: mapped
   - id: governance
     title: Governance, policy and compliance
     scope: Azure Policy guardrails, allowed locations and sizes, tagging and naming, audit logging and retention, benchmark control mapping, compliance frameworks as mappings, change control, tenant and subscription prerequisites. Host configuration delivery is the intune pillar.

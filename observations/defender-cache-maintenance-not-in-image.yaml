@@ -1,0 +1,8 @@
+id: defender-cache-maintenance-not-in-image
+claim: ref:defender-av-vdi#cache-maintenance-before-seal
+verdict: not-yet-tested
+observed: "The landing zone's image build brings Microsoft Defender Antivirus signatures up to date and fails the build if they stay older than a day, but it doesn't run the cache maintenance task before the image is sealed, which the source says avoids higher CPU on each new host while the task runs. How much CPU and logon time that costs on the first sessions of a new host is unmeasured (gap:security-agents-scope)."
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/images/build.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/image/Update-DefenderSignature.ps1
+date: 2026-10-21

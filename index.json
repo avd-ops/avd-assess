@@ -2004,6 +2004,21 @@
           "id": "device-redirection",
           "says": "Restrict device redirection (drives, clipboard, printers, USB) to what each group of users needs.",
           "kind": "guidance"
+        },
+        {
+          "id": "vhd-exclusions",
+          "says": "For FSLogix or any profile solution that mounts virtual disk files, exclude those file extensions from antivirus scanning.",
+          "kind": "published"
+        },
+        {
+          "id": "edr-microsoft-or-third-party",
+          "says": "Endpoint protection and EDR can be Microsoft's or a third-party product; vulnerability assessment can also come from a third party, though Microsoft recommends its own.",
+          "kind": "published"
+        },
+        {
+          "id": "gsa-on-hosts",
+          "says": "Configure Global Secure Access on session hosts to apply the same access controls to private, internet and Microsoft 365 apps, external identities included.",
+          "kind": "guidance"
         }
       ]
     },
@@ -2998,6 +3013,44 @@
       ]
     },
     {
+      "id": "defender-av-compatibility",
+      "title": "Microsoft Defender Antivirus compatibility with other security products",
+      "url": "https://learn.microsoft.com/defender-endpoint/microsoft-defender-antivirus-compatibility",
+      "pin": "Learn git_commit_id ad3972b20dc3eb4ed0a821b852962545a0335bdf, updated_at 2026-09-11",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "notes": "Windows Enterprise multi-session is a Windows client edition, so the client rows of the page's tables apply to it.",
+      "claims": [
+        {
+          "id": "third-party-av-state",
+          "says": "With a non-Microsoft antivirus as the primary product, Defender Antivirus runs in passive mode on a client OS onboarded to Defender for Endpoint (or with Smart App Control on), and is disabled otherwise.",
+          "kind": "published"
+        },
+        {
+          "id": "security-center-required",
+          "says": "If the Windows Security Center service is disabled on a client, Defender Antivirus can't see the other antivirus and stays active; two active products is unsupported and hurts performance.",
+          "kind": "published"
+        },
+        {
+          "id": "running-mode-readable",
+          "says": "The page reads Defender Antivirus's running mode (normal, passive or EDR block mode) on the machine with Get-MpComputerStatus.",
+          "kind": "published"
+        },
+        {
+          "id": "passive-still-updates",
+          "says": "Keep Defender Antivirus updates flowing even in passive mode.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "defender-av-vdi",
       "title": "Configure Microsoft Defender Antivirus on a remote desktop or virtual desktop infrastructure environment",
       "url": "https://learn.microsoft.com/defender-endpoint/deployment-vdi-microsoft-defender-antivirus",
@@ -3027,6 +3080,61 @@
       ]
     },
     {
+      "id": "defender-cloud-edr-detection",
+      "title": "Detecting endpoint detection and response solutions (Defender for Cloud)",
+      "url": "https://learn.microsoft.com/azure/defender-for-cloud/detect-endpoint-detection-response-solutions",
+      "pin": "Learn git_commit_id 04e79f7f40fbd03851607740eb3109f049919434, updated_at 2026-09-24",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "notes": "The page lists the third-party EDR products it recognizes by name; this repo doesn't copy the list (tests/wording.json). Read it at the pin.",
+      "claims": [
+        {
+          "id": "agentless-edr-check",
+          "says": "With Defender for Servers Plan 2 or Defender CSPM on, an agentless scan checks whether each Azure VM runs a supported EDR product and raises a recommendation when it doesn't.",
+          "kind": "published"
+        },
+        {
+          "id": "third-party-recognized",
+          "says": "The scan recognizes Microsoft's EDR and a published list of third-party EDR products; one it can't discover can be exempted rather than reported as missing.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "defender-cloud-edr-settings",
+      "title": "Assess Defender for Endpoint EDR settings (Defender for Cloud)",
+      "url": "https://learn.microsoft.com/azure/defender-for-cloud/endpoint-detection-response",
+      "pin": "Learn git_commit_id f07c691cf167c5e961559bb8949081f07aae8bc2, updated_at 2026-08-08",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "claims": [
+        {
+          "id": "misconfiguration-checks",
+          "says": "Where Microsoft's EDR runs, the agentless scan also flags scans older than seven days, outdated signatures and antivirus turned off or partly configured.",
+          "kind": "published"
+        },
+        {
+          "id": "microsoft-edr-only",
+          "says": "These configuration checks run only on machines whose EDR is Microsoft's.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "defender-compute-recommendations",
       "title": "Defender for Cloud compute security recommendations",
       "url": "https://learn.microsoft.com/azure/defender-for-cloud/recommendations-reference-compute",
@@ -3042,6 +3150,43 @@
         {
           "id": "vm-recommendations",
           "says": "Defender for Cloud assesses VMs for an EDR solution, vulnerability findings, Secure Boot and vTPM on supported VMs, and the Guest Attestation extension, among others.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "defender-endpoint-avd",
+      "title": "Onboard Windows devices in Azure Virtual Desktop (Microsoft Defender for Endpoint)",
+      "url": "https://learn.microsoft.com/defender-endpoint/onboard-windows-multi-session-device",
+      "pin": "Learn git_commit_id 1921f1568b8048d2412095738e2d5043c926f7ca, updated_at 2026-05-22",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "notes": "The AVD-specific companion to ref:defender-endpoint-vdi. Microsoft's EDR, named as Microsoft names it; a third-party EDR has no equivalent page on Learn.",
+      "claims": [
+        {
+          "id": "single-entry-recommended",
+          "says": "Onboard AVD hosts as a single entry per virtual desktop, especially where hosts are deleted and redeployed often, so an investigation sees one device per machine name.",
+          "kind": "published"
+        },
+        {
+          "id": "script-at-first-boot",
+          "says": "Put the onboarding script in the golden image as a startup script that runs as early as possible at first boot, without onboarding the image itself.",
+          "kind": "published"
+        },
+        {
+          "id": "multi-session-licensing",
+          "says": "Multi-session hosts are licensed through Defender for Servers, or by licensing every AVD user with one of the per-user plans the page lists.",
+          "kind": "published"
+        },
+        {
+          "id": "wmi-asr-rule",
+          "says": "Where Configuration Manager manages the hosts, don't use the attack surface reduction rule that blocks process creation from PsExec and WMI.",
           "kind": "guidance"
         }
       ]
@@ -3070,6 +3215,42 @@
         {
           "id": "first-report-delay",
           "says": "A VDI device's first onboarding can delay client reporting by about three to four hours.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "defender-side-by-side",
+      "title": "Microsoft Defender for Endpoint alongside other security solutions",
+      "url": "https://learn.microsoft.com/defender-endpoint/mde-side-by-side",
+      "pin": "Learn git_commit_id e5e024df2189c2f05c8a7a66f60fff59a0c0bfd8, updated_at 2026-04-13",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection"
+      ],
+      "claims": [
+        {
+          "id": "avoid-duplication",
+          "says": "Don't run two security products for the same function; turn the overlapping capabilities off in one of them and leave each function to one product.",
+          "kind": "guidance"
+        },
+        {
+          "id": "mutual-exclusions",
+          "says": "Products running side by side need mutual exclusions, limited to processes and paths known to be benign, and those gaps are managed as products change.",
+          "kind": "guidance"
+        },
+        {
+          "id": "stagger-heavy-tasks",
+          "says": "Even well configured products are limited by the system underneath; meet hardware requirements and stagger resource-heavy tasks such as scans.",
+          "kind": "guidance"
+        },
+        {
+          "id": "remove-to-troubleshoot",
+          "says": "Support may ask for a conflicting product to be removed temporarily while a performance or reliability problem is isolated.",
           "kind": "published"
         }
       ]
@@ -3566,6 +3747,16 @@
           "kind": "published"
         },
         {
+          "id": "exclusion-scope",
+          "says": "The exclusion table covers FSLogix executables, filter drivers, program and data folders, per-user local data, Cloud Cache folders, temporary VHD files, the containers on the share, the FSLogix registry keys and the mount points.",
+          "kind": "published"
+        },
+        {
+          "id": "all-layers",
+          "says": "Apply the exclusions in every security layer (endpoint antivirus, network scanning, data loss prevention) and check them after each policy deployment.",
+          "kind": "published"
+        },
+        {
           "id": "storage-latency",
           "says": "Network latency, bandwidth and proximity to the storage provider are pivotal to the user's experience.",
           "kind": "guidance"
@@ -3711,6 +3902,44 @@
         {
           "id": "codecs",
           "says": "RDP can encode with AVC (H.264) and, on a suitable GPU host, HEVC (H.265), decoded in hardware on the client.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "gsa-known-limitations",
+      "title": "Known limitations for Global Secure Access",
+      "url": "https://learn.microsoft.com/entra/global-secure-access/reference-current-known-limitations",
+      "pin": "Learn git_commit_id 1ca14c78a8a89186343ee999044f5db598b1e555, updated_at 2026-09-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoint-protection",
+        "networking-client"
+      ],
+      "notes": "Microsoft's own security service edge client, named as Microsoft names it, and the only one whose AVD support Learn documents; other products in the category are judged by intake. AVD's security page suggests it on hosts with no multi-session caveat (ref:avd-security-guide#gsa-on-hosts); this page is the narrower word.",
+      "claims": [
+        {
+          "id": "no-multi-session",
+          "says": "The Windows client doesn't support concurrent sessions on one machine, so it isn't supported on multi-session AVD hosts; Azure VMs and single-session AVD are supported.",
+          "kind": "published"
+        },
+        {
+          "id": "no-udp-internet-access",
+          "says": "Internet Access doesn't tunnel UDP yet (QUIC included); that traffic goes direct or is blocked by the forwarding profile's fallback rule.",
+          "kind": "published"
+        },
+        {
+          "id": "connection-fallback",
+          "says": "When the client can't reach the service, traffic either goes direct or is blocked, depending on the hardening setting of the matching rule.",
+          "kind": "published"
+        },
+        {
+          "id": "proxy-pac-exclusions",
+          "says": "Where a proxy is also configured, a PAC file must exclude what the client tunnels, so the two don't fight over the same traffic.",
           "kind": "published"
         }
       ]
@@ -4157,6 +4386,59 @@
           "id": "turn-maintenance-drops",
           "says": "TURN connections can drop during relay updates; the client reconnects within seconds.",
           "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "rdp-traffic-optimization",
+      "title": "Optimization of RDP traffic (Windows 365 and Azure Virtual Desktop)",
+      "url": "https://learn.microsoft.com/windows-365/enterprise/optimization-of-rdp",
+      "pin": "Learn git_commit_id b0c12cb818a1bcedf8a5b2d8999918ee62e0cf7c, updated_at 2026-10-07",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "networking-client",
+        "endpoint-protection"
+      ],
+      "notes": "Filed under Windows 365, but the page says the gateway and TURN ranges it lists are dedicated to Windows 365 and Azure Virtual Desktop, and it names AVD deployments directly. It is the one Microsoft page that treats VPN, secure web gateway and SSE agents as a category. The address table itself stays on the page and in ref:avd-required-fqdn.",
+      "claims": [
+        {
+          "id": "bypass-tunnels",
+          "says": "Send RDP traffic to the gateway and TURN ranges directly, outside VPN, secure web gateway and proxy tunnels, on both the user's device and the host; other traffic can keep using the tunnel.",
+          "kind": "published"
+        },
+        {
+          "id": "no-tls-inspection",
+          "says": "TLS inspection of RDP traffic isn't supported; RDP already nests one encrypted session inside another, so inspection adds jitter, latency and load and reduces throughput with no security benefit.",
+          "kind": "published"
+        },
+        {
+          "id": "local-egress",
+          "says": "Let RDP leave the user's network as close to the user as possible; backhauling it through a tunnel picks gateways and relays near the tunnel's exit instead of near the user.",
+          "kind": "published"
+        },
+        {
+          "id": "auth-inspection-ok",
+          "says": "The bypass covers only the RDP flows; Entra ID sign-in traffic can still be inspected, for example where tenant restrictions need it.",
+          "kind": "published"
+        },
+        {
+          "id": "host-side-non-rdp",
+          "says": "On the host side, activation (KMS) traffic and the two platform addresses must not go through a proxy, VPN or web gateway tunnel either, or connections fail.",
+          "kind": "published"
+        },
+        {
+          "id": "prioritize-rdp",
+          "says": "Where the network supports it, prioritize RDP the way Teams media is prioritized.",
+          "kind": "guidance"
+        },
+        {
+          "id": "vendor-bypass-options",
+          "says": "Some secure web gateway products offer a simplified RDP bypass setting; the page links one vendor's community post rather than documenting any product.",
+          "kind": "guidance"
         }
       ]
     },
@@ -6087,6 +6369,17 @@
       "date": "2026-10-20"
     },
     {
+      "id": "defender-cache-maintenance-not-in-image",
+      "claim": "ref:defender-av-vdi#cache-maintenance-before-seal",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone's image build brings Microsoft Defender Antivirus signatures up to date and fails the build if they stay older than a day, but it doesn't run the cache maintenance task before the image is sealed, which the source says avoids higher CPU on each new host while the task runs. How much CPU and logon time that costs on the first sessions of a new host is unmeasured (gap:security-agents-scope).",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/images/build.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/image/Update-DefenderSignature.ps1"
+      ],
+      "date": "2026-10-21"
+    },
+    {
       "id": "encryption-at-host-by-default",
       "claim": "ref:disk-encryption-options#encryption-at-host",
       "verdict": "not-yet-tested",
@@ -6122,6 +6415,16 @@
       "claim": "ref:fslogix-prerequisites#av-exclusions",
       "verdict": "agrees",
       "observed": "The landing zone applies the published FSLogix file and process exclusions to Microsoft Defender Antivirus on every host and doesn't fail the host when tamper protection or an endpoint policy owns exclusions, which means an assessment has to read the effective exclusions on the host rather than trust the deployment.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1"
+      ],
+      "date": "2026-10-21"
+    },
+    {
+      "id": "fslogix-exclusions-partial",
+      "claim": "ref:fslogix-prerequisites#exclusion-scope",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone's host configuration sets part of the published list, in Microsoft Defender Antivirus's local preferences only: the temporary and share VHD and VHDX files and three FSLogix processes, one no longer on the list. Folders, Cloud Cache, drivers, registry keys and mount points aren't set; a third-party antivirus or a network or data loss prevention layer gets nothing; a central policy that owns exclusions only draws a warning. Logon impact untested.",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1"
       ],
@@ -6453,6 +6756,10 @@
     {
       "id": "scoring",
       "title": "scoring"
+    },
+    {
+      "id": "security-agents-scope",
+      "title": "assessing security agents on session hosts and user devices"
     },
     {
       "id": "security-scope",

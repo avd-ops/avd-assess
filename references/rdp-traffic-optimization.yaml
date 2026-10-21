@@ -1,0 +1,31 @@
+id: rdp-traffic-optimization
+title: Optimization of RDP traffic (Windows 365 and Azure Virtual Desktop)
+url: https://learn.microsoft.com/windows-365/enterprise/optimization-of-rdp
+pin: "Learn git_commit_id b0c12cb818a1bcedf8a5b2d8999918ee62e0cf7c, updated_at 2026-10-07"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [networking-client, endpoint-protection]
+notes: Filed under Windows 365, but the page says the gateway and TURN ranges it lists are dedicated to Windows 365 and Azure Virtual Desktop, and it names AVD deployments directly. It is the one Microsoft page that treats VPN, secure web gateway and SSE agents as a category. The address table itself stays on the page and in ref:avd-required-fqdn.
+claims:
+  - id: bypass-tunnels
+    says: Send RDP traffic to the gateway and TURN ranges directly, outside VPN, secure web gateway and proxy tunnels, on both the user's device and the host; other traffic can keep using the tunnel.
+    kind: published
+  - id: no-tls-inspection
+    says: TLS inspection of RDP traffic isn't supported; RDP already nests one encrypted session inside another, so inspection adds jitter, latency and load and reduces throughput with no security benefit.
+    kind: published
+  - id: local-egress
+    says: Let RDP leave the user's network as close to the user as possible; backhauling it through a tunnel picks gateways and relays near the tunnel's exit instead of near the user.
+    kind: published
+  - id: auth-inspection-ok
+    says: The bypass covers only the RDP flows; Entra ID sign-in traffic can still be inspected, for example where tenant restrictions need it.
+    kind: published
+  - id: host-side-non-rdp
+    says: On the host side, activation (KMS) traffic and the two platform addresses must not go through a proxy, VPN or web gateway tunnel either, or connections fail.
+    kind: published
+  - id: prioritize-rdp
+    says: Where the network supports it, prioritize RDP the way Teams media is prioritized.
+    kind: guidance
+  - id: vendor-bypass-options
+    says: Some secure web gateway products offer a simplified RDP bypass setting; the page links one vendor's community post rather than documenting any product.
+    kind: guidance
