@@ -14,10 +14,9 @@
 | `intake.hostSharing` (optional) | Who shares a session host (`one-org-standard`, `needs-admin`, `multi-org`, `undecided`)? | The security guide's trust boundary decides between pooled, personal and a separate tenant (`ref:avd-security-guide#trust-boundary`) |
 | `intake.avdMfa` (optional) | Does sign-in to AVD require MFA (`required`, `not-required`, `unknown`)? | Stands in for a directory read until one exists (`ref:review-checklists-avd#G04.01`, `gap:security-scope`) |
 
-**Proposed questions (2026-10-21, the capacity and images pillars).** Each is in the fact register as `specified`: the question and its enum are settled, and it joins `intake.schema.json` as an optional field when a producer asks it. Until then the dimension rows that cite them stay `measure: intake` with no answer.
+**Proposed questions (2026-10-21, the capacity and images pillars).** How apps reach the hosts (`intake.appDelivery`) is the app delivery pillar's question. Each one below is in the fact register as `specified`: the question and its enum are settled, and it joins `intake.schema.json` as an optional field when a producer asks it. Until then the dimension rows that cite them stay `measure: intake` with no answer.
 
 | Fact | Question | Answers | Why it matters |
 |---|---|---|---|
 | `intake.graphicsWorkloads` | What is the heaviest graphics work any user group does? | `none`, `media`, `design-2d`, `visualization-3d`, `unknown` | Whether a pool needs GPU hosts (`ref:session-host-sizing#gpu-for-graphics`, `ref:review-checklists-avd#C01.12`) |
-| `intake.appDelivery` | How do apps reach the hosts? | `in-image`, `app-attach`, `intune`, `mixed`, `undecided` | How many images, and how they are built (`ref:review-checklists-avd#B01.01`, `ref:avd-golden-image#approaches`); shared with the app delivery pillar |
 | `intake.languages` | How many display languages do users of shared hosts need? | `one`, `few` (2 to 5), `many` (6 or more), `unknown` | Languages in a pooled image or one pool per language (`ref:avd-language-packs#pool-per-language-or-shared`, `ref:review-checklists-avd#B01.11`) |

@@ -1562,7 +1562,7 @@
           "c11.hostPool.images"
         ],
         "intake": [
-          "intake.appDelivery"
+          "proposed:intake.appDelivery"
         ]
       },
       "baseline": {
@@ -1599,7 +1599,7 @@
         ],
         "intake": [
           "intake.languages",
-          "intake.appDelivery"
+          "proposed:intake.appDelivery"
         ]
       },
       "baseline": {

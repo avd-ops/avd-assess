@@ -634,7 +634,7 @@ dimensions:
     pillar: images
     title: Image build process
     decides: How the golden image is built (an automated, repeatable build or a manual capture), what goes into it, and the rules every build keeps.
-    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images], intake: [intake.appDelivery]}
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images], intake: [proposed:intake.appDelivery]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#B01.01, ref:review-checklists-avd#B01.05, ref:review-checklists-avd#B01.06, ref:avd-golden-image#approaches, ref:avd-custom-image-templates#built-on-image-builder, ref:avd-custom-image-templates#dedicated-identity, ref:avd-golden-image#no-agent-in-image, ref:avd-golden-image#uwf-unsupported, ref:avd-golden-image#updates-and-cleanup, ref:avd-golden-image#fresh-source-vm]
@@ -647,7 +647,7 @@ dimensions:
     pillar: images
     title: Number of golden images
     decides: How many images the estate maintains.
-    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images, c11.hostPool.imageVersions.distinct], intake: [intake.languages, intake.appDelivery]}
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images, c11.hostPool.imageVersions.distinct], intake: [intake.languages, proposed:intake.appDelivery]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#B01.02, ref:avd-terminology#same-image-per-pool, ref:avd-language-packs#pool-per-language-or-shared, ref:avd-golden-image#approaches]

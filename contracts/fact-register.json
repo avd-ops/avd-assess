@@ -456,7 +456,7 @@
       "path": "/subscriptions/*/hostPools/*/sessionHosts/osDiskTypes",
       "grain": "hostPool",
       "unit": "count",
-      "privacy": "public",
+      "privacy": "count",
       "status": "specified",
       "evidences": []
     },
@@ -469,7 +469,9 @@
       "unit": "hosts",
       "privacy": "count",
       "status": "specified",
-      "evidences": []
+      "evidences": [
+        "hostPool.vmSize"
+      ]
     },
     {
       "id": "c11.hostPool.sessionHosts.hyperVGenerations",
@@ -1104,17 +1106,6 @@
       "evidences": [
         "hostPool.vmSize"
       ]
-    },
-    {
-      "id": "intake.appDelivery",
-      "tier": "intake",
-      "contract": "C19",
-      "path": "/appDelivery",
-      "grain": "estate",
-      "unit": "enum",
-      "privacy": "public",
-      "status": "specified",
-      "evidences": []
     },
     {
       "id": "intake.languages",
