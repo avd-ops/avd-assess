@@ -1696,7 +1696,7 @@
         },
         {
           "id": "forced-tunnel-supported",
-          "says": "Forced tunnelling and filtering are supported when the AVD requirements are met; forcing AVD traffic through on-premises routers is not recommended.",
+          "says": "Forced tunneling and filtering are supported when the AVD requirements are met; forcing AVD traffic through on-premises routers is not recommended.",
           "kind": "guidance"
         },
         {

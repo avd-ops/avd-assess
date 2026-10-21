@@ -19,7 +19,7 @@ claims:
     says: Entra-joined hosts reach Entra ID over its public endpoints; no private connectivity is needed for that.
     kind: guidance
   - id: forced-tunnel-supported
-    says: Forced tunnelling and filtering are supported when the AVD requirements are met; forcing AVD traffic through on-premises routers is not recommended.
+    says: Forced tunneling and filtering are supported when the AVD requirements are met; forcing AVD traffic through on-premises routers is not recommended.
     kind: guidance
   - id: nsg-on-all-subnets
     says: Network security groups on all subnets, with flow logs and traffic analytics, give monitoring even where no filtering is enforced.

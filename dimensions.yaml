@@ -331,7 +331,7 @@ dimensions:
     area: network
     pillar: networking-client
     title: Security agents and VPN clients on the user device (extension)
-    decides: How SSE, ZTNA and VPN client categories treat AVD traffic - bypass, split tunnelling, inspection, UDP.
+    decides: How SSE, ZTNA and VPN client categories treat AVD traffic - bypass, split tunneling, inspection, UDP.
     home: {decision: network, facts: []}
     baseline:
       standing: gap
@@ -609,13 +609,13 @@ dimensions:
   - id: network.inspection
     area: network
     pillar: networking-azure
-    title: Inspection, proxies and forced tunnelling
+    title: Inspection, proxies and forced tunneling
     decides: Which traffic a firewall, proxy or tunnel may carry or inspect, and what bypasses it.
     home: {decision: network, facts: [c11.network.defaultRoutes], intake: [proposed:intake.inspection]}
     baseline:
       standing: published
       claims: [ref:avd-proxy#bypass-proxies, ref:avd-proxy#no-ssl-termination, ref:avd-proxy#no-auth-proxy, ref:avd-fabric-ips#never-proxy-or-tunnel, ref:firewall-avd#bypass-route-for-scale-in, ref:caf-avd-network#forced-tunnel-supported, ref:review-checklists-avd#F01.08]
-      says: Forced tunnelling is allowed when the requirements hold; no SSL termination or authenticating proxy for AVD, the platform addresses never tunnelled, a direct route for the AVD service tag past a firewall.
+      says: Forced tunneling is allowed when the requirements hold; no SSL termination or authenticating proxy for AVD, the platform addresses never tunneled, a direct route for the AVD service tag past a firewall.
     observations: [obs:hub-route-without-avd-bypass]
     measure: host-side
     landingZone: []
@@ -637,7 +637,7 @@ dimensions:
     pillar: networking-azure
     title: Administrative access path
     decides: How operators reach hosts and private endpoints (Bastion SKU or a jumpbox), separate from the user path through AVD.
-    home: {decision: proposed:network.adminAccess, facts: []}
+    home: {decision: proposed:network.adminAccess, facts: [proposed:c11.network.bastionHosts, proposed:c11.network.hostPublicRdp]}
     baseline:
       standing: guidance
       claims: [ref:bastion#admin-path, gap:network-scope]
