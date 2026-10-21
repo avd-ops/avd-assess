@@ -1211,9 +1211,9 @@
       "touches": "Creates and changes every resource in the landing zone subscription, the groups and apps it needs in Entra, and deletes on teardown.",
       "risks": [
         "An over-privileged deploying identity",
-        "a secret in the repo or a log",
-        "public exposure of data services",
-        "a teardown that deletes the only copy."
+        "A secret in the repo or a log",
+        "Public exposure of data services",
+        "A teardown that deletes the only copy"
       ],
       "limits": [
         "lz-deploy-owner",
@@ -1230,7 +1230,7 @@
       "touches": "Reads the subscriptions it is pointed at; writes only local files.",
       "risks": [
         "A read identity granted more than Reader",
-        "collected names or IDs leaving with the facts."
+        "Collected names or IDs leaving with the facts"
       ],
       "limits": [
         "cs-reader-only",
@@ -1243,7 +1243,7 @@
       "repo": "avd-assess",
       "touches": "Nothing in Azure; publishes method, references and contracts that the other repos pin.",
       "risks": [
-        "A changed contract or rule reaching readers unreviewed."
+        "A changed contract or rule reaching readers unreviewed"
       ],
       "limits": [
         "pinned-sources"
@@ -1254,7 +1254,7 @@
       "repo": "avd-second-brain",
       "touches": "Reads redacted facts and knowledge; holds no write credential.",
       "risks": [
-        "Estate data reaching public knowledge."
+        "Estate data reaching public knowledge"
       ],
       "limits": [
         "brain-layers",
@@ -1267,8 +1267,8 @@
       "touches": "In design, the only write path for the layers above the foundation.",
       "risks": [
         "An unapproved write",
-        "a fooled agent proposing a bad plan",
-        "prompt injection through tool output."
+        "A fooled agent proposing a bad plan",
+        "Prompt injection through tool output"
       ],
       "limits": [
         "swarm-gate",
@@ -1286,7 +1286,7 @@
       "repo": "avd-ops",
       "touches": "The static site; no Azure access.",
       "risks": [
-        "Private material published by mistake."
+        "Private material published by mistake"
       ],
       "limits": [
         "family-no-ids",

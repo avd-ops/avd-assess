@@ -453,32 +453,44 @@ checklist:
 threats:
   - repo: avd-landing-zone
     touches: Creates and changes every resource in the landing zone subscription, the groups and apps it needs in Entra, and deletes on teardown.
-    risks: [An over-privileged deploying identity, a secret in the repo or a log, public exposure of data services, a teardown that deletes the only copy.]
+    risks:
+      - An over-privileged deploying identity
+      - A secret in the repo or a log
+      - Public exposure of data services
+      - A teardown that deletes the only copy
     limits: [lz-deploy-owner, lz-ci-oidc, lz-break-glass, lz-private-data-plane, secret-scan, lz-last-copy]
     formal: none
   - repo: avd-current-state
     touches: Reads the subscriptions it is pointed at; writes only local files.
-    risks: [A read identity granted more than Reader, collected names or IDs leaving with the facts.]
+    risks:
+      - A read identity granted more than Reader
+      - Collected names or IDs leaving with the facts
     limits: [cs-reader-only, cs-facts-redaction, cs-portal-state]
     formal: none
   - repo: avd-assess
     touches: Nothing in Azure; publishes method, references and contracts that the other repos pin.
-    risks: [A changed contract or rule reaching readers unreviewed.]
+    risks:
+      - A changed contract or rule reaching readers unreviewed
     limits: [pinned-sources]
     formal: none
   - repo: avd-second-brain
     touches: Reads redacted facts and knowledge; holds no write credential.
-    risks: [Estate data reaching public knowledge.]
+    risks:
+      - Estate data reaching public knowledge
     limits: [brain-layers, brain-no-write]
     formal: none
   - repo: avd-swarm
     touches: In design, the only write path for the layers above the foundation.
-    risks: [An unapproved write, a fooled agent proposing a bad plan, prompt injection through tool output.]
+    risks:
+      - An unapproved write
+      - A fooled agent proposing a bad plan
+      - Prompt injection through tool output
     limits: [swarm-gate, swarm-identities, swarm-prompt-shields]
     formal: {repo: avd-swarm, path: docs/redteam.md, kind: doc}
   - repo: avd-ops
     touches: The static site; no Azure access.
-    risks: [Private material published by mistake.]
+    risks:
+      - Private material published by mistake
     limits: [family-no-ids, secret-scan]
     formal: none
 
