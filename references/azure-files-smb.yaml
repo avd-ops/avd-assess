@@ -1,0 +1,13 @@
+id: azure-files-smb
+title: SMB file shares in Azure Files
+url: https://learn.microsoft.com/azure/storage/files/files-smb-protocol
+pin: "Learn git_commit_id 950ee5e997d79ae583f3b68272322c637732fc9a, updated_at 2026-09-22"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [profiles]
+notes: The checklist's H01.02 link (storage-files-smb-multichannel-performance) is the performance page; this page states support and defaults.
+claims:
+  - id: multichannel-ssd-only
+    says: Azure Files supports SMB Multichannel on SSD (premium) shares only; it helps most multithreaded workloads and may be turned off for single-threaded ones.
+    kind: published

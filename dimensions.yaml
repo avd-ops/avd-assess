@@ -240,7 +240,21 @@ dimensions:
     measure: measured
     landingZone: []
 
-  # Profiles
+  # Profiles and storage (pillar profiles, gap:app-delivery-scope). host-side marks the FSLogix settings
+  # only a read on a session host sees; which share serves which pool is a join the facts can't make yet.
+  - id: profile.solution
+    area: storage
+    pillar: profiles
+    title: Profile solution
+    decides: What carries the user profile between sessions on non-persistent hosts.
+    home: {decision: proposed:profile.solution, facts: [], intake: [intake.profileSolution]}
+    baseline:
+      standing: guidance
+      claims: [ref:fslogix-azure-files#files-or-anf, ref:windows-multisession-faq#fslogix-preinstalled, ref:windows-multisession-faq#user-installs-lost, gap:app-delivery-scope]
+      says: FSLogix profile containers for non-persistent multi-session hosts; FSLogix is in the marketplace images. A third-party profile product is a category, judged by its own documentation.
+    measure: intake
+    landingZone: []
+    note: The landing zone configures FSLogix on every host (obs:fslogix-standard-example-adopted); only the size limit is a parameter.
   - id: profile.storage-backend
     area: storage
     pillar: profiles
@@ -249,19 +263,32 @@ dimensions:
     home: {decision: proposed:profile.storage, facts: [c11.storage.kind, c11.storage.sku]}
     baseline:
       standing: published
-      claims: [ref:avd-fslogix-storage#azure-files-default, ref:avd-fslogix-storage#tier-by-workload, ref:review-checklists-avd#H03.02, ref:review-checklists-avd#H03.05, ref:fslogix-prerequisites#storage-latency]
+      claims: [ref:avd-fslogix-storage#azure-files-default, ref:avd-fslogix-storage#tier-by-workload, ref:review-checklists-avd#H03.02, ref:review-checklists-avd#H03.05, ref:review-checklists-avd#H01.01, ref:fslogix-prerequisites#storage-latency, ref:fslogix-azure-files#same-region]
       says: Azure Files for most estates; premium for anything above light workloads under 200 users; always in the hosts' region.
     measure: fact
     landingZone: [profileStorageSku]
+  - id: profile.share-per-pool
+    area: storage
+    pillar: profiles
+    title: One profile store per host pool, in its region
+    decides: Whether each host pool has its own profile share in its own region.
+    home: {decision: proposed:profile.storage, facts: [c11.hostPool.region, c11.storage.count]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#H03.03, ref:review-checklists-avd#H03.05, ref:fslogix-azure-files#same-region, gap:app-delivery-scope]
+      says: Don't share profile storage between host pools, and keep it in the pool's region; which share a pool uses is set on the hosts.
+    measure: host-side
+    landingZone: []
+    note: The landing zone deploys one premium profile share per landing zone, in its region, and points every host at it.
   - id: profile.storage-performance
     area: storage
     pillar: profiles
     title: Profile storage IOPS and scale
-    decides: Provisioned IOPS, share count and handle headroom for sign-in storms.
-    home: {decision: hostPool.profileQuotaGiB, facts: [c12.group.profile.logonIopsPerUser, c12.group.users]}
+    decides: Provisioned IOPS, share count, SMB Multichannel and handle headroom for sign-in storms.
+    home: {decision: hostPool.profileQuotaGiB, facts: [c12.group.profile.logonIopsPerUser, c12.group.users, c11.storage.smbMultichannel]}
     baseline:
       standing: prior
-      claims: [ref:fslogix-storage-options#iops-per-user, ref:azure-files-vdi#storm-sizing, ref:azure-files-vdi#users-per-share, ref:azure-files-vdi#handle-limits, ref:review-checklists-avd#H01.02, ref:review-checklists-avd#H03.04, ref:review-checklists-avd#E02.03]
+      claims: [ref:fslogix-storage-options#iops-per-user, ref:azure-files-vdi#storm-sizing, ref:azure-files-vdi#users-per-share, ref:azure-files-vdi#handle-limits, ref:azure-files-smb#multichannel-ssd-only, ref:review-checklists-avd#H01.02, ref:review-checklists-avd#H03.04, ref:review-checklists-avd#E02.03]
       says: About 10 IOPS per user steady and 50 at sign-in, as an example; share count by concurrent users; SMB multichannel on premium; alert on throttling.
     measure: measured
     landingZone: [profileShareQuotaGiB]
@@ -273,22 +300,224 @@ dimensions:
     home: {decision: hostPool.profileQuotaGiB, facts: [c12.group.profile.p95SizeGiB, c11.storage.count]}
     baseline:
       standing: prior
-      claims: [ref:session-host-sizing#profile-storage-minimum, ref:review-checklists-avd#H04.03]
-      says: Plan at least 30 GB per user and confirm the configured maximum profile size.
+      claims: [ref:session-host-sizing#profile-storage-minimum, ref:review-checklists-avd#H04.03, ref:fslogix-settings-reference#size-default, ref:fslogix-settings-reference#dynamic-default]
+      says: Plan at least 30 GB per user and confirm the configured maximum profile size; FSLogix's default is 30000 MB, dynamic, and a raised limit grows existing containers but never shrinks them.
     measure: rebuild
     landingZone: [profileShareQuotaGiB, fslogixProfileSizeMiB]
+  - id: profile.container-layout
+    area: storage
+    pillar: profiles
+    title: Profile and Office containers
+    decides: One profile container, or profile and Office (ODFC) containers apart.
+    home: {decision: proposed:profile.containers, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#H04.01, ref:fslogix-container-types#single-container-recommended, ref:fslogix-container-types#odfc-when, ref:fslogix-container-types#odfc-not-backed-up]
+      says: One container holding profile and Office data unless there is a stated reason to split them; a split Office container isn't backed up or replicated.
+    measure: host-side
+    landingZone: []
+  - id: profile.fslogix-settings
+    area: storage
+    pillar: profiles
+    title: FSLogix settings
+    decides: Which FSLogix registry settings the hosts apply, from a reviewed example.
+    home: {decision: proposed:profile.containers, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#H04.04, ref:fslogix-configuration-examples#simplest-config, ref:fslogix-configuration-examples#standard-items, ref:fslogix-settings-reference#volume-type-default]
+      says: Start from the simplest published example (Standard) and add only what a requirement needs; VHDX, not the VHD default.
+    observations: [obs:fslogix-standard-example-adopted]
+    measure: host-side
+    landingZone: []
+    note: The landing zone writes the Standard example on every host from its session host script; only the size limit is a parameter.
+  - id: profile.concurrent-connections
+    area: storage
+    pillar: profiles
+    title: Concurrent and multiple connections
+    decides: Whether one user's container may be mounted by more than one session.
+    home: {decision: proposed:profile.containers, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#H04.05, ref:fslogix-concurrent-connections#concurrent-not-in-avd, ref:fslogix-concurrent-connections#onedrive-never, ref:fslogix-concurrent-connections#multiple-needs-differencing]
+      says: Single connection (ProfileType 0); concurrent connections aren't supported on AVD hosts, and OneDrive supports neither concurrent nor multiple.
+    measure: host-side
+    landingZone: []
+  - id: profile.redirections
+    area: storage
+    pillar: profiles
+    title: Profile exclusions and redirections
+    decides: What, if anything, is excluded from the container by redirections.xml.
+    home: {decision: proposed:profile.containers, facts: [c12.group.profile.p95SizeGiB]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#H04.07, ref:fslogix-redirections#exclude-only-with-knowledge, ref:fslogix-redirections#profile-containers-only, ref:fslogix-redirections#read-only-source]
+      says: No custom redirections by default; exclude only stateless data such as caches, from a read-only central file, knowing removals don't shrink existing containers.
+    measure: host-side
+    landingZone: []
+  - id: profile.cloud-cache
+    area: reliability
+    pillar: profiles
+    title: Cloud Cache
+    decides: Whether containers use Cloud Cache across storage providers, and where the local cache lives.
+    home: {decision: proposed:profile.storage, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#H04.06, ref:fslogix-settings-reference#ccd-or-vhd-locations, ref:fslogix-settings-reference#cache-on-fast-available-storage, ref:fslogix-configuration-examples#cloud-cache-for-availability, ref:avd-multiregion-bcdr#cloud-cache-over-storage-replication, ref:avd-multiregion-bcdr#cache-disk-sizing, gap:app-delivery-scope]
+      says: Cloud Cache for profile availability across providers, never beside VHDLocations; the local cache on fast, available disk. The checklist's temporary drive is recorded as a choice with its reason.
+    measure: host-side
+    landingZone: []
+  - id: profile.av-exclusions
+    area: security
+    pillar: profiles
+    title: Antivirus exclusions for containers and packages
+    decides: Which FSLogix and App Attach paths the host's antivirus skips.
+    home: {decision: proposed:security.hostProtection, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#H04.02, ref:fslogix-prerequisites#av-exclusions, ref:app-attach#av-exclude-images]
+      says: Apply FSLogix's published file and process exclusions on every host, and exclude the read-only package images.
+    observations: [obs:fslogix-av-exclusions-applied]
+    measure: host-side
+    landingZone: []
+    note: The endpoint protection pillar cites this row for the agent side.
+  - id: profile.share-kerberos
+    area: storage
+    pillar: profiles
+    title: Kerberos encryption on profile shares
+    decides: Whether profile shares accept AES Kerberos tickets now that RC4 is no longer the default.
+    home: {decision: identity, facts: [c11.storage.filesIdentity, c11.storage.kerberosTicketEncryption]}
+    baseline:
+      standing: published
+      claims: [ref:fslogix-redirections#kerberos-aes-sha1, ref:anf-ad-connections#aes-256-for-2025-dcs]
+      says: Since the April 2026 Windows Server update made AES-SHA1 the default, a share holding containers that doesn't accept AES tickets can fail sign-in; ANF needs AES-256 with Windows Server 2025 domain controllers.
+    measure: fact
+    landingZone: []
+    note: c11.storage.kerberosTicketEncryption must be built before a check runs; until then the row reads unknown.
+  - id: profile.netapp
+    area: storage
+    pillar: profiles
+    title: Azure NetApp Files for profiles
+    decides: Whether ANF is available and set up the way FSLogix needs, when it holds profiles.
+    home: {decision: proposed:profile.storage, facts: [c11.netApp.smbVolumesWithoutContinuousAvailability], intake: [intake.identityConstraints]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#H02.01, ref:review-checklists-avd#H02.02, ref:review-checklists-avd#H02.03, ref:anf-fslogix#needs-ad-ds-identities, ref:anf-fslogix#enable-continuous-availability, ref:anf-continuous-availability#supported-workloads, ref:anf-continuous-availability#reboot-after-enable, ref:anf-ad-connections#site-name-required]
+      says: Check ANF is offered in the region; Continuous Availability on profile volumes, only for supported workloads and after hosts reconnect; the AD site name points at reachable domain controllers; user identities from AD DS.
+    measure: fact
+    landingZone: []
+    note: The landing zone deploys Azure Files only; ANF is outside it.
   - id: profile.resilience
     area: reliability
     pillar: profiles
-    title: Profile redundancy and backup
-    decides: Storage redundancy and backup of profile containers.
+    title: Profile storage redundancy and replication
+    decides: Storage redundancy in the region and how profiles reach a second region, if they must.
     home: {decision: proposed:profile.storage, facts: [c11.storage.sku], checks: [asm-files-zone-redundant]}
     baseline:
       standing: published
-      claims: [ref:review-checklists-avd#A03.05, ref:review-checklists-avd#A03.02]
-      says: Zone-redundant storage for Azure Files, and a backup strategy for profile containers.
+      claims: [ref:review-checklists-avd#A03.05, ref:review-checklists-avd#A03.03, ref:review-checklists-avd#A03.06, ref:files-redundancy#zrs-for-availability, ref:files-redundancy#ssd-no-geo, ref:anf-replication#three-models, ref:avd-disaster-recovery#no-native-dr, ref:avd-multiregion-bcdr#cloud-cache-over-storage-replication]
+      says: Zone-redundant storage for Azure Files; premium shares can't geo-replicate, so a second region comes from Cloud Cache or ANF replication, chosen by the recovery plan.
     measure: rebuild
-    landingZone: [profileStorageSku, enableProfileBackup, profileBackupRetentionDays, profileBackupTier]
+    landingZone: [profileStorageSku]
+  - id: profile.backup
+    area: reliability
+    pillar: profiles
+    title: Profile backup
+    decides: Which profile data is protected, and how it is backed up.
+    home: {decision: proposed:profile.storage, facts: [c11.storage.backupProtected]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#A03.01, ref:review-checklists-avd#A03.02, ref:review-checklists-avd#A03.04, ref:avd-faq#backup-by-storage, ref:azure-files-backup#snapshot-and-vaulted, ref:azure-files-backup#soft-delete, ref:fslogix-container-types#odfc-not-backed-up]
+      says: Decide what in the containers needs protecting, then Azure Backup for Azure Files (vaulted for an offsite copy) or ANF snapshots and backup; Office container data is recoverable from its source.
+    measure: fact
+    landingZone: [enableProfileBackup, profileBackupRetentionDays, profileBackupTier]
+
+  # App delivery (pillar app-delivery, gap:app-delivery-scope)
+  - id: app.delivery-method
+    area: hostpool
+    pillar: app-delivery
+    title: How apps reach the hosts
+    decides: Which ways the estate uses to put apps on hosts (image, App Attach, deployment to hosts, an app layering product), and where vendor packages fit.
+    home: {decision: proposed:hostPool.appDelivery, facts: [c11.hostPool.appAttachPackages], intake: [intake.appDelivery]}
+    baseline:
+      standing: guidance
+      claims: [ref:app-attach#package-formats, ref:remoteapp-publish#two-ways, ref:windows-multisession-faq#user-installs-lost, ref:review-checklists-avd#B02.04, gap:app-delivery-scope]
+      says: Apps come from the image, App Attach packages (vendor MSIX where offered, or repackaged), or deployment to running hosts; user-installed apps don't survive sign-out on non-persistent hosts.
+    measure: intake
+    landingZone: []
+    note: The landing zone has no App Attach or app deployment parameter; apps go in through its image build.
+  - id: app.multisession-compatibility
+    area: hostpool
+    pillar: app-delivery
+    title: App compatibility on multi-session hosts
+    decides: Whether every app is known to work on multi-session Windows, or needs a personal pool or a fix.
+    home: {decision: hostPool.type, facts: [c12.group.apps.catalog, c12.group.apps.unknown], intake: [intake.appCompatibility]}
+    baseline:
+      standing: guidance
+      claims: [ref:windows-multisession-faq#reports-as-server, ref:windows-multisession-faq#validate-density, gap:app-delivery-scope]
+      says: Multi-session Windows reports as a server OS, so some installers refuse it; test the app list on multi-session and send blockers to the vendor or to a personal pool.
+    measure: intake
+    landingZone: []
+  - id: hostpool.app-group
+    area: hostpool
+    pillar: app-delivery
+    title: Desktop or RemoteApp
+    decides: The application group type each user group gets.
+    home: {decision: hostPool.appGroup, facts: [c11.hostPool.preferredAppGroupType, c11.hostPool.appGroups]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#C01.06, ref:avd-terminology#remoteapp-pooled-only, ref:avd-terminology#one-desktop-group, ref:avd-terminology#preferred-type-hides-other]
+      says: Never offer both full desktops and RemoteApps to the same users from one pool; a user with both sees only the pool's preferred type.
+    measure: fact
+    landingZone: []
+  - id: appattach.storage
+    area: storage
+    pillar: app-delivery
+    title: App Attach package storage
+    decides: Where packages live and how that share is sized, kept and recovered.
+    home: {decision: proposed:hostPool.appDelivery, facts: [c11.hostPool.appAttachPackages]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#B02.01, ref:review-checklists-avd#B02.02, ref:app-attach#share-same-region, ref:app-attach#dedicated-storage-account, ref:app-attach#performance-example, ref:app-attach#handle-per-host, ref:app-attach#dr-replicate-share]
+      says: A share apart from profiles, in the hosts' region, in an account holding only packages; size it by testing (about 1 IOPS steady and 10 at sign-in per image per host, as an example); replicate it for recovery.
+    measure: host-side
+    landingZone: []
+    note: Which share a package uses is in its image path; joining that to a storage account is the join gap:app-delivery-scope names.
+  - id: appattach.access
+    area: security
+    pillar: app-delivery
+    title: App Attach share access and identity
+    decides: How hosts read the package share for their join type.
+    home: {decision: identity, facts: [c11.storage.filesIdentity], intake: [intake.identityConstraints]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#B02.03, ref:app-attach#host-read-access, ref:app-attach#identity-providers, ref:app-attach#anf-needs-domain]
+      says: Each host's computer identity reads the share; Entra ID or AD DS, not Entra Domain Services; ANF needs domain-joined hosts.
+    measure: host-side
+    landingZone: []
+  - id: appattach.images
+    area: performance
+    pillar: app-delivery
+    title: App Attach image format and registration
+    decides: CimFS or VHDX images, and on-demand or log-on blocking registration.
+    home: {decision: proposed:hostPool.appDelivery, facts: [c11.hostPool.appAttachVhdImages, c11.hostPool.appAttachLogonBlocking, c12.group.logonSeconds.p95]}
+    baseline:
+      standing: published
+      claims: [ref:app-attach#cimfs-for-windows-11, ref:app-attach#on-demand-registration, ref:app-attach-msix-image#cim-recommended, ref:app-attach-msix-image#build-on-older-windows, ref:review-checklists-avd#B02.02]
+      says: CimFS on Windows 11 hosts, VHDX otherwise, never VHD; on-demand registration so packages don't add to sign-in time.
+    measure: fact
+    landingZone: []
+  - id: appattach.host-settings
+    area: operations
+    pillar: app-delivery
+    title: App Attach host settings
+    decides: Package auto-update, certificate trust and the supported OS on the hosts.
+    home: {decision: proposed:hostPool.appDelivery, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#B02.05, ref:review-checklists-avd#B02.06, ref:app-attach-setup#disable-auto-update, ref:app-attach-setup#supported-os, ref:app-attach#trusted-certificate-chain, ref:app-attach-setup#health-check-on-failure]
+      says: Store auto-update off on the hosts; a supported Windows client or Windows Server 2022 or 2025; the signing chain trusted and packages timestamped; a staging failure shows in host health.
+    measure: host-side
+    landingZone: []
 
   - id: profile.personal-pools
     area: profiles
@@ -634,7 +863,7 @@ dimensions:
     pillar: images
     title: Image build process
     decides: How the golden image is built (an automated, repeatable build or a manual capture), what goes into it, and the rules every build keeps.
-    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images], intake: [proposed:intake.appDelivery]}
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images], intake: [intake.appDelivery]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#B01.01, ref:review-checklists-avd#B01.05, ref:review-checklists-avd#B01.06, ref:avd-golden-image#approaches, ref:avd-custom-image-templates#built-on-image-builder, ref:avd-custom-image-templates#dedicated-identity, ref:avd-golden-image#no-agent-in-image, ref:avd-golden-image#uwf-unsupported, ref:avd-golden-image#updates-and-cleanup, ref:avd-golden-image#fresh-source-vm]
@@ -647,7 +876,7 @@ dimensions:
     pillar: images
     title: Number of golden images
     decides: How many images the estate maintains.
-    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images, c11.hostPool.imageVersions.distinct], intake: [intake.languages, proposed:intake.appDelivery]}
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images, c11.hostPool.imageVersions.distinct], intake: [intake.languages, intake.appDelivery]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#B01.02, ref:avd-terminology#same-image-per-pool, ref:avd-language-packs#pool-per-language-or-shared, ref:avd-golden-image#approaches]
@@ -972,18 +1201,6 @@ dimensions:
       claims: [ref:review-checklists-avd#C01.01, ref:avd-terminology#pooled-vs-personal]
       says: Owned by the use case method (personas to pool type).
     seeAlso: https://github.com/avd-ops/avd-assess/blob/33b7ca036b5338a0031c441150244e5be7316e4e/methods/use-cases.md
-    measure: fact
-    landingZone: []
-  - id: hostpool.app-group
-    area: hostpool
-    pillar: app-delivery
-    title: Desktop or RemoteApp
-    decides: The application group type each user group gets.
-    home: {decision: hostPool.appGroup, facts: [c11.hostPool.preferredAppGroupType, c11.hostPool.appGroups]}
-    baseline:
-      standing: published
-      claims: [ref:review-checklists-avd#C01.06]
-      says: Never offer both full desktops and RemoteApps to the same users from one pool.
     measure: fact
     landingZone: []
   - id: ops.monitoring

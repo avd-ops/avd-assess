@@ -184,6 +184,39 @@
       ]
     },
     {
+      "id": "c11.hostPool.appAttachPackages",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/appAttachPackages",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.appAttachLogonBlocking",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/appAttachLogonBlocking",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.appAttachVhdImages",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/appAttachVhdImages",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c11.hostPool.maxSessionLimit",
       "tier": "azure",
       "contract": "C11",
@@ -725,6 +758,50 @@
       "unit": "enum",
       "privacy": "public",
       "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.smbMultichannel",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/smbMultichannel",
+      "grain": "storageAccount",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.kerberosTicketEncryption",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/kerberosTicketEncryption",
+      "grain": "storageAccount",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.backupProtected",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/backupProtected",
+      "grain": "storageAccount",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.netApp.smbVolumesWithoutContinuousAvailability",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/netApp/smbVolumesWithoutContinuousAvailability",
+      "grain": "subscription",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
       "evidences": []
     },
     {
@@ -1490,6 +1567,40 @@
       "tier": "intake",
       "contract": "C19",
       "path": "/avdMfa",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "intake.appDelivery",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/appDelivery",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": [],
+      "aggregate": "distinct"
+    },
+    {
+      "id": "intake.appCompatibility",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/appCompatibility",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "intake.profileSolution",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/profileSolution",
       "grain": "estate",
       "unit": "enum",
       "privacy": "public",
