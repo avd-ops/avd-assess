@@ -17,16 +17,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pyyaml jsonschema
-      - run: python3 scripts/build_index.py --check
-      - run: python3 tests/check_method.py
-      - run: python3 tests/check_contracts.py
-      - run: python3 tests/check_dimensions.py
-      - run: python3 tests/check_baselines.py
-      - run: python3 tests/check_use_cases.py
-      - run: python3 scripts/check_evidence.py
-      - run: python3 tests/check_evidence_fixtures.py
-      - run: python3 tests/check_wording.py
-      - run: python3 tests/check_bundle.py
+      - run: python3 scripts/check_all.py
       - name: Release bundle dry run (docs/distribution-spec.md section 4)
         run: python3 scripts/bundle/build_bundle.py --check
       - name: Keep the built bundle for the PowerShell verifier

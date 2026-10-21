@@ -17,7 +17,7 @@ HERE = Path(__file__).resolve().parent
 COMMIT = "0123456789abcdef0123456789abcdef01234567"
 SCHEMA = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://assess.avd-ops.dev/schemas/avd-assess-map/v1.json",
+    "$id": "https://assess.avd-ops.dev/schemas/test-fixture-map/v1.json",
     "type": "object",
     "required": ["schema", "pillars"],
     "properties": {
@@ -99,6 +99,9 @@ def build(out):
 
     write_bundle(out / "dotdot", base_files(), override={"notes.md": {"path": "../notes.md"}})
     case("dotdot", "manifest-profile", "a resource path climbs out of the bundle")
+
+    write_bundle(out / "schema-unlisted", base_files(), override={"map.json": {"jsonSchema": "other/map.schema.json"}})
+    case("schema-unlisted", "manifest-profile", "a document names a schema file the manifest doesn't hash")
 
     f = base_files()
     f["map.json"] = dump({"schema": "avd-assess-map/v2", "pillars": [{"id": "identity"}]})

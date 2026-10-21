@@ -81,6 +81,7 @@ def profile_errors(m):
     if "tag" in a and (not isinstance(a["tag"], str) or a["tag"] != "v" + m["version"]):
         errs.append("avdAssess.tag is not v<version>")
     names, paths = set(), set()
+    listed = {r.get("path") for r in m["resources"] if isinstance(r, dict)}
     for i, r in enumerate(m["resources"]):
         where = f"resources[{i}]"
         if not isinstance(r, dict):
@@ -103,6 +104,8 @@ def profile_errors(m):
             errs.append(f"{where}.hash is not sha256:<64 lower-case hex>")
         if "jsonSchema" in r and bad_path(r["jsonSchema"]):
             errs.append(f"{where}.jsonSchema {r['jsonSchema']!r}: {bad_path(r['jsonSchema'])}")
+        if "jsonSchema" in r and not bad_path(r["jsonSchema"]) and r["jsonSchema"] not in listed:
+            errs.append(f"{where}.jsonSchema {r['jsonSchema']} is not a resource, so its hash is not checked")
         if "schemaString" in r and (not isinstance(r["schemaString"], str) or not SCHEMA_STRING.match(r["schemaString"])):
             errs.append(f"{where}.schemaString is not <name>/v<major>")
         if "idPaths" in r and (not isinstance(r["idPaths"], list)
@@ -131,7 +134,8 @@ def check_bundle(root, manifest=None, manifest_sha256=None, resources=None, path
     root/datapackage.json). path_map: {bundle path: local path}, local paths relative to root.
     resources: wanted resource names (default: the mapped paths, or every resource)."""
     root = Path(root)
-    mpath = Path(manifest) if manifest else root / "datapackage.json"
+    # A relative manifest path is relative to root, as in the PowerShell module.
+    mpath = (root / manifest if not Path(manifest).is_absolute() else Path(manifest)) if manifest else root / "datapackage.json"
     try:
         raw = mpath.read_bytes()
     except OSError as e:
@@ -194,6 +198,9 @@ def check_bundle(root, manifest=None, manifest_sha256=None, resources=None, path
     yield ("PASS", "resource-hash", f"{len(wanted)} files match their size and SHA-256")
 
     known = known if known is not None else parse_known(None)
+    untyped = [r["path"] for r in wanted if r["path"].endswith((".json", ".jsonl")) and r.get("format") not in ("json", "jsonl")]
+    if untyped:
+        yield ("WARN", "resource-format", f"not parsed or schema-checked, the manifest gives no json format: {', '.join(untyped[:5])}")
     docs = {}
     for r in wanted:
         fmt = r.get("format")

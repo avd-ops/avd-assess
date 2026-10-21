@@ -213,20 +213,34 @@ def zip_bytes(files, manifest, sums):
     entries = dict(files)
     entries["datapackage.json"] = manifest
     entries["SHA256SUMS"] = sums
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
         for p in sorted(entries):
             info = zipfile.ZipInfo(p, ZIP_TIME)
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o644 << 16
             info.create_system = 3
-            z.writestr(info, entries[p])
+            z.writestr(info, entries[p], compresslevel=9)
     return buf.getvalue()
+
+
+MARKER = ".avd-assess-build"
+
+
+def clear_output(out):
+    """Empties an output folder this tool made before (it holds MARKER), or refuses a folder with anything
+    else in it: --out names a build folder, never a checkout or a home folder."""
+    out = Path(out)
+    if out.exists():
+        if not out.is_dir() or (any(out.iterdir()) and not (out / MARKER).is_file()):
+            raise SystemExit(f"RESULT FAIL {out} exists and is not an output folder this tool made; name a new folder")
+        shutil.rmtree(out)
+    out.mkdir(parents=True)
+    (out / MARKER).write_bytes(b"")
 
 
 def write(out, files, manifest, sums, version):
     out = Path(out)
-    if out.exists():
-        shutil.rmtree(out)
+    clear_output(out)
     bundle, assets = out / "bundle", out / "assets"
     for p, b in files.items():
         (bundle / p).parent.mkdir(parents=True, exist_ok=True)
@@ -333,9 +347,10 @@ def id_paths_guard(files):
         walk(json.loads(files[p]), "", found)
         for missing in sorted(found - set(paths)):
             errors.append(f"{p}: IDs at {missing} are not in its idPaths (scripts/bundle/build_bundle.py DOCUMENTS)")
+        doc = json.loads(files[p])
         for ptr in paths:
-            if ptr in found and not any(True for _ in diff_bundle.ids_at(json.loads(files[p]), ptr)):
-                errors.append(f"{p}: idPaths {ptr} resolves to nothing")
+            if not any(True for _ in diff_bundle.ids_at(doc, ptr)):
+                errors.append(f"{p}: idPaths {ptr} resolves to nothing (a typo, or the array moved)")
     return errors
 
 
@@ -374,7 +389,18 @@ def main(argv=None):
     ap.add_argument("--tag", help="the release tag, v<MAJOR.MINOR.PATCH>; sets the version")
     ap.add_argument("--out", help="write bundle/ and assets/ here")
     ap.add_argument("--check", action="store_true", help="dry run: build twice and run the offline release gates")
+    ap.add_argument("--scan", nargs="+", metavar="FILE", help="run only the leak scan over these files (release notes)")
     a = ap.parse_args(argv)
+    if a.scan:
+        commit = git("rev-parse", f"{a.ref}^{{commit}}").strip()
+        wording = json.loads(git("cat-file", "blob", f"{commit}:tests/wording.json"))
+        allow = {p: git("cat-file", "blob", f"{commit}:{p}", binary=True) for p in ("tests/public-ids.txt", "tests/public-ipv4.txt")}
+        errs = leak_scan(dict(allow, **{f: Path(f).read_bytes() for f in a.scan}), wording)
+        for e in errs:
+            print(f"RESULT FAIL leak scan: {e}")
+        if not errs:
+            print(f"RESULT PASS leak scan: {', '.join(a.scan)}")
+        return 1 if errs else 0
     if a.check:
         return check(a.ref)
     version = "0.0.0-dev"

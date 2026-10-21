@@ -151,6 +151,61 @@ expect(early[1] == 1, "diff gate: deprecated 19 days ago must fail")
 expect(never[1] == 1, "diff gate: an ID never marked deprecated must fail")
 expect(bump(base, dep)[0] == "minor", "diff: a deprecation mark is a minor")
 
+# Constraints added where there were none are major; a widened type is a minor; a removed document's IDs
+# go through the deprecation gate like any other removal.
+s3 = copy.deepcopy(make_fixtures.SCHEMA)
+s3["properties"]["pillars"]["minItems"] = 3
+expect(bump(base, dict(base, **{"schemas/map.schema.json": make_fixtures.dump(s3)}))[0] == "major",
+       "diff: a constraint keyword added (minItems) is a major")
+s4 = copy.deepcopy(make_fixtures.SCHEMA)
+s4["properties"]["pillars"]["items"]["properties"]["id"]["type"] = ["string", "null"]
+expect(bump(base, dict(base, **{"schemas/map.schema.json": make_fixtures.dump(s4)}))[0] == "minor",
+       "diff: a type widened to [string, null] is a minor")
+s5 = copy.deepcopy(make_fixtures.SCHEMA)
+s5["additionalProperties"] = False
+s6 = copy.deepcopy(s5)
+s6["additionalProperties"] = True
+b, _, _, res = bump(dict(base, **{"schemas/map.schema.json": make_fixtures.dump(s5)}),
+                    dict(base, **{"schemas/map.schema.json": make_fixtures.dump(s6)}))
+expect(b == "minor", f"diff: opening additionalProperties is a minor, got {b}: {res['findings']}")
+s7 = copy.deepcopy(make_fixtures.SCHEMA)
+s7["properties"]["pillars"]["items"]["properties"]["id"]["enum"] = ["a b", "c"]
+s8 = copy.deepcopy(s7)
+s8["properties"]["pillars"]["items"]["properties"]["id"]["enum"] = ["c"]
+o7, o8 = (dict(base, **{"schemas/map.schema.json": make_fixtures.dump(x)}) for x in (s7, s8))
+b, _, _, res = bump(o7, o8)
+ekey = next(x["key"] for x in res["findings"] if x["key"].startswith("schema-enum"))
+with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as t:
+    t.write(f"NOT-BREAKING: {ekey} no document ever used it\n")
+expect(bump(o7, o8, "--declared", t.name)[0] == "minor", f"diff: NOT-BREAKING names a key with a space ({ekey})")
+Path(t.name).unlink()
+nomap = {k: v for k, v in base.items() if k != "map.json"}
+with tempfile.TemporaryDirectory() as hist:
+    make_fixtures.write_bundle(Path(hist) / "1.0.0", base, "1.0.0", META)
+    (Path(hist) / "dates.json").write_text(json.dumps({"1.0.0": "2026-10-01T00:00:00Z"}), encoding="utf-8")
+    gone_doc = bump(base, nomap, "--history", hist, "--now", "2026-11-05", "--version", "2.0.0")
+expect(gone_doc[1] == 1, "diff gate: removing a document removes its IDs, which were never deprecated")
+REG = {"contracts/fact-register.json": {"idPaths": ["/facts/*/id"]}}
+with tempfile.TemporaryDirectory() as tmp:
+    for name, facts in (("o", ["a", "b"]), ("n", ["a"])):
+        make_fixtures.write_bundle(Path(tmp) / name, {"contracts/fact-register.json": make_fixtures.dump(
+            {"version": 1, "facts": [{"id": x} for x in facts]})}, "1.0.0", REG)
+    with contextlib.redirect_stdout(io.StringIO()) as out:
+        code = diff_bundle.main([str(Path(tmp) / "o"), str(Path(tmp) / "n"), "--version", "2.0.0"])
+expect(code == 1 and "register-version" in out.getvalue(),
+       "diff: a fact removed without bumping the register's version must fail (contracts rule 6)")
+
+# Output folders: never delete a folder the tools didn't make.
+with tempfile.TemporaryDirectory() as tmp:
+    keep = Path(tmp) / "keep.txt"
+    keep.write_text("mine", encoding="utf-8")
+    try:
+        build_bundle.clear_output(tmp)
+        expect(False, "build_bundle: --out on a folder with other files must be refused")
+    except SystemExit:
+        pass
+    expect(keep.exists(), "build_bundle: refused, and the file is still there")
+
 # Qualified IDs: a claim is known by its reference, so moving it between references is a remove and an add.
 idx = {"references": [{"id": "a", "claims": [{"id": "x"}]}, {"id": "b", "claims": [{"id": "y"}]}]}
 expect(sorted(i for i, _ in diff_bundle.ids_at(idx, "/references/*/claims/*/id")) == ["a#x", "b#y"],

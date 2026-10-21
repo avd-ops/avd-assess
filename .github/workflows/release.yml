@@ -43,27 +43,47 @@ jobs:
           git merge-base --is-ancestor "$GITHUB_SHA" origin/main || { echo "RESULT FAIL $TAG is not on main"; exit 1; }
           echo "RESULT PASS $TAG is a release tag on main"
       - name: Refuse to run without the release gate
+        env:
+          RELEASE_OWNER: ${{ vars.RELEASE_OWNER || vars.HANDOFF_OWNER || github.repository_owner }}
         run: |
           echo "Reading the release environment's protection rules ..."
-          reviewers=$(gh api "repos/$GH_REPO/environments/release" --jq '[.protection_rules[]? | select(.type == "required_reviewers")] | length' 2>&1) || { echo "RESULT FAIL could not read the release environment: $reviewers"; exit 1; }
-          [ "$reviewers" -ge 1 ] || { echo "RESULT FAIL the release environment has no required reviewer; create it first (spec section 14, phase 2)"; exit 1; }
-          echo "RESULT PASS the release environment has a required reviewer"
+          gh api "repos/$GH_REPO/environments/release" > env.json || { echo "RESULT FAIL could not read the release environment; create it first (spec section 17, phase 2)"; exit 1; }
+          python3 - "$RELEASE_OWNER" <<'PY'
+          import json, os, subprocess, sys
+          owner, env = sys.argv[1], json.load(open("env.json"))
+          rules = [r for r in env.get("protection_rules") or [] if r.get("type") == "required_reviewers"]
+          logins = [r.get("reviewer", {}).get("login") for rule in rules for r in rule.get("reviewers") or []]
+          errors = []
+          if not rules:
+              errors.append("the release environment has no required reviewer")
+          elif owner not in logins:
+              errors.append(f"{owner} is not a required reviewer of the release environment (reviewers: {logins})")
+          if any(rule.get("prevent_self_review") for rule in rules):
+              errors.append("prevent self-review is on, so the owner could never approve their own tag")
+          policy = env.get("deployment_branch_policy")
+          if policy and policy.get("protected_branches"):
+              errors.append("deployments are limited to protected branches, which refuses every tag; allow tags v*")
+          elif policy and policy.get("custom_branch_policies"):
+              out = subprocess.run(["gh", "api", f"repos/{os.environ['GH_REPO']}/environments/release/deployment-branch-policies"],
+                                   capture_output=True, text=True)
+              if out.returncode:
+                  errors.append(f"could not read the deployment policies: {out.stderr.strip()}")
+              else:
+                  tags = [p["name"] for p in json.loads(out.stdout).get("branch_policies", []) if p.get("type") == "tag"]
+                  if "v*" not in tags:
+                      errors.append(f"no deployment policy admits tags v* (tag policies: {tags})")
+          for e in errors:
+              print(f"RESULT FAIL {e}")
+          if errors:
+              sys.exit(1)
+          print(f"RESULT PASS the release environment waits for {owner} and admits v* tags")
+          PY
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.12'
       - run: pip install pyyaml jsonschema
       - name: Every check in check.yml, at the tag
-        run: |
-          python3 scripts/build_index.py --check
-          python3 tests/check_method.py
-          python3 tests/check_contracts.py
-          python3 tests/check_dimensions.py
-          python3 tests/check_baselines.py
-          python3 tests/check_use_cases.py
-          python3 scripts/check_evidence.py
-          python3 tests/check_evidence_fixtures.py
-          python3 tests/check_wording.py
-          python3 tests/check_bundle.py
+        run: python3 scripts/check_all.py
       - name: Release gates (determinism, profile, .gitattributes, asset names, idPaths, leak scan, verifier)
         run: python3 scripts/bundle/build_bundle.py --check --ref "$GITHUB_SHA"
       - name: Build the bundle from the tag's git blobs
@@ -93,7 +113,25 @@ jobs:
           done
       - name: Release PR declarations (BREAKING / NOT-BREAKING) and the tag message
         run: |
-          gh api "repos/$GH_REPO/commits/$GITHUB_SHA/pulls" --jq '.[] | select(.merged_at != null) | .body // ""' > declared.txt || true
+          prev=$(cat history/previous)
+          : > declared.txt
+          if [ -n "$prev" ]; then
+            base=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['avdAssess']['commit'])" "history/$prev/datapackage.json")
+            echo "Reading every pull request merged between v$prev ($base) and $TAG ..."
+            gh pr list --state merged --base main --limit 500 --json number,body,mergeCommit > prs.json
+            python3 - "$base" "$GITHUB_SHA" <<'PY'
+          import json, subprocess, sys
+          base, head = sys.argv[1], sys.argv[2]
+          def ancestor(a, b):
+              return subprocess.run(["git", "merge-base", "--is-ancestor", a, b]).returncode == 0
+          with open("declared.txt", "a") as out:
+              for pr in json.load(open("prs.json")):
+                  c = (pr.get("mergeCommit") or {}).get("oid")
+                  if c and ancestor(c, head) and not ancestor(c, base):
+                      print(f"  #{pr['number']}")
+                      out.write((pr.get("body") or "") + "\n")
+          PY
+          fi
           git tag -l --format='%(contents)' "$TAG" >> declared.txt
           grep -E '^(BREAKING|NOT-BREAKING):' declared.txt || echo "No BREAKING or NOT-BREAKING lines."
       - name: Compute the bump, enforce it and the deprecation gate, write the notes
@@ -114,6 +152,8 @@ jobs:
               --history history --notes out/diff-notes.md --json out/bump.json
             cat out/diff-notes.md >> out/notes.md
           fi
+      - name: Leak scan of the release notes
+        run: python3 scripts/bundle/build_bundle.py --ref "$GITHUB_SHA" --scan out/notes.md
       - name: Both verifiers on the built bundle
         shell: bash
         run: |

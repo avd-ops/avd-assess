@@ -18,7 +18,6 @@ import hashlib
 import html
 import json
 import re
-import shutil
 import sys
 import zipfile
 from pathlib import Path
@@ -38,12 +37,21 @@ def semver(v):
 
 
 def safe_extract(zip_path, dest):
-    """Unzips with every entry checked: relative, no '..', no absolute or drive paths."""
+    """Unzips with every entry checked: relative, no '..', no absolute or drive paths, no folder or symlink
+    entries, no name twice and no name that is also another entry's folder."""
     with zipfile.ZipFile(zip_path) as z:
+        names = [i.filename for i in z.infolist()]
+        folders = {"/".join(n.split("/")[:k]) for n in names for k in range(1, n.count("/") + 1)}
         for info in z.infolist():
             why = avd_assess_bundle.bad_path(info.filename)
-            if why or info.is_dir():
-                raise SystemExit(f"RESULT FAIL {zip_path.name}: entry {info.filename!r} refused ({why or 'a folder entry'})")
+            if not why and info.is_dir():
+                why = "a folder entry"
+            if not why and (info.external_attr >> 16) & 0o170000 == 0o120000:
+                why = "a symlink"
+            if not why and (names.count(info.filename) > 1 or info.filename in folders):
+                why = "listed twice, or also a folder"
+            if why:
+                raise SystemExit(f"RESULT FAIL {zip_path.name}: entry {info.filename!r} refused ({why})")
             out = dest / info.filename
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_bytes(z.read(info))
@@ -51,11 +59,11 @@ def safe_extract(zip_path, dest):
 
 def build(releases, out):
     releases, out = Path(releases), Path(out)
-    if out.exists():
-        shutil.rmtree(out)
-    out.mkdir(parents=True)
+    if out.exists() and (not out.is_dir() or any(out.iterdir())):
+        raise SystemExit(f"RESULT FAIL {out} exists and is not empty; name a new folder")
+    out.mkdir(parents=True, exist_ok=True)
     found = sorted((d for d in releases.iterdir() if d.is_dir() and re.match(r"^\d+\.\d+\.\d+$", d.name)),
-                   key=lambda d: semver(d.name))
+                   key=lambda d: semver(d.name)) if releases.is_dir() else []
     withdrawn = {}
     infos = {}
     for d in found:
@@ -113,7 +121,7 @@ def build(releases, out):
     (out / "catalog.json").write_text(json.dumps(doc, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
     (out / ".nojekyll").write_bytes(b"")
     rows = "\n".join(
-        f"<li><a href=\"{html.escape(e['assets'][f'avd-assess-{e['version']}.zip'])}\">v{e['version']}</a> "
+        f"<li><a href=\"{html.escape(e['assets']['avd-assess-' + e['version'] + '.zip'])}\">v{e['version']}</a> "
         f"({html.escape(str(e['published'] or ''))[:10]}), manifest <code>{e['manifestSha256']}</code>"
         + (f" <strong>withdrawn: {html.escape(e['withdrawn'])}</strong>" if "withdrawn" in e else "") + "</li>"
         for e in catalog) or "<li>No release yet.</li>"

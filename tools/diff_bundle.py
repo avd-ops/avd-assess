@@ -76,14 +76,29 @@ def read_json(d, path):
 
 
 def is_schema(doc):
-    return isinstance(doc, dict) and "json-schema.org" in str(doc.get("$schema", ""))
+    if not isinstance(doc, dict) or not isinstance(doc.get("$schema"), str):
+        return False
+    return doc["$schema"].startswith(("https://json-schema.org/", "http://json-schema.org/"))
+
+
+# Keywords that describe and never constrain; a change to them is wording.
+ANNOTATIONS = {"description", "title", "$id", "$schema", "$comment", "examples", "default", "deprecated",
+               "readOnly", "writeOnly"}
+# Keywords handled by name below; every other keyword is compared generically.
+HANDLED = {"required", "enum", "type", "additionalProperties", "properties"}
+COMBINATORS = ("allOf", "anyOf", "oneOf", "prefixItems")
+
+
+def type_set(t):
+    return frozenset(t) if isinstance(t, list) else frozenset([t]) if t is not None else None
 
 
 def schema_diff(path, old, new, out, ptr=""):
-    """Walks two JSON Schemas side by side and adds (bump, key, text) findings."""
+    """Walks two JSON Schemas side by side and adds (bump, key, text) findings. A constraint added is major,
+    one removed is minor; a change a diff can't classify is major, for NOT-BREAKING to lower."""
     if not isinstance(old, dict) or not isinstance(new, dict):
         if old != new:
-            out.append(("major", f"schema-node {path}#{ptr}", f"{path}#{ptr or '/'}: a subschema changed shape"))
+            out.append(("major", f"schema-node {path}#{ptr or '/'}", f"{path}#{ptr or '/'}: a subschema changed shape"))
         return
     key = f"{path}#{ptr or '/'}"
     ro, rn = set(old.get("required", [])), set(new.get("required", []))
@@ -102,36 +117,58 @@ def schema_diff(path, old, new, out, ptr=""):
                 out.append(("major", f"schema-enum {key}={v}", f"{key}: enum value {v!r} removed"))
             for v in [v for v in en if v not in eo]:
                 out.append(("minor", f"schema-enum {key}+{v}", f"{key}: enum value {v!r} added"))
-    for kw in ("type", "pattern", "const", "format"):
-        if old.get(kw) != new.get(kw):
-            out.append(("major", f"schema-{kw} {key}", f"{key}: {kw} {old.get(kw)!r} -> {new.get(kw)!r}"))
+    to, tn = type_set(old.get("type")), type_set(new.get("type"))
+    if to != tn:
+        if to is not None and tn is not None and to < tn:
+            out.append(("minor", f"schema-type {key}", f"{key}: type widened {sorted(to)} -> {sorted(tn)}"))
+        else:
+            out.append(("major", f"schema-type {key}", f"{key}: type {old.get('type')!r} -> {new.get('type')!r}"))
     ao, an = old.get("additionalProperties", True), new.get("additionalProperties", True)
     if ao is not False and an is False:
         out.append(("major", f"schema-closed {key}", f"{key}: additional properties now refused"))
     elif ao is False and an is not False:
         out.append(("minor", f"schema-open {key}", f"{key}: additional properties now allowed"))
+    elif isinstance(ao, dict) and isinstance(an, dict):
+        schema_diff(path, ao, an, out, f"{ptr}/additionalProperties")
+    elif ao != an:
+        out.append(("major", f"schema-additionalProperties {key}", f"{key}: additionalProperties changed"))
     po, pn = old.get("properties", {}), new.get("properties", {})
     if isinstance(po, dict) and isinstance(pn, dict):
         for f in sorted(set(po) - set(pn)):
             out.append(("major", f"schema-removed {key}/{f}", f"{key}: property '{f}' removed"))
         for f in sorted(set(pn) - set(po)):
             out.append(("minor", f"schema-added {key}/{f}", f"{key}: property '{f}' added"))
-    for k in sorted(set(old) & set(new)):
-        if k in ("required", "enum", "type", "pattern", "const", "format", "description", "title", "$id",
-                 "$schema", "$comment", "examples", "default"):
+        for name in sorted(set(po) & set(pn)):
+            schema_diff(path, po[name], pn[name], out, f"{ptr}/properties/{name}")
+    for k in sorted((set(old) | set(new)) - ANNOTATIONS - HANDLED):
+        if k == "$defs" or k == "definitions":
+            a, b = old.get(k, {}), new.get(k, {})
+            if isinstance(a, dict) and isinstance(b, dict):
+                for name in sorted(set(a) & set(b)):
+                    schema_diff(path, a[name], b[name], out, f"{ptr}/{k}/{name}")
+            continue
+        if k not in old:
+            out.append(("major", f"schema-{k} {key}", f"{key}: {k} added"))
+            continue
+        if k not in new:
+            out.append(("minor", f"schema-{k} {key}", f"{key}: {k} removed"))
             continue
         a, b = old[k], new[k]
-        if k in ("properties", "$defs", "patternProperties") and isinstance(a, dict) and isinstance(b, dict):
+        if k == "patternProperties" and isinstance(a, dict) and isinstance(b, dict):
+            for name in sorted(set(a) - set(b)):
+                out.append(("major", f"schema-{k} {key}/{name}", f"{key}: pattern property {name!r} removed"))
+            for name in sorted(set(b) - set(a)):
+                out.append(("major", f"schema-{k} {key}/{name}", f"{key}: pattern property {name!r} added"))
             for name in sorted(set(a) & set(b)):
                 schema_diff(path, a[name], b[name], out, f"{ptr}/{k}/{name}")
-        elif isinstance(a, dict) and isinstance(b, dict):
-            schema_diff(path, a, b, out, f"{ptr}/{k}")
-        elif isinstance(a, list) and isinstance(b, list) and k in ("allOf", "anyOf", "oneOf", "prefixItems"):
+        elif isinstance(a, list) and isinstance(b, list) and k in COMBINATORS:
             if len(a) != len(b):
                 out.append(("major", f"schema-{k} {key}", f"{key}: {k} has {len(a)} -> {len(b)} branches"))
             for i, (x, y) in enumerate(zip(a, b)):
                 schema_diff(path, x, y, out, f"{ptr}/{k}/{i}")
-        elif a != b and not isinstance(a, (dict, list)):
+        elif isinstance(a, dict) and isinstance(b, dict) and k != "dependentRequired":
+            schema_diff(path, a, b, out, f"{ptr}/{k}")
+        elif a != b:
             out.append(("major", f"schema-{k} {key}", f"{key}: {k} {a!r} -> {b!r}"))
 
 
@@ -146,6 +183,10 @@ def diff(old_dir, new_dir):
 
     for p in sorted(set(ores) - set(nres)):
         add("major", f"file-removed {p}", f"{p} removed")
+        oj = read_json(od, p) if p.endswith(".json") else None
+        for ptr in ores[p].get("idPaths", []):
+            for i, _ in ids_at(oj, ptr):
+                add("major", f"id-removed {p}{ptr}={i}", f"{p}: ID {i} removed with its document ({ptr})")
     for p in sorted(set(nres) - set(ores)):
         add("minor", f"file-added {p}", f"{p} added")
     for p in sorted(set(ores) & set(nres)):
@@ -157,7 +198,7 @@ def diff(old_dir, new_dir):
         so, sn = o.get("schemaString"), n.get("schemaString")
         if so and sn and so != sn:
             mo, mn = SCHEMA_STRING.match(so), SCHEMA_STRING.match(sn)
-            if not mo or not mn or mo.group(1) != mn.group(1) or int(mn.group(2)) > int(mo.group(2)):
+            if not mo or not mn or mo.group(1) != mn.group(1) or mn.group(2) != mo.group(2):
                 add("major", f"schema-string {p}", f"{p}: {so} -> {sn}")
         if is_schema(oj) and is_schema(nj):
             found = []
@@ -178,8 +219,14 @@ def diff(old_dir, new_dir):
             if p == "method.json":
                 add("minor", "method-changed", f"method changed: scores can move (version {oj.get('version')} -> "
                     f"{nj.get('version')})", "Method")
-            if p == "contracts/fact-register.json" and oj.get("version") != nj.get("version"):
-                add("patch", "register-version", f"fact register version {oj.get('version')} -> {nj.get('version')}", "Method")
+            if p == "contracts/fact-register.json":
+                if oj.get("version") != nj.get("version"):
+                    add("patch", "register-version", f"fact register version {oj.get('version')} -> {nj.get('version')}", "Method")
+                gone = {f.get("id") for f in oj.get("facts", []) if isinstance(f, dict)} - \
+                    {f.get("id") for f in nj.get("facts", []) if isinstance(f, dict)}
+                if gone and oj.get("version") == nj.get("version"):
+                    add("patch", "register-version-unchanged", f"facts removed or renamed ({', '.join(sorted(map(str, gone)))}) "
+                        f"but the register's version stayed {oj.get('version')} (contracts rule 6)", "Breaking")
             if p == "index.json":
                 orefs = {r.get("id"): r for r in oj.get("references", []) if isinstance(r, dict)}
                 nrefs = {r.get("id"): r for r in nj.get("references", []) if isinstance(r, dict)}
@@ -197,18 +244,24 @@ def diff(old_dir, new_dir):
 
 
 def declarations(text):
-    breaking, not_breaking = [], {}
+    """BREAKING: lines, and NOT-BREAKING: lines as '<finding key> <why>' (matched by prefix, since a key may
+    hold spaces)."""
+    breaking, not_breaking = [], []
     for line in (text or "").splitlines():
         line = line.strip()
         if line.startswith("BREAKING:"):
             breaking.append(line[len("BREAKING:"):].strip())
         elif line.startswith("NOT-BREAKING:"):
-            rest = line[len("NOT-BREAKING:"):].strip()
-            # The key is the finding's two-word key: "<kind> <where>".
-            parts = rest.split(None, 2)
-            if len(parts) >= 2:
-                not_breaking[f"{parts[0]} {parts[1]}"] = parts[2] if len(parts) > 2 else ""
+            not_breaking.append(line[len("NOT-BREAKING:"):].strip())
     return breaking, not_breaking
+
+
+def declared_for(key, not_breaking):
+    """The reason a NOT-BREAKING line gives for this finding key, or None."""
+    for rest in not_breaking:
+        if rest == key or rest.startswith(key + " "):
+            return rest[len(key):].strip()
+    return None
 
 
 def deprecation_gate(findings, new_res_dir, history, now):
@@ -237,7 +290,8 @@ def deprecation_gate(findings, new_res_dir, history, now):
                 doc = read_json(d, p)
                 obj = dict(ids_at(doc, ptr)).get(ident) if doc is not None else None
                 if isinstance(obj, dict) and "deprecated" in obj:
-                    marked.append(datetime.fromisoformat(published.replace("Z", "+00:00")))
+                    when = datetime.fromisoformat(published.replace("Z", "+00:00"))
+                    marked.append(when if when.tzinfo else when.replace(tzinfo=timezone.utc))
         if not marked:
             errors.append(f"{f[3]}: it was never marked deprecated in a published release")
         elif now - min(marked) < timedelta(days=WINDOW_DAYS):
@@ -272,15 +326,20 @@ def main(argv=None):
     breaking, not_breaking = declarations(Path(a.declared).read_text(encoding="utf-8") if a.declared else "")
     accepted = []
     final = []
+    used = set()
     for bump, key, section, text in findings:
-        if bump == "major" and key.startswith("schema-") and key in not_breaking:
-            accepted.append(f"{text} (NOT-BREAKING: {not_breaking[key]})")
+        why = declared_for(key, not_breaking) if bump == "major" and key.startswith("schema-") else None
+        if why is not None:
+            accepted.append(f"{text} (NOT-BREAKING: {why})")
+            used.update(r for r in not_breaking if r == key or r.startswith(key + " "))
             bump, section = "minor", "Added"
         final.append((bump, key, section, text))
     for b in breaking:
         final.append(("major", "declared", "Breaking", f"declared: {b}"))
     need = max([f[0] for f in final], key=RANK.get, default="none")
     now = datetime.fromisoformat(a.now.replace("Z", "+00:00")) if a.now else datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
     gate = deprecation_gate(final, a.new, a.history, now)
 
     print(f"RESULT INFO bump: {need} ({om['version']} -> {a.version or nm['version']})")
@@ -288,14 +347,17 @@ def main(argv=None):
         print(f"  {bump:5} {text}    [{key}]")
     for line in accepted:
         print(f"  accepted NOT-BREAKING: {line}")
-    unknown = sorted(set(not_breaking) - {f[1] for f in findings})
-    for k in unknown:
-        print(f"  NOT-BREAKING names no finding: {k}")
+    for k in [r for r in not_breaking if r not in used]:
+        print(f"  NOT-BREAKING names no schema finding: {k}")
     failed = False
     for g in gate:
         hard = a.history is not None
         print(f"RESULT {'FAIL' if hard else 'WARN'} deprecation-gate: {g}")
         failed |= hard
+    for f in final:
+        if f[1] == "register-version-unchanged":
+            print(f"RESULT FAIL register-version: {f[3]}")
+            failed = True
     if a.version:
         if not VERSION.match(a.version) or not VERSION.match(om["version"]):
             print(f"RESULT FAIL version: {om['version']} -> {a.version} is not MAJOR.MINOR.PATCH")

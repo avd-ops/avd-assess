@@ -41,8 +41,8 @@
       "name": "schemas-map-schema-json",
       "path": "schemas/map.schema.json",
       "format": "json",
-      "bytes": 522,
-      "hash": "sha256:0cc52621b4f979f26cc94cbbd6b21935a9449c055c315e986ebce6a3b64cfad9"
+      "bytes": 524,
+      "hash": "sha256:3c08a8ec46f514613b8ab45a347880909c8da65b863416dff64906462e03763c"
     }
   ]
 }

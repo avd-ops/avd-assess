@@ -19,7 +19,7 @@
       "expect": "PASS",
       "why": "the pin matches",
       "args": {
-        "manifestSha256": "32952daecf6cb512d5c7df79a0168bb8f210679d3b6221b57ece904814b9c3ea"
+        "manifestSha256": "fabbfb16c917da429459a039f32c990abf0c6aa4765ab01d935231206f671bce"
       }
     },
     {
@@ -41,6 +41,11 @@
       "case": "dotdot",
       "expect": "manifest-profile",
       "why": "a resource path climbs out of the bundle"
+    },
+    {
+      "case": "schema-unlisted",
+      "expect": "manifest-profile",
+      "why": "a document names a schema file the manifest doesn't hash"
     },
     {
       "case": "unknown-major",

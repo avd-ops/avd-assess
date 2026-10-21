@@ -78,7 +78,8 @@ function Get-BundleProfileError($Manifest) {
     if (-not (Test-BundleProperty $a 'profile') -or $a.profile -cne $script:BundleProfile) { $errs.Add("avdAssess.profile is not $script:BundleProfile") }
     if (-not (Test-BundleProperty $a 'commit') -or $a.commit -isnot [string] -or $a.commit -cnotmatch '^[0-9a-f]{40}$') { $errs.Add('avdAssess.commit is not 40 hex') }
     if ((Test-BundleProperty $a 'tag') -and ($a.tag -isnot [string] -or $a.tag -cne ('v' + $Manifest.version))) { $errs.Add('avdAssess.tag is not v<version>') }
-    $names = @{}; $paths = @{}
+    $names = @{}; $paths = @{}; $listed = @{}
+    foreach ($r in $Manifest.resources) { if (Test-BundleProperty $r 'path') { $listed[[string]$r.path] = $true } }
     $i = 0
     foreach ($r in $Manifest.resources) {
         $where = "resources[$i]"; $i++
@@ -97,6 +98,7 @@ function Get-BundleProfileError($Manifest) {
         $hash = if (Test-BundleProperty $r 'hash') { $r.hash } else { $null }
         if ($hash -isnot [string] -or $hash -cnotmatch '^sha256:[0-9a-f]{64}$') { $errs.Add("$where.hash is not sha256:<64 lower-case hex>") }
         if ((Test-BundleProperty $r 'jsonSchema') -and (Get-BundlePathProblem $r.jsonSchema)) { $errs.Add("$where.jsonSchema '$($r.jsonSchema)': $(Get-BundlePathProblem $r.jsonSchema)") }
+        if ((Test-BundleProperty $r 'jsonSchema') -and -not (Get-BundlePathProblem $r.jsonSchema) -and -not $listed.ContainsKey([string]$r.jsonSchema)) { $errs.Add("$where.jsonSchema $($r.jsonSchema) is not a resource, so its hash is not checked") }
         if ((Test-BundleProperty $r 'schemaString') -and ($r.schemaString -isnot [string] -or $r.schemaString -cnotmatch $script:SchemaString)) { $errs.Add("$where.schemaString is not <name>/v<major>") }
         if (Test-BundleProperty $r 'idPaths') {
             $ok = $r.idPaths -is [System.Array]
@@ -187,6 +189,8 @@ function Get-AvdAssessBundleCheck {
         }
     }
     else { $known = $script:Known }
+    $untyped = @($wanted | Where-Object { ($_.path -like '*.json' -or $_.path -like '*.jsonl') -and -not ((Test-BundleProperty $_ 'format') -and ($_.format -eq 'json' -or $_.format -eq 'jsonl')) } | ForEach-Object { $_.path })
+    if ($untyped.Count) { New-BundleCheckItem 'resource-format' 'WARN' "not parsed or schema-checked, the manifest gives no json format: $(($untyped | Select-Object -First 5) -join ', ')" }
     $texts = @{}
     foreach ($r in $wanted) {
         $fmt = if (Test-BundleProperty $r 'format') { $r.format } else { $null }
@@ -234,7 +238,7 @@ function Get-AvdAssessBundleCheck {
             $errors = $null
             $ok = Test-Json -Json $line -Schema $schema -ErrorAction SilentlyContinue -ErrorVariable errors
             if (-not $ok) {
-                $where = if ($r.format -eq 'jsonl') { "line $n " } else { '' }
+                $where = if ((Test-BundleProperty $r 'format') -and $r.format -eq 'jsonl') { "line $n " } else { '' }
                 $msg = if ($errors) { ($errors | Select-Object -First 1).ToString() } else { 'not valid' }
                 if ($msg.Length -gt 200) { $msg = $msg.Substring(0, 200) }
                 New-BundleCheckItem 'resource-schema' 'FAIL' "$($r.path): $where$msg"; return
