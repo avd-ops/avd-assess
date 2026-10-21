@@ -1,0 +1,11 @@
+id: thin-clients
+title: Thin client support (Azure Virtual Desktop)
+url: https://learn.microsoft.com/azure/virtual-desktop/thin-clients
+pin: "Learn git_commit_id 8cd3e2378055def35bcc309fd4d8e644294d7cbe, updated_at 2026-10-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: reproduce-on-windows-app
+    says: A thin-client issue is first reproduced on Windows App; if it does not reproduce, the thin-client provider supports it.
+    kind: published

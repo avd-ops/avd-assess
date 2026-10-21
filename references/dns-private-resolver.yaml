@@ -1,0 +1,11 @@
+id: dns-private-resolver
+title: What is Azure DNS Private Resolver?
+url: https://learn.microsoft.com/azure/dns/dns-private-resolver-overview
+pin: "Learn git_commit_id 730f100d04bf7be59b1499ebc1be22bbbc8164f8, updated_at 2026-06-23"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: hybrid-resolution
+    says: DNS Private Resolver answers private DNS zones for on-premises networks and forwards Azure queries on-premises, without DNS servers to run; it needs ExpressRoute or VPN.
+    kind: published

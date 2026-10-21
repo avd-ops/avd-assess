@@ -1,0 +1,8 @@
+id: private-link-session-hosts-only
+claim: ref:avd-private-link#four-scenarios
+verdict: agrees
+observed: "The landing zone uses the connection-only layout: one connection endpoint per host pool, host pool public access enabled for clients with session hosts private, the workspace feed public and no global endpoint. Users connect from any network while hosts reach the service privately, which is a layout the source supports; users who must also connect privately need the feed and global endpoints and client-side DNS, which the landing zone doesn't build."
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/controlPlane.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/docs/design-decisions.md
+date: 2026-10-21

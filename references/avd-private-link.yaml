@@ -1,0 +1,41 @@
+id: avd-private-link
+title: Azure Private Link with Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/private-link-overview
+pin: "Learn git_commit_id 33922f102f6e56048302588f905c3d6a4fc92523, updated_at 2026-02-24"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: three-sub-resources
+    says: "Private Link for AVD has three sub-resources: connection (one per host pool), feed (one per workspace) and global (initial feed discovery, one for the whole AVD deployment)."
+    kind: published
+  - id: four-scenarios
+    says: Four supported layouts run from everything private (global, feed and connection endpoints) through feed and connection only and connection only, to no Private Link at all.
+    kind: published
+  - id: global-workspace
+    says: The global endpoint belongs on a dedicated workspace with no application groups; deleting that workspace stops feed discovery for every user, and it stays reachable from public routes whatever its access setting.
+    kind: published
+  - id: public-access-settings
+    says: Workspaces take public access enabled or disabled; host pools also take enabled for clients with session hosts private, which denies a session whenever the session host uses a public route.
+    kind: published
+  - id: address-headroom
+    says: Private endpoint IP allocations can grow during capacity expansions, so the endpoint subnet needs headroom.
+    kind: guidance
+  - id: udp-opt-in
+    says: UDP over Private Link is blocked unless the host pool opts in to the direct UDP path, and the opt-in needs public-network Shortpath (STUN and TURN) turned off.
+    kind: published
+  - id: client-dns-sequence
+    says: A client resolves the global discovery name, then each workspace feed name and then the host pool gateway name; with Private Link each must answer with the private endpoint address from the client network.
+    kind: published
+  - id: full-port-range
+    says: If ports to the connection endpoint are restricted from clients or session hosts, TCP 1-65535 must be allowed, because the endpoint maps ports to the gateway chosen at orchestration.
+    kind: published
+  - id: mixed-feed-limit
+    says: The Remote Desktop client for Windows on a private network with no internet access can not reach its feed when subscribed to both public and private feeds.
+    kind: published
+  - id: agent-restart
+    says: After a host pool private endpoint or network setting changes, the agent loader service must be restarted on every session host (or the hosts restarted).
+    kind: published
+  - id: separate-global-zone
+    says: The global endpoint needs its own private DNS zone, privatelink-global.wvd.microsoft.com; sharing privatelink.wvd.microsoft.com with it is unsupported since 2023-09-01.
+    kind: published
