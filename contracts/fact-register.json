@@ -499,6 +499,175 @@
       ]
     },
     {
+      "id": "c11.monitoring.diagnostics",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/monitoring/diagnostics",
+      "grain": "subscription",
+      "unit": "countMap",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.monitoring.workspace.retentionDays",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/monitoring/workspaces/retentionDays",
+      "grain": "subscription",
+      "unit": "countMap",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.monitoring.alerts",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/monitoring/alerts",
+      "grain": "subscription",
+      "unit": "countMap",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.monitoring.serviceHealthAlerts",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/monitoring/serviceHealthAlerts",
+      "grain": "subscription",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.advisor.recommendations",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/advisor/recommendations",
+      "grain": "subscription",
+      "unit": "countMap",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.monitoringAgent",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/monitoringAgent",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.insightsDcr",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/insightsDcr",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.hibernation",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/hibernation",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.scalingPlan.method",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/scalingPlan/method",
+      "grain": "hostPool",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [
+        "hostPool.power"
+      ]
+    },
+    {
+      "id": "c11.hostPool.scalingPlan.rampUpStart",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/scalingPlan/rampUpStart",
+      "grain": "hostPool",
+      "unit": "clock",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [
+        "hostPool.power"
+      ]
+    },
+    {
+      "id": "c11.hostPool.scalingPlan.rampUpCapacityThresholdPct",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/scalingPlan/rampUpCapacityThresholdPct",
+      "grain": "hostPool",
+      "unit": "percent",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.scalingPlan.rampUpMinimumHostsPct",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/scalingPlan/rampUpMinimumHostsPct",
+      "grain": "hostPool",
+      "unit": "percent",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.scalingPlan.forceLogoff",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/scalingPlan/forceLogoff",
+      "grain": "hostPool",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.scalingPlan.exclusionTag",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/scalingPlan/exclusionTag",
+      "grain": "hostPool",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.alerts",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/alerts",
+      "grain": "storageAccount",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c12.window.days",
       "tier": "forensic",
       "contract": "C12",
@@ -773,6 +942,39 @@
       "evidences": [
         "identity"
       ]
+    },
+    {
+      "id": "c12.group.scaling.occupancyP95Percent",
+      "tier": "forensic",
+      "contract": "C12",
+      "path": "/groups/*/scaling/occupancyP95Percent",
+      "grain": "group",
+      "unit": "percent",
+      "privacy": "measure",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c12.group.scaling.failedEvaluations",
+      "tier": "forensic",
+      "contract": "C12",
+      "path": "/groups/*/scaling/failedEvaluations",
+      "grain": "group",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c12.group.scaling.coldStartConnectP95Seconds",
+      "tier": "forensic",
+      "contract": "C12",
+      "path": "/groups/*/scaling/coldStartConnectP95Seconds",
+      "grain": "group",
+      "unit": "seconds",
+      "privacy": "measure",
+      "status": "specified",
+      "evidences": []
     },
     {
       "id": "intake.residency",

@@ -24,15 +24,16 @@ Every check is a `warn`, not a `gap`. The first four items say "consider" or "ev
 | Item | What it needs |
 |---|---|
 | `ref:review-checklists-avd#H03.05` | The profile storage account's region beside its host pool's. C11 has both regions, but nothing links a share to a pool, and the rule language has no join |
-| `ref:review-checklists-avd#E02.02`, `ref:review-checklists-avd#E02.01` | Diagnostic settings per AVD object, and the agent and Insights data collection rule per host (proposed facts in `gap:insights-facts`; the standard is `ref:avd-insights#hostpool-diagnostics`, `ref:avd-insights#workspace-diagnostics`, `ref:avd-insights#host-data-ama-dcr`) |
+| `ref:review-checklists-avd#E02.02`, `ref:review-checklists-avd#E02.01` | Diagnostic settings per AVD object, and the agent and Insights data collection rule per host (facts specified in `gap:insights-facts`, waiting to be built; the standard is `ref:avd-insights#hostpool-diagnostics`, `ref:avd-insights#workspace-diagnostics`, `ref:avd-insights#host-data-ama-dcr`) |
 | `ref:review-checklists-avd#E01.10`, `ref:aprl-desktop-virtualization#979ff8be-5f3a-4d8e-9aa3-407ecdd6d6f7`, `ref:psrule-azure#AZR-000437` | The host pool's `agentUpdate` setting (`ref:avd-rest-api#hostpool-properties`; a new C11 fact) |
 | `ref:review-checklists-avd#E01.11`, `ref:aprl-desktop-virtualization#013ac34e-7c4b-425f-9e0c-216f0cc06181` | C11 has `validationEnvironment` per pool, but the item asks for at least one per estate, and the rule language has no "any" |
-| `ref:aprl-desktop-virtualization#499769ae-67c9-492e-9ca5-cfd4cece5209` | Scaling plans and the pools they reference (`ref:avd-rest-api#scalingplan-hostpool-references`; a new C11 fact) |
+| `ref:aprl-desktop-virtualization#499769ae-67c9-492e-9ca5-cfd4cece5209` | Scaling plans and the pools they reference (`ref:avd-rest-api#scalingplan-hostpool-references`; `c11.hostPool.scalingPlan.method`, specified in `gap:monitoring-scope`) |
 | `ref:review-checklists-avd#C01.05`, `ref:session-host-sizing#multisession-vcpu-range` | vCPUs per session host size (a public SKU value; a new C11 fact) |
 | `ref:review-checklists-avd#C01.06` | C11 counts app groups by type per pool, but a missing type means zero, and the rule language reads a missing property as unknown |
 | `ref:review-checklists-avd#E01.13` | The last time each session host was on; C11's stale-heartbeat count has no stated threshold |
 | `ref:review-checklists-avd#A01.06`, `ref:aprl-desktop-virtualization#38721758-2cc2-4d6b-b7b7-8b47dadbf7df` | Site Recovery or backup protection for personal session hosts (a new C11 fact) |
 | `ref:review-checklists-avd#F01.11`, `ref:review-checklists-avd#H04.03` | Host-side settings (RDP Shortpath, FSLogix size limit): no host fact exists |
+| `ref:review-checklists-avd#E01.04`, `ref:review-checklists-avd#E01.08`, `ref:review-checklists-avd#E02.03`, `ref:review-checklists-avd#E02.04` | Scaling plans, Advisor recommendations, storage alerts and Service Health alerts: facts specified in `gap:monitoring-scope`, waiting to be built |
 | `ref:review-checklists-avd#G03.05` | Diagnostic settings per AVD object, as for E02.02 (`gap:insights-facts`) |
 | `ref:review-checklists-avd#D02.01` | `c11.storage.filesIdentity` is built, but the rule needs it beside `intake.identityConstraints` (Entra-only estates use Entra Kerberos), and the rule language has no join between a snapshot and the intake |
 | `ref:review-checklists-avd#G02.04` | Which hosts run Windows 11; C11's OS versions are build numbers per pool, so the Trusted launch check above stands in |

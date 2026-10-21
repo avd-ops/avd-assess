@@ -88,12 +88,12 @@ pillars:
     status: missing
   - id: monitoring
     title: Monitoring and operations
-    scope: Insights wiring, alerts, workbooks, log retention, agent and token health, day-2 runbooks, capacity reviews and cadence.
-    checklist: [E01, E02]
-    status: partial
+    scope: Insights wiring, alerts and who receives them, Service Health, workbooks, log retention, the monitoring cost signal, Advisor reviews, the deployment strategy, agent and token health, day-2 runbooks, capacity reviews and cadence.
+    checklist: [E01.08, E01.12, E02]
+    status: mapped
   - id: scaling
     title: Scaling and power
-    scope: Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing, personal pool deallocation.
+    scope: Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing and the first-connection wait, ramp-down and disconnected sessions, personal pool deallocation, autoscale logs.
     checklist: [E01.04, E01.05]
     status: mapped
   - id: finops

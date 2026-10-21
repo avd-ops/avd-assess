@@ -257,6 +257,27 @@
       ]
     },
     {
+      "id": "autoscale-diagnostics",
+      "title": "Set up diagnostics for Autoscale in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-diagnostics",
+      "pin": "Learn git_commit_id 4dcb5ff3082014aa907a3d4327649e7705d8fba5, updated_at 2025-06-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "scaling"
+      ],
+      "claims": [
+        {
+          "id": "plan-to-storage-or-hub",
+          "says": "A scaling plan's own diagnostic setting sends autoscale logs to a storage account in the plan's region or to an event hub; for pooled host pools the Insights path is recommended instead.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "autoscale-faq",
       "title": "Azure Virtual Desktop autoscale FAQ",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-faq",
@@ -270,6 +291,145 @@
         {
           "id": "disconnected-time-limit",
           "says": "Autoscale counts disconnected sessions as active; a host policy that signs out disconnected sessions after 15 to 30 minutes lets a pool scale to zero.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "autoscale-insights",
+      "title": "Monitor Autoscale operations with Insights in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-monitor-operations-insights",
+      "pin": "Learn git_commit_id a2a9e65a51ae1c976e7dc98dfea2ca6d522e5028, updated_at 2025-06-24",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "scaling",
+        "monitoring"
+      ],
+      "claims": [
+        {
+          "id": "pooled-only",
+          "says": "Autoscale data in Insights is for pooled host pools only; personal host pools send autoscale logs to a storage account or an event hub.",
+          "kind": "published"
+        },
+        {
+          "id": "hostpool-category",
+          "says": "The host pool's diagnostic setting needs the autoscale category for pooled host pools, sent to the same workspace as its other logs.",
+          "kind": "published"
+        },
+        {
+          "id": "evaluation-table",
+          "says": "Each autoscale evaluation is a row with the phase, the configured threshold and minimum, session occupancy, active and unhealthy host counts and the result; failed ones join to the errors table by correlation ID.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "autoscale-plan",
+      "title": "Create and assign an autoscale scaling plan for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-create-assign-scaling-plan",
+      "pin": "Learn git_commit_id 9482be6e3db06c8a844a8d6bfbf0cc312a7ba4c3, updated_at 2026-08-31",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "scaling"
+      ],
+      "notes": "The prerequisites and the meaning of each schedule field. The concepts page (ref:avd-autoscale) says what autoscale is for; this one says what a correct plan needs.",
+      "claims": [
+        {
+          "id": "max-session-limit-required",
+          "says": "Autoscale on a pooled host pool needs a host pool session limit set by the operator, not left at the default.",
+          "kind": "published"
+        },
+        {
+          "id": "role-at-subscription",
+          "says": "Autoscale needs the power on and off role (and for dynamic autoscaling the VM contributor role) granted to the service or the host pool's identity at subscription scope; a narrower scope stops it working properly.",
+          "kind": "published"
+        },
+        {
+          "id": "no-other-scaling-tool",
+          "says": "Autoscale and scaling through Automation or Logic Apps can't share a host pool.",
+          "kind": "published"
+        },
+        {
+          "id": "dynamic-needs-host-config",
+          "says": "Dynamic autoscaling works only on pooled host pools with a session host configuration; other pools use power management autoscaling.",
+          "kind": "published"
+        },
+        {
+          "id": "hibernate-not-with-profiles",
+          "says": "Hibernation in personal autoscale isn't supported with FSLogix or App Attach.",
+          "kind": "published"
+        },
+        {
+          "id": "exclusion-tag",
+          "says": "Hosts carrying the plan's exclusion tag are not started, stopped or drained by autoscale, but still count toward the minimum percentage of hosts.",
+          "kind": "published"
+        },
+        {
+          "id": "ramp-up-before-peak",
+          "says": "Ramp-up starts preparing hosts before peak hours, with breadth-first load balancing recommended in ramp-up.",
+          "kind": "guidance"
+        },
+        {
+          "id": "capacity-threshold-example",
+          "says": "The capacity threshold is the share of available sessions in use that makes autoscale start another host; the minimum percentage of hosts stays on whatever the load.",
+          "kind": "published"
+        },
+        {
+          "id": "ramp-down-consolidates",
+          "says": "Ramp-down only shuts hosts down when all sessions, active and disconnected, fit on fewer hosts under the capacity threshold; without forced sign-out it waits for hosts with no sessions.",
+          "kind": "published"
+        },
+        {
+          "id": "off-peak-depth-first",
+          "says": "Depth-first load balancing is recommended off peak, so hosts empty and can be turned off.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-advisor",
+      "title": "How to resolve Azure Advisor recommendations for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/azure-advisor-recommendations",
+      "pin": "Learn git_commit_id 6d2a9179f453f9b31c9795e5c9e84e5c13b1099a, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "monitoring"
+      ],
+      "notes": "The checklist's link for E01.08. Advisor's cost results are cited by the FinOps method (ref:advisor-cost); this page lists the AVD operational ones.",
+      "claims": [
+        {
+          "id": "validation-pool",
+          "says": "Advisor flags a subscription with no host pool in a validation environment.",
+          "kind": "published"
+        },
+        {
+          "id": "production-majority",
+          "says": "Advisor flags a subscription where half or more of the host pools are validation pools, or none is production.",
+          "kind": "published"
+        },
+        {
+          "id": "required-urls",
+          "says": "Advisor flags session hosts that can't reach the required URLs.",
+          "kind": "published"
+        },
+        {
+          "id": "twice-a-day",
+          "says": "Advisor refreshes twice a day, so a fixed setting clears from its list with a delay; letting it clear on its own is preferred to dismissing it.",
           "kind": "guidance"
         }
       ]
@@ -471,6 +631,45 @@
         {
           "id": "no-public-inbound",
           "says": "Azure Virtual Desktop needs no public inbound ports on session hosts.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-diagnostics",
+      "title": "Send diagnostic data to Log Analytics for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/diagnostics-log-analytics",
+      "pin": "Learn git_commit_id 4fdc1dca34d1fa7147fb1406df29d3ece36533fb, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "monitoring",
+        "diagnostics"
+      ],
+      "notes": "The checklist's link for E02.02. The category list here is longer than the seven Insights asks for on a host pool (ref:avd-insights#hostpool-diagnostics); Insights' list is the minimum, this is what exists.",
+      "claims": [
+        {
+          "id": "categories",
+          "says": "AVD objects can send Management Activities, Feed, Connections, Host registration, Errors, Checkpoints, Agent Health Status, Network, Connection Graphics, Session Host Management Activity and Autoscale logs.",
+          "kind": "published"
+        },
+        {
+          "id": "per-object",
+          "says": "Diagnostics must be turned on for each Resource Manager object to be monitored, and data exists only from the time they are turned on.",
+          "kind": "published"
+        },
+        {
+          "id": "unreached-connections-missing",
+          "says": "Connections that never reach the service don't appear in diagnostics, so a user's own network failures are invisible there.",
+          "kind": "published"
+        },
+        {
+          "id": "service-error-escalate",
+          "says": "In the errors table, ServiceError false marks issues an admin can fix; true marks ones to escalate to Microsoft with the correlation ID.",
           "kind": "published"
         }
       ]
@@ -1363,6 +1562,28 @@
       ]
     },
     {
+      "id": "avd-service-alerts",
+      "title": "Set up service alerts for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/set-up-service-alerts",
+      "pin": "Learn git_commit_id 981e8332ce6cbcf1c8c178b7775bbe23170c1f4d, updated_at 2025-06-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "monitoring"
+      ],
+      "notes": "The checklist's link for E02.04.",
+      "claims": [
+        {
+          "id": "issue-and-advisory",
+          "says": "Create Service Health alerts for at least service issues (connectivity or management of AVD) and health advisories (such as insecure configuration or deprecations).",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "avd-session-host-update",
       "title": "Session host update for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/session-host-update",
@@ -1801,6 +2022,43 @@
       ]
     },
     {
+      "id": "caf-avd-platform-automation",
+      "title": "Cloud Adoption Framework, Azure Virtual Desktop platform automation and DevOps",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-platform-automation-and-devops",
+      "pin": "https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/5c44a2accff2018eba5dd738b648eef4c9db179b/docs/scenarios/azure-virtual-desktop/eslz-platform-automation-and-devops.md",
+      "read": "2026-10-21",
+      "license": "CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "monitoring"
+      ],
+      "notes": "The checklist's link for E01.12. Microsoft removes the CAF AVD scenario on 2026-10-30, so the pin is the public GitHub copy, as for ref:caf-avd-management.",
+      "claims": [
+        {
+          "id": "deprecated",
+          "says": "The page is deprecated, no longer updated, and is to be removed on 2026-10-30.",
+          "kind": "published"
+        },
+        {
+          "id": "declarative-iac",
+          "says": "Deploy AVD resources with infrastructure as code, a declarative tool preferred, so deployments stay consistent.",
+          "kind": "guidance"
+        },
+        {
+          "id": "gate-to-validation",
+          "says": "Let pipelines deploy to a validation host pool automatically, and to production only with an explicit approval.",
+          "kind": "guidance"
+        },
+        {
+          "id": "tag-image-version",
+          "says": "Tag session hosts with the build or image version they run, so old hosts are easy to find when they are drained and replaced.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "caf-avd-poc",
       "title": "Cloud Adoption Framework, Azure Virtual Desktop proof of concept",
       "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/proof-of-concept",
@@ -2217,6 +2475,44 @@
       ]
     },
     {
+      "id": "files-monitoring-alerts",
+      "title": "Create monitoring alerts for Azure Files",
+      "url": "https://learn.microsoft.com/azure/storage/files/files-monitoring-alerts",
+      "pin": "Learn git_commit_id aa85b0febdf3dde390ad653f19cd406f8cc6aff5, updated_at 2026-10-07",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "monitoring",
+        "profiles"
+      ],
+      "notes": "The storage side of E02.03 (the checklist links the Azure Files monitoring overview, which points here). The AVD-specific numbers are in ref:amba-avd#storage.",
+      "claims": [
+        {
+          "id": "throttling",
+          "says": "Alert when a file share is throttled, from the transactions metric split by response type.",
+          "kind": "published"
+        },
+        {
+          "id": "utilization-80",
+          "says": "Alert when a share passes 80% of its provisioned capacity, bandwidth or IOPS.",
+          "kind": "guidance"
+        },
+        {
+          "id": "availability",
+          "says": "Alert when share availability falls below 99.9%.",
+          "kind": "guidance"
+        },
+        {
+          "id": "per-share-needs-provisioned",
+          "says": "Pay-as-you-go shares have no per-share metrics, so a throttling alert can't say which share was throttled; provisioned shares can.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "finops-framework",
       "title": "FinOps Framework overview (Microsoft's guide to the FinOps Foundation framework)",
       "url": "https://learn.microsoft.com/cloud-computing/finops/framework/finops-framework",
@@ -2508,6 +2804,39 @@
           "id": "baselines-in-intune",
           "says": "Intune ships versioned security baselines (Windows, Defender for Endpoint, Edge and others) that enrolled devices, session hosts included, can be assigned and reported against.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "log-retention",
+      "title": "Manage data retention in a Log Analytics workspace",
+      "url": "https://learn.microsoft.com/azure/azure-monitor/logs/data-retention-configure",
+      "pin": "Learn git_commit_id dda53ebc0c46430cded570bdc06e9ff266fa5ef3, updated_at 2026-09-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "pillars": [
+        "monitoring"
+      ],
+      "notes": "The mechanics and the price boundary of retention. It sets no retention number for any workload, which is why AVD retention stays a gap (gap:insights-facts).",
+      "claims": [
+        {
+          "id": "default-30",
+          "says": "Analytics tables keep data for 30 days by default, except some log tables that default to 90.",
+          "kind": "published"
+        },
+        {
+          "id": "first-31-included",
+          "says": "The first 31 days of analytics retention are included in the ingestion price, so retention below 31 days saves nothing.",
+          "kind": "published"
+        },
+        {
+          "id": "analytics-two-years",
+          "says": "Analytics retention can be extended to two years, and total retention, with low-cost long-term storage, to twelve years.",
+          "kind": "published"
         }
       ]
     },
@@ -3279,6 +3608,18 @@
         {
           "id": "C02.04",
           "says": "Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high)."
+        },
+        {
+          "id": "E01.08",
+          "says": "Check Azure Advisor recommendations for AVD periodically (Operations, low)."
+        },
+        {
+          "id": "E01.12",
+          "says": "Decide the host pool deployment strategy (Operations, medium)."
+        },
+        {
+          "id": "E02.04",
+          "says": "Configure Azure Service Health alerts for AVD (Reliability, medium)."
         }
       ]
     },
@@ -4113,6 +4454,16 @@
   ],
   "observations": [
     {
+      "id": "alerts-silent-without-receivers",
+      "claim": "ref:caf-avd-management#alerting-model",
+      "verdict": "extends",
+      "observed": "An alerting model needs someone to receive the alerts, not only alert rules. The landing zone creates its six log alerts (unhealthy hosts, FSLogix errors, connection errors, low disk, low memory, high CPU) on every deployment, enabled, but attaches an action group only when alert addresses are given; without them the rules fire with nobody notified, and the Service Health alert isn't created at all. An assessment that counts alert rules alone would score that estate as alerted, so the alert fact counts rules with and without an action group separately (gap:monitoring-scope). The landing zone also has no Azure Files metric alert (throttling or capacity, review checklist E02.03); its FSLogix alert reads host event logs only.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/monitoring.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
       "id": "budget-alert-needs-a-lock",
       "claim": "ref:cost-management-budgets#alerts-dont-stop",
       "verdict": "extends",
@@ -4426,6 +4777,10 @@
     {
       "id": "logon-target",
       "title": "a logon time target"
+    },
+    {
+      "id": "monitoring-scope",
+      "title": "monitoring, operations, scaling and power"
     },
     {
       "id": "network-scope",

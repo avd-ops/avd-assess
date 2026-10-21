@@ -13,3 +13,5 @@
 | `intake.workingHours` | When do people work (start, end, time zone)? | Power settings and scaling (`ref:avd-insights-use-cases#utilization-for-scaling`) |
 | `intake.hostSharing` (optional) | Who shares a session host (`one-org-standard`, `needs-admin`, `multi-org`, `undecided`)? | The security guide's trust boundary decides between pooled, personal and a separate tenant (`ref:avd-security-guide#trust-boundary`) |
 | `intake.avdMfa` (optional) | Does sign-in to AVD require MFA (`required`, `not-required`, `unknown`)? | Stands in for a directory read until one exists (`ref:review-checklists-avd#G04.01`, `gap:security-scope`) |
+
+**Proposed, not yet in the schema:** `intake.alertResponse`, `intake.logRetention`, `intake.coldStartTolerance` and `intake.deploymentMethod`, with their values and reasons in `gap:monitoring-scope`; the FinOps license and commitment questions in `gap:finops-scope`.

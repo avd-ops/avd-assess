@@ -22,7 +22,7 @@ The configuration workbook checks the setup interactively, one host pool at a ti
 
 No source sets a retention number. Retention stays the estate's choice and is reported, not graded.
 
-## Configuration facts (proposed, C11)
+## Configuration facts (specified, C11)
 
 | Fact | Type | Read from |
 |---|---|---|
@@ -36,7 +36,7 @@ With these, two checks can run:
 - E02.02: every AVD object sends the listed categories.
 - E02.01: every host sends Insights data.
 
-They join `method.json` once the facts are in the register.
+The five are `specified` in the register (2026-10-21), with the alert, storage alert and Service Health facts beside them in `gap:monitoring-scope`. The checks join `method.json` once avd-current-state builds them.
 
 ## Measured facts (proposed)
 
