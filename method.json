@@ -370,22 +370,22 @@
     },
     {
       "fact": "c11.policy.assignments",
-      "from": "resource-graph",
-      "table": "PolicyResources",
+      "from": "arm-rest",
       "type": "microsoft.authorization/policyassignments",
       "property": "id",
       "claims": [
-        "ref:resource-graph-tables#policy-table"
+        "ref:resource-graph-tables#policy-table",
+        "gap:collection-map"
       ]
     },
     {
       "fact": "c11.policy.doNotEnforce",
-      "from": "resource-graph",
-      "table": "PolicyResources",
+      "from": "arm-rest",
       "type": "microsoft.authorization/policyassignments",
       "property": "properties.enforcementMode",
       "claims": [
         "ref:resource-graph-tables#policy-table",
+        "gap:collection-map",
         "ref:policy-assignment-structure#do-not-enforce"
       ]
     },
@@ -710,12 +710,11 @@
     },
     {
       "id": "asm-policy-guardrails-assigned",
-      "title": "Subscriptions holding AVD have Azure Policy guardrails assigned",
+      "title": "Subscriptions holding AVD have at least one Azure Policy assignment in scope",
       "pillar": "operations",
-      "severity": "medium",
+      "severity": "low",
       "claims": [
-        "ref:mcsb-avd-baseline#AM-2",
-        "ref:policy-built-ins#allowed-locations"
+        "ref:mcsb-avd-baseline#AM-2"
       ],
       "facts": [
         "c11.policy.assignments"

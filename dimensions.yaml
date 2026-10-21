@@ -336,7 +336,7 @@ dimensions:
     pillar: protocol
     title: RDP Multipath and modern auto-reconnect
     decides: Whether sessions keep backup paths and survive short network drops, which depends on the client app and version.
-    home: {decision: network, facts: [c12.group.clients.byType], intake: [intake.clientPlatforms]}
+    home: {decision: network, facts: [c12.group.clients.byType, c12.group.clients.byVersion], intake: [intake.clientPlatforms]}
     baseline:
       standing: published
       claims: [ref:rdp-multipath#automatic, ref:rdp-multipath#client-floors, ref:rdp-multipath#shortpath-first, ref:avd-auto-reconnect#needs-multipath, ref:windows-app-platforms#multipath-by-platform, ref:avd-whats-new#multipath-ga]
@@ -898,7 +898,7 @@ dimensions:
     pillar: endpoints
     title: Client apps in use
     decides: Which client each platform uses to connect, and whether any connection still comes from a client past end of support.
-    home: {decision: proposed:endpoints.clients, facts: [c12.group.clients.byType], intake: [intake.clientPlatforms]}
+    home: {decision: proposed:endpoints.clients, facts: [c12.group.clients.byType, c12.group.clients.byVersion], intake: [intake.clientPlatforms]}
     baseline:
       standing: published
       claims: [ref:windows-app-get-started#client-platforms, ref:avd-insights-use-cases#client-version-usage, ref:remote-desktop-client-overview#windows-app-replaces, ref:remote-desktop-client-overview#msi-and-web-end-of-support, ref:remote-desktop-client-overview#store-app-ended, ref:avd-prerequisites#supported-clients, ref:wvdconnections-table#client-columns, ref:review-checklists-avd#C02.03, gap:endpoints-scope]
@@ -998,12 +998,12 @@ dimensions:
     pillar: governance
     title: Allowed locations and metadata residency
     decides: Which regions resources may be created in, and where host pool metadata is stored.
-    home: {decision: region, facts: [c11.subscription.regions, c11.hostPool.region, c11.policy.assignments], intake: [intake.residency]}
+    home: {decision: region, facts: [c11.subscription.regions, c11.hostPool.region, proposed:c11.policy.builtInDefinitions], intake: [intake.residency]}
     baseline:
       standing: published
       claims: [ref:policy-built-ins#allowed-locations, ref:avd-data-locations#deployment-scope, ref:avd-data-locations#user-data-in-region, ref:caf-avd-security-governance#metadata-geographies, ref:review-checklists-avd#C03.01, ref:review-checklists-avd#C03.02]
       says: An allowed-locations guardrail that matches the residency answer, and a metadata scope (geographical or regional) chosen at creation, since it can't change.
-    measure: fact
+    measure: rebuild
     landingZone: [allowedLocations]
     note: The region choice itself is the capacity pillar's region row; this row is the guardrail and the metadata.
   - id: governance.allowed-sizes
@@ -1011,7 +1011,7 @@ dimensions:
     pillar: governance
     title: Allowed VM sizes
     decides: Whether a policy limits session host sizes, and whether the chosen sizes are on the list.
-    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes, c11.policy.assignments]}
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes, proposed:c11.policy.builtInDefinitions]}
     baseline:
       standing: guidance
       claims: [ref:policy-built-ins#allowed-vm-skus, ref:review-checklists-avd#C03.03, gap:governance-scope]

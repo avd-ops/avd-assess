@@ -18,11 +18,11 @@ Anything none of these shows is `unknown`, never guessed.
 
 The log names the client; the support status comes from the pinned sources. The method maps each logged client type to one of three states:
 
-- **supported:** Windows App on any platform, at a version the Insights Clients view doesn't flag as behind (`ref:avd-insights-use-cases#client-version-usage`).
+- **supported:** Windows App on any platform. Its version is judged against the newest version seen in the same window, the way the Insights Clients view does it (`ref:avd-insights-use-cases#client-version-usage`), and against a feature's own floor where a row needs one (Multipath, `ref:rdp-multipath#client-floors`); some mobile clients report a build number, which is compared as reported.
 - **end of support:** the Remote Desktop client for Windows (MSI) or the Remote Desktop web client in public cloud after 2026-03-27, or the Store app after September 2025 (`ref:remote-desktop-client-overview#msi-and-web-end-of-support`, `ref:remote-desktop-client-overview#store-app-ended`). Sovereign clouds keep the MSI client to 2026-09-28 (`ref:remote-desktop-client-overview#msi-sovereign-extension`).
 - **unknown:** the row has no client type, or a type the map doesn't list yet. A new type is added to the map with a pinned source, never guessed from its name.
 
-A group with any end-of-support connections gets a `warn`; the plan item is a client rollout, not a landing zone change. The client OS is judged the same way against the published floors (`ref:windows-app-get-started#os-floors`, `ref:windows-app-get-started#web-browser-floor`), and a browser older than 12 months is `warn`.
+A group with any end-of-support connections gets a `warn`; the plan item is a client rollout, not a landing zone change. The client OS is judged the same way against the published floors (`ref:windows-app-get-started#os-floors`). The browser behind the web client and its age aren't in the log columns, so the browser floor (`ref:windows-app-get-started#web-browser-floor`) is stated to the operator and stays `unknown` in the run.
 
 ## Needs before settings
 
@@ -38,13 +38,13 @@ Thin clients are judged against Microsoft's approved partner list and the rule t
 
 ## Proposed intake questions
 
-Four enum answers, registered as `specified` C19 facts; the intake schema changes once, at the end of the pillar batch (gaps/intake.md).
+Four answers, two of them lists, registered as `specified` C19 facts; the intake schema changes once, at the end of the pillar batch (gaps/intake.md).
 
 | Fact | Question | Values |
 |---|---|---|
-| `intake.clientPlatforms` | Which platforms do users connect from? | any of `windows`, `macos`, `ios`, `android`, `web`, `thin-client`, `kiosk`, `other` |
+| `intake.clientPlatforms` | Which platforms do users connect from? | a list of `windows`, `macos`, `ios`, `android`, `web`, `thin-client`, `kiosk`, `other` |
 | `intake.clientDeviceManagement` | Are the connecting devices managed? | `managed-only`, `managed-and-personal`, `personal-only`, `unknown` |
-| `intake.peripheralNeeds` | What must reach the session? | any of `camera`, `microphone`, `smart-card`, `usb-device`, `scanner`, `local-drive`, `multi-monitor`, `none` |
+| `intake.peripheralNeeds` | What must reach the session? | a list of `camera`, `microphone`, `smart-card`, `usb-device`, `scanner`, `local-drive`, `multi-monitor`, or `none` alone |
 | `intake.printing` | How do users print? | `redirection`, `universal-print`, `host-printers`, `mixed`, `none`, `unknown` |
 
-Two C12 facts are registered `specified` for the forensic producer: `c12.group.clients.byType` and `c12.group.clients.byOs`, connection counts by client type and by client OS for each group.
+Three C12 facts are registered `specified` for the forensic producer: `c12.group.clients.byType`, `c12.group.clients.byOs` and `c12.group.clients.byVersion`, connection counts by client type, client OS and client type with version, for each group.

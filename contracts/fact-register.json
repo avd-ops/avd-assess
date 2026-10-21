@@ -819,6 +819,17 @@
       "evidences": []
     },
     {
+      "id": "c12.group.clients.byVersion",
+      "tier": "forensic",
+      "contract": "C12",
+      "path": "/groups/*/clients/byVersion",
+      "grain": "group",
+      "unit": "connection",
+      "privacy": "group-behavior",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "intake.residency",
       "tier": "intake",
       "contract": "C19",

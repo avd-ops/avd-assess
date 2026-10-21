@@ -953,7 +953,8 @@
       "home": {
         "decision": "network",
         "facts": [
-          "c12.group.clients.byType"
+          "c12.group.clients.byType",
+          "c12.group.clients.byVersion"
         ],
         "intake": [
           "intake.clientPlatforms"
@@ -2149,7 +2150,8 @@
       "home": {
         "decision": "proposed:endpoints.clients",
         "facts": [
-          "c12.group.clients.byType"
+          "c12.group.clients.byType",
+          "c12.group.clients.byVersion"
         ],
         "intake": [
           "intake.clientPlatforms"
@@ -2400,7 +2402,7 @@
         "facts": [
           "c11.subscription.regions",
           "c11.hostPool.region",
-          "c11.policy.assignments"
+          "proposed:c11.policy.builtInDefinitions"
         ],
         "intake": [
           "intake.residency"
@@ -2418,7 +2420,7 @@
         ],
         "says": "An allowed-locations guardrail that matches the residency answer, and a metadata scope (geographical or regional) chosen at creation, since it can't change."
       },
-      "measure": "fact",
+      "measure": "rebuild",
       "landingZone": [
         "allowedLocations"
       ],
@@ -2434,7 +2436,7 @@
         "decision": "hostPool.vmSize",
         "facts": [
           "c11.hostPool.vmSizes",
-          "c11.policy.assignments"
+          "proposed:c11.policy.builtInDefinitions"
         ]
       },
       "baseline": {
