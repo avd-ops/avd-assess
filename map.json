@@ -1289,9 +1289,9 @@
         ],
         "says": "One of the six supported scenarios, documented; the same Entra identity signs in to the service and to Windows; one join type per host pool."
       },
-      "measure": "fact",
+      "measure": "intake",
       "landingZone": [],
-      "note": "The landing zone fixes Entra join with cloud-only users (its decision 0001); join type is readable from each VM's join extension, a specified fact here."
+      "note": "The landing zone fixes Entra join with cloud-only users (its decision 0001). Join type is readable from each VM's join extension; measure becomes fact once the specified join counts are built."
     },
     {
       "id": "identity.tenant",
@@ -1323,7 +1323,9 @@
       "decides": "Whether and how AD DS users reach Entra ID, and whether their UPN or SID match.",
       "home": {
         "decision": "identity",
-        "facts": [],
+        "facts": [
+          "proposed:c11.directory.syncEnabled"
+        ],
         "intake": [
           "intake.identityConstraints",
           "intake.userIdentitySource"
@@ -1639,7 +1641,6 @@
           "ref:files-entra-kerberos#settings-catalog-multisession",
           "ref:fslogix-entra-profile#cloud-only-supported",
           "ref:fslogix-entra-profile#host-settings",
-          "ref:avd-prerequisites#fslogix-entra-joined-hybrid",
           "ref:files-ad-ds-password#rotate-or-exempt-ou",
           "ref:review-checklists-avd#D02.01",
           "ref:review-checklists-avd#D01.07"
@@ -1664,7 +1665,7 @@
         "decision": "hostPool.appGroup",
         "facts": [
           "c11.hostPool.appGroups",
-          "c11.hostPool.appGroups.directUserAssignments"
+          "c11.hostPool.directUserAssignments"
         ]
       },
       "baseline": {
@@ -1679,7 +1680,7 @@
       },
       "measure": "fact",
       "landingZone": [],
-      "note": "The landing zone assigns all three roles to the operator's user group (avdUsersGroupObjectId, wiring rather than a design choice)."
+      "note": "The landing zone gives its user group Desktop Virtualization User and Virtual Machine User Login, and its admin group Virtual Machine Administrator Login (avdUsersGroupObjectId and avdAdminsGroupObjectId, wiring rather than design choices)."
     },
     {
       "id": "identity.admin-access",
@@ -1704,9 +1705,9 @@
         ],
         "says": "The scoped built-in AVD roles below Owner and Contributor, custom roles only where they fall short, and admin access separated by tier; no source sets a count."
       },
-      "measure": "fact",
+      "measure": "none",
       "landingZone": [],
-      "note": "The landing zone's admin group is avdAdminsGroupObjectId, wiring rather than a design choice."
+      "note": "The landing zone's admin group is avdAdminsGroupObjectId, wiring rather than a design choice. Measure becomes fact once the specified assignment count is built; tiers themselves stay outside any read."
     },
     {
       "id": "identity.local-admin-password",

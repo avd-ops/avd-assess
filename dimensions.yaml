@@ -494,9 +494,9 @@ dimensions:
       standing: published
       claims: [ref:avd-prerequisites#identity-scenarios, ref:avd-authentication#one-identity, ref:avd-authentication#no-ad-only-identities, ref:avd-authentication#cloud-only-entra-joined, ref:avd-entra-joined-hosts#one-join-type-per-pool, ref:review-checklists-avd#D03.02, ref:review-checklists-avd#D03.03, ref:review-checklists-avd#D03.05]
       says: One of the six supported scenarios, documented; the same Entra identity signs in to the service and to Windows; one join type per host pool.
-    measure: fact
+    measure: intake
     landingZone: []
-    note: The landing zone fixes Entra join with cloud-only users (its decision 0001); join type is readable from each VM's join extension, a specified fact here.
+    note: The landing zone fixes Entra join with cloud-only users (its decision 0001). Join type is readable from each VM's join extension; measure becomes fact once the specified join counts are built.
   - id: identity.tenant
     area: identity
     pillar: identity
@@ -515,7 +515,7 @@ dimensions:
     pillar: identity
     title: Directory sync and hybrid identities
     decides: Whether and how AD DS users reach Entra ID, and whether their UPN or SID match.
-    home: {decision: identity, facts: [], intake: [intake.identityConstraints, intake.userIdentitySource]}
+    home: {decision: identity, facts: [proposed:c11.directory.syncEnabled], intake: [intake.identityConstraints, intake.userIdentitySource]}
     baseline:
       standing: published
       claims: [ref:avd-prerequisites#hybrid-sync, ref:avd-authentication#upn-or-sid-match, ref:caf-avd-identity#entra-ds-limits, ref:review-checklists-avd#D01.08]
@@ -647,7 +647,7 @@ dimensions:
     home: {decision: proposed:profile.storage, facts: [c11.storage.filesIdentity, proposed:c11.directory.storageAppMfaExcluded], intake: [intake.identityConstraints, intake.userIdentitySource]}
     baseline:
       standing: published
-      claims: [ref:files-entra-kerberos#cloud-only-and-hybrid, ref:files-entra-kerberos#one-identity-source, ref:files-entra-kerberos#clients-entra-joined, ref:files-entra-kerberos#hybrid-acl-line-of-sight, ref:files-entra-kerberos#admin-consent, ref:files-entra-kerberos#cloud-group-sids, ref:files-entra-kerberos#exclude-from-mfa, ref:files-entra-kerberos#settings-catalog-multisession, ref:fslogix-entra-profile#cloud-only-supported, ref:fslogix-entra-profile#host-settings, ref:avd-prerequisites#fslogix-entra-joined-hybrid, ref:files-ad-ds-password#rotate-or-exempt-ou, ref:review-checklists-avd#D02.01, ref:review-checklists-avd#D01.07]
+      claims: [ref:files-entra-kerberos#cloud-only-and-hybrid, ref:files-entra-kerberos#one-identity-source, ref:files-entra-kerberos#clients-entra-joined, ref:files-entra-kerberos#hybrid-acl-line-of-sight, ref:files-entra-kerberos#admin-consent, ref:files-entra-kerberos#cloud-group-sids, ref:files-entra-kerberos#exclude-from-mfa, ref:files-entra-kerberos#settings-catalog-multisession, ref:fslogix-entra-profile#cloud-only-supported, ref:fslogix-entra-profile#host-settings, ref:files-ad-ds-password#rotate-or-exempt-ou, ref:review-checklists-avd#D02.01, ref:review-checklists-avd#D01.07]
       says: Entra Kerberos for Entra joined hosts (cloud-only users in the public cloud, with the group SID tag and the MFA exclusion), AD DS with a rotated or non-expiring account password for domain-joined hosts; one source per account.
     observations: [obs:fslogix-cloud-only-users-work, obs:smb-channel-aes128-gcm-needed]
     measure: fact
@@ -658,14 +658,14 @@ dimensions:
     pillar: identity
     title: Application group assignment and VM sign-in roles
     decides: Who is assigned to each application group, by group or by user, and the VM sign-in roles Entra joined hosts need.
-    home: {decision: hostPool.appGroup, facts: [c11.hostPool.appGroups, c11.hostPool.appGroups.directUserAssignments]}
+    home: {decision: hostPool.appGroup, facts: [c11.hostPool.appGroups, c11.hostPool.directUserAssignments]}
     baseline:
       standing: published
       claims: [ref:avd-rbac#user-role, ref:caf-avd-identity#groups-not-users, ref:avd-entra-joined-hosts#vm-login-roles, ref:review-checklists-avd#D01.06]
       says: Desktop Virtualization User assigned to groups rather than users, and on Entra joined hosts without a session host configuration, Virtual Machine User Login for users and Virtual Machine Administrator Login only for admins.
     measure: fact
     landingZone: []
-    note: The landing zone assigns all three roles to the operator's user group (avdUsersGroupObjectId, wiring rather than a design choice).
+    note: The landing zone gives its user group Desktop Virtualization User and Virtual Machine User Login, and its admin group Virtual Machine Administrator Login (avdUsersGroupObjectId and avdAdminsGroupObjectId, wiring rather than design choices).
   - id: identity.admin-access
     area: identity
     pillar: identity
@@ -676,9 +676,9 @@ dimensions:
       standing: guidance
       claims: [ref:avd-rbac#scoped-roles, ref:avd-rbac#contributor-no-assignment, ref:avd-security-guide#tiered-admin, ref:mcsb-avd-baseline#PA-7, ref:review-checklists-avd#G03.06]
       says: The scoped built-in AVD roles below Owner and Contributor, custom roles only where they fall short, and admin access separated by tier; no source sets a count.
-    measure: fact
+    measure: none
     landingZone: []
-    note: The landing zone's admin group is avdAdminsGroupObjectId, wiring rather than a design choice.
+    note: The landing zone's admin group is avdAdminsGroupObjectId, wiring rather than a design choice. Measure becomes fact once the specified assignment count is built; tiers themselves stay outside any read.
   - id: identity.local-admin-password
     area: identity
     pillar: identity

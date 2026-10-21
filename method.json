@@ -414,7 +414,7 @@
       ]
     },
     {
-      "fact": "c11.hostPool.appGroups.directUserAssignments",
+      "fact": "c11.hostPool.directUserAssignments",
       "from": "resource-graph",
       "table": "AuthorizationResources",
       "type": "microsoft.authorization/roleassignments",
