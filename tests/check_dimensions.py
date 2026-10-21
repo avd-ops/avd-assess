@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Checks the deployment dimension register (dimensions.yaml, gap:deployment-dimensions): every row has a
-home, a baseline whose claims exist, and landing zone parameters that exist; every landing zone parameter
-has a home or a reason.
+home, a pillar from pillars.yaml, a baseline whose claims exist, and landing zone parameters that exist;
+every landing zone parameter has a home or a reason; and pillars.yaml itself is well formed.
 
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
@@ -18,7 +18,8 @@ PATH = ROOT / "dimensions.yaml"
 STANDINGS = {"published", "prior", "guidance", "gap", "owned"}
 MEASURES = {"fact", "rebuild", "measured", "intake", "host-side", "directory", "none"}
 PROPOSED = re.compile(r"^proposed:[a-z][A-Za-z0-9.]+$")
-REQUIRED = ("id", "area", "title", "decides", "home", "baseline", "measure", "landingZone")
+REQUIRED = ("id", "area", "pillar", "title", "decides", "home", "baseline", "measure", "landingZone")
+PILLAR_STATUS = {"mapped", "partial", "missing", "extension"}
 
 errors = []
 
@@ -44,6 +45,25 @@ facts = {f["id"] for f in register["facts"]}
 decisions = {d["id"] for d in register["decisions"]}
 checks = {c["id"] for c in json.loads((ROOT / "method.json").read_text(encoding="utf-8")).get("checks", [])}
 
+pillars_doc = load(ROOT / "pillars.yaml")
+if pillars_doc.get("schema") != "avd-assess-pillars/v1":
+    errors.append("pillars.yaml: schema must be avd-assess-pillars/v1")
+pillars = {}
+for p in pillars_doc.get("pillars") or []:
+    pid = p.get("id", "?")
+    if pid in pillars:
+        errors.append(f"pillars.yaml: {pid} is listed twice")
+    pillars[pid] = p
+    for key in ("title", "scope", "status"):
+        if not p.get(key):
+            errors.append(f"pillars.yaml: {pid} needs {key}")
+    if p.get("status") not in PILLAR_STATUS:
+        errors.append(f"pillars.yaml: {pid} status must be one of {sorted(PILLAR_STATUS)}")
+    if p.get("method") and not (ROOT / p["method"]).exists():
+        errors.append(f"pillars.yaml: {pid} names {p['method']}, which doesn't exist")
+    if "checklist" not in p:
+        errors.append(f"pillars.yaml: {pid} needs a checklist list (empty is fine)")
+
 doc = load(PATH)
 if doc.get("schema") != "avd-assess-dimensions/v1":
     err("schema must be avd-assess-dimensions/v1")
@@ -68,6 +88,8 @@ for row in doc.get("dimensions") or []:
     for key in REQUIRED:
         if key not in row or row[key] in (None, ""):
             err(f"{did}: missing {key}")
+    if row.get("pillar") and row["pillar"] not in pillars:
+        err(f"{did}: pillar {row['pillar']} isn't in pillars.yaml")
     home = row.get("home") or {}
     d = home.get("decision")
     if d and d not in decisions and not PROPOSED.match(d):
@@ -114,4 +136,6 @@ if errors:
     print(f"RESULT FAIL ({len(errors)} errors)")
     sys.exit(1)
 gaps = sum(1 for r in doc["dimensions"] if r["baseline"]["standing"] == "gap")
-print(f"RESULT PASS ({len(ids)} dimensions, {gaps} gaps, {len(params)} landing zone parameters with a home)")
+empty = sorted(p for p in pillars if not any(r.get("pillar") == p for r in doc["dimensions"]))
+print(f"RESULT PASS ({len(ids)} dimensions, {gaps} gaps, {len(params)} landing zone parameters with a home, "
+      f"{len(pillars)} pillars, {len(empty)} with no rows yet: {', '.join(empty)})")

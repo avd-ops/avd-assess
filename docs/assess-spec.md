@@ -12,6 +12,18 @@
 
 > Personal project. Research and learning only, not for production, provided as is. Not affiliated with, endorsed by or supported by the author's employer, Liquidware or Microsoft. Azure Virtual Desktop is a trademark of its owner.
 
+## 0. Status (2026-10-21) and the map
+
+This spec was written before the repo existed and describes the plan of 2026-10-20. The repo has moved past it: eleven method pages instead of four (section 3a), the five stages with contracts C19 to C24, a dimension register, baselines, a use case library, a gold-standard registry and an evidence intake. Sections 3a, 8 and 9 are history; the contracts moved here (decision 0021). What governs the repo now is the **map**, from the owner's rule of 2026-10-21: avd-assess is not a shadow source of information. Where an upstream source exists, link to it, pinned, and restate nothing. What this repo must hold is the map of every detail an AVD estate is built and assessed by.
+
+**The node.** One row in `dimensions.yaml` per detail, in one pillar of `pillars.yaml`: what it decides; its upstream claims (`ref:`, with standing `published`, `prior` or `guidance`), our observations (`obs:`) or the gap page (`gap:`) when no source covers it; the facts that measure it (register IDs, each `built`, `specified` or `proposed:`); the checks that judge it; the C14 decision it moves; and the landing zone parameters that set it, or `none` with a reason. `measure` says what kind of read it needs: a control-plane fact, the private rebuild package, a measurement, the operator's intake, a host-side read, a directory read, or none.
+
+**Three states, reported per pillar.** A node is *mapped* when it has a pin or a gap page (`tests/check_dimensions.py` enforces it). It is *measurable* when its facts are built and a check exists. It is *validated* when an observation with evidence backs its claim, or an evidence file fills its baseline. `map.json` (contract C20, `avd-assess-map/v1`) publishes the map for readers such as the standards library.
+
+**Pins.** A GitHub source pins to a commit. A Learn page pins by its own `git_commit_id` and `updated_at`; because the source repository behind most Learn pages is private, that identifies the version but can't be opened, so a reference may also carry `archive:`, an archived snapshot taken on the read date. The weekly `pins` workflow reports drift (Learn commits moved, GitHub paths gone, landing zone parameters and checklist items with no row) in one issue; a pin moves only by a reviewed pull request.
+
+**Where the work stands.** The review and plan of 2026-10-21 (project files, `avd-assess/2026-10-21-fable-review-and-plan.md`) lists 21 pillars, their coverage, and the work packages: the map plumbing (this section, `pillars.yaml`, `map.json`, the pins workflow, the wording test), then phase 4 in avd-current-state, then one thread per pillar, then the first evidence from a sandbox run.
+
 ## 1. Summary
 
 The world has already written most of what it takes to assess an AVD estate. Microsoft's review checklist, its resiliency library and WARA, the Well-Architected checklists, the session host sizing guidelines, the connection quality guidance and the Windows optimization tool are all published. What's missing is a place that gathers those sources, says which ones hold up in practice, and fills the few real gaps. avd-assess is that place. It has three layers, and only the last two are ours:

@@ -41,6 +41,10 @@ The [use case library](use-cases.yaml) holds common AVD use cases (task worker, 
 
 The [gold-standard registry](gold-standards.yaml) names, for each metric, the claim the methods treat as the reference and its standing (candidate, gold, baseline or demoted). How an entry is promoted or demoted is in [gaps/gold-standards.md](gaps/gold-standards.md).
 
+## The map
+
+Beyond the methods, this repo holds the **map**: one row for every detail an AVD estate is built and assessed by, in [dimensions.yaml](dimensions.yaml), each in one pillar of [pillars.yaml](pillars.yaml). A row says what the detail decides, which pinned upstream claims (or which gap page) say what good is, the facts that measure it, the checks that judge it and the landing zone parameters that set it. It is not a shadow source: where a source exists the row links to it and restates nothing. [map.json](map.json) is the same map as JSON (contract C20, `avd-assess-map/v1`) with the [baselines](baselines.yaml), the [use case library](use-cases.yaml) and the [gold-standard registry](gold-standards.yaml), for readers such as the standards library. A pillar's status in `pillars.yaml` says whether its rows exist yet; the weekly [pins workflow](.github/workflows/pins.yml) reports which checklist items and landing zone parameters still have no row, and which pins have moved.
+
 ## What this repo is not
 
 - **No tools.** Nothing here touches Azure. [avd-current-state](https://github.com/nickprignano/avd-current-state) implements the collection and assessment methods, and [avd-second-brain](https://github.com/nickprignano/avd-second-brain) cites them. Both read a pinned copy.
@@ -63,17 +67,20 @@ python3 tests/check_contracts.py
 python3 tests/check_baselines.py
 python3 tests/check_use_cases.py
 python3 scripts/check_evidence.py
+python3 tests/check_wording.py
 ```
 
-`index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (contract C20, `avd-assess-index/v1`, in [contracts/](contracts/README.md)), so the brain and avd-current-state read it without a YAML parser.
+`index.json` and `map.json` are generated: after changing a reference, an observation, a gap, a pillar, a dimension, a baseline, a use case or a registry entry, run `python3 scripts/build_index.py` and commit the result. They are the same content as JSON (contract C20, `avd-assess-index/v1` and `avd-assess-map/v1`, in [contracts/](contracts/README.md)), so the brain, avd-current-state and the standards library read them without a YAML parser.
 
-The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; every registry entry cites a claim that exists and has the evidence its standing needs; `index.json` and `method.json` match their schemas in [contracts/](contracts/README.md); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address. `tests/check_contracts.py` checks the foundation contracts themselves.
+The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; every registry entry cites a claim that exists and has the evidence its standing needs; `index.json` and `method.json` match their schemas in [contracts/](contracts/README.md); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address. `tests/check_contracts.py` checks the foundation contracts themselves. `tests/check_wording.py` refuses third-party product names: products appear as categories, with their public documentation pinned as a reference ([tests/wording.json](tests/wording.json)).
+
+Pins: a GitHub source is pinned to a commit. A Learn page is pinned by its own `git_commit_id` and `updated_at`, which identify the version but, because the source repository behind most Learn pages is private, can't be opened by a reader; a reference may therefore also carry `archive:`, an archived snapshot of the page taken on the read date, which is the copy a reader opens. The weekly [pins workflow](.github/workflows/pins.yml) compares every pin with its live source and opens one issue naming the claims to re-read; a pin moves only by a reviewed pull request.
 
 ## Contributing
 
 Contributions and forks are welcome and encouraged. Fork it and make it your own, or send back what you learn: open an issue or a pull request with a new source, a better pin, or an observation from a real run that agrees or disagrees with a source. Measured results go through the [evidence intake](evidence/README.md): one checked file per submission, aggregates only. We use the same path for our own runs. Small pull requests are easiest to review.
 
-Before you open one, run `python3 scripts/build_index.py`, `python3 tests/check_method.py`, `python3 tests/check_contracts.py`, `python3 tests/check_dimensions.py`, `python3 tests/check_baselines.py` and `python3 tests/check_use_cases.py` as the [check workflow](.github/workflows/check.yml) does. Keep tenant data, IDs and secrets out of the repo, issues and pull requests. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
+Before you open one, run `python3 scripts/build_index.py`, `python3 tests/check_method.py`, `python3 tests/check_contracts.py`, `python3 tests/check_dimensions.py`, `python3 tests/check_baselines.py`, `python3 tests/check_use_cases.py` and `python3 tests/check_wording.py` as the [check workflow](.github/workflows/check.yml) does. Keep tenant data, IDs and secrets out of the repo, issues and pull requests. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
 
 ## License
 

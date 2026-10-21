@@ -1,0 +1,37 @@
+{
+  "description": "Words public text here must not use. Third-party products appear as categories with their public documentation pinned as a reference, never by product name, with no endorsement and no integration implied (owner, 2026-10-21). Microsoft's own products are named as the sources name them. The one partner this family names is Liquidware, and only in the notice and the partner rule. tests/check_wording.py scans every tracked text file except this one.",
+  "useInstead": {
+    "SSE or ZTNA client": "a secure service edge or zero trust network access client, as a category",
+    "VPN client": "a VPN client, as a category",
+    "EDR": "an endpoint detection and response product, as a category",
+    "monitoring product": "a third-party monitoring or user experience product, as a category"
+  },
+  "banned": [
+    "Zscaler",
+    "GlobalProtect",
+    "Palo Alto",
+    "Netskope",
+    "Cloudflare One",
+    "Cato Networks",
+    "AnyConnect",
+    "FortiClient",
+    "CrowdStrike",
+    "SentinelOne",
+    "Sophos",
+    "Trellix",
+    "Carbon Black",
+    "Citrix",
+    "Omnissa",
+    "Horizon View",
+    "Nerdio",
+    "Login VSI",
+    "Login Enterprise",
+    "Goliath",
+    "ControlUp",
+    "Lakeside",
+    "eG Innovations",
+    "Parallels RAS",
+    "ai-brain",
+    "me2"
+  ]
+}
