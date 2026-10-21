@@ -1,0 +1,15 @@
+id: files-redundancy
+title: Azure Files data redundancy
+url: https://learn.microsoft.com/azure/storage/files/files-redundancy
+pin: "Learn git_commit_id 1d15a8e33868d3040cdb321fa98ca4a15fe3292d, updated_at 2026-07-17"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [profiles]
+claims:
+  - id: zrs-for-availability
+    says: ZRS keeps a share readable and writable through a zone loss without remounting, and is recommended in the primary region where high availability matters.
+    kind: published
+  - id: ssd-no-geo
+    says: SSD (premium) shares support only LRS or ZRS; geo-redundancy is for HDD shares, so premium profiles reach a second region some other way.
+    kind: published

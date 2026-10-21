@@ -1,0 +1,21 @@
+id: fslogix-redirections
+title: FSLogix custom profile redirections (redirections.xml)
+url: https://learn.microsoft.com/fslogix/concepts-redirections-xml
+pin: "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [profiles]
+claims:
+  - id: exclude-only-with-knowledge
+    says: Profile data isn't designed to be excluded; exclude only stateless data such as browser caches, and only with knowledge of the app.
+    kind: guidance
+  - id: profile-containers-only
+    says: redirections.xml applies to profile containers only, has no effect on ODFC, and removing an entry later doesn't remove data already in the container.
+    kind: published
+  - id: read-only-source
+    says: When the file is shared centrally, users must have read-only access to it.
+    kind: published
+  - id: kerberos-aes-sha1
+    says: The April 2026 Windows Server update moves the default Kerberos encryption from RC4 to AES-SHA1; shares holding FSLogix containers must support AES-SHA1 first or sign-in can fail.
+    kind: published

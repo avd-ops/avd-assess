@@ -1,0 +1,21 @@
+id: windows-multisession-faq
+title: Windows Enterprise multi-session FAQ
+url: https://learn.microsoft.com/azure/virtual-desktop/windows-multisession-faq
+pin: "Learn git_commit_id e66f972dcf1825b0aaad3e2f10dfa6e0080d1bb0, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [app-delivery, profiles]
+claims:
+  - id: reports-as-server
+    says: Multi-session Windows reports the same product type as Windows Server, so some installers refuse to install; the fix is a vendor update.
+    kind: published
+  - id: validate-density
+    says: How many sessions a host carries depends on its hardware and the users' apps; validate performance for the workload.
+    kind: guidance
+  - id: user-installs-lost
+    says: With a profile solution that deletes local profiles at sign-out, apps a user installs in a session disappear; apps that must stay are provisioned for every profile.
+    kind: published
+  - id: fslogix-preinstalled
+    says: FSLogix comes preinstalled on the multi-session marketplace images, and FSLogix profile containers are recommended for non-persistent hosts.
+    kind: published
