@@ -1,0 +1,14 @@
+id: app-attach
+title: App Attach in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/app-attach-overview
+pin: "Learn git_commit_id 18f8ed292f3df23081d1cb2446c480105abdbaf9, updated_at 2026-08-26"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: per-user-per-host-pool
+    says: An attached app reaches a user only when it is assigned to the host pool and to the user, so users on one multi-session host can get different app sets.
+    kind: published
+  - id: share-same-region
+    says: The app package share should be in the session hosts' region and not the share used for profile containers.
+    kind: guidance

@@ -6,6 +6,9 @@ read: 2026-10-20
 license: Microsoft Learn content (link only)
 areas: [benchmarks]
 claims:
+  - id: workload-types
+    says: "Four example workload types: light (basic data entry), medium (office documents and static web), heavy (developers, content creators) and power (graphics, CAD, machine learning)."
+    kind: guidance
   - id: estimates-only
     says: The page's numbers are generic guidelines for initial performance estimates only.
     kind: guidance

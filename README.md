@@ -25,6 +25,7 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 | [Sample check](methods/sample-check.md) | A short, point-in-time health check of measured user experience, built on the four above |
 | [Baseline profile](methods/baseline-profile.md) | What good looks like for a host pool of each workload class: experience, utilization, density |
 | [Tune and rightsize](methods/tune-rightsize.md) | A repeatable loop to move a running estate toward its profile at the lowest cost that keeps it there |
+| [Use cases](methods/use-cases.md) | Who uses the estate for what (personas, apps, performance, security and compliance needs), and what that says it should be |
 
 Every step on those pages cites one of three things:
 

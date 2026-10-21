@@ -16,5 +16,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [baseline-profile](baseline-profile.md) | One profile per workload class of what good looks like: experience gate, utilization bands, density |
 | [evidence-intake](evidence-intake.md) | One path for anyone, us included, to send measured results back to the baselines |
 | [tune-loop](tune-loop.md) | The order of tuning levers, one change per round, and the record each round leaves |
+| [discovery](discovery.md) | The interview questions, and which answers become intake facts and which stay private narrative |
+| [use-cases](use-cases.md) | The structured use case record, the decisions it informs, and how it is checked against what is deployed and measured |
 
 The parts of these gaps that a tool runs (the collection map, checks, readiness and scoring) are in [method.json](../method.json), avd-second-brain contract C20 (`avd-assess-method/v1`). avd-current-state runs a pinned copy.
