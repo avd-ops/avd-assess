@@ -20,6 +20,7 @@ EXAMPLES = {
     "examples/assess/method.example.json": "assess-method.schema.json",
     "examples/assess/intake.example.json": "intake.schema.json",
     "examples/assess/assessment.example.json": "assessment.schema.json",
+    "examples/assess/review.example.json": "assessment-review.schema.json",
     "examples/run-record/run.example.json": "run-record.schema.json",
     "examples/run-record/cost.example.json": "run-cost.schema.json",
     "examples/run-record/journal.example.jsonl": "run-journal.schema.json",
@@ -79,6 +80,24 @@ for rel, schema_name in EXAMPLES.items():
 for path in sorted((CONTRACTS / "examples").rglob("*.json*")):
     if str(path.relative_to(CONTRACTS)) not in EXAMPLES:
         err(path, "example isn't listed in tests/check_contracts.py, so nothing checks it")
+
+# C23: one decision per check, and a reason that fits its disposition (the schema's allOf).
+review_schema = schemas.get("assessment-review.schema.json")
+if review_schema:
+    rv = Draft202012Validator(review_schema)
+    review_path = CONTRACTS / "examples/assess/review.example.json"
+    review = load(review_path)
+    if review is not None:
+        seen = [d["check"] for d in review.get("decisions", [])]
+        if len(seen) != len(set(seen)):
+            err(review_path, "a check has more than one decision")
+        for bad in ({"disposition": "fix", "reason": "cost"}, {"disposition": "accept", "reason": "later-phase"},
+                    {"disposition": "defer", "reason": "fix-planned"}, {"disposition": "fix", "reason": "fix-planned", "reviewBy": "2027-01-01"},
+                    {"disposition": "accept", "reason": "cost", "note": "free text"}):
+            doc = json.loads(json.dumps(review))
+            doc["decisions"][0] = {"check": "asm-sample-check", "outcome": "warn", **bad}
+            if rv.is_valid(doc):
+                err(review_path, f"the C23 schema accepts a decision it must refuse: {bad}")
 
 
 def schema_has(schema, pointer):
