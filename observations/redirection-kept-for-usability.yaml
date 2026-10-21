@@ -3,5 +3,5 @@ claim: ref:avd-security-guide#device-redirection
 verdict: extends
 observed: The landing zone's default RDP properties turn drive, USB and COM port redirection off but keep clipboard, printers, smart cards, WebAuthn and the camera, because users need them. Restricting redirection is a per-property trade-off, so the method reports each one kept on as a warn with its reason, not as a gap.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/main.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/main.bicep
 date: 2026-10-20

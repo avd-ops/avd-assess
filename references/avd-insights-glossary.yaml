@@ -15,3 +15,12 @@ claims:
   - id: perf-counters
     says: Insights lists the recommended performance counters and their intervals for session hosts.
     kind: guidance
+  - id: time-to-connect-checkpoints
+    says: Time to connect runs from the connection's Started row to the ShellReady checkpoint for a desktop, or the first RdpShellAppExecuted checkpoint for a RemoteApp.
+    kind: published
+  - id: credential-time-subtracted
+    says: The time a user takes to enter credentials is subtracted from time to connect.
+    kind: published
+  - id: required-event-logs
+    says: Insights needs the Application and System logs (errors and warnings) plus the RemoteConnectionManager Admin, LocalSessionManager Operational and FSLogix Apps Admin and Operational logs.
+    kind: published
