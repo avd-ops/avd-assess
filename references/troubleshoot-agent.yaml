@@ -1,0 +1,49 @@
+id: troubleshoot-agent
+title: Troubleshoot common Azure Virtual Desktop Agent issues
+url: https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-agent
+pin: "Learn git_commit_id 87a86c7129d56e5e4137eb4447920bed2d5df4e6, updated_at 2025-10-17"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [diagnostics]
+notes: The error-code map (gap:error-code-map) keys these claims by the code an operator sees.
+claims:
+  - id: app-event-sources
+    says: Agent and connectivity problems show in the host's Application log under the WVD-Agent, WVD-Agent-Updater, RDAgentBootLoader and MsiInstaller sources.
+    kind: published
+  - id: bootloader-stopped
+    says: A stopped Remote Desktop Agent Loader service means the agent isn't running; if it stops again after a start, registration is failing.
+    kind: published
+  - id: event-3277-token
+    says: Event 3277 with INVALID_REGISTRATION_TOKEN or EXPIRED_MACHINE_TOKEN means the registration key isn't valid and the host needs a new one.
+    kind: published
+  - id: event-3277-invalid-form
+    says: Event 3277 with INVALID_FORM means the agent can't reach the broker, usually firewall or DNS; the broker's health endpoints show whether it is reachable.
+    kind: published
+  - id: event-3703-gateway
+    says: Event 3703 means the agent can't reach the gateway URLs on the required list.
+    kind: published
+  - id: event-3019-websocket
+    says: Event 3019 means the agent can't reach the web socket transport URLs on the required list.
+    kind: published
+  - id: install-msi-errors
+    says: Event 3277 with InstallMsiException means another install is running or a policy blocks the Windows installer; DownloadMsiException means the disk has no room for the agent.
+    kind: published
+  - id: installation-health-check-failed
+    says: Event 3277 with InstallationHealthCheckFailedException means the stack listener isn't working.
+    kind: published
+  - id: endpoint-not-found
+    says: Event 3277 with ENDPOINT_NOT_FOUND means the broker found no host to connect to; the pool is empty, its hosts are off or at their session limit, or no agent is running.
+    kind: published
+  - id: needs-assistance-checks
+    says: UrlsAccessibleCheck, MetaDataServiceCheck and MonitoringAgentCheck are the checks that leave a host in Needs Assistance.
+    kind: published
+  - id: name-already-registered
+    says: NAME_ALREADY_REGISTERED means another host with the same name is already in the host pool.
+    kind: published
+  - id: at-connection-limit
+    says: "The error Connection not found, RDAgent does not have an active connection to the broker, can mean the host is at its session limit."
+    kind: published
+  - id: reinstall-last
+    says: When nothing else works, uninstall the agent, boot loader and stack, remove the host from the pool and register it again with a new key.
+    kind: guidance

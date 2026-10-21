@@ -3,6 +3,6 @@ claim: ref:cost-management-budgets#alerts-dont-stop
 verdict: extends
 observed: Budgets only alert, so the landing zone wires its budget to an action group that runs a Lock runbook, and avd-swarm's spend guard enforces caps before a lab run opens instead of relying on the budget. For AVD a plain deallocate isn't enough either, because Start VM on Connect and the scaling plan start the hosts again at the next sign-in or ramp-up; Lock drains, sets the scaling plan exclusion tag and turns Start VM on Connect off. The budget-to-runbook path hasn't run against a real deployment yet.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0011-auto-shutdown.md
-  - https://github.com/nickprignano/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0011-auto-shutdown.md
+  - https://github.com/avd-ops/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md
 date: 2026-10-20

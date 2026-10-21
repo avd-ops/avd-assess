@@ -1,0 +1,30 @@
+id: diagnostics-log-analytics
+title: Send diagnostic data to Log Analytics for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/diagnostics-log-analytics
+pin: "Learn git_commit_id 4fdc1dca34d1fa7147fb1406df29d3ece36533fb, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [diagnostics, monitoring]
+claims:
+  - id: categories
+    says: The service logs management activities, feed, connections, host registration, errors, checkpoints, agent health, network, connection graphics, session host management and autoscale, each a diagnostic category.
+    kind: published
+  - id: per-object
+    says: Diagnostics are turned on per AVD object (host pool, application group, workspace), and data appears only for activity after that, a few hours after first setup.
+    kind: published
+  - id: unreached-not-logged
+    says: A connection that never reaches the service leaves no diagnostic row, so a user's network failure can be invisible in these tables.
+    kind: published
+  - id: connection-states
+    says: Connection rows report Started when the user opens a resource, Connected when the session reaches the host and Completed when it ends.
+    kind: published
+  - id: service-error-split
+    says: In WVDErrors, ServiceError false marks an issue an admin can fix and true one to escalate to Microsoft with its correlation ID.
+    kind: published
+  - id: errors-scope
+    says: WVDErrors holds management, host registration and feed errors as well as connection errors.
+    kind: published
+  - id: client-info-gaps
+    says: Client details can be missing from connection and checkpoint rows even when the connection completes.
+    kind: published
