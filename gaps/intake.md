@@ -47,3 +47,12 @@
 | `intake.mfaScope` | When does AVD sign-in require MFA? | `every-sign-in`, `conditional`, `none`, `unknown` | Refines `intake.avdMfa` until a directory read exists (`ref:avd-mfa-conditional-access#two-aligned-policies`) |
 | `intake.signInMethods` | Which credentials do users sign in with (any of)? | `password`, `passwordless`, `smartcard`, `federated` | Smart cards and Windows Hello for Business need a domain controller line of sight or a KDC proxy (`ref:avd-authentication#smartcard-needs-kdc`) |
 | `intake.externalUsers` | Do invited users from outside the tenant use the estate? | `none`, `invited`, `undecided` | External identities need Entra joined hosts, recent builds, single sign-on and Windows App (`ref:avd-authentication#external-identity-requirements`) |
+
+## Proposed by the pillar batch (2026-10-21)
+
+The map's pillars add enum questions as `specified` facts in the register, each defined on its pillar's gap page. The intake schema (C19) gains them once, when the batch ends, so producers change once.
+
+| Fact | Pillar | Defined in |
+|---|---|---|
+| `intake.clientApps`, `intake.clientDeviceManagement`, `intake.peripheralNeeds`, `intake.printing` | endpoints | [endpoints-scope](endpoints-scope.md#proposed-intake-questions) |
+| `intake.complianceFrameworks`, `intake.auditRetentionDays`, `intake.changeControl` | governance | [governance-scope](governance-scope.md#proposed-intake-questions) |

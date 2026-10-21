@@ -43,3 +43,49 @@ claims:
   - id: ES-2
     says: Use modern anti-malware on session hosts.
     kind: guidance
+  # Controls added for the governance pillar's mapping (gaps/governance-scope.md, 2026-10-21), read at the same pin.
+  - id: NS-1
+    says: Session hosts must sit in a customer virtual network; private IPs, and NSGs apply to their subnets.
+    kind: guidance
+  - id: IM-3
+    says: Use managed identities rather than service principals where the data plane supports them.
+    kind: guidance
+  - id: IM-8
+    says: Not supported for the service (no native Key Vault use for its credentials).
+    kind: published
+  - id: PA-1
+    says: Session hosts get a local administrator account; keep it for emergency use and authenticate with Entra ID instead.
+    kind: guidance
+  - id: PA-8
+    says: Customer Lockbox isn't supported for the service.
+    kind: published
+  - id: DP-1
+    says: Discover and classify sensitive data with the organization's classification tools; the service supports them.
+    kind: guidance
+  - id: DP-2
+    says: Use a data loss prevention solution, host-based where needed, to watch sensitive data leaving sessions.
+    kind: guidance
+  - id: DP-5
+    says: Customer-managed keys aren't supported for the service's own data at rest.
+    kind: published
+  - id: DP-6
+    says: Key Vault key management isn't supported for the service itself.
+    kind: published
+  - id: DP-7
+    says: Key Vault certificate management isn't supported for the service itself.
+    kind: published
+  - id: AM-2
+    says: Azure Policy can audit and enforce the service's configuration; use deny and deploy-if-not-exists effects and alert on drift.
+    kind: guidance
+  - id: AM-5
+    says: Defender adaptive application controls aren't supported; publishing RemoteApps instead of desktops narrows what users can run.
+    kind: guidance
+  - id: PV-6
+    says: Azure Automation Update Management isn't supported for the service.
+    kind: published
+  - id: ES-3
+    says: Keep anti-malware platform, engine and signatures updated and their health monitored.
+    kind: guidance
+  - id: BR-1
+    says: Session hosts and file shares can be protected with Azure Backup; the service has no native backup of its own.
+    kind: guidance

@@ -39,6 +39,38 @@
       ]
     },
     {
+      "id": "activity-log",
+      "title": "Activity log in Azure Monitor",
+      "url": "https://learn.microsoft.com/azure/azure-monitor/fundamentals/activity-log",
+      "pin": "Learn git_commit_id e1e0379f84a8e116f30c72567d10ade8ea2f46e5, updated_at 2026-10-19",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "governance"
+      ],
+      "claims": [
+        {
+          "id": "retention-90-days",
+          "says": "Activity log entries are kept for 90 days and then deleted; the activity log is the only record of who created a resource.",
+          "kind": "published"
+        },
+        {
+          "id": "export-by-diagnostic-setting",
+          "says": "A diagnostic setting sends the activity log to a Log Analytics workspace, storage or Event Hubs for longer retention.",
+          "kind": "published"
+        },
+        {
+          "id": "workspace-retention-12-years",
+          "says": "Exported to a Log Analytics workspace, activity log data can be kept up to 12 years; only the time beyond the first 90 days is charged.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "adds-in-azure",
       "title": "Deploy AD DS in an Azure virtual network (Azure Architecture Center)",
       "url": "https://learn.microsoft.com/azure/architecture/example-scenario/identity/adds-extend-domain",
@@ -781,6 +813,33 @@
         {
           "id": "nonzonal-placement",
           "says": "A resource not configured for zones may be placed in any zone of the region and can go down with whichever zone fails.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-admin-template",
+      "title": "Administrative template for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/administrative-template",
+      "pin": "Learn git_commit_id f72577429d71e34a0e8bd47467206d5081ed5577, updated_at 2026-09-24",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "governance",
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "template-delivery",
+          "says": "The AVD administrative template is in the Intune settings catalog, can be added to domain Group Policy, and locally per host though not recommended at scale.",
+          "kind": "published"
+        },
+        {
+          "id": "template-settings",
+          "says": "It configures graphics data logging, Shortpath for managed networks, screen capture protection, watermarking and H.265 hardware acceleration.",
           "kind": "published"
         }
       ]
@@ -1732,6 +1791,11 @@
           "id": "transport-pivot",
           "says": "The connection reliability view groups disconnections by transport, with Multipath, Relay, ShortpathPublic and ShortpathPrivate for UDP, and NotUsed or empty for TCP.",
           "kind": "published"
+        },
+        {
+          "id": "client-version-usage",
+          "says": "The Clients tab lists every client connecting and the users on versions older than the newest seen; some mobile clients report a build number, not a version.",
+          "kind": "published"
         }
       ]
     },
@@ -1956,6 +2020,7 @@
         "assessment"
       ],
       "pillars": [
+        "governance",
         "intune"
       ],
       "claims": [
@@ -2288,6 +2353,10 @@
           "kind": "published"
         },
         {
+          "id": "supported-clients",
+          "says": "Users connect with Windows App or the Remote Desktop client; AVD doesn't support the RemoteApp and Desktop Connections or Remote Desktop Connection (MSTSC) clients."
+        },
+        {
           "id": "supported-os",
           "says": "Session hosts run 64-bit Windows 11 or 10 Enterprise (multi-session or single-session) or Windows Server 2016 to 2025; different pools can run different OSes.",
           "kind": "published"
@@ -2492,6 +2561,7 @@
         "collection"
       ],
       "pillars": [
+        "governance",
         "identity"
       ],
       "claims": [
@@ -3657,6 +3727,64 @@
       ]
     },
     {
+      "id": "caf-avd-security-governance",
+      "title": "Security, governance and compliance for Azure Virtual Desktop (Cloud Adoption Framework)",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-security-governance-and-compliance",
+      "pin": "https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/9e9db6f427b04cccdc3040b31aaf3440eaf5b994/docs/scenarios/azure-virtual-desktop/eslz-security-governance-and-compliance.md",
+      "read": "2026-10-21",
+      "license": "CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "governance"
+      ],
+      "notes": "Deprecated on the read date and due to be removed from Learn on 2026-10-30; the GitHub pin keeps the text readable.",
+      "claims": [
+        {
+          "id": "compliance-dashboard",
+          "says": "Use the Defender for Cloud regulatory compliance dashboard to add the compliance standards an organization follows.",
+          "kind": "guidance"
+        },
+        {
+          "id": "metadata-geographies",
+          "says": "Where data residency applies, limit AVD workspaces, application groups and host pools to geographies that store their metadata locally.",
+          "kind": "guidance"
+        },
+        {
+          "id": "activity-logging",
+          "says": "Collect Azure Activity, Microsoft Entra and Key Vault logs for the AVD landing zone and watch them in a SIEM.",
+          "kind": "guidance"
+        },
+        {
+          "id": "groups-not-users",
+          "says": "Assign application groups to Entra groups rather than individual users.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "caf-resource-abbreviations",
+      "title": "Abbreviation recommendations for Azure resources (Cloud Adoption Framework)",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations",
+      "pin": "https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/14d01c53b40e503f650ad504a2eba9a279a60fe7/docs/ready/azure-best-practices/resource-abbreviations.md",
+      "read": "2026-10-21",
+      "license": "CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "governance"
+      ],
+      "claims": [
+        {
+          "id": "avd-abbreviations",
+          "says": "Recommended prefixes include vdpool for host pools, vdag for application groups and vdws for workspaces.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "capacity-reservation",
       "title": "On-demand capacity reservation in Azure",
       "url": "https://learn.microsoft.com/azure/virtual-machines/capacity-reservation-overview",
@@ -3884,6 +4012,34 @@
         {
           "id": "reconnect-window",
           "says": "An agent who reconnects within 30 seconds keeps the live call; after 30 seconds the call is rerouted to another agent.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "context-based-redirections",
+      "title": "Context-based redirections (preview), Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/context-based-redirections-avd",
+      "pin": "Learn git_commit_id 3a92c56eeb06c2c44fb9e51ee18283bc9ac6e888, updated_at 2026-06-03",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoints",
+        "identity"
+      ],
+      "notes": "Preview on the read date; a node citing it stays guidance until it is generally available.",
+      "claims": [
+        {
+          "id": "auth-context-redirection",
+          "says": "Host pool RDP properties can tie clipboard, drive, printer and USB redirection to a Conditional Access authentication context, such as a compliant device.",
+          "kind": "published"
+        },
+        {
+          "id": "full-desktop-only",
+          "says": "Supported in Windows App on Windows, web, Android, iOS and iPadOS and macOS, for full desktop sessions.",
           "kind": "published"
         }
       ]
@@ -4194,6 +4350,37 @@
         {
           "id": "first-report-delay",
           "says": "A VDI device's first onboarding can delay client reporting by about three to four hours.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "defender-regulatory-compliance",
+      "title": "Improve regulatory compliance in Microsoft Defender for Cloud",
+      "url": "https://learn.microsoft.com/azure/defender-for-cloud/regulatory-compliance-dashboard",
+      "pin": "Learn git_commit_id 8f81656692736b3006aa3f62627339db34735c4e, updated_at 2026-06-17",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "governance"
+      ],
+      "claims": [
+        {
+          "id": "mcsb-default",
+          "says": "Turning on Defender for Cloud assigns the Microsoft cloud security benchmark by default.",
+          "kind": "published"
+        },
+        {
+          "id": "more-standards-need-paid-plan",
+          "says": "Other compliance standards can be added to the dashboard once at least one paid Defender plan is on.",
+          "kind": "published"
+        },
+        {
+          "id": "assessed-against-controls",
+          "says": "The dashboard assesses resources against each standard's controls continuously; it shows gaps, not a certification.",
           "kind": "published"
         }
       ]
@@ -5762,6 +5949,102 @@
           "id": "ES-2",
           "says": "Use modern anti-malware on session hosts.",
           "kind": "guidance"
+        },
+        {
+          "id": "NS-1",
+          "says": "Session hosts must sit in a customer virtual network; private IPs, and NSGs apply to their subnets.",
+          "kind": "guidance"
+        },
+        {
+          "id": "IM-3",
+          "says": "Use managed identities rather than service principals where the data plane supports them.",
+          "kind": "guidance"
+        },
+        {
+          "id": "IM-8",
+          "says": "Not supported for the service (no native Key Vault use for its credentials).",
+          "kind": "published"
+        },
+        {
+          "id": "PA-1",
+          "says": "Session hosts get a local administrator account; keep it for emergency use and authenticate with Entra ID instead.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PA-8",
+          "says": "Customer Lockbox isn't supported for the service.",
+          "kind": "published"
+        },
+        {
+          "id": "DP-1",
+          "says": "Discover and classify sensitive data with the organization's classification tools; the service supports them.",
+          "kind": "guidance"
+        },
+        {
+          "id": "DP-2",
+          "says": "Use a data loss prevention solution, host-based where needed, to watch sensitive data leaving sessions.",
+          "kind": "guidance"
+        },
+        {
+          "id": "DP-5",
+          "says": "Customer-managed keys aren't supported for the service's own data at rest.",
+          "kind": "published"
+        },
+        {
+          "id": "DP-6",
+          "says": "Key Vault key management isn't supported for the service itself.",
+          "kind": "published"
+        },
+        {
+          "id": "DP-7",
+          "says": "Key Vault certificate management isn't supported for the service itself.",
+          "kind": "published"
+        },
+        {
+          "id": "AM-2",
+          "says": "Azure Policy can audit and enforce the service's configuration; use deny and deploy-if-not-exists effects and alert on drift.",
+          "kind": "guidance"
+        },
+        {
+          "id": "AM-5",
+          "says": "Defender adaptive application controls aren't supported; publishing RemoteApps instead of desktops narrows what users can run.",
+          "kind": "guidance"
+        },
+        {
+          "id": "PV-6",
+          "says": "Azure Automation Update Management isn't supported for the service.",
+          "kind": "published"
+        },
+        {
+          "id": "ES-3",
+          "says": "Keep anti-malware platform, engine and signatures updated and their health monitored.",
+          "kind": "guidance"
+        },
+        {
+          "id": "BR-1",
+          "says": "Session hosts and file shares can be protected with Azure Backup; the service has no native backup of its own.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "mcsb-logging",
+      "title": "Microsoft cloud security benchmark: logging and threat detection",
+      "url": "https://learn.microsoft.com/security/benchmark/azure/mcsb-logging-threat-detection",
+      "pin": "Learn git_commit_id dc8d056f2487bbfeb72088cc6c320dc82f5e3198, updated_at 2026-02-03",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "governance"
+      ],
+      "claims": [
+        {
+          "id": "LT-6",
+          "says": "Set log retention by compliance, regulation and business need; Activity logs last 90 days unless routed elsewhere by a diagnostic setting.",
+          "kind": "guidance"
         }
       ]
     },
@@ -5895,6 +6178,75 @@
       ]
     },
     {
+      "id": "policy-assignment-structure",
+      "title": "Azure Policy assignment structure",
+      "url": "https://learn.microsoft.com/azure/governance/policy/concepts/assignment-structure",
+      "pin": "Learn git_commit_id a404a6abd3de4275ac00471ae996ec31443b9aeb, updated_at 2026-09-18",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "governance"
+      ],
+      "claims": [
+        {
+          "id": "do-not-enforce",
+          "says": "An assignment in DoNotEnforce mode evaluates compliance but doesn't enforce its effect on create or update, and writes no Activity log entry for it.",
+          "kind": "published"
+        },
+        {
+          "id": "do-not-enforce-for-testing",
+          "says": "Use DoNotEnforce to evaluate a new assignment before enforcing it; Default is for assignments meant to apply.",
+          "kind": "guidance"
+        },
+        {
+          "id": "enroll-staged",
+          "says": "Enroll mode enforces only on scopes or resources enrolled in the assignment, for staged rollout.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "policy-built-ins",
+      "title": "Azure Policy built-in policy definitions",
+      "url": "https://learn.microsoft.com/azure/governance/policy/samples/built-in-policies",
+      "pin": "Learn git_commit_id a8fd4cc5f61be2ad229afefa3073a8697d92dd1a, updated_at 2026-07-08",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "governance"
+      ],
+      "notes": "Cited by definition name, never by definition GUID.",
+      "claims": [
+        {
+          "id": "avd-private-access",
+          "says": "Built-in Desktop Virtualization definitions audit or deny public network access on host pools and workspaces and deploy private endpoints and DNS zones.",
+          "kind": "published"
+        },
+        {
+          "id": "allowed-locations",
+          "says": "The built-in Allowed locations and Allowed locations for resource groups definitions deny deployments outside a listed set of regions.",
+          "kind": "published"
+        },
+        {
+          "id": "allowed-vm-skus",
+          "says": "The built-in Allowed virtual machine size SKUs definition limits VM sizes to a listed set.",
+          "kind": "published"
+        },
+        {
+          "id": "tag-definitions",
+          "says": "Built-in tag definitions require a tag on resources or inherit a missing tag from the resource group.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "private-endpoint-dns",
       "title": "Azure private endpoint DNS configuration",
       "url": "https://learn.microsoft.com/azure/private-link/private-endpoint-dns",
@@ -5999,6 +6351,42 @@
           "id": "verify-in-insights",
           "says": "Multipath use shows in the client's connection bar and in Insights' connection reliability view.",
           "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "rdp-printer-redirection",
+      "title": "Configure printer redirection over the Remote Desktop Protocol",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/redirection-configure-printers",
+      "pin": "Learn git_commit_id 2ef32495c3b6974be09cd3373e163f2b2a920d55, updated_at 2026-08-10",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoints"
+      ],
+      "claims": [
+        {
+          "id": "all-local-printers",
+          "says": "Printer redirection redirects every printer on the local device, not a chosen few, and makes the local default printer the session default.",
+          "kind": "published"
+        },
+        {
+          "id": "easy-print",
+          "says": "Redirection uses the Remote Desktop Easy Print driver, so no printer drivers go on session hosts; the driver must be on the local device.",
+          "kind": "published"
+        },
+        {
+          "id": "enable-on-hosts-control-on-pool",
+          "says": "Enable printer redirection on session hosts through Intune or Group Policy, then control it with the host pool RDP properties.",
+          "kind": "guidance"
+        },
+        {
+          "id": "universal-print-alternative",
+          "says": "Universal Print is the documented alternative to redirecting local printers.",
+          "kind": "guidance"
         }
       ]
     },
@@ -6207,6 +6595,42 @@
         {
           "id": "backup-not-availability",
           "says": "VM backups give recovery points for deletion or corruption but don't keep an application available through an infrastructure failure.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "remote-desktop-client-overview",
+      "title": "Remote Desktop client overview (previous versions)",
+      "url": "https://learn.microsoft.com/previous-versions/remote-desktop-client/overview",
+      "pin": "Learn git_commit_id 045ed5b50a1654a52070e3609efaf70b8a5ec074, updated_at 2026-02-14",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoints"
+      ],
+      "claims": [
+        {
+          "id": "windows-app-replaces",
+          "says": "Windows App replaces the Remote Desktop client on every platform.",
+          "kind": "published"
+        },
+        {
+          "id": "msi-and-web-end-of-support",
+          "says": "The Remote Desktop client for Windows (MSI) and the Remote Desktop web client are unsupported in public cloud from 2026-03-27.",
+          "kind": "published"
+        },
+        {
+          "id": "msi-sovereign-extension",
+          "says": "The MSI client stays supported until 2026-09-28 for Azure Government, Azure operated by 21Vianet and AVD classic.",
+          "kind": "published"
+        },
+        {
+          "id": "store-app-ended",
+          "says": "The Remote Desktop app for Windows from the Microsoft Store reached end of support in September 2025 and can't be installed.",
           "kind": "published"
         }
       ]
@@ -6833,6 +7257,18 @@
         {
           "id": "D03.06",
           "says": "Review the limits of Entra Domain Services before using it for AVD (Reliability, low)."
+        },
+        {
+          "id": "C02.03",
+          "says": "Review the client OS users run and the AVD client type (Performance, low)."
+        },
+        {
+          "id": "E01.01",
+          "says": "Use the built-in administrative templates to configure AVD settings (Operations, low)."
+        },
+        {
+          "id": "E01.02",
+          "says": "Plan the session host configuration management strategy (Operations, low)."
         }
       ]
     },
@@ -7160,6 +7596,11 @@
           "id": "reproduce-on-windows-app",
           "says": "A thin-client issue is first reproduced on Windows App; if it does not reproduce, the thin-client provider supports it.",
           "kind": "published"
+        },
+        {
+          "id": "approved-partners",
+          "says": "Microsoft lists thin client partners approved for AVD and links their own documentation; a browser on a thin client can use the web client instead.",
+          "kind": "published"
         }
       ]
     },
@@ -7482,6 +7923,37 @@
         {
           "id": "compliance-on-client",
           "says": "A compliant-device requirement on the connection-time apps applies to the client device, not the session host.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "universal-print-avd",
+      "title": "Printing on Azure Virtual Desktop using Universal Print",
+      "url": "https://learn.microsoft.com/universal-print/fundamentals/universal-print-avd",
+      "pin": "Learn git_commit_id 4106c2127bf98bc6e691c08e0d453d3b34a07bed, updated_at 2023-04-27",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoints"
+      ],
+      "claims": [
+        {
+          "id": "per-user-printers",
+          "says": "On Windows 11 multi-session 22H2 and later, Universal Print installs printers per user and they roam with a roaming profile such as FSLogix.",
+          "kind": "published"
+        },
+        {
+          "id": "location-from-client",
+          "says": "Location-based printer search uses the client's location only when location services and location override are on in every session host.",
+          "kind": "published"
+        },
+        {
+          "id": "older-os-issues",
+          "says": "Windows 10 and older Windows 11 hosts keep the shared-host issues (printers visible to all users, search near the VM, no roaming).",
           "kind": "published"
         }
       ]
@@ -7991,6 +8463,7 @@
         "assessment"
       ],
       "pillars": [
+        "endpoints",
         "intune"
       ],
       "claims": [
@@ -8007,6 +8480,43 @@
         {
           "id": "filters-managed-unmanaged",
           "says": "Assignment filters let different requirements apply to managed and unmanaged client devices; without a filter the same requirements apply to both.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "windows-app-get-started",
+      "title": "Get started with Windows App to connect to devices and apps",
+      "url": "https://learn.microsoft.com/windows-app/get-started-connect-devices-desktops-apps?pivots=azure-virtual-desktop",
+      "pin": "Learn git_commit_id 7370f6fff5eeadbbbbd802c3a3d5d7133b44ec0b, updated_at 2026-10-08",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "endpoints"
+      ],
+      "claims": [
+        {
+          "id": "client-platforms",
+          "says": "Windows App connects to AVD from Windows, macOS, iOS and iPadOS, Android and Chrome OS, web browsers and Meta Quest (preview).",
+          "kind": "published"
+        },
+        {
+          "id": "os-floors",
+          "says": "Each platform tab lists a minimum OS version; Windows 10 devices out of mainstream support must be enrolled in Extended Security Updates.",
+          "kind": "published"
+        },
+        {
+          "id": "web-browser-floor",
+          "says": "In a browser: Edge 131, Chrome 130, Safari 18 or Firefox 128 or later; no mobile browsers; the browser at most 12 months old, with AVC and WebGL.",
+          "kind": "published"
+        },
+        {
+          "id": "no-personal-account",
+          "says": "Users sign in with their work account for AVD; a personal Microsoft account can't sign in to Windows App for AVD.",
           "kind": "published"
         }
       ]
@@ -8055,6 +8565,48 @@
           "id": "multipath-by-platform",
           "says": "Multipath with UDP is on Windows (macOS in beta); Multipath with UDP and TCP is on Windows only.",
           "kind": "published"
+        },
+        {
+          "id": "display-by-platform",
+          "says": "Multiple monitors work on Windows and macOS only; dynamic resolution on Windows, macOS and the web; iOS, Android and the web have no multi-monitor.",
+          "kind": "published"
+        },
+        {
+          "id": "redirection-by-platform",
+          "says": "Printers redirect from Windows, macOS and the web, not iOS or Android; smart cards not from Android or the web; scanners from Windows only (preview).",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "windows-app-redirection-intune",
+      "title": "Manage Windows App redirection settings with Microsoft Intune",
+      "url": "https://learn.microsoft.com/windows-app/manage-device-redirection-intune",
+      "pin": "Learn git_commit_id c09348fcde75580f3bd615935b370033eb6065c4, updated_at 2026-04-27",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "endpoints",
+        "intune"
+      ],
+      "claims": [
+        {
+          "id": "per-device-redirection",
+          "says": "Intune app configuration policies can set redirection per user group, platform and managed or personal device, on top of the host pool settings.",
+          "kind": "published"
+        },
+        {
+          "id": "more-restrictive-wins",
+          "says": "When client and host pool settings differ, the more restrictive one applies.",
+          "kind": "published"
+        },
+        {
+          "id": "not-a-substitute",
+          "says": "Client-side settings don't replace host pool and session host settings; higher-security workloads set redirection on the host side and use data loss prevention.",
+          "kind": "guidance"
         }
       ]
     },
@@ -8231,6 +8783,11 @@
         {
           "id": "transport-type",
           "says": "The table records the transport of each connection in TransportType, with the values Shortpath, TURN and Websocket.",
+          "kind": "published"
+        },
+        {
+          "id": "client-columns",
+          "says": "Each connection row records ClientOS, ClientType and ClientVersion when the client reports them.",
           "kind": "published"
         }
       ]
@@ -8716,6 +9273,10 @@
       "title": "discovery"
     },
     {
+      "id": "endpoints-scope",
+      "title": "what an endpoints and clients assessment can judge, and from where"
+    },
+    {
       "id": "error-code-map",
       "title": "one map from the code an operator sees to its meaning and its flow"
     },
@@ -8730,6 +9291,10 @@
     {
       "id": "gold-standards",
       "title": "gold standards"
+    },
+    {
+      "id": "governance-scope",
+      "title": "what a governance assessment can judge, and from where"
     },
     {
       "id": "host-baseline-profile",

@@ -28,6 +28,8 @@ Values are public only: a SKU, a count, a boolean, a region. Anything that needs
 | `asm-drive-usb-redirection-off` | lz-parameter | `rdpProperties` (its default leaves drive and USB redirection empty) | [main.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
 | `asm-defender-servers` | lz-parameter | `enableDefenderForCloud`, true | [governance.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/governance.bicep) |
 | `asm-files-smb-gcm` | lz-setting | `profile-storage-smb-gcm` | [storage.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/storage.bicep) (`channelEncryption`) |
+| `asm-policy-guardrails-assigned` | lz-parameter | `enablePolicyGuardrails`, true | [main.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) (allowed locations and tag inheritance in governance.bicep) |
+| `asm-policy-enforced` | manual, `process` | none: moving an assignment out of DoNotEnforce is the policy owner's decision | outside the landing zone |
 
 **The order of the plan.** Items are numbered 1, 2, 3 by a rule a tool applies with no judgment: gap before warn before unknown, then severity (high, medium, low), then the check ID. The order says what matters most, not when it is done: every `lz-parameter` and `lz-setting` item lands in the same landing zone redeploy. A person changes priorities in the review (C23), not in the plan.
 

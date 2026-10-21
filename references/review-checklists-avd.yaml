@@ -266,3 +266,10 @@ claims:
     says: Choose the right session host join type (Security, high).
   - id: D03.06
     says: Review the limits of Entra Domain Services before using it for AVD (Reliability, low).
+  # Endpoint and governance items read for the endpoints and governance pillars (2026-10-21); kept here, after the others, so the list grows without reordering.
+  - id: C02.03
+    says: Review the client OS users run and the AVD client type (Performance, low).
+  - id: E01.01
+    says: Use the built-in administrative templates to configure AVD settings (Operations, low).
+  - id: E01.02
+    says: Plan the session host configuration management strategy (Operations, low).

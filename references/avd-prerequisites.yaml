@@ -9,6 +9,8 @@ claims:
   - id: rtt-under-150
     says: Round-trip time from the client's network to the host pool's Azure region should be under 150 ms; put session hosts in the region closest to users.
     kind: published
+  - id: supported-clients
+    says: Users connect with Windows App or the Remote Desktop client; AVD doesn't support the RemoteApp and Desktop Connections or Remote Desktop Connection (MSTSC) clients.
   # Claims read for the capacity and images pillars (2026-10-21) at the same pin; kept after the others so the list grows without reordering.
   - id: supported-os
     says: "Session hosts run 64-bit Windows 11 or 10 Enterprise (multi-session or single-session) or Windows Server 2016 to 2025; different pools can run different OSes."

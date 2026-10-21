@@ -1,0 +1,18 @@
+id: windows-app-redirection-intune
+title: Manage Windows App redirection settings with Microsoft Intune
+url: https://learn.microsoft.com/windows-app/manage-device-redirection-intune
+pin: "Learn git_commit_id c09348fcde75580f3bd615935b370033eb6065c4, updated_at 2026-04-27"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [endpoints, intune]
+claims:
+  - id: per-device-redirection
+    says: Intune app configuration policies can set redirection per user group, platform and managed or personal device, on top of the host pool settings.
+    kind: published
+  - id: more-restrictive-wins
+    says: When client and host pool settings differ, the more restrictive one applies.
+    kind: published
+  - id: not-a-substitute
+    says: Client-side settings don't replace host pool and session host settings; higher-security workloads set redirection on the host side and use data loss prevention.
+    kind: guidance
