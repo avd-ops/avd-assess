@@ -1,0 +1,32 @@
+id: avd-multiregion-bcdr
+title: Multiregion BCDR for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/architecture/example-scenario/azure-virtual-desktop/azure-virtual-desktop-multi-region-bcdr
+pin: "Learn git_commit_id d6054b5b6a0fda90d06619b94a3c5c2ce89c4513, updated_at 2026-10-05"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+claims:
+  - id: active-active-vs-passive
+    says: Each pooled host pool takes an active-active model (a second pool in another region serving users, near-zero RTO, no failover step) or active-passive (a standby pool users are moved to by reassigning application groups).
+    kind: guidance
+  - id: estimates-to-test
+    says: The recovery time and data loss figures per model are estimates to validate by disaster recovery testing.
+    kind: prior
+  - id: one-pool-at-a-time
+    says: Users must use only one host pool at a time to avoid profile conflicts; fail over every application group together.
+    kind: published
+  - id: cloud-cache-over-storage-replication
+    says: Use FSLogix Cloud Cache rather than storage replication for profiles across regions; Premium Azure Files has no geo-redundant storage.
+    kind: published
+  - id: cache-disk-sizing
+    says: Size the Cloud Cache local disk at least as large as the largest profile, starting from about 30 GB per concurrent user on Premium disks.
+    kind: prior
+  - id: capacity-not-guaranteed
+    says: Deallocated hosts and new deployments in the recovery region don't have guaranteed capacity; only running resources or on-demand capacity reservations do.
+    kind: published
+  - id: image-in-both-regions
+    says: Replicate the gallery image to both regions so both pools deploy the same golden image.
+    kind: guidance
+  - id: selective-failover-test
+    says: Test failover by moving a subset of users or application groups to the secondary pool.
+    kind: guidance

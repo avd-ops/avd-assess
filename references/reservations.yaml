@@ -1,0 +1,17 @@
+id: reservations
+title: What are Azure Reservations? (Microsoft Cost Management)
+url: https://learn.microsoft.com/azure/cost-management-billing/reservations/save-compute-costs-reservations
+pin: "Learn git_commit_id a96eb393ee50b26b38845d3baaa553f217cf9c17, updated_at 2026-08-18"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: hourly-billing-discount
+    says: A reservation is a one- or three-year billing discount applied hourly to matching usage; it doesn't change the resources, so buy for consistent base usage.
+    kind: guidance
+  - id: vm-covers-compute-only
+    says: A VM reservation covers compute only, not Windows software, networking or storage; Azure Files has its own capacity reservations.
+    kind: guidance
+  - id: exchange-and-refund
+    says: Reservations can be exchanged for the same type and refunded within a yearly limit.
+    kind: guidance

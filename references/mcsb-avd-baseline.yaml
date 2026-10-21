@@ -5,7 +5,7 @@ pin: "Learn git_commit_id 2ee57af577ff5e8792fc4f9f3292ceaebc6b7292, updated_at 2
 read: 2026-10-20
 license: Microsoft Learn content (link only)
 areas: [assessment]
-notes: Maps the benchmark's controls to what AVD supports, feature by feature, with whether each is on by default and who configures it. Claim IDs are the benchmark's own control IDs; we use them to place a security finding in a control family, as the WAF codes do for pillars. Only the controls the method uses are listed. It covers the AVD service itself; session hosts are VMs and also fall under the VM baseline. On 2026-10-20, LT-1's guidance text talks about Key Vault alerts, which looks like a copy error upstream.
+notes: Maps the benchmark's controls to AVD feature by feature (supported, on by default, who configures it). Claim IDs are the benchmark's control IDs, used to group security findings. It covers the AVD service; session hosts also fall under the VM baseline. On 2026-10-20, LT-1's guidance talked about Key Vault alerts, likely an upstream copy error.
 claims:
   - id: NS-2
     says: Private Link is supported for TCP RDP but not required or recommended without a specific need; RDP Shortpath covers private networks and the internet path is a fallback.

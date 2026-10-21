@@ -1,0 +1,14 @@
+id: fslogix-bcdr
+title: Business continuity and disaster recovery options for FSLogix
+url: https://learn.microsoft.com/fslogix/concepts-container-recovery-business-continuity
+pin: "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: options
+    says: Profile recovery options are no profile recovery, Cloud Cache primary and failover, and Cloud Cache active-active.
+    kind: guidance
+  - id: events-rarely-graceful
+    says: Disaster events are rarely graceful; profiles may be lost or corrupted on failover, so critical data belongs in OneDrive or SharePoint.
+    kind: guidance

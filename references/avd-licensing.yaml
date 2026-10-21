@@ -1,0 +1,18 @@
+id: avd-licensing
+title: Licensing Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/licensing
+pin: "Learn git_commit_id 5107b5fb31aafba47fc5410de88daa2b821313da, updated_at 2025-11-18"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: Licensing isn't visible to a Reader-only run; the method takes it from the operator (gap:finops-scope).
+claims:
+  - id: eligible-license-per-user
+    says: Every user needs an eligible license; Windows client session hosts take a qualifying Microsoft 365, Windows Enterprise or VDA per-user license, Windows Server hosts take RDS CALs with Software Assurance or RDS subscription licenses.
+    kind: guidance
+  - id: per-user-access-external-only
+    says: Per-user access pricing is only for external commercial purposes, charged per user who connects in the month, and isn't available for Windows Server.
+    kind: guidance
+  - id: separate-subscription-for-licensed-users
+    says: Users who already hold eligible licenses are still charged in a subscription enrolled in per-user access pricing, so serve them from a separate subscription.
+    kind: guidance

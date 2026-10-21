@@ -1,0 +1,8 @@
+id: wdot-pin-on-image-version
+claim: ref:wdot#optimization-state
+verdict: extends
+observed: What runs inside the guest isn't visible from the control plane, but the landing zone's image build tags each gallery image version with the WDOT release, commit and profile hash it ran, so a Reader can see which pin and profile an image claims. Images built any other way carry no such record.
+evidence:
+  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/images/build.bicep
+  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/Test-GoldenImage.ps1
+date: 2026-10-20

@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
-"""Checks the method: references, observations, gaps, the method pages and the gold-standard registry.
+"""Checks the method: references, observations, gaps, the method pages, the gold-standard registry and method.json.
 
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
 """
+import json
 import re
 import sys
 from pathlib import Path
 
 import yaml
+from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parent.parent
 VERDICTS = {"agrees", "disagrees", "extends", "not-yet-tested"}
 KINDS = {"published", "prior", "guidance"}
 AREAS = {"collection", "assessment", "benchmarks", "scoring"}
-METHODS = ["collection", "assessment", "targets-benchmarks", "scoring", "sample-check", "security"]
+METHODS = ["collection", "assessment", "targets-benchmarks", "scoring", "sample-check", "baseline-profile", "tune-rightsize", "use-cases", "finops", "security"]
 STANDINGS = {"candidate", "gold", "baseline", "demoted"}
 CITE = re.compile(r"`((?:ref|obs|gap):[A-Za-z0-9._:#-]+)`")
 GUID = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b")
@@ -112,6 +114,73 @@ for name in METHODS:
 for path in sorted((ROOT / "gaps").glob("*.md")):
     check_cites(path, path.read_text(encoding="utf-8"))
 
+# method.json and index.json against the contracts held here (C15, C20; tests/check_contracts.py checks the contracts).
+contracts = ROOT / "contracts"
+
+def validate(doc_path, schema_name):
+    schema = json.loads((contracts / "schemas" / schema_name).read_text(encoding="utf-8"))
+    doc = json.loads(doc_path.read_text(encoding="utf-8"))
+    for e in sorted(Draft202012Validator(schema).iter_errors(doc), key=lambda e: list(e.path))[:5]:
+        err(doc_path, f"{'/'.join(map(str, e.path))}: {e.message[:120]}")
+    return doc
+
+
+validate(ROOT / "index.json", "assess-index.schema.json")
+method = validate(ROOT / "method.json", "assess-method.schema.json")
+register = json.loads((contracts / "fact-register.json").read_text(encoding="utf-8"))
+facts = {f["id"]: f for f in register["facts"]}
+decisions = {d["id"]: d for d in register["decisions"]}
+mpath = ROOT / "method.json"
+if method.get("factRegister") != register["version"]:
+    err(mpath, f"factRegister {method.get('factRegister')} but the register is v{register['version']}")
+
+
+def check_fact(where, fid, allowed):
+    f = facts.get(fid)
+    if not f:
+        err(mpath, f"{where} uses {fid}, which isn't in the fact register")
+    elif f["status"] not in allowed:
+        err(mpath, f"{where} uses {fid}, which is {f['status']}")
+
+
+for row in method.get("collection", []):
+    check_fact(f"collection {row['fact']}", row["fact"], {"built", "specified"})
+    for c in row.get("claims", []):
+        if c not in known:
+            err(mpath, f"collection {row['fact']} cites {c}, which doesn't exist")
+ids = [c["id"] for c in method.get("checks", [])]
+for dup in {i for i in ids if ids.count(i) > 1}:
+    err(mpath, f"check {dup} is listed twice")
+for c in method.get("checks", []):
+    for ref in c["claims"]:
+        if ref not in known:
+            err(mpath, f"{c['id']} cites {ref}, which doesn't exist")
+    for fid in c["facts"]:
+        check_fact(c["id"], fid, {"built"})
+    for d in c["informs"]:
+        if d not in decisions:
+            err(mpath, f"{c['id']} informs {d}, which isn't a register decision")
+rows = [r["decision"] for r in method.get("readiness", [])]
+if sorted(rows) != sorted(decisions):
+    err(mpath, "readiness needs exactly one row per register decision")
+need = {"decidable": "azure", "decidable-with-intake": "intake", "needs-measurement": "forensic"}
+for r in method.get("readiness", []):
+    d = decisions.get(r["decision"])
+    if not d:
+        continue
+    for c in r["claims"]:
+        if c not in known:
+            err(mpath, f"readiness {r['decision']} cites {c}, which doesn't exist")
+    for fid in r["facts"]:
+        check_fact(f"readiness {r['decision']}", fid, {"built", "specified"})
+        if fid in facts and r["decision"] not in facts[fid]["evidences"]:
+            err(mpath, f"readiness {r['decision']} uses {fid}, which can't evidence it")
+    tier = need[r["readiness"]]
+    if tier not in d["decidableFrom"]:
+        err(mpath, f"{r['decision']} is {r['readiness']}, but the register says {d['decidableFrom']}")
+    elif not any(facts.get(f, {}).get("tier") == tier for f in r["facts"]):
+        err(mpath, f"{r['decision']} is {r['readiness']} but names no {tier} fact")
+
 registry = ROOT / "gold-standards.yaml"
 entries = load(registry).get("entries") or []
 all_metrics = {e.get("metric") for e in entries}
@@ -149,7 +218,7 @@ public_ids = {
     if line.strip() and not line.startswith("#")
 }
 for path in sorted(ROOT.rglob("*")):
-    if not path.is_file() or ".git" in path.parts or path.name == "public-ids.txt" or path.suffix not in {".md", ".yaml", ".yml", ".py", ".txt"}:
+    if not path.is_file() or ".git" in path.parts or path.name == "public-ids.txt" or path.suffix not in {".md", ".yaml", ".yml", ".py", ".txt", ".json"}:
         continue
     text = path.read_text(encoding="utf-8")
     for g in GUID.findall(text):
@@ -158,6 +227,8 @@ for path in sorted(ROOT.rglob("*")):
     for e in EMAIL.findall(text):
         err(path, f"looks like an email address ({e[:3]}***)")
     for ip in IPV4.findall(text):
+        if ip == "0.0.0.0":  # the default route, not an address
+            continue
         err(path, f"looks like an IP address ({ip.split('.')[0]}.***)")
     if any(ord(ch) > 127 for ch in text):
         err(path, "non-ASCII character")
@@ -166,4 +237,4 @@ if errors:
     print("\n".join(errors))
     print(f"RESULT FAIL ({len(errors)} errors)")
     sys.exit(1)
-print(f"RESULT PASS ({len(claims)} claims, {len(observations)} observations, {len(gaps)} gaps)")
+print(f"RESULT PASS ({len(claims)} claims, {len(observations)} observations, {len(gaps)} gaps, {len(ids)} checks)")

@@ -1,0 +1,11 @@
+id: start-vm-on-connect-faq
+title: Azure Virtual Desktop Start VM on Connect FAQ
+url: https://learn.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect-faq
+pin: "Learn git_commit_id a2c9d3b52ffe73e75a81d5f757380994c65169e1, updated_at 2026-05-25"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: no-automatic-deallocation
+    says: Start VM on Connect doesn't deallocate hosts; signing users out or shutting down from the Start menu doesn't either, so deallocation needs autoscale or automation.
+    kind: guidance

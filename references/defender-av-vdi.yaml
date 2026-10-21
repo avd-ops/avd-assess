@@ -1,0 +1,18 @@
+id: defender-av-vdi
+title: Configure Microsoft Defender Antivirus on a remote desktop or virtual desktop infrastructure environment
+url: https://learn.microsoft.com/defender-endpoint/deployment-vdi-microsoft-defender-antivirus
+pin: "Learn git_commit_id f785aeabb1b2f510738a8b2cd07f06b3dbdfc19c, updated_at 2026-08-21"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: The page's settings are the published baseline for tuning antivirus on multi-session and non-persistent hosts. It gives no measured overhead per user.
+claims:
+  - id: vdi-settings
+    says: The page lists recommended antivirus settings for VDI that balance protection and performance (randomized scans, headless UI, cloud protection and others).
+    kind: published
+  - id: cache-maintenance-before-seal
+    says: Run the Defender cache maintenance task on the image before sealing it, or each VM can see higher CPU while it runs.
+    kind: published
+  - id: shared-updates
+    says: Security intelligence updates can come from a dedicated VDI file share instead of each VM downloading them.
+    kind: guidance

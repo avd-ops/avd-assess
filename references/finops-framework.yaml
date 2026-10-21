@@ -1,0 +1,21 @@
+id: finops-framework
+title: FinOps Framework overview (Microsoft's guide to the FinOps Foundation framework)
+url: https://learn.microsoft.com/cloud-computing/finops/framework/finops-framework
+pin: "Learn git_commit_id a74e7c72db9bbdc44d6f3307194cad5e78348cc9, updated_at 2026-02-11"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, scoring]
+notes: Microsoft's summary of the FinOps Foundation's framework, with Microsoft's extensions mapped back to it. The Foundation's own site has no immutable pin, so we cite this page and link the Foundation from the method. The framework judges an organization's FinOps practice; an estate assessment judges one workload, so only the workload-level capabilities are used (gap:finops-scope).
+claims:
+  - id: principles
+    says: Six principles, among them that FinOps data should be accessible, timely and accurate, and that teams use the cloud's variable cost model with continuous small adjustments.
+    kind: guidance
+  - id: lifecycle
+    says: Teams iterate through three phases, Inform (visibility, allocation, budgets, forecasts), Optimize (reduce waste) and Operate (KPIs and governance).
+    kind: guidance
+  - id: capabilities
+    says: Capabilities are grouped in four domains, understand usage and cost, quantify business value, optimize usage and cost, and manage the FinOps practice; workload optimization, rate optimization, licensing, allocation, budgeting and unit economics are among them.
+    kind: guidance
+  - id: maturity-per-capability
+    says: Judge maturity per capability against the team's own targets rather than one global Crawl-Walk-Run level, and reassess every three to six months.
+    kind: guidance

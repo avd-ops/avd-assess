@@ -1,0 +1,37 @@
+id: caf-avd-assess
+title: Cloud Adoption Framework, Azure Virtual Desktop assessment (migration scenario)
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/migrate-assess
+pin: https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/5c44a2accff2018eba5dd738b648eef4c9db179b/docs/scenarios/azure-virtual-desktop/migrate-assess.md
+read: 2026-10-20
+license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
+areas: [collection, assessment]
+notes: Microsoft is removing the whole CAF AVD scenario on 2026-10-30, so the pin is the public GitHub copy. On 2026-10-20 the Well-Architected AVD workload guide pages already redirected to the product overview, while the AVD workload review stayed live. Still the only Microsoft page listing the questions an AVD assessment answers.
+claims:
+  - id: unit-of-assessment
+    says: Each assessment covers one combination of persona, host pool, applications and data, and user profiles, and answers its questions from data.
+  - id: persona-criteria
+    says: Personas come from bucketing users by pooled or personal need, density, performance, GPU, region, business function, user count and peak concurrent sessions.
+  - id: density-defaults
+    says: Its worked example assumes six light users per vCPU, two heavy users per vCPU and 4 GB of RAM per vCPU.
+  - id: application-questions
+    says: For each persona, list the required apps and ask whether they need a custom image, Microsoft 365 Apps, a personal pool for multi-session incompatibility, or a back end moved closer for latency.
+  - id: poc-default-sizes
+    says: The proof of concept uses default VM sizes; assessment data then replaces those defaults before production.
+  - id: deprecated
+    says: The page is deprecated, no longer updated, and is to be removed from Learn on 2026-10-30; its source stays in the public Cloud Adoption Framework docs repo.
+    kind: published
+  - id: assumption-validation
+    says: The assessment tests the proof of concept's assumptions with data and refines the scope wherever an assumption turns out false.
+    kind: guidance
+  - id: persona-to-host-pool
+    says: Each persona with distinct business and technical needs needs its own host pool configuration; the persona's answers become pool type, density, size, CPU or GPU and region.
+    kind: guidance
+  - id: region-test-from-users
+    says: Before configuring a host pool, a user from each region tests latency and reports the three lowest-latency Azure regions.
+    kind: guidance
+  - id: business-function-for-cost
+    says: Grouping personas by business unit, charge code or function lets later operations align costs.
+    kind: guidance
+  - id: isv-discovery
+    says: Where the team lacks user, desktop and app data, the page points to third-party discovery tools listed with Azure Migrate rather than a first-party tool.
+    kind: guidance

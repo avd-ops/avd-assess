@@ -1,0 +1,20 @@
+id: disk-encryption-options
+title: Overview of managed disk encryption options
+url: https://learn.microsoft.com/azure/virtual-machines/disk-encryption-overview
+pin: "Learn git_commit_id fe259248937e88769914cfeb84ecbdcc6121d70e, updated_at 2026-09-16"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: sse-always-on
+    says: Server-side encryption encrypts managed disks at rest by default, but not temp disks or disk caches.
+    kind: published
+  - id: encryption-at-host
+    says: Encryption at host adds temp disks, caches and the data flow to storage, without using the VM's CPU.
+    kind: published
+  - id: ade-retirement
+    says: Azure Disk Encryption retires on 2028-09-15; new VMs should use encryption at host, and ADE VMs must migrate before then.
+    kind: published
+  - id: customer-keys
+    says: Customer-managed keys are available through a disk encryption set for server-side encryption and encryption at host.
+    kind: published

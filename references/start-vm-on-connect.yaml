@@ -1,0 +1,14 @@
+id: start-vm-on-connect
+title: Configure Start VM on Connect for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect
+pin: "Learn git_commit_id 9482be6e3db06c8a844a8d6bfbf0cc312a7ba4c3, updated_at 2026-08-31"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: power-on-when-needed
+    says: Start VM on Connect reduces cost by powering session hosts on only when a user connects; in pooled host pools it starts one host when none is on and more only when the first reaches its session limit.
+    kind: guidance
+  - id: slower-first-connection
+    says: Connecting to a deallocated host takes longer while it powers on.
+    kind: guidance

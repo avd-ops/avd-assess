@@ -1,0 +1,23 @@
+id: avd-costs
+title: Understand and estimate costs for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/understand-estimate-costs
+pin: "Learn git_commit_id f640b92b872a8e86e4962296145928498fdaa50f, updated_at 2026-05-29"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: two-sources
+    says: AVD costs come from Azure resource consumption and from licensing, and the owner of the deployment pays them, not the users.
+    kind: guidance
+  - id: vm-instances-cost-most
+    says: Session host VM instances usually cost the most; autoscale, savings plans and reserved instances reduce compute cost.
+    kind: guidance
+  - id: accompanying-services
+    says: Features carry their own costs, such as Insights log data, App Attach and profile storage, and custom image template storage.
+    kind: guidance
+  - id: calculator-scope
+    says: The pricing calculator's AVD module estimates session hosts and feature storage only; egress to Microsoft 365 and other features need separate estimates.
+    kind: guidance
+  - id: view-costs-after
+    says: After deployment, track AVD costs in Cost Management and with tags, and use Insights usage to optimize.
+    kind: guidance
