@@ -37,20 +37,24 @@ Proposed in the fact register as `specified`, for avd-current-state's collector 
 |---|---|
 | `c11.hostPool.sessionHosts.failedHealthChecks` | Hosts failing each health check by its API name (`ref:avd-sessionhost-get-api#health-check-names`), read with the session hosts the collector already reads; `HealthCheckFailed` only, never `Unknown` |
 | `c11.hostPool.diagnostics.windowDays` | The days the log facts cover; the operator chooses it, seven by default |
-| `c11.hostPool.diagnostics.connections` | Distinct correlation IDs with a Started row |
-| `c11.hostPool.diagnostics.connectionsFailed` | Of those, the ones with no Connected row |
-| `c11.hostPool.diagnostics.errorsByCode` | `WVDErrors` rows with ServiceError false, counted by `CodeSymbolic`, or by `Code` when the symbol is empty |
-| `c11.hostPool.diagnostics.serviceErrors` | `WVDErrors` rows with ServiceError true |
-| `c11.hostPool.diagnostics.timeToConnectSecondsP95` | p95 from Started to the first ShellReady or RdpShellAppExecuted checkpoint (`ref:avd-insights-glossary#time-to-connect-checkpoints`) |
+| `c11.hostPool.diagnostics.connections` | Distinct correlation IDs with a Completed row in the window |
+| `c11.hostPool.diagnostics.connectionsFailed` | Of those, the ones with no Connected row. Counting from Completed, not Started, keeps connections still in progress or not yet ingested out of the failures (`ref:troubleshoot-insights#ingestion-delay`) |
+| `c11.hostPool.diagnostics.errorsByCode` | `WVDErrors` rows with ServiceError false whose resource is the host pool or one of its application groups, counted by `CodeSymbolic`, or by `code ` and the decimal `Code` when the symbol is empty (`code -2147467259`) |
+| `c11.hostPool.diagnostics.serviceErrors` | The same rows with ServiceError true |
+| `c11.hostPool.diagnostics.timeToConnectSecondsP95` | p95 from Started to ShellReady for desktop connections and to the first RdpShellAppExecuted for RemoteApp connections, as the glossary defines each (`ref:avd-insights-glossary#time-to-connect-checkpoints`) |
+| `c11.subscription.diagnostics.workspaceErrorsByCode` | `WVDErrors` rows logged against a workspace (feed errors), which belong to no host pool, keyed the same way (`ref:wvderrors-table#resource-types`) |
+
+The C11 countMap key pattern allows neither the underscores some symbolic codes carry nor a leading sign, so the schema change that builds these facts gives error codes their own key pattern; a code is never redacted to `other`.
 
 Two built facts this pillar cites, `c11.hostPool.sessionHosts.status` and `staleHeartbeat`, were already in the snapshot schema and the collector and are now in the register; agent and stack versions and update state are registered by the images pillar. The log facts need a Log Analytics read, which the collector doesn't do yet: it is read-only and opt-in like the host-side and directory reads the map plan names, and it waits on the same kind of owner decision.
 
 ## Intake
 
-`intake.reportedSymptoms` (specified): the symptoms the operator reports, any of `no-resources`, `sign-in-fails`, `cannot-connect`, `disconnects`, `slow-logon`, `slow-session`, `profile-failed`, `host-unhealthy`, or `none` or `unknown` alone. Each value picks a triage flow; an assessment with no reported symptom still reads the facts.
+`intake.reportedSymptoms` (specified, with its enum in the C19 intake schema): the symptoms the operator reports, any of `no-resources`, `sign-in-fails`, `cannot-connect`, `disconnects`, `slow-logon`, `slow-session`, `profile-failed`, `host-unhealthy`, or `none` or `unknown` alone. Each value picks a triage flow; an assessment with no reported symptom still reads the facts.
 
 ## Open points
 
+- **Which checks are fatal.** The status page names three fatal checks (`ref:session-host-health-checks#fatal-checks`); the API reference also calls domain reachable, FSLogix and supported encryption fatal (`ref:avd-sessionhost-get-api#fatal-by-name`). The method follows the API, the longer list, until a run shows a host failing one of the three extra checks and staying Available.
 - **Time to connect and credentials.** The Insights glossary says credential entry is subtracted (`ref:avd-insights-glossary#credential-time-subtracted`); the Insights troubleshooting page says it is included and can cause false peaks (`ref:troubleshoot-insights#time-to-connect-includes-credentials`). Until a run shows which, a slow time to connect is read through its stages, never judged alone.
 - **Stale heartbeat.** The collector counts a host as stale after 30 minutes without a heartbeat. No source sets that number; it stays a family choice until a run or a source gives one.
 - **Normal levels.** No source says how many errors, failed connections or seconds to connect are normal. The facts are read against the estate's own last run and the operator's reported symptoms, and the evidence intake can add published experience (`gap:evidence-intake`).

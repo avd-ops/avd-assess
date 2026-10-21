@@ -11,7 +11,7 @@
 # pillar: the map pillar that owns the row, an id in pillars.yaml (one per row, required). Not a
 #   Well-Architected pillar; those stay on checks. tests/check_dimensions.py checks it against pillars.yaml.
 # measure: fact (a built C11 fact) | rebuild (in avd-current-state's private rebuild package, not a C11
-#   fact) | measured (needs performance or in-guest data) | intake (only the operator knows) | host-side (only
+#   fact) | measured (needs performance, in-guest or diagnostic log data) | intake (only the operator knows) | host-side (only
 #   a read on a session host sees it) | directory (needs a directory read) | none.
 # landingZone: parameter names in avd-landing-zone bicep/main.bicep at the commit below. Every one of the
 #   57 is either set by a dimension or listed in notDimensions with a reason (tests/check_dimensions.py).
@@ -925,7 +925,7 @@ dimensions:
     pillar: diagnostics
     title: Connection, feed and registration errors by code
     decides: Which errors users and hosts hit over a window, by code, and which of them an admin can fix.
-    home: {facts: [c11.hostPool.diagnostics.windowDays, c11.hostPool.diagnostics.errorsByCode, c11.hostPool.diagnostics.serviceErrors], intake: [intake.reportedSymptoms]}
+    home: {facts: [c11.hostPool.diagnostics.windowDays, c11.hostPool.diagnostics.errorsByCode, c11.hostPool.diagnostics.serviceErrors, c11.subscription.diagnostics.workspaceErrorsByCode], intake: [intake.reportedSymptoms]}
     baseline:
       standing: gap
       claims: [ref:wvderrors-table#code-columns, ref:wvderrors-table#resource-types, ref:diagnostics-log-analytics#service-error-split, ref:diagnostics-log-analytics#errors-scope, ref:troubleshoot-insights#errors-not-all-documented, gap:error-code-map, gap:diagnostics-scope]
@@ -943,7 +943,7 @@ dimensions:
     baseline:
       standing: gap
       claims: [ref:diagnostics-log-analytics#connection-states, ref:avd-insights-glossary#time-to-connect-checkpoints, ref:avd-insights-glossary#time-to-connect-stages, ref:avd-insights-glossary#credential-time-subtracted, ref:troubleshoot-insights#time-to-connect-includes-credentials, ref:troubleshoot-insights#missing-completion, ref:wvdcheckpoints-table#named-steps, gap:diagnostics-scope, gap:triage-cannot-connect, gap:triage-slow-logon]
-      says: A connection that starts and never connects is a failure; time to connect runs from the Started row to the shell-ready checkpoint and splits into route, stack, logon and shell stages. No source sets a failure rate or a time; the logon target is ux-measurement's.
+      says: A connection that completes without ever connecting is a failure; time to connect runs from the Started row to the shell-ready checkpoint and splits into route, stack, logon and shell stages. No source sets a failure rate or a time; the logon target is ux-measurement's.
     measure: measured
     landingZone: []
     note: Two Learn pages disagree on whether time to connect includes credential entry (gap:diagnostics-scope), so a high reading is checked against the stages before it is judged.

@@ -2213,7 +2213,8 @@
         "facts": [
           "c11.hostPool.diagnostics.windowDays",
           "c11.hostPool.diagnostics.errorsByCode",
-          "c11.hostPool.diagnostics.serviceErrors"
+          "c11.hostPool.diagnostics.serviceErrors",
+          "c11.subscription.diagnostics.workspaceErrorsByCode"
         ],
         "intake": [
           "intake.reportedSymptoms"
@@ -2270,7 +2271,7 @@
           "gap:triage-cannot-connect",
           "gap:triage-slow-logon"
         ],
-        "says": "A connection that starts and never connects is a failure; time to connect runs from the Started row to the shell-ready checkpoint and splits into route, stack, logon and shell stages. No source sets a failure rate or a time; the logon target is ux-measurement's."
+        "says": "A connection that completes without ever connecting is a failure; time to connect runs from the Started row to the shell-ready checkpoint and splits into route, stack, logon and shell stages. No source sets a failure rate or a time; the logon target is ux-measurement's."
       },
       "measure": "measured",
       "landingZone": [],

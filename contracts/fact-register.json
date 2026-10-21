@@ -439,6 +439,17 @@
       "evidences": []
     },
     {
+      "id": "c11.subscription.diagnostics.workspaceErrorsByCode",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/diagnostics/workspaceErrorsByCode",
+      "grain": "subscription",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c11.hostPool.vmSizes",
       "tier": "azure",
       "contract": "C11",
