@@ -68,6 +68,8 @@ for row in doc.get("dimensions") or []:
     for key in REQUIRED:
         if key not in row or row[key] in (None, ""):
             err(f"{did}: missing {key}")
+    if "pillar" in row and not re.fullmatch(r"[a-z][a-z0-9-]*", str(row["pillar"])):
+        err(f"{did}: pillar must be a lowercase slug such as protocol")
     home = row.get("home") or {}
     d = home.get("decision")
     if d and d not in decisions and not PROPOSED.match(d):

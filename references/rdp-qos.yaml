@@ -1,0 +1,17 @@
+id: rdp-qos
+title: Implement Quality of Service (QoS) for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/rdp-quality-of-service-qos
+pin: "Learn git_commit_id f2b8fc269ef10993c35918c2b14890ecb52de9c0, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: managed-udp-only
+    says: QoS policies apply only to Shortpath for managed networks, never to the TCP reverse connect transport.
+    kind: published
+  - id: dscp-46
+    says: Mark RDP packets on the hosts with DSCP 46 (Expedited Forwarding), and apply the same markings end to end.
+    kind: guidance
+  - id: qos-before-bandwidth
+    says: To fix jitter, loss and delay, apply QoS first and add bandwidth only where needed.
+    kind: guidance
