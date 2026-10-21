@@ -1,0 +1,42 @@
+id: avd-security-guide
+title: Security recommendations for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/security-guide
+pin: "Learn git_commit_id 02c72255bd133b6d98c53d233b6f97b780f2322a, updated_at 2026-08-27"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: The AVD product team's own security page. The Well-Architected AVD security page resolves to the same article and commit. The review checklist's G items (ref:review-checklists-avd) link into its sections.
+claims:
+  - id: shared-responsibility
+    says: Microsoft secures the control plane and the physical layers; identity, user devices, apps, the session host OS, deployment configuration and network controls are the customer's.
+    kind: guidance
+  - id: trust-boundary
+    says: Multi-session hosts suit standard users of one organization; users who need local admin get a personal host pool; users from different organizations get a separate tenant and subscription.
+    kind: guidance
+  - id: defender-for-cloud
+    says: Turn on Defender for Cloud's enhanced security features and work from its Secure Score recommendations.
+    kind: guidance
+  - id: mfa-conditional-access
+    says: Require multifactor authentication for AVD sign-in and scope access with Conditional Access.
+    kind: guidance
+  - id: audit-logs
+    says: Collect audit logs (AVD diagnostics, the activity log, Entra sign-ins, session hosts) and monitor usage with Azure Monitor.
+    kind: guidance
+  - id: idle-limits
+    says: Set maximum inactive time and disconnection policies, and screen locks for idle sessions.
+    kind: guidance
+  - id: tiered-admin
+    says: Separate admin access by tier, and don't give users local administrator rights on pooled hosts.
+    kind: guidance
+  - id: endpoint-protection
+    says: Run endpoint protection and an endpoint detection and response product on session hosts, with vulnerability assessment and regular patching.
+    kind: guidance
+  - id: trusted-launch
+    says: Use Trusted launch (Secure Boot, vTPM, boot integrity monitoring) for session hosts; confidential VMs are the stronger option where needed.
+    kind: guidance
+  - id: os-hardening
+    says: Turn on Virtualization-based Security, HVCI and Credential Guard, and control which apps run with Windows Defender Application Control.
+    kind: guidance
+  - id: device-redirection
+    says: Restrict device redirection (drives, clipboard, printers, USB) to what each group of users needs.
+    kind: guidance

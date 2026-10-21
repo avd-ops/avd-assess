@@ -27,6 +27,7 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 | [Tune and rightsize](methods/tune-rightsize.md) | A repeatable loop to move a running estate toward its profile at the lowest cost that keeps it there |
 | [Use cases](methods/use-cases.md) | Who uses the estate for what (personas, apps, performance, security and compliance needs), and what that says it should be |
 | [FinOps](methods/finops.md) | How to judge what an estate costs against Microsoft's and the FinOps Framework's guidance, and which repo holds which part |
+| [Security](methods/security.md) | How to judge an estate's security against Microsoft's AVD guidance, and which repo holds which part |
 
 Every step on those pages cites one of three things:
 

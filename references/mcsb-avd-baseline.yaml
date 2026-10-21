@@ -1,0 +1,45 @@
+id: mcsb-avd-baseline
+title: Azure security baseline for Azure Virtual Desktop (Microsoft cloud security benchmark)
+url: https://learn.microsoft.com/security/benchmark/azure/baselines/azure-virtual-desktop-security-baseline
+pin: "Learn git_commit_id 2ee57af577ff5e8792fc4f9f3292ceaebc6b7292, updated_at 2026-08-04"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: Maps the benchmark's controls to AVD feature by feature (supported, on by default, who configures it). Claim IDs are the benchmark's control IDs, used to group security findings. It covers the AVD service; session hosts also fall under the VM baseline. On 2026-10-20, LT-1's guidance talked about Key Vault alerts, likely an upstream copy error.
+claims:
+  - id: NS-2
+    says: Private Link is supported for TCP RDP but not required or recommended without a specific need; RDP Shortpath covers private networks and the internet path is a fallback.
+    kind: guidance
+  - id: IM-1
+    says: Use one central identity and authentication system (Microsoft Entra ID) for the service.
+    kind: guidance
+  - id: IM-7
+    says: Restrict resource access based on conditions, through Conditional Access.
+    kind: guidance
+  - id: PA-7
+    says: Follow least privilege with Azure RBAC, using the built-in AVD roles.
+    kind: guidance
+  - id: DP-3
+    says: Encrypt sensitive data in transit.
+    kind: guidance
+  - id: DP-4
+    says: AVD's own data at rest is encrypted with platform keys by default, with nothing to configure; customer-managed keys aren't supported for the service.
+    kind: guidance
+  - id: LT-1
+    says: Turn on threat detection; the reference is onboarding session hosts to Defender for Endpoint.
+    kind: guidance
+  - id: LT-4
+    says: Turn on resource logs for security investigation.
+    kind: guidance
+  - id: PV-3
+    says: Build a secure configuration baseline into the session host image, or use a hardened image from a trusted supplier.
+    kind: guidance
+  - id: PV-5
+    says: Run vulnerability assessments on session hosts.
+    kind: guidance
+  - id: ES-1
+    says: Use endpoint detection and response on session hosts.
+    kind: guidance
+  - id: ES-2
+    says: Use modern anti-malware on session hosts.
+    kind: guidance

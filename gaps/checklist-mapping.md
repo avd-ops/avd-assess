@@ -29,6 +29,13 @@ Every check is a `warn`, not a `gap`. Each item says "consider" or "evaluate", a
 | `ref:review-checklists-avd#E01.13` | The last time each session host was on; C11's stale-heartbeat count has no stated threshold |
 | `ref:review-checklists-avd#A01.06`, `ref:aprl-desktop-virtualization#38721758-2cc2-4d6b-b7b7-8b47dadbf7df` | Site Recovery or backup protection for personal session hosts (a new C11 fact) |
 | `ref:review-checklists-avd#F01.11`, `ref:review-checklists-avd#H04.03` | Host-side settings (RDP Shortpath, FSLogix size limit): no host fact exists |
+| `ref:review-checklists-avd#G02.03`, `ref:review-checklists-avd#G02.04` | Each session host's security type, Secure Boot and vTPM (a new C11 fact); the rule is every host Trusted launch with both on (`obs:trusted-launch-by-default`) |
+| `ref:review-checklists-avd#G02.06` | Redirection properties from the host pool's RDP properties (`ref:rdp-properties#redirection-properties`; a new C11 fact); each redirection kept on is a warn with its reason (`obs:redirection-kept-for-usability`) |
+| `ref:review-checklists-avd#G03.04` | Defender for Cloud plans on the subscription (a new C11 fact); the Servers plan is on |
+| `ref:review-checklists-avd#G03.05` | Diagnostic settings per AVD object, as for E02.02 (`gap:insights-facts`) |
+| `ref:review-checklists-avd#D02.01` | The profile share's identity source (a new C11 fact) beside `intake.identityConstraints`; Entra-only estates use Entra Kerberos |
+| `ref:mcsb-avd-baseline#DP-3` | The file service's SMB channel encryption (a new C11 fact); GCM only, with AES-128-GCM allowed (`obs:smb-channel-aes128-gcm-needed`) |
+| `ref:review-checklists-avd#G03.03`, `ref:review-checklists-avd#G04.01` | Local administrators on the hosts (host-side) and Conditional Access or MFA for AVD sign-in (a directory read): neither is collected (`gap:security-scope`) |
 
 ## The same items in PSRule for Azure
 

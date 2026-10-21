@@ -20,5 +20,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [use-cases](use-cases.md) | The structured use case record, the decisions it informs, and how it is checked against what is deployed and measured |
 | [finops-scope](finops-scope.md) | What a FinOps assessment can judge, from which evidence, and which repo does what |
 | [commitment-floor](commitment-floor.md) | How much compute to commit for host pools a scaling plan turns off |
+| [security-scope](security-scope.md) | What a security assessment can judge, from which evidence, and which repo does what |
+| [host-baseline-profile](host-baseline-profile.md) | Judging a multi-session host against Microsoft's OS baseline through a reviewed profile |
 
 The parts of these gaps that a tool runs (the collection map, checks, readiness and scoring) are in [method.json](../method.json), avd-second-brain contract C20 (`avd-assess-method/v1`). avd-current-state runs a pinned copy.

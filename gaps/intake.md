@@ -11,3 +11,5 @@
 | `intake.existingHub` | Is there a hub network to join (`none`, `azure-hub`, `vwan`, `other`)? | Network mode |
 | `intake.identityConstraints` | Which identity lane (`entra-only`, `hybrid-ad`, `entra-ds`, `undecided`)? | Identity and profile storage |
 | `intake.workingHours` | When do people work (start, end, time zone)? | Power settings and scaling (`ref:avd-insights-use-cases#utilization-for-scaling`) |
+
+**Proposed for security** (not yet in the fact register): who shares a host, because the AVD security guide's trust boundary decides between pooled, personal and a separate tenant (`ref:avd-security-guide#trust-boundary`); answers `one-org-standard`, `needs-admin`, `multi-org`. And whether AVD sign-in requires MFA (`yes`, `no`, `unknown`), until a directory read can see it (`gap:security-scope`).
