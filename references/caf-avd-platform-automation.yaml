@@ -1,0 +1,22 @@
+id: caf-avd-platform-automation
+title: Cloud Adoption Framework, Azure Virtual Desktop platform automation and DevOps
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-platform-automation-and-devops
+pin: https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/5c44a2accff2018eba5dd738b648eef4c9db179b/docs/scenarios/azure-virtual-desktop/eslz-platform-automation-and-devops.md
+read: 2026-10-21
+license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
+areas: [assessment]
+pillars: [monitoring]
+notes: The checklist's link for E01.12. Microsoft removes the CAF AVD scenario on 2026-10-30, so the pin is the public GitHub copy, as for ref:caf-avd-management.
+claims:
+  - id: deprecated
+    says: The page is deprecated, no longer updated, and is to be removed on 2026-10-30.
+    kind: published
+  - id: declarative-iac
+    says: Deploy AVD resources with infrastructure as code, a declarative tool preferred, so deployments stay consistent.
+    kind: guidance
+  - id: gate-to-validation
+    says: Let pipelines deploy to a validation host pool automatically, and to production only with an explicit approval.
+    kind: guidance
+  - id: tag-image-version
+    says: Tag session hosts with the build or image version they run, so old hosts are easy to find when they are drained and replaced.
+    kind: guidance

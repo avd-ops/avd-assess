@@ -1,0 +1,16 @@
+id: avd-faq
+title: Azure Virtual Desktop FAQ
+url: https://learn.microsoft.com/azure/virtual-desktop/faq
+pin: "Learn git_commit_id ec03f3009f339ca1c57ac22bf993f6c90a7965ff, updated_at 2025-12-04"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [profiles, images, scaling]
+notes: Also the checklist's link for E01.13 (token-90-days, read by the capacity and images pillars at the same pin).
+claims:
+  - id: backup-by-storage
+    says: Profile backup follows the storage, Azure Backup for Azure Files shares, snapshots or Azure NetApp Files backup for ANF; VM backup is recommended only for personal pools.
+    kind: published
+  - id: token-90-days
+    says: A host's registration certificate is valid for 90 days, so a host should be on for 20 minutes every 90 days to refresh its token and update its agent and stack.
+    kind: published

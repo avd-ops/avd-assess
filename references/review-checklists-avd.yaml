@@ -144,3 +144,125 @@ claims:
     says: No proxy, SSL termination or deep packet inspection for AVD control plane traffic (Reliability, high).
   - id: C02.04
     says: Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high).
+  # Capacity and images items read for the capacity and images pillars (2026-10-21); kept here, after the others, so the list grows without reordering.
+  - id: B01.01
+    says: Determine how applications will be deployed to host pools (Operations, high).
+  - id: B01.02
+    says: Estimate the number of golden images needed (Operations, medium).
+  - id: B01.04
+    says: Select the store for custom images (Reliability, low).
+  - id: B01.05
+    says: Design the build process for custom images (Operations, low).
+  - id: B01.06
+    says: If a custom image is used, follow the recommended practices for building it (Operations, medium).
+  - id: B01.09
+    says: Determine whether OneDrive will be part of the deployment (Operations, low).
+  - id: B01.11
+    says: Assess the need to support multiple languages (Reliability, low).
+  - id: C01.02
+    says: Estimate the number of different host pools to deploy (Performance, high).
+  - id: C01.03
+    says: For personal host pools, select the assignment type (Operations, low).
+  - id: C01.07
+    says: Estimate the number of application groups needed across all host pools in the tenant (Reliability, medium).
+  - id: C01.08
+    says: Estimate the number of applications in each application group (Reliability, low).
+  - id: C01.09
+    says: Evaluate FSLogix for personal host pools (Reliability, low).
+  - id: C01.11
+    says: Verify the environment against AVD scalability limits (Reliability, high).
+  - id: C03.01
+    says: Determine which Azure regions host pools will be deployed in (Performance, high).
+  - id: C03.02
+    says: Determine the metadata location for the AVD service (Reliability, medium).
+  # App delivery and profile items read for the app-delivery and profiles pillars (2026-10-21); kept here, after the others, so the list grows without reordering.
+  - id: B02.01
+    says: Don't put App Attach packages on the storage account or share that holds FSLogix profiles (Performance, medium).
+  - id: B02.02
+    says: Review the performance considerations for App Attach packages (Performance, medium).
+  - id: B02.03
+    says: Give session hosts the right permissions on the App Attach share (Security, medium).
+  - id: B02.04
+    says: Consider vendor MSIX packages for third-party applications (Cost, low).
+  - id: B02.05
+    says: Turn off automatic updates for MSIX packages (Operations, low).
+  - id: B02.06
+    says: Review which operating systems App Attach supports (Reliability, medium).
+  - id: H01.01
+    says: Follow the Azure Files best practices for FSLogix on AVD (Performance, medium).
+  - id: H02.01
+    says: If Azure NetApp Files is needed, check it is available in the region (Reliability, medium).
+  - id: H02.02
+    says: On Azure NetApp Files, turn on Continuous Availability for profile volumes (Reliability, medium).
+  - id: H02.03
+    says: On Azure NetApp Files, check the AD site name in the Active Directory connection (Reliability, high).
+  - id: H03.03
+    says: Don't share profile storage between host pools (Performance, high).
+  - id: H04.01
+    says: Don't use Office (ODFC) containers unless they are needed and justified (Reliability, high).
+  - id: H04.04
+    says: Review the FSLogix registry settings and choose which to apply (Reliability, high).
+  - id: H04.05
+    says: Avoid concurrent or multiple FSLogix connections (Reliability, high).
+  - id: A03.01
+    says: Decide which data in profile and Office containers needs protecting (Reliability, medium).
+  - id: A03.03
+    says: Assess profile storage replication and resiliency needs for disaster recovery (Reliability, medium).
+  - id: A03.04
+    says: Review the Azure Files disaster recovery strategy (Reliability, medium).
+  - id: A03.06
+    says: Review the Azure NetApp Files disaster recovery strategy (Reliability, medium).
+  # Items read for the reliability pillar (2026-10-21), at the same pin: the A01 and A02 items not already above; every A01 to A03 item is now in this list.
+  - id: A01.01
+    says: Determine the expected high availability SLA for the apps and desktops published through AVD (Reliability, high).
+  - id: A01.02
+    says: Assess the geo disaster recovery requirements for the host pools (Reliability, medium).
+  - id: A01.03
+    says: Separate critical applications into different host pools (Reliability, low).
+  - id: A01.05
+    says: Assess whether session host VMs need backing up (Reliability, medium).
+  - id: A02.01
+    says: Plan for the golden image to be available across regions (Reliability, low).
+  - id: A02.02
+    says: Assess infrastructure and application dependencies (Reliability, medium).
+  # Monitoring and operations items read for the monitoring and scaling pillars (2026-10-21).
+  - id: E01.08
+    says: Check Azure Advisor recommendations for AVD periodically (Operations, low).
+  - id: E01.12
+    says: Decide the host pool deployment strategy (Operations, medium).
+  - id: E02.04
+    says: Configure Azure Service Health alerts for AVD (Reliability, medium).
+  # Group Policy items read for methods/intune.md (2026-10-21); kept here, after the others, so the list grows without reordering.
+  - id: D01.03
+    says: Review the domain GPOs applied to the session hosts' OU for settings that affect host functions (Operations, medium).
+  - id: D01.04
+    says: Configure FSLogix settings with the provided ADMX template (Operations, medium).
+  # Identity items read for the identity pillar (dimensions.yaml, pillar identity, 2026-10-21); kept here, after the others.
+  - id: D01.01
+    says: Run at least two domain controllers in the Azure virtual network close to the host pools (Reliability, medium).
+  - id: D01.02
+    says: Give each host pool its own OU in Active Directory (Operations, medium).
+  - id: D01.03
+    says: Review the domain GPOs that reach the host pools' OUs and affect session host features (Operations, medium).
+  - id: D01.04
+    says: Configure FSLogix with its Group Policy ADMX template (Operations, medium).
+  - id: D01.05
+    says: Use a dedicated account that may only join VMs to the domain (Security, medium).
+  - id: D01.06
+    says: Create a domain user group per set of users granted each host pool's application group (Security, medium).
+  - id: D01.07
+    says: Check the password expiration policy for the accounts Azure Files AD integration uses (Security, high).
+  - id: D01.08
+    says: The Active Directory forest or domain must sync with Entra ID (Reliability, high).
+  - id: D03.01
+    says: An Entra tenant with at least one linked subscription must exist (Reliability, high).
+  - id: D03.02
+    says: Review and document the identity scenario (Security, high).
+  - id: D03.03
+    says: Assess the user account types and their requirements (Security, medium).
+  - id: D03.04
+    says: If single sign-on is required, review the supported scenarios and prerequisites (Reliability, medium).
+  - id: D03.05
+    says: Choose the right session host join type (Security, high).
+  - id: D03.06
+    says: Review the limits of Entra Domain Services before using it for AVD (Reliability, low).

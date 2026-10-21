@@ -1,0 +1,22 @@
+id: avd-diagnostics
+title: Send diagnostic data to Log Analytics for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/diagnostics-log-analytics
+pin: "Learn git_commit_id 4fdc1dca34d1fa7147fb1406df29d3ece36533fb, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [monitoring, diagnostics]
+notes: The checklist's link for E02.02. The category list here is longer than the seven Insights asks for on a host pool (ref:avd-insights#hostpool-diagnostics); Insights' list is the minimum, this is what exists.
+claims:
+  - id: categories
+    says: "AVD objects can send Management Activities, Feed, Connections, Host registration, Errors, Checkpoints, Agent Health Status, Network, Connection Graphics, Session Host Management Activity and Autoscale logs."
+    kind: published
+  - id: per-object
+    says: Diagnostics must be turned on for each Resource Manager object to be monitored, and data exists only from the time they are turned on.
+    kind: published
+  - id: unreached-connections-missing
+    says: Connections that never reach the service don't appear in diagnostics, so a user's own network failures are invisible there.
+    kind: published
+  - id: service-error-escalate
+    says: In the errors table, ServiceError false marks issues an admin can fix; true marks ones to escalate to Microsoft with the correlation ID.
+    kind: published

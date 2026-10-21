@@ -40,3 +40,12 @@ claims:
   - id: device-redirection
     says: Restrict device redirection (drives, clipboard, printers, USB) to what each group of users needs.
     kind: guidance
+  - id: vhd-exclusions
+    says: For FSLogix or any profile solution that mounts virtual disk files, exclude those file extensions from antivirus scanning.
+    kind: published
+  - id: edr-microsoft-or-third-party
+    says: Endpoint protection and EDR can be Microsoft's or a third-party product; vulnerability assessment can also come from a third party, though Microsoft recommends its own.
+    kind: published
+  - id: gsa-on-hosts
+    says: Configure Global Secure Access on session hosts to apply the same access controls to private, internet and Microsoft 365 apps, external identities included.
+    kind: guidance

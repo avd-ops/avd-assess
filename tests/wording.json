@@ -4,7 +4,9 @@
     "SSE or ZTNA client": "a secure service edge or zero trust network access client, as a category",
     "VPN client": "a VPN client, as a category",
     "EDR": "an endpoint detection and response product, as a category",
-    "monitoring product": "a third-party monitoring or user experience product, as a category"
+    "monitoring product": "a third-party monitoring or user experience product, as a category",
+    "app layering product": "an app layering or streaming product, as a category",
+    "profile management product": "a third-party profile management product, as a category"
   },
   "banned": [
     "Zscaler",
@@ -30,6 +32,11 @@
     "ControlUp",
     "Lakeside",
     "eG Innovations",
-    "Parallels RAS"
+    "Parallels RAS",
+    "App Volumes",
+    "Numecent",
+    "Cloudpaging",
+    "Ivanti Workspace Control",
+    "Ivanti User Workspace Manager"
   ]
 }

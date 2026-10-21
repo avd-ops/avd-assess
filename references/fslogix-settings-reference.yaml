@@ -1,0 +1,25 @@
+id: fslogix-settings-reference
+title: FSLogix configuration settings reference
+url: https://learn.microsoft.com/fslogix/reference-configuration-settings
+pin: "Learn git_commit_id d91140933b18b132be63ef5f8b2f17568aa0885a, updated_at 2026-09-01"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [profiles]
+notes: The checklist's links for H04.03 and H04.06 (profile-container-configuration-reference, cloud-cache-configuration-reference) redirect here (checked 2026-10-21). Settings are registry values on each host, so only a host-side read sees them.
+claims:
+  - id: size-default
+    says: SizeInMBs, the maximum container size, defaults to 30000 MB; existing containers grow to a raised value at sign-in but can't be shrunk by it.
+    kind: published
+  - id: volume-type-default
+    says: VolumeType defaults to VHD; set VHDX to create VHDX containers.
+    kind: published
+  - id: dynamic-default
+    says: IsDynamic defaults to on, so containers take disk space only as they grow.
+    kind: published
+  - id: ccd-or-vhd-locations
+    says: CCDLocations (Cloud Cache) and VHDLocations must not both be set, and Cloud Cache settings apply only with CCDLocations, which takes up to four SMB or Blob locations.
+    kind: published
+  - id: cache-on-fast-available-storage
+    says: The Cloud Cache local cache must sit on highly available, high-performing storage, comparable to SSD or NVMe attached disks.
+    kind: guidance

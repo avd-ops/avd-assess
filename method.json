@@ -379,6 +379,63 @@
       ]
     },
     {
+      "fact": "c11.hostPool.sessionHosts.entraJoined",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.compute/virtualmachines/extensions",
+      "property": "properties.type",
+      "claims": [
+        "ref:avd-entra-joined-hosts#one-join-type-per-pool",
+        "gap:identity-scope",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.sessionHosts.domainJoined",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.compute/virtualmachines/extensions",
+      "property": "properties.type",
+      "claims": [
+        "ref:avd-entra-joined-hosts#one-join-type-per-pool",
+        "gap:identity-scope",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.entraSso",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.desktopvirtualization/hostpools",
+      "property": "properties.customRdpProperty",
+      "claims": [
+        "ref:avd-sso#host-pool-property",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.directUserAssignments",
+      "from": "resource-graph",
+      "table": "AuthorizationResources",
+      "type": "microsoft.authorization/roleassignments",
+      "property": "properties.principalType",
+      "claims": [
+        "ref:avd-rbac#user-role",
+        "gap:identity-scope"
+      ]
+    },
+    {
+      "fact": "c11.subscription.privilegedAssignments",
+      "from": "resource-graph",
+      "table": "AuthorizationResources",
+      "type": "microsoft.authorization/roleassignments",
+      "property": "properties.roleDefinitionId",
+      "claims": [
+        "ref:avd-rbac#scoped-roles",
+        "gap:identity-scope"
+      ]
+    },
+    {
       "fact": "intake.residency",
       "from": "intake",
       "claims": [
@@ -427,6 +484,62 @@
       "claims": [
         "ref:review-checklists-avd#G04.01",
         "gap:intake"
+      ]
+    },
+    {
+      "fact": "intake.joinType",
+      "from": "intake",
+      "claims": [
+        "gap:intake",
+        "gap:identity-scope"
+      ]
+    },
+    {
+      "fact": "intake.userIdentitySource",
+      "from": "intake",
+      "claims": [
+        "gap:intake",
+        "gap:identity-scope"
+      ]
+    },
+    {
+      "fact": "intake.sso",
+      "from": "intake",
+      "claims": [
+        "gap:intake",
+        "gap:identity-scope"
+      ]
+    },
+    {
+      "fact": "intake.mfaScope",
+      "from": "intake",
+      "claims": [
+        "gap:intake",
+        "gap:identity-scope"
+      ]
+    },
+    {
+      "fact": "intake.clientDevices",
+      "from": "intake",
+      "claims": [
+        "gap:intake",
+        "gap:identity-scope"
+      ]
+    },
+    {
+      "fact": "intake.signInMethods",
+      "from": "intake",
+      "claims": [
+        "gap:intake",
+        "gap:identity-scope"
+      ]
+    },
+    {
+      "fact": "intake.externalUsers",
+      "from": "intake",
+      "claims": [
+        "gap:intake",
+        "gap:identity-scope"
       ]
     }
   ],

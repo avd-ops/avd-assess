@@ -1,0 +1,16 @@
+id: entra-ds-compare
+title: Compare self-managed AD DS, Microsoft Entra ID and managed Microsoft Entra Domain Services
+url: https://learn.microsoft.com/entra/identity/domain-services/compare-identity-solutions
+pin: "Learn git_commit_id a3426c07f689ba04846e8a3e6ce2d546b1fda515, updated_at 2026-02-19"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [identity]
+notes: The page the review checklist's D03.06 links to for the Entra Domain Services limits.
+claims:
+  - id: managed-subset
+    says: Entra Domain Services is a managed domain with a subset of AD DS features and no domain or enterprise admin rights; schema extensions and the rest of a self-managed domain need AD DS.
+    kind: published
+  - id: self-managed-models
+    says: Self-managed AD DS in Azure is either a standalone cloud domain or the on-premises domain extended over VPN or ExpressRoute, with replica domain controllers in Azure.
+    kind: published

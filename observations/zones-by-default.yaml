@@ -1,0 +1,7 @@
+id: zones-by-default
+claim: ref:avd-multiregion-bcdr#spread-and-overprovision
+verdict: extends
+observed: "The landing zone spreads session hosts across zones 1, 2 and 3 by default (availabilityZones; an empty list deploys them regional) and keeps its profile share on zone-redundant storage, which follows the source. It doesn't add hosts for a lost zone: the host count is the operator's, so the n-1 headroom the source asks for is a sizing decision left to compute.host-count, and a two-host pool loses half its capacity with one zone."
+evidence:
+  - https://github.com/nickprignano/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep
+date: 2026-10-21

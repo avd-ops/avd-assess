@@ -1,0 +1,7 @@
+id: fslogix-exclusions-partial
+claim: ref:fslogix-prerequisites#exclusion-scope
+verdict: not-yet-tested
+observed: "The landing zone's host configuration sets part of the published list, in Microsoft Defender Antivirus's local preferences only: the temporary and share VHD and VHDX files and three FSLogix processes, one no longer on the list. Folders, Cloud Cache, drivers, registry keys and mount points aren't set; a third-party antivirus or a network or data loss prevention layer gets nothing; a central policy that owns exclusions only draws a warning. Logon impact untested."
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1
+date: 2026-10-21

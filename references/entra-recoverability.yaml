@@ -1,0 +1,15 @@
+id: entra-recoverability
+title: Recoverability best practices in Microsoft Entra ID
+url: https://learn.microsoft.com/entra/architecture/recoverability-overview
+pin: "Learn git_commit_id 572a585809c1b6f1c66792dc7e79a7c52cdddb43, updated_at 2026-06-26"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability, identity]
+claims:
+  - id: soft-then-hard-delete
+    says: Only some object types (users, Microsoft 365 groups, cloud security groups, applications) are soft deleted for 30 days; everything else is hard deleted at once and must be recreated.
+    kind: published
+  - id: document-known-good
+    says: Export and keep a known-good state of the directory configuration so a deletion or misconfiguration can be compared and reapplied.
+    kind: guidance

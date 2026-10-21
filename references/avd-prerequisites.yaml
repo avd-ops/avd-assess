@@ -9,3 +9,29 @@ claims:
   - id: rtt-under-150
     says: Round-trip time from the client's network to the host pool's Azure region should be under 150 ms; put session hosts in the region closest to users.
     kind: published
+  # Claims read for the capacity and images pillars (2026-10-21) at the same pin; kept after the others so the list grows without reordering.
+  - id: supported-os
+    says: "Session hosts run 64-bit Windows 11 or 10 Enterprise (multi-session or single-session) or Windows Server 2016 to 2025; different pools can run different OSes."
+    kind: published
+  - id: unsupported-hosts
+    says: Not supported for session hosts, among others, 32-bit and LTSC, N or KN editions, Ultra disks for the OS disk, ephemeral OS disks, scale sets and Arm64 VMs.
+    kind: published
+  - id: image-sources
+    says: Hosts can use Marketplace images or custom images kept in an Azure Compute Gallery or as managed images.
+    kind: published
+  # Identity claims read for the identity pillar (2026-10-21) at the same pin; kept after the others.
+  - id: identity-scenarios
+    says: Six identity scenarios are supported, from Entra-only users on Entra joined hosts to synced users on hosts joined to AD DS or Entra Domain Services; Entra ID always authenticates the user.
+    kind: published
+  - id: hybrid-sync
+    says: With AD DS, users must be synced to Entra ID with Entra Connect; with Entra Domain Services the sync from Entra ID is one way and automatic; personal Microsoft accounts aren't supported.
+    kind: published
+  - id: fslogix-entra-joined-hybrid
+    says: FSLogix profiles on Entra joined hosts need Azure Files or Azure NetApp Files and hybrid user accounts created in AD DS.
+    kind: published
+  - id: join-account
+    says: Joining hosts needs an account that can join devices to the tenant or computers to the domain (for Entra Domain Services, a member of its DC administrators group), and that account can't have MFA.
+    kind: published
+  - id: ou-at-deploy
+    says: Hosts can be placed in an OU at deployment time with an optional parameter.
+    kind: published

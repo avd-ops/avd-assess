@@ -1,0 +1,15 @@
+id: intune-group-policy-analytics
+title: Analyze on-premises Group Policy Objects with Group Policy analytics in Microsoft Intune
+url: https://learn.microsoft.com/intune/device-configuration/import-group-policy-analytics
+pin: "Learn git_commit_id a60f43f6f562ded6195ddd8d888335f2d8e11e73, updated_at 2026-07-01"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [intune]
+claims:
+  - id: mdm-support-percentage
+    says: Group Policy analytics imports GPOs and shows, per GPO, the percentage of settings that have an Intune equivalent, plus deprecated and unknown settings.
+    kind: published
+  - id: migrate-to-catalog
+    says: Supported settings migrate into a settings catalog policy; review them first, because some Group Policy settings don't apply to cloud-managed devices.
+    kind: guidance

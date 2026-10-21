@@ -1,0 +1,8 @@
+id: device-records-outlive-hosts
+claim: ref:intune-avd-multisession#orphaned-records
+verdict: agrees
+observed: Deleting the landing zone's demo hosts left their Entra ID and Intune device records behind until the cleanup script deleted them through Graph; a cleanup whose Graph sign-in timed out couldn't find the names on a second run until the fix kept the deployment record. Anything that recreates hosts (session host update, a rebuild) leaves the same records unless a step removes them.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/lessons/0029-device-cleanup-rerun.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/ops/Remove-AvdDemo.ps1
+date: 2026-10-21

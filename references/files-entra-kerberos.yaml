@@ -1,0 +1,37 @@
+id: files-entra-kerberos
+title: Microsoft Entra Kerberos authentication for Azure Files
+url: https://learn.microsoft.com/azure/storage/files/storage-files-identity-auth-hybrid-identities-enable
+pin: "Learn git_commit_id 0edc2293e31d70060489c0caa331c73379574a8a, updated_at 2026-09-22"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [identity, profiles]
+notes: The page the review checklist's D02.01 links to. The landing zone uses it for cloud-only users (obs:smb-channel-aes128-gcm-needed, obs:fslogix-cloud-only-users-work).
+claims:
+  - id: cloud-only-and-hybrid
+    says: Entra Kerberos authenticates hybrid and cloud-only identities to Azure Files; cloud-only identities need no domain controller at all and are supported in the Azure public cloud only.
+    kind: published
+  - id: one-identity-source
+    says: A storage account takes one identity source; another source must be turned off before Entra Kerberos is turned on.
+    kind: published
+  - id: clients-entra-joined
+    says: Clients must be Entra joined or Entra hybrid joined, not joined to Entra Domain Services or to AD only.
+    kind: published
+  - id: hybrid-acl-line-of-sight
+    says: For hybrid identities, setting Windows ACLs needs a device with a line of sight to a domain controller.
+    kind: published
+  - id: admin-consent
+    says: The storage account's generated app needs admin consent after Entra Kerberos is turned on.
+    kind: published
+  - id: cloud-group-sids
+    says: Cloud-only identities need a manifest tag on the storage account's app so cloud groups go in the ticket, or authentication fails; a ticket holds at most 1,010 group SIDs.
+    kind: published
+  - id: exclude-from-mfa
+    says: Entra Kerberos doesn't support MFA to the share, so the storage account's app must be excluded from Conditional Access MFA policies that target all apps.
+    kind: published
+  - id: settings-catalog-multisession
+    says: Set cloud Kerberos ticket retrieval on multi-session hosts through the Intune settings catalog; the OMA-URI method doesn't work on them.
+    kind: published
+  - id: ticket-aes256
+    says: Entra Kerberos tickets are always AES-256; SMB channel encryption is set separately.
+    kind: published

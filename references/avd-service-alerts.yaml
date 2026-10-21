@@ -1,0 +1,13 @@
+id: avd-service-alerts
+title: Set up service alerts for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/set-up-service-alerts
+pin: "Learn git_commit_id 981e8332ce6cbcf1c8c178b7775bbe23170c1f4d, updated_at 2025-06-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [monitoring]
+notes: The checklist's link for E02.04.
+claims:
+  - id: issue-and-advisory
+    says: Create Service Health alerts for at least service issues (connectivity or management of AVD) and health advisories (such as insecure configuration or deprecations).
+    kind: guidance

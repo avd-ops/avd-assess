@@ -1,0 +1,28 @@
+id: avd-service-limits
+title: Azure subscription and service limits, Azure Virtual Desktop service limits
+url: https://learn.microsoft.com/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-virtual-desktop-service-limits
+pin: "Learn git_commit_id b925adaad71e273e5a1379e52d082568ef8fbf6f, updated_at 2026-09-29"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [capacity]
+notes: Read for C01.07, C01.08 and C01.11. The checklist links those to the AVD architecture example scenario, which no longer lists limits at the date read; this section is where they now are. VMs, storage and networks have their own limits on the same page.
+claims:
+  - id: workspaces-per-tenant
+    says: At most 1,300 workspaces per Microsoft Entra tenant.
+    kind: published
+  - id: host-pools-per-workspace
+    says: At most 400 host pools per workspace.
+    kind: published
+  - id: app-groups-per-tenant
+    says: At most 1,000 application groups per tenant, more only through a support request.
+    kind: published
+  - id: remoteapps-per-group
+    says: At most 500 RemoteApps per application group.
+    kind: published
+  - id: role-assignments
+    says: At most 200 role assignments per AVD object.
+    kind: published
+  - id: hosts-per-pool
+    says: At most 10,000 session hosts per host pool.
+    kind: published
