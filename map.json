@@ -733,8 +733,8 @@
       "id": "profile.resilience",
       "area": "reliability",
       "pillar": "profiles",
-      "title": "Profile redundancy and backup",
-      "decides": "Storage redundancy and backup of profile containers.",
+      "title": "Profile storage redundancy",
+      "decides": "Storage redundancy of profile containers.",
       "home": {
         "decision": "proposed:profile.storage",
         "facts": [
@@ -748,17 +748,15 @@
         "standing": "published",
         "claims": [
           "ref:review-checklists-avd#A03.05",
-          "ref:review-checklists-avd#A03.02"
+          "ref:files-redundancy#zrs-not-regional"
         ],
-        "says": "Zone-redundant storage for Azure Files, and a backup strategy for profile containers."
+        "says": "Zone-redundant storage for Azure Files; it covers a zone, not a region."
       },
       "measure": "rebuild",
       "landingZone": [
-        "profileStorageSku",
-        "enableProfileBackup",
-        "profileBackupRetentionDays",
-        "profileBackupTier"
-      ]
+        "profileStorageSku"
+      ],
+      "note": "The backup of the containers is profile.backup-copy (reliability pillar)."
     },
     {
       "id": "perf.image-optimization",
@@ -1611,15 +1609,16 @@
           "ref:review-checklists-avd#A01.01",
           "ref:waf-reliability-checklist#RE:04",
           "ref:caf-avd-bcdr#no-financial-sla",
+          "ref:reliability-virtual-machines#sla-rises-with-zones",
           "ref:avd-service-resilience#control-plane-microsoft",
           "ref:avd-bcdr-concepts#customer-managed-components",
           "ref:avd-bcdr-concepts#ha-bc-dr"
         ],
-        "says": "The targets are the workload's own, set with the business; the AVD service has no financially backed SLA, the control plane is Microsoft's, and everything from the hosts down is the customer's to make available."
+        "says": "The targets are the workload's own, set with the business; the AVD service has no financially backed SLA, the control plane is Microsoft's, and the hosts' availability follows from their own SLA and spread."
       },
       "measure": "intake",
       "landingZone": [],
-      "note": "The landing zone takes a recovery tier, not a target; the operator's targets choose the tier (obs:recovery-tiers-not-yet-tested)."
+      "note": "C19 is one answer per estate, so the intake asks for the strictest workload's targets; per-pool targets wait for a pool-keyed intake (gap:reliability-scope). The landing zone takes a recovery tier, not a target."
     },
     {
       "id": "reliability.critical-pools",
@@ -1637,6 +1636,7 @@
         "standing": "guidance",
         "claims": [
           "ref:review-checklists-avd#A01.03",
+          "ref:avd-multiregion-bcdr#pools-per-requirement",
           "ref:caf-avd-bcdr#separate-critical-apps"
         ],
         "says": "Separate critical apps into their own pools so each pool gets the recovery model its targets need."
@@ -1729,7 +1729,8 @@
         "decision": "proposed:hostPool.recovery",
         "facts": [
           "c11.hostPool.type",
-          "c11.hostPool.sessionHosts.replicated"
+          "c11.hostPool.sessionHosts.replicated",
+          "c11.hostPool.sessionHosts.notReplicated"
         ]
       },
       "baseline": {
@@ -1765,7 +1766,9 @@
         "standing": "guidance",
         "claims": [
           "ref:review-checklists-avd#A01.05",
+          "ref:avd-multiregion-bcdr#pool-types-state",
           "ref:caf-avd-bcdr#hosts-stateless-no-vm-backup",
+          "ref:reliability-virtual-machines#backup-not-availability",
           "ref:avd-service-resilience#customer-owns-hosts"
         ],
         "says": "Pooled hosts are stateless and rebuilt from the image, so their VM backup isn't recommended; personal hosts that keep data locally are backed up at the VM level or replicated."
@@ -1784,6 +1787,7 @@
         "decision": "proposed:hostPool.image",
         "facts": [
           "c11.hostPool.images",
+          "c11.hostPool.imageSource",
           "c11.hostPool.imageRegions"
         ]
       },
@@ -1823,7 +1827,6 @@
         "standing": "guidance",
         "claims": [
           "ref:review-checklists-avd#A02.02",
-          "ref:caf-avd-bcdr#dependencies-in-recovery-region",
           "ref:avd-multiregion-bcdr#dependencies-zone-resilient",
           "ref:avd-multiregion-bcdr#networking-in-both-regions",
           "ref:avd-multiregion-bcdr#identity-in-recovery-region",
@@ -1868,26 +1871,29 @@
       "id": "profile.backup-copy",
       "area": "reliability",
       "pillar": "reliability",
-      "title": "Profile backup tier and its offsite copy",
-      "decides": "Whether the profile backup survives loss of the share and its account, and whether it can run at all.",
+      "title": "Profile backup, its tier and its offsite copy",
+      "decides": "Whether profile containers are backed up, whether the backup survives loss of the share and its account, and whether it runs at all.",
       "home": {
         "decision": "proposed:profile.storage",
         "facts": [
           "c11.storage.backupTier",
+          "c11.storage.lastBackupJob",
           "c11.storage.sku"
         ]
       },
       "baseline": {
         "standing": "published",
         "claims": [
+          "ref:review-checklists-avd#A03.02",
           "ref:review-checklists-avd#A03.04",
           "ref:files-backup#snapshot-and-vaulted",
           "ref:files-backup#vaulted-survives-source-loss",
           "ref:files-backup#soft-delete-enabled",
           "ref:files-backup-support#key-access-needed",
+          "ref:files-backup-portal#keys-or-private",
           "ref:avd-multiregion-bcdr#back-up-primary-only"
         ],
-        "says": "A snapshot-tier backup dies with its account; only the vaulted tier keeps an offsite copy, on GRS when a cross-region copy is needed. Back up primary storage; the backup needs the account's key access."
+        "says": "A snapshot-tier backup dies with its account; only the vaulted tier keeps an offsite copy, on GRS when a cross-region copy is needed. Back up primary storage, and count a backup once a job has succeeded, since two pages differ on the key access it needs."
       },
       "observations": [
         "obs:files-backup-key-access-off"
@@ -1898,7 +1904,7 @@
         "profileBackupTier",
         "profileBackupRetentionDays"
       ],
-      "note": "Redundancy of the share itself stays in profile.resilience."
+      "note": "Redundancy of the share itself is profile.resilience."
     },
     {
       "id": "profile.cross-region",

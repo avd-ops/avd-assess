@@ -239,15 +239,16 @@ dimensions:
   - id: profile.resilience
     area: reliability
     pillar: profiles
-    title: Profile redundancy and backup
-    decides: Storage redundancy and backup of profile containers.
+    title: Profile storage redundancy
+    decides: Storage redundancy of profile containers.
     home: {decision: proposed:profile.storage, facts: [c11.storage.sku], checks: [asm-files-zone-redundant]}
     baseline:
       standing: published
-      claims: [ref:review-checklists-avd#A03.05, ref:review-checklists-avd#A03.02]
-      says: Zone-redundant storage for Azure Files, and a backup strategy for profile containers.
+      claims: [ref:review-checklists-avd#A03.05, ref:files-redundancy#zrs-not-regional]
+      says: Zone-redundant storage for Azure Files; it covers a zone, not a region.
     measure: rebuild
-    landingZone: [profileStorageSku, enableProfileBackup, profileBackupRetentionDays, profileBackupTier]
+    landingZone: [profileStorageSku]
+    note: The backup of the containers is profile.backup-copy (reliability pillar).
 
   # Performance optimizations
   - id: perf.image-optimization
@@ -662,11 +663,11 @@ dimensions:
     home: {decision: proposed:hostPool.recovery, facts: [], intake: [intake.recoveryTime, intake.recoveryPoint]}
     baseline:
       standing: guidance
-      claims: [ref:review-checklists-avd#A01.01, ref:waf-reliability-checklist#RE:04, ref:caf-avd-bcdr#no-financial-sla, ref:avd-service-resilience#control-plane-microsoft, ref:avd-bcdr-concepts#customer-managed-components, ref:avd-bcdr-concepts#ha-bc-dr]
-      says: The targets are the workload's own, set with the business; the AVD service has no financially backed SLA, the control plane is Microsoft's, and everything from the hosts down is the customer's to make available.
+      claims: [ref:review-checklists-avd#A01.01, ref:waf-reliability-checklist#RE:04, ref:caf-avd-bcdr#no-financial-sla, ref:reliability-virtual-machines#sla-rises-with-zones, ref:avd-service-resilience#control-plane-microsoft, ref:avd-bcdr-concepts#customer-managed-components, ref:avd-bcdr-concepts#ha-bc-dr]
+      says: The targets are the workload's own, set with the business; the AVD service has no financially backed SLA, the control plane is Microsoft's, and the hosts' availability follows from their own SLA and spread.
     measure: intake
     landingZone: []
-    note: The landing zone takes a recovery tier, not a target; the operator's targets choose the tier (obs:recovery-tiers-not-yet-tested).
+    note: C19 is one answer per estate, so the intake asks for the strictest workload's targets; per-pool targets wait for a pool-keyed intake (gap:reliability-scope). The landing zone takes a recovery tier, not a target.
   - id: reliability.critical-pools
     area: reliability
     pillar: reliability
@@ -675,7 +676,7 @@ dimensions:
     home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.count]}
     baseline:
       standing: guidance
-      claims: [ref:review-checklists-avd#A01.03, ref:caf-avd-bcdr#separate-critical-apps]
+      claims: [ref:review-checklists-avd#A01.03, ref:avd-multiregion-bcdr#pools-per-requirement, ref:caf-avd-bcdr#separate-critical-apps]
       says: Separate critical apps into their own pools so each pool gets the recovery model its targets need.
     measure: intake
     landingZone: []
@@ -712,7 +713,7 @@ dimensions:
     pillar: reliability
     title: Personal pool recovery
     decides: How personal session hosts, which hold state, come back after a zone or region loss.
-    home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.replicated]}
+    home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.replicated, c11.hostPool.sessionHosts.notReplicated]}
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#A01.06, ref:avd-multiregion-bcdr#personal-site-recovery, ref:avd-multiregion-bcdr#no-asr-test-failover, ref:asr-zone-to-zone#limited-regions, ref:asr-zone-to-zone#may-fall-short-region-wide, ref:asr-zone-to-zone#rto-sla-not-rpo]
@@ -728,7 +729,7 @@ dimensions:
     home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.backupProtected]}
     baseline:
       standing: guidance
-      claims: [ref:review-checklists-avd#A01.05, ref:caf-avd-bcdr#hosts-stateless-no-vm-backup, ref:avd-service-resilience#customer-owns-hosts]
+      claims: [ref:review-checklists-avd#A01.05, ref:avd-multiregion-bcdr#pool-types-state, ref:caf-avd-bcdr#hosts-stateless-no-vm-backup, ref:reliability-virtual-machines#backup-not-availability, ref:avd-service-resilience#customer-owns-hosts]
       says: Pooled hosts are stateless and rebuilt from the image, so their VM backup isn't recommended; personal hosts that keep data locally are backed up at the VM level or replicated.
     measure: fact
     landingZone: []
@@ -738,7 +739,7 @@ dimensions:
     pillar: reliability
     title: Golden image in the recovery region
     decides: Whether the image a pool deploys from is available, at the same version, in every region a pool may be rebuilt in.
-    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images, c11.hostPool.imageRegions]}
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images, c11.hostPool.imageSource, c11.hostPool.imageRegions]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#A02.01, ref:avd-multiregion-bcdr#image-in-both-regions, ref:compute-gallery#two-galleries-for-dr, ref:compute-gallery#zrs-replicas, ref:compute-gallery#replicate-per-version]
@@ -754,7 +755,7 @@ dimensions:
     home: {decision: proposed:hostPool.recovery, facts: [c11.network.customDnsVirtualNetworks], intake: [intake.recoveryDependencies, intake.identityConstraints, intake.existingHub]}
     baseline:
       standing: guidance
-      claims: [ref:review-checklists-avd#A02.02, ref:caf-avd-bcdr#dependencies-in-recovery-region, ref:avd-multiregion-bcdr#dependencies-zone-resilient, ref:avd-multiregion-bcdr#networking-in-both-regions, ref:avd-multiregion-bcdr#identity-in-recovery-region, ref:avd-multiregion-bcdr#msix-account-per-region, ref:avd-multiregion-bcdr#log-workspace-per-region, ref:entra-recoverability#soft-then-hard-delete, ref:entra-recoverability#document-known-good]
+      claims: [ref:review-checklists-avd#A02.02, ref:avd-multiregion-bcdr#dependencies-zone-resilient, ref:avd-multiregion-bcdr#networking-in-both-regions, ref:avd-multiregion-bcdr#identity-in-recovery-region, ref:avd-multiregion-bcdr#msix-account-per-region, ref:avd-multiregion-bcdr#log-workspace-per-region, ref:entra-recoverability#soft-then-hard-delete, ref:entra-recoverability#document-known-good]
       says: Every dependency users reach is zone resilient and present in the recovery region - domain controllers with DNS, sync staging, hub and hybrid links, app packages per region, a log workspace that survives - and the directory's own configuration has a known-good export.
     measure: intake
     landingZone: []
@@ -774,17 +775,17 @@ dimensions:
   - id: profile.backup-copy
     area: reliability
     pillar: reliability
-    title: Profile backup tier and its offsite copy
-    decides: Whether the profile backup survives loss of the share and its account, and whether it can run at all.
-    home: {decision: proposed:profile.storage, facts: [c11.storage.backupTier, c11.storage.sku]}
+    title: Profile backup, its tier and its offsite copy
+    decides: Whether profile containers are backed up, whether the backup survives loss of the share and its account, and whether it runs at all.
+    home: {decision: proposed:profile.storage, facts: [c11.storage.backupTier, c11.storage.lastBackupJob, c11.storage.sku]}
     baseline:
       standing: published
-      claims: [ref:review-checklists-avd#A03.04, ref:files-backup#snapshot-and-vaulted, ref:files-backup#vaulted-survives-source-loss, ref:files-backup#soft-delete-enabled, ref:files-backup-support#key-access-needed, ref:avd-multiregion-bcdr#back-up-primary-only]
-      says: A snapshot-tier backup dies with its account; only the vaulted tier keeps an offsite copy, on GRS when a cross-region copy is needed. Back up primary storage; the backup needs the account's key access.
+      claims: [ref:review-checklists-avd#A03.02, ref:review-checklists-avd#A03.04, ref:files-backup#snapshot-and-vaulted, ref:files-backup#vaulted-survives-source-loss, ref:files-backup#soft-delete-enabled, ref:files-backup-support#key-access-needed, ref:files-backup-portal#keys-or-private, ref:avd-multiregion-bcdr#back-up-primary-only]
+      says: A snapshot-tier backup dies with its account; only the vaulted tier keeps an offsite copy, on GRS when a cross-region copy is needed. Back up primary storage, and count a backup once a job has succeeded, since two pages differ on the key access it needs.
     observations: [obs:files-backup-key-access-off]
     measure: fact
     landingZone: [enableProfileBackup, profileBackupTier, profileBackupRetentionDays]
-    note: Redundancy of the share itself stays in profile.resilience.
+    note: Redundancy of the share itself is profile.resilience.
   - id: profile.cross-region
     area: reliability
     pillar: reliability

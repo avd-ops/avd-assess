@@ -961,13 +961,36 @@
       "evidences": []
     },
     {
+      "id": "c11.hostPool.sessionHosts.notReplicated",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/notReplicated",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c11.hostPool.imageRegions",
       "tier": "azure",
       "contract": "C11",
       "path": "/subscriptions/*/hostPools/*/imageRegions",
       "grain": "hostPool",
-      "unit": "count",
-      "privacy": "count",
+      "unit": "region",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [],
+      "aggregate": "distinct"
+    },
+    {
+      "id": "c11.hostPool.imageSource",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/imageSource",
+      "grain": "hostPool",
+      "unit": "enum",
+      "privacy": "public",
       "status": "specified",
       "evidences": []
     },
@@ -976,6 +999,17 @@
       "tier": "azure",
       "contract": "C11",
       "path": "/subscriptions/*/storageAccounts/*/backupTier",
+      "grain": "storageAccount",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.lastBackupJob",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/lastBackupJob",
       "grain": "storageAccount",
       "unit": "enum",
       "privacy": "public",

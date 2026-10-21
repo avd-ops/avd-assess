@@ -2,9 +2,10 @@ id: avd-multiregion-bcdr
 title: Multiregion BCDR for Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/architecture/example-scenario/azure-virtual-desktop/azure-virtual-desktop-multi-region-bcdr
 pin: "Learn git_commit_id d6054b5b6a0fda90d06619b94a3c5c2ce89c4513, updated_at 2026-10-05"
-read: 2026-10-20
+read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment, benchmarks]
+pillars: [reliability, profiles]
 claims:
   - id: active-active-vs-passive
     says: Each pooled host pool takes an active-active model (a second pool in another region serving users, near-zero RTO, no failover step) or active-passive (a standby pool users are moved to by reassigning application groups).
@@ -78,4 +79,10 @@ claims:
     kind: guidance
   - id: automate-and-align
     says: Automate failover, test the full failover and failback periodically, and check regularly that the two regions' host pools stay aligned.
+    kind: guidance
+  - id: pool-types-state
+    says: A personal host can store user data, so its state is replicated and backed up; pooled hosts are stateless, with user data and profiles kept in external storage or OneDrive.
+    kind: published
+  - id: pools-per-requirement
+    says: Users with different recovery requirements get separate host pools, for example a fully redundant pool with geo recovery for a mission-critical app and a development pool with none.
     kind: guidance

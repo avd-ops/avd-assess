@@ -1090,11 +1090,15 @@
       "title": "Multiregion BCDR for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/architecture/example-scenario/azure-virtual-desktop/azure-virtual-desktop-multi-region-bcdr",
       "pin": "Learn git_commit_id d6054b5b6a0fda90d06619b94a3c5c2ce89c4513, updated_at 2026-10-05",
-      "read": "2026-10-20",
+      "read": "2026-10-21",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
         "benchmarks"
+      ],
+      "pillars": [
+        "reliability",
+        "profiles"
       ],
       "claims": [
         {
@@ -1215,6 +1219,16 @@
         {
           "id": "automate-and-align",
           "says": "Automate failover, test the full failover and failback periodically, and check regularly that the two regions' host pools stay aligned.",
+          "kind": "guidance"
+        },
+        {
+          "id": "pool-types-state",
+          "says": "A personal host can store user data, so its state is replicated and backed up; pooled hosts are stateless, with user data and profiles kept in external storage or OneDrive.",
+          "kind": "published"
+        },
+        {
+          "id": "pools-per-requirement",
+          "says": "Users with different recovery requirements get separate host pools, for example a fully redundant pool with geo recovery for a mission-critical app and a development pool with none.",
           "kind": "guidance"
         }
       ]
@@ -1893,7 +1907,7 @@
       "pillars": [
         "reliability"
       ],
-      "notes": "Deprecated; Microsoft says it will be removed on 2026-10-30. Claims are cited only where the multiregion guide (ref:avd-multiregion-bcdr) doesn't say the same; when the page goes, the pin drift report flags it and each claim moves to a living source or becomes a gap.",
+      "notes": "Deprecated; Microsoft removes it on 2026-10-30. Three claims have no living source yet (no-financial-sla, availability-option-at-create, hosts-stateless-no-vm-backup); when the page goes, each moves to a living source or becomes a gap (gap:reliability-scope).",
       "claims": [
         {
           "id": "no-financial-sla",
@@ -2572,6 +2586,29 @@
           "id": "document-known-good",
           "says": "Export and keep a known-good state of the directory configuration so a deletion or misconfiguration can be compared and reapplied.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "files-backup-portal",
+      "title": "Back up Azure Files in the Azure portal",
+      "url": "https://learn.microsoft.com/azure/backup/backup-azure-files",
+      "pin": "Learn git_commit_id e9b0ca20cc1701ab1bf6865b58179e4c9abafb8b, updated_at 2026-09-23",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "profiles"
+      ],
+      "notes": "Its prerequisite differs from the support matrix (ref:files-backup-support#key-access-needed); the landing zone's recovery spec records both (facts F14 and F19, open question U1).",
+      "claims": [
+        {
+          "id": "keys-or-private",
+          "says": "As a prerequisite, the storage account either permits access with account keys or has public network access disabled.",
+          "kind": "published"
         }
       ]
     },
@@ -3359,6 +3396,32 @@
       ]
     },
     {
+      "id": "reliability-virtual-machines",
+      "title": "Reliability in Azure Virtual Machines",
+      "url": "https://learn.microsoft.com/azure/reliability/reliability-virtual-machines",
+      "pin": "Learn git_commit_id 9ea41d3dff532f82f59b5077dea7917e443ca5ad, updated_at 2026-09-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "claims": [
+        {
+          "id": "sla-rises-with-zones",
+          "says": "The VM SLA gives a base availability that rises with two or more VMs spread across availability zones or placed in an availability set.",
+          "kind": "published"
+        },
+        {
+          "id": "backup-not-availability",
+          "says": "VM backups give recovery points for deletion or corruption but don't keep an application available through an infrastructure failure.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "reservations",
       "title": "What are Azure Reservations? (Microsoft Cost Management)",
       "url": "https://learn.microsoft.com/azure/cost-management-billing/reservations/save-compute-costs-reservations",
@@ -3415,7 +3478,7 @@
         },
         {
           "id": "recovery-services-table",
-          "says": "Backup protected items and Site Recovery replication protected items are in the RecoveryServicesResources table.",
+          "says": "Backup protected items and backup jobs, and Site Recovery replication protected items, are in the RecoveryServicesResources table.",
           "kind": "published"
         }
       ]
@@ -4677,7 +4740,7 @@
       "id": "files-backup-key-access-off",
       "claim": "ref:files-backup-support#key-access-needed",
       "verdict": "not-yet-tested",
-      "observed": "The landing zone keeps storage account key access off on its profile account for the default snapshot-tier backup and turns it on only for the vaulted tier, because two Microsoft pages differ on whether a snapshot backup needs it when public network access is disabled (its recovery spec, fact F14 and open question U1). No real backup job has run with keys off, so whether the default profile backup works at all is unproven. The first landing zone run that reads the last backup job answers it; until then a reviewer treats a key-access-off share with a snapshot policy as unknown, not as backed up.",
+      "observed": "The landing zone keeps storage account key access off on its profile account for the default snapshot-tier backup and turns it on only for the vaulted tier, because two Microsoft pages differ: the support matrix asks for key access, the portal guide accepts key access off when public network access is disabled (ref:files-backup-portal#keys-or-private), which the landing zone does (its recovery spec, facts F14 and F19, open question U1). No real backup job has run with keys off, so whether the default profile backup works at all is unproven. The first landing zone run that reads the last backup job answers it; until then a reviewer treats a key-access-off share with a snapshot policy as unknown, not as backed up.",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/specs/recovery-spec.md",
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
