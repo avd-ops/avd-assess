@@ -1,0 +1,14 @@
+id: firewall-avd
+title: Use Azure Firewall to protect Azure Virtual Desktop deployments
+url: https://learn.microsoft.com/azure/firewall/protect-azure-virtual-desktop
+pin: "Learn git_commit_id 772cf26f1a9370cf46ba8d85a3b64700d8dc6faf, updated_at 2026-03-23"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: fqdn-tag-rules
+    says: Allow host pool outbound traffic with the WindowsVirtualDesktop FQDN tag plus rules for the required endpoints; DNS proxy is needed for FQDNs in network rules.
+    kind: published
+  - id: bypass-route-for-scale-in
+    says: A default route to Azure Firewall can disconnect sessions during firewall scale-in; add a route for the WindowsVirtualDesktop service tag with next hop Internet so the gateway and broker are reached directly.
+    kind: published

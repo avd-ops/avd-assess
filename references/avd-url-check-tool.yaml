@@ -1,0 +1,11 @@
+id: avd-url-check-tool
+title: Check access to required FQDNs and endpoints for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/check-access-validate-required-fqdn-endpoint
+pin: "Learn git_commit_id c0f1884420aae53e640ac0be2683cc30b519e621, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection]
+claims:
+  - id: run-on-host
+    says: The Agent URL Tool ships with the agent and runs on a session host, reporting which required endpoints that host can reach.
+    kind: published

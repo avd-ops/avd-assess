@@ -1,0 +1,11 @@
+id: nat-gateway
+title: What is Azure NAT Gateway?
+url: https://learn.microsoft.com/azure/nat-gateway/nat-overview
+pin: "Learn git_commit_id 340c2b0beaf485b403a2e3e2af1a068ec8981e27, updated_at 2026-09-29"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: subnet-egress
+    says: A NAT Gateway gives a subnet outbound internet connectivity from static public IPs and allows no unsolicited inbound traffic.
+    kind: published

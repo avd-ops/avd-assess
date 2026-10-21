@@ -1,0 +1,20 @@
+id: avd-private-link-setup
+title: Set up Private Link with Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/private-link-setup
+pin: "Learn git_commit_id f9304fa76124441b037c0f7c3eb02dfbacf92287, updated_at 2026-09-15"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: re-register-provider
+    says: Each subscription used with Private Link needs the Microsoft.DesktopVirtualization resource provider re-registered first.
+    kind: published
+  - id: dns-zones
+    says: Connection and feed endpoints resolve through the privatelink.wvd.microsoft.com zone and the global endpoint through privatelink-global.wvd.microsoft.com.
+    kind: published
+  - id: client-versions
+    says: Any platform's Remote Desktop app works; the Remote Desktop client for Windows needs version 1.2.4066 or later, and Windows App on macOS and iOS/iPadOS is supported.
+    kind: published
+  - id: shortpath-with-private-link
+    says: Public-network Shortpath (STUN and TURN) is not supported with Private Link; managed-network Shortpath is, with the UDP opt-in.
+    kind: published

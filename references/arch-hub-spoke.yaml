@@ -1,0 +1,11 @@
+id: arch-hub-spoke
+title: Azure Architecture Center, hub-spoke network topology in Azure
+url: https://learn.microsoft.com/azure/architecture/networking/architecture/hub-spoke
+pin: "Learn git_commit_id f97206ed179f1f5d3b43b98d864d678aff86d8ce, updated_at 2026-04-14"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: hub-shared-services
+    says: A hub virtual network centralizes connectivity and shared services, and workload spokes peer to it.
+    kind: guidance

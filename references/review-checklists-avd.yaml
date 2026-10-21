@@ -128,3 +128,19 @@ claims:
     says: Configure the recommended antivirus exclusions for FSLogix (Security, medium).
   - id: C02.05
     says: Assess and document the RDP settings for every user group (Security, low).
+  - id: F01.01
+    says: Decide whether host pools need hybrid connectivity to on-premises (Reliability, medium).
+  - id: F01.02
+    says: Decide which virtual network each host pool goes in (Performance, medium).
+  - id: F01.03
+    says: List the on-premises resources host pools need to reach (Reliability, medium).
+  - id: F01.05
+    says: Make sure session hosts can reach the AVD control plane endpoints (Reliability, high).
+  - id: F01.06
+    says: Decide whether to control internet outbound traffic only for users on the hosts (Security, medium).
+  - id: F01.07
+    says: Review custom routes and NSGs on host pool subnets (Security, low).
+  - id: F01.08
+    says: No proxy, SSL termination or deep packet inspection for AVD control plane traffic (Reliability, high).
+  - id: C02.04
+    says: Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high).

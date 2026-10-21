@@ -1,0 +1,29 @@
+id: avd-proxy
+title: Proxy server guidelines for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/proxy-server-support
+pin: "Learn git_commit_id 0401cb20df8d4f7ad19b52c8a9da154aa5d3cbe9, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: bypass-proxies
+    says: "Bypass proxies for AVD traffic: it is already encrypted, and proxies hurt stability, latency and scale."
+    kind: published
+  - id: proxy-forces-tcp
+    says: A proxy as the only path forces RDP over TCP instead of UDP.
+    kind: published
+  - id: no-ssl-termination
+    says: No SSL termination for AVD traffic; it slows sign-in and can stop the agent.
+    kind: published
+  - id: no-auth-proxy
+    says: Session host components cannot use a proxy that needs authentication.
+    kind: published
+  - id: same-geography
+    says: A proxy that is used must sit in the same geography as hosts and clients, or connections route to a farther gateway.
+    kind: published
+  - id: teams-no-proxy
+    says: Teams media optimization is not supported through a proxy.
+    kind: published
+  - id: client-proxy-support
+    says: Proxy support differs by client platform (the Android client has none).
+    kind: published
