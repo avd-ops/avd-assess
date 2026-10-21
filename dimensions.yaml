@@ -336,7 +336,7 @@ dimensions:
     pillar: protocol
     title: RDP Multipath and modern auto-reconnect
     decides: Whether sessions keep backup paths and survive short network drops, which depends on the client app and version.
-    home: {decision: network, facts: [], intake: [proposed:intake.clientApps]}
+    home: {decision: network, facts: [c12.group.clients.byType], intake: [intake.clientPlatforms]}
     baseline:
       standing: published
       claims: [ref:rdp-multipath#automatic, ref:rdp-multipath#client-floors, ref:rdp-multipath#shortpath-first, ref:avd-auto-reconnect#needs-multipath, ref:windows-app-platforms#multipath-by-platform, ref:avd-whats-new#multipath-ga]
@@ -890,3 +890,220 @@ dimensions:
     seeAlso: https://github.com/avd-ops/avd-assess/blob/5bc5da8f17de4cca7e51d62a4210bd7da893fa40/methods/finops.md
     measure: rebuild
     landingZone: [monthlyBudgetAmount, budgetStartDate, autoShutdownBudgetAction, autoShutdownBudgetPercent, tags]
+
+  # Endpoints and clients (pillar endpoints, gaps/endpoints-scope.md). Redirection settings stay on the
+  # protocol rows; these rows hold what the users' devices need and can do.
+  - id: endpoints.client-apps
+    area: endpoints
+    pillar: endpoints
+    title: Client apps in use
+    decides: Which client each platform uses to connect, and whether any connection still comes from a client past end of support.
+    home: {decision: proposed:endpoints.clients, facts: [c12.group.clients.byType], intake: [intake.clientPlatforms]}
+    baseline:
+      standing: published
+      claims: [ref:windows-app-get-started#client-platforms, ref:avd-insights-use-cases#client-version-usage, ref:remote-desktop-client-overview#windows-app-replaces, ref:remote-desktop-client-overview#msi-and-web-end-of-support, ref:remote-desktop-client-overview#store-app-ended, ref:avd-prerequisites#supported-clients, ref:wvdconnections-table#client-columns, ref:review-checklists-avd#C02.03, gap:endpoints-scope]
+      says: Windows App on every platform; the MSI and web Remote Desktop clients are unsupported in public cloud since 2026-03-27, and MSTSC and RADC never connect to AVD.
+    measure: measured
+    landingZone: []
+  - id: endpoints.client-os
+    area: endpoints
+    pillar: endpoints
+    title: Client OS and browser versions
+    decides: Which client operating systems and browsers the estate supports, and what to do with devices below the floor.
+    home: {decision: proposed:endpoints.clients, facts: [c12.group.clients.byOs], intake: [intake.clientPlatforms]}
+    baseline:
+      standing: published
+      claims: [ref:windows-app-get-started#os-floors, ref:windows-app-get-started#web-browser-floor, ref:review-checklists-avd#C02.03, gap:endpoints-scope]
+      says: Each platform's published OS floor (Windows 10 only in support or under ESU) and a browser no older than 12 months with AVC and WebGL.
+    measure: measured
+    landingZone: []
+  - id: endpoints.thin-clients
+    area: endpoints
+    pillar: endpoints
+    title: Thin clients and kiosk devices
+    decides: Whether thin clients or locked-down kiosk devices connect, and who supports them.
+    home: {decision: proposed:endpoints.clients, facts: [], intake: [intake.clientPlatforms]}
+    baseline:
+      standing: guidance
+      claims: [ref:thin-clients#approved-partners, ref:thin-clients#reproduce-on-windows-app, gap:endpoints-scope]
+      says: Use a thin client from Microsoft's approved partner list, reproduce issues on Windows App first; no AVD source covers kiosk-mode clients, so that part is a gap.
+    measure: intake
+    landingZone: []
+  - id: endpoints.device-management
+    area: endpoints
+    pillar: endpoints
+    title: Managed and unmanaged client devices
+    decides: Whether personal or unmanaged devices may connect, and what they may redirect compared with managed ones.
+    home: {decision: proposed:endpoints.deviceTrust, facts: [], intake: [intake.clientDeviceManagement]}
+    baseline:
+      standing: guidance
+      claims: [ref:windows-app-device-compliance#platform-scope, ref:windows-app-device-compliance#app-protection-plus-conditional-access, ref:windows-app-redirection-intune#more-restrictive-wins, ref:windows-app-redirection-intune#not-a-substitute, ref:context-based-redirections#auth-context-redirection, gap:endpoints-scope]
+      says: Require device compliance where the platform allows, narrow redirection for unmanaged devices, and keep the host pool settings as the floor.
+    measure: intake
+    landingZone: []
+    note: Enrolling and judging the devices themselves is the intune pillar; the sign-in condition is the identity pillar. A directory read would move this to directory.
+  - id: endpoints.peripherals
+    area: endpoints
+    pillar: endpoints
+    title: Peripherals users need
+    decides: Which local devices (cameras, microphones, smart cards, USB devices, scanners, drives) each user group needs in the session.
+    home: {decision: proposed:hostPool.security, facts: [c11.hostPool.redirection.camera, c11.hostPool.redirection.smartCards, c11.hostPool.redirection.usb, c11.hostPool.redirection.drives], intake: [intake.peripheralNeeds, intake.clientPlatforms], checks: [asm-drive-usb-redirection-off]}
+    baseline:
+      standing: published
+      claims: [ref:windows-app-platforms#redirection-by-platform, ref:rdp-redirection#high-level-first, ref:rdp-redirection#most-restrictive-wins, ref:mcsb-avd-baseline#DP-2, ref:review-checklists-avd#G02.06]
+      says: Allow only the redirection a group needs, on platforms that support it; the security rows judge what is left on.
+    measure: fact
+    landingZone: [rdpProperties]
+  - id: endpoints.printing
+    area: endpoints
+    pillar: endpoints
+    title: Printing
+    decides: Printer redirection, Universal Print or printers on the hosts.
+    home: {decision: proposed:hostPool.security, facts: [c11.hostPool.redirection.printers], intake: [intake.printing, intake.clientPlatforms]}
+    baseline:
+      standing: published
+      claims: [ref:rdp-printer-redirection#all-local-printers, ref:rdp-printer-redirection#easy-print, ref:rdp-printer-redirection#enable-on-hosts-control-on-pool, ref:rdp-printer-redirection#universal-print-alternative, ref:universal-print-avd#per-user-printers, ref:universal-print-avd#location-from-client, ref:windows-app-platforms#redirection-by-platform]
+      says: Redirection brings every local printer through Easy Print, with no drivers on hosts; Universal Print is per user and roams on Windows 11 multi-session 22H2 and later.
+    measure: fact
+    landingZone: [rdpProperties]
+  - id: endpoints.displays
+    area: endpoints
+    pillar: endpoints
+    title: Multiple monitors and resolution
+    decides: Whether users need several or very high resolution displays, which limits the client platform and may call for GPU hosts.
+    home: {decision: proposed:hostPool.gpu, facts: [], intake: [intake.peripheralNeeds, intake.clientPlatforms]}
+    baseline:
+      standing: published
+      claims: [ref:windows-app-platforms#display-by-platform, ref:session-host-sizing#gpu-for-graphics]
+      says: Multiple monitors only from Windows and macOS; CPU-only hosts show artifacts above 3840 x 2160 total resolution.
+    measure: intake
+    landingZone: [rdpProperties]
+
+  # Governance, policy and compliance (pillar governance, gaps/governance-scope.md). Azure side only;
+  # settings delivered to a host or device are the intune pillar.
+  - id: governance.policy-guardrails
+    area: governance
+    pillar: governance
+    title: Azure Policy guardrails
+    decides: Which Azure Policy assignments guard the AVD subscriptions, and whether they enforce or only audit.
+    home: {decision: proposed:governance.policy, facts: [c11.policy.assignments, c11.policy.doNotEnforce], checks: [asm-policy-guardrails-assigned, asm-policy-enforced]}
+    baseline:
+      standing: guidance
+      claims: [ref:mcsb-avd-baseline#AM-2, ref:policy-built-ins#avd-private-access, ref:policy-built-ins#allowed-locations, ref:policy-assignment-structure#do-not-enforce, ref:policy-assignment-structure#do-not-enforce-for-testing, gap:governance-scope]
+      says: Audit and enforce the service's configuration with Azure Policy; DoNotEnforce is for trying an assignment, not for keeping it. No source lists a minimum set for AVD.
+    measure: fact
+    landingZone: [enablePolicyGuardrails, deploySubscriptionSettings]
+  - id: governance.locations
+    area: governance
+    pillar: governance
+    title: Allowed locations and metadata residency
+    decides: Which regions resources may be created in, and where host pool metadata is stored.
+    home: {decision: region, facts: [c11.subscription.regions, c11.hostPool.region, c11.policy.assignments], intake: [intake.residency]}
+    baseline:
+      standing: published
+      claims: [ref:policy-built-ins#allowed-locations, ref:avd-data-locations#deployment-scope, ref:avd-data-locations#user-data-in-region, ref:caf-avd-security-governance#metadata-geographies, ref:review-checklists-avd#C03.01, ref:review-checklists-avd#C03.02]
+      says: An allowed-locations guardrail that matches the residency answer, and a metadata scope (geographical or regional) chosen at creation, since it can't change.
+    measure: fact
+    landingZone: [allowedLocations]
+    note: The region choice itself is the capacity pillar's region row; this row is the guardrail and the metadata.
+  - id: governance.allowed-sizes
+    area: governance
+    pillar: governance
+    title: Allowed VM sizes
+    decides: Whether a policy limits session host sizes, and whether the chosen sizes are on the list.
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes, c11.policy.assignments]}
+    baseline:
+      standing: guidance
+      claims: [ref:policy-built-ins#allowed-vm-skus, ref:review-checklists-avd#C03.03, gap:governance-scope]
+      says: An allowed-sizes policy is optional; when one exists, the sizes sizing chose must be on it before deployment.
+    measure: rebuild
+    landingZone: []
+    note: The landing zone assigns no size policy; avd-current-state's validator reads an existing one before deployment.
+  - id: governance.tags-naming
+    area: governance
+    pillar: governance
+    title: Tagging and naming
+    decides: The tags every AVD resource carries and the naming convention, and whether policy keeps them.
+    home: {decision: proposed:governance.tags, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-tagging#tag-host-pools-first, ref:avd-tagging#tags-only-direct, ref:policy-built-ins#tag-definitions, ref:caf-resource-abbreviations#avd-abbreviations, ref:review-checklists-avd#E01.07]
+      says: Tag host pools first, inherit tags by policy where resources lack them, and use the published abbreviations for AVD objects.
+    measure: rebuild
+    landingZone: [tags]
+    note: Cost allocation by tag is the finops pillar's cost.budget row.
+  - id: governance.audit-logging
+    area: governance
+    pillar: governance
+    title: Audit logging and retention
+    decides: Whether the activity log and AVD diagnostics are kept beyond their defaults, and for how long.
+    home: {decision: proposed:governance.audit, facts: [proposed:c11.subscription.activityLogExport, proposed:c11.monitoring.diagnostics], intake: [intake.auditRetentionDays]}
+    baseline:
+      standing: published
+      claims: [ref:activity-log#retention-90-days, ref:activity-log#export-by-diagnostic-setting, ref:mcsb-logging#LT-6, ref:mcsb-avd-baseline#LT-4, ref:avd-security-guide#audit-logs, ref:caf-avd-security-governance#activity-logging, ref:review-checklists-avd#G03.05]
+      says: Activity log entries vanish after 90 days unless a diagnostic setting exports them; retention beyond that is the estate's own requirement, asked at intake.
+    measure: rebuild
+    landingZone: [deploySubscriptionSettings, logRetentionDays]
+    note: Insights wiring is the monitoring pillar's ops.monitoring row; this row is the audit trail and its retention.
+  - id: governance.rbac
+    area: governance
+    pillar: governance
+    title: Admin roles and custom RBAC
+    decides: Which built-in AVD roles admins hold, and whether custom roles are needed.
+    home: {decision: proposed:governance.rbac, facts: [c11.roleAssignments.roles]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-rbac#built-in-roles, ref:avd-rbac#assignment-needs-uaa, ref:mcsb-avd-baseline#PA-7, ref:mcsb-avd-baseline#IM-3, ref:avd-security-guide#tiered-admin, ref:review-checklists-avd#G03.06]
+      says: Least privilege through the built-in AVD roles per object; a custom role only for a duty none of them fits.
+    measure: fact
+    landingZone: []
+    note: The fact reports roles outside the collector's allowlist as other, so a custom role isn't told apart from an unlisted built-in one. User assignment to app groups is the identity pillar.
+  - id: governance.compliance-mapping
+    area: governance
+    pillar: governance
+    title: Compliance frameworks as mappings
+    decides: Which compliance standards the estate is assessed against, and where that assessment lives.
+    home: {decision: proposed:governance.compliance, facts: [c11.subscription.defenderPlans], intake: [intake.complianceFrameworks]}
+    baseline:
+      standing: guidance
+      claims: [ref:defender-regulatory-compliance#mcsb-default, ref:defender-regulatory-compliance#more-standards-need-paid-plan, ref:defender-regulatory-compliance#assessed-against-controls, ref:caf-avd-security-governance#compliance-dashboard, gap:governance-scope]
+      says: The benchmark comes with Defender for Cloud; other standards are added there as mappings, never claimed as certification.
+    measure: intake
+    landingZone: [enableDefenderForCloud]
+  - id: governance.config-source
+    area: governance
+    pillar: governance
+    title: Where host settings are defined
+    decides: Which tool is the source of truth for AVD host settings (the Intune settings catalog or Group Policy with the AVD template).
+    home: {decision: proposed:operations.configuration, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-admin-template#template-delivery, ref:avd-admin-template#template-settings, ref:avd-management#intune-recommended, ref:review-checklists-avd#E01.01, ref:review-checklists-avd#E01.02]
+      says: One managed source for host settings, Intune recommended, Group Policy for domain-joined hosts, never local policy at scale.
+    measure: host-side
+    landingZone: []
+    note: How the settings reach the hosts is the intune pillar's ops.config-management row.
+  - id: governance.change-control
+    area: governance
+    pillar: governance
+    title: Change control
+    decides: How changes to the AVD estate are proposed, approved and rolled out.
+    home: {decision: proposed:governance.change, facts: [], intake: [intake.changeControl]}
+    baseline:
+      standing: gap
+      claims: [ref:policy-assignment-structure#enroll-staged, gap:governance-scope]
+      says: No AVD source sets a change process; the method asks how changes are made and judges drift against it.
+    measure: intake
+    landingZone: []
+  - id: governance.prerequisites
+    area: governance
+    pillar: governance
+    title: Tenant, subscription and quota prerequisites
+    decides: Whether the tenant, subscription and quotas an AVD deployment needs are in place.
+    home: {decision: region, facts: [c11.subscription.regions]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#D03.01, ref:review-checklists-avd#C03.03]
+      says: An Entra tenant with a linked subscription and quota for the chosen sizes in the chosen regions.
+    measure: rebuild
+    landingZone: []

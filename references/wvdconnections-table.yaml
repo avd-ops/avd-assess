@@ -9,3 +9,6 @@ claims:
   - id: transport-type
     says: The table records the transport of each connection in TransportType, with the values Shortpath, TURN and Websocket.
     kind: published
+  - id: client-columns
+    says: Each connection row records ClientOS, ClientType and ClientVersion when the client reports them.
+    kind: published

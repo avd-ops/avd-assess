@@ -1,0 +1,12 @@
+id: avd-management
+title: Manage the operating system of session hosts
+url: https://learn.microsoft.com/azure/virtual-desktop/management
+pin: "Learn git_commit_id dd46df7408629964cd4e6e9a3185dffcf0bbda70, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [governance, intune]
+claims:
+  - id: intune-recommended
+    says: Microsoft recommends Intune to manage session hosts, Entra joined and hybrid joined; Configuration Manager manages domain-joined and hybrid joined hosts.
+    kind: guidance

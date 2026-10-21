@@ -1,0 +1,15 @@
+id: avd-data-locations
+title: Data locations for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/data-locations
+pin: "Learn git_commit_id ebbe087e9ad40882b4901691bb5c93bab04a149c, updated_at 2026-09-30"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [governance]
+claims:
+  - id: deployment-scope
+    says: Host pool metadata is stored in the geography of the chosen region by default (Geographical scope), or inside that one region (Regional scope).
+    kind: published
+  - id: user-data-in-region
+    says: User and app data stays in the region chosen for it and isn't managed by the AVD service; ARM paths are stored outside the geography.
+    kind: published

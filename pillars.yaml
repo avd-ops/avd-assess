@@ -63,7 +63,7 @@ pillars:
     title: Endpoints and clients
     scope: Client apps per OS, client OS versions, thin clients and kiosks, managed against unmanaged devices (the management itself is the intune pillar), peripherals, printing, multi-monitor and resolution.
     checklist: [C02.03, C02.05, G02.06]
-    status: missing
+    status: mapped
   - id: ux-measurement
     title: End-user experience measurement
     scope: Round trip, input delay, time to connect, logon and app load; the sample check, baseline profiles and the tuning loop; Insights as the measure.
@@ -85,7 +85,7 @@ pillars:
     title: Governance, policy and compliance
     scope: Azure Policy guardrails, allowed locations and sizes, tagging and naming, audit logging and retention, benchmark control mapping, compliance frameworks as mappings, change control, tenant and subscription prerequisites. Host configuration delivery is the intune pillar.
     checklist: [E01.01, E01.02, G03.05, G03.06, C03, D03.01]
-    status: missing
+    status: mapped
   - id: monitoring
     title: Monitoring and operations
     scope: Insights wiring, alerts, workbooks, log retention, agent and token health, day-2 runbooks, capacity reviews and cadence.

@@ -1,0 +1,16 @@
+id: avd-rbac
+title: Built-in Azure RBAC roles for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/rbac
+pin: "Learn git_commit_id a2c9d3b52ffe73e75a81d5f757380994c65169e1, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [governance]
+notes: Cited by role name, never by role GUID.
+claims:
+  - id: built-in-roles
+    says: AVD has built-in roles per object (contributor and reader for host pools, application groups and workspaces) plus session host and user session operators.
+    kind: published
+  - id: assignment-needs-uaa
+    says: The Desktop Virtualization contributor roles can't assign users or groups; that needs User Access Administrator as well.
+    kind: published

@@ -1,0 +1,12 @@
+id: caf-resource-abbreviations
+title: Abbreviation recommendations for Azure resources (Cloud Adoption Framework)
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations
+pin: https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/14d01c53b40e503f650ad504a2eba9a279a60fe7/docs/ready/azure-best-practices/resource-abbreviations.md
+read: 2026-10-21
+license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
+areas: [assessment]
+pillars: [governance]
+claims:
+  - id: avd-abbreviations
+    says: Recommended prefixes include vdpool for host pools, vdag for application groups and vdws for workspaces.
+    kind: guidance

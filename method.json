@@ -1,6 +1,6 @@
 {
   "schema": "avd-assess-method/v1",
-  "version": 3,
+  "version": 4,
   "factRegister": 1,
   "landingZoneCommit": "ae6e80b574cccde570d0053d4c62b519d31052a8",
   "collection": [
@@ -379,6 +379,27 @@
       ]
     },
     {
+      "fact": "c11.policy.doNotEnforce",
+      "from": "resource-graph",
+      "table": "PolicyResources",
+      "type": "microsoft.authorization/policyassignments",
+      "property": "properties.enforcementMode",
+      "claims": [
+        "ref:resource-graph-tables#policy-table",
+        "ref:policy-assignment-structure#do-not-enforce"
+      ]
+    },
+    {
+      "fact": "c11.roleAssignments.roles",
+      "from": "arm-rest",
+      "type": "microsoft.authorization/roleassignments",
+      "property": "properties.roleDefinitionId",
+      "claims": [
+        "ref:avd-rbac#built-in-roles",
+        "gap:collection-map"
+      ]
+    },
+    {
       "fact": "intake.residency",
       "from": "intake",
       "claims": [
@@ -685,6 +706,61 @@
       "remediation": {
         "kind": "lz-setting",
         "name": "profile-storage-smb-gcm"
+      }
+    },
+    {
+      "id": "asm-policy-guardrails-assigned",
+      "title": "Subscriptions holding AVD have Azure Policy guardrails assigned",
+      "pillar": "operations",
+      "severity": "medium",
+      "claims": [
+        "ref:mcsb-avd-baseline#AM-2",
+        "ref:policy-built-ins#allowed-locations"
+      ],
+      "facts": [
+        "c11.policy.assignments"
+      ],
+      "rule": {
+        "each": "/subscriptions/*",
+        "expect": {
+          "policy/assignments": {
+            "min": 1
+          }
+        },
+        "onFail": "warn"
+      },
+      "informs": [],
+      "remediation": {
+        "kind": "lz-parameter",
+        "name": "enablePolicyGuardrails",
+        "to": true
+      }
+    },
+    {
+      "id": "asm-policy-enforced",
+      "title": "No policy assignment in scope is left in DoNotEnforce mode",
+      "pillar": "operations",
+      "severity": "low",
+      "claims": [
+        "ref:policy-assignment-structure#do-not-enforce",
+        "ref:policy-assignment-structure#do-not-enforce-for-testing"
+      ],
+      "facts": [
+        "c11.policy.doNotEnforce"
+      ],
+      "rule": {
+        "each": "/subscriptions/*",
+        "expect": {
+          "policy/doNotEnforce": {
+            "max": 0
+          }
+        },
+        "onFail": "warn"
+      },
+      "informs": [],
+      "remediation": {
+        "kind": "manual",
+        "code": "process"
       }
     }
   ],

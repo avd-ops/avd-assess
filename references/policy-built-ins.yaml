@@ -1,0 +1,22 @@
+id: policy-built-ins
+title: Azure Policy built-in policy definitions
+url: https://learn.microsoft.com/azure/governance/policy/samples/built-in-policies
+pin: "Learn git_commit_id a8fd4cc5f61be2ad229afefa3073a8697d92dd1a, updated_at 2026-07-08"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [governance]
+notes: Cited by definition name, never by definition GUID.
+claims:
+  - id: avd-private-access
+    says: Built-in Desktop Virtualization definitions audit or deny public network access on host pools and workspaces and deploy private endpoints and DNS zones.
+    kind: published
+  - id: allowed-locations
+    says: The built-in Allowed locations and Allowed locations for resource groups definitions deny deployments outside a listed set of regions.
+    kind: published
+  - id: allowed-vm-skus
+    says: The built-in Allowed virtual machine size SKUs definition limits VM sizes to a listed set.
+    kind: published
+  - id: tag-definitions
+    says: Built-in tag definitions require a tag on resources or inherit a missing tag from the resource group.
+    kind: published

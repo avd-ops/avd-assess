@@ -9,3 +9,6 @@ claims:
   - id: reproduce-on-windows-app
     says: A thin-client issue is first reproduced on Windows App; if it does not reproduce, the thin-client provider supports it.
     kind: published
+  - id: approved-partners
+    says: Microsoft lists thin client partners approved for AVD and links their own documentation; a browser on a thin client can use the web client instead.
+    kind: published

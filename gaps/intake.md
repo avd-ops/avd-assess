@@ -13,3 +13,12 @@
 | `intake.workingHours` | When do people work (start, end, time zone)? | Power settings and scaling (`ref:avd-insights-use-cases#utilization-for-scaling`) |
 | `intake.hostSharing` (optional) | Who shares a session host (`one-org-standard`, `needs-admin`, `multi-org`, `undecided`)? | The security guide's trust boundary decides between pooled, personal and a separate tenant (`ref:avd-security-guide#trust-boundary`) |
 | `intake.avdMfa` (optional) | Does sign-in to AVD require MFA (`required`, `not-required`, `unknown`)? | Stands in for a directory read until one exists (`ref:review-checklists-avd#G04.01`, `gap:security-scope`) |
+
+## Proposed by the pillar batch (2026-10-21)
+
+The map's pillars add enum questions as `specified` facts in the register, each defined on its pillar's gap page. The intake schema (C19) gains them once, when the batch ends, so producers change once.
+
+| Fact | Pillar | Defined in |
+|---|---|---|
+| `intake.clientPlatforms`, `intake.clientDeviceManagement`, `intake.peripheralNeeds`, `intake.printing` | endpoints | [endpoints-scope](endpoints-scope.md#proposed-intake-questions) |
+| `intake.complianceFrameworks`, `intake.auditRetentionDays`, `intake.changeControl` | governance | [governance-scope](governance-scope.md#proposed-intake-questions) |

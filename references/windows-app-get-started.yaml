@@ -1,0 +1,21 @@
+id: windows-app-get-started
+title: Get started with Windows App to connect to devices and apps
+url: https://learn.microsoft.com/windows-app/get-started-connect-devices-desktops-apps?pivots=azure-virtual-desktop
+pin: "Learn git_commit_id 7370f6fff5eeadbbbbd802c3a3d5d7133b44ec0b, updated_at 2026-10-08"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [endpoints]
+claims:
+  - id: client-platforms
+    says: Windows App connects to AVD from Windows, macOS, iOS and iPadOS, Android and Chrome OS, web browsers and Meta Quest (preview).
+    kind: published
+  - id: os-floors
+    says: Each platform tab lists a minimum OS version; Windows 10 devices out of mainstream support must be enrolled in Extended Security Updates.
+    kind: published
+  - id: web-browser-floor
+    says: "In a browser: Edge 131, Chrome 130, Safari 18 or Firefox 128 or later; no mobile browsers; the browser at most 12 months old, with AVC and WebGL."
+    kind: published
+  - id: no-personal-account
+    says: Users sign in with their work account for AVD; a personal Microsoft account can't sign in to Windows App for AVD.
+    kind: published
