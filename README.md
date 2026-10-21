@@ -54,6 +54,7 @@ python3 scripts/build_index.py --check
 python3 tests/check_method.py
 python3 tests/check_contracts.py
 python3 tests/check_baselines.py
+python3 scripts/check_evidence.py
 ```
 
 `index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (contract C20, `avd-assess-index/v1`, in [contracts/](contracts/README.md)), so the brain and avd-current-state read it without a YAML parser.
@@ -62,7 +63,7 @@ The check verifies that every reference has a pin, a read date and claims; every
 
 ## Contributing
 
-Contributions and forks are welcome and encouraged. Fork it and make it your own, or send back what you learn: open an issue or a pull request with a new source, a better pin, or an observation from a real run that agrees or disagrees with a source. Small pull requests are easiest to review.
+Contributions and forks are welcome and encouraged. Fork it and make it your own, or send back what you learn: open an issue or a pull request with a new source, a better pin, or an observation from a real run that agrees or disagrees with a source. Measured results go through the [evidence intake](evidence/README.md): one checked file per submission, aggregates only. We use the same path for our own runs. Small pull requests are easiest to review.
 
 Before you open one, run `python3 scripts/build_index.py`, `python3 tests/check_method.py`, `python3 tests/check_contracts.py`, `python3 tests/check_dimensions.py` and `python3 tests/check_baselines.py` as the [check workflow](.github/workflows/check.yml) does. Keep tenant data, IDs and secrets out of the repo, issues and pull requests. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
 

@@ -13,7 +13,7 @@ A repeatable loop for making a running AVD estate perform as its [baseline profi
 7. **Measure again the same way:** the same days of the week, hours, statistic and counters as the baseline (`ref:waf-continuous-performance#test-before-and-after`, `gap:baseline-profile`).
 8. **Keep, revert or extend:** keep when the hypothesis held and no experience target got worse, revert when one got worse, extend the window when coverage was too thin to tell (`gap:tune-loop`, `ref:waf-performance-testing#regression-and-drift`).
 9. **Record the round** with its hypothesis, before and after values, decision and claims, so the next round starts from evidence (`ref:session-host-sizing#document-capacity-plan`, `gap:tune-loop`).
-10. **Feed it back:** the kept values become the estate's measured density and baselines, and a prior that measured rounds keep contradicting becomes a `disagrees` observation (`ref:waf-performance-testing#record-baselines`, `gap:gold-standards`).
+10. **Feed it back:** the kept values become the estate's measured density and baselines, and a prior that measured rounds keep contradicting becomes a `disagrees` observation, submitted as an evidence file like anyone else's (`ref:waf-performance-testing#record-baselines`, `gap:gold-standards`, `gap:evidence-intake`).
 11. **Repeat** on a cadence and whenever use is about to change, watching for drift between rounds (`ref:waf-performance-checklist#PE:12`, `ref:waf-performance-checklist#PE:02`, `ref:waf-performance-testing#regression-and-drift`).
 
 ## Roles
