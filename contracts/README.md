@@ -10,6 +10,7 @@ This folder is the authority for the formats the foundation repos exchange: avd-
 | C19 `avd-intake/v1` | `schemas/intake.schema.json` | the operator's answers | avd-current-state, the brain |
 | C20 `avd-assess-index/v1`, `avd-assess-method/v1` | `schemas/assess-index.schema.json`, `schemas/assess-method.schema.json` | here (`index.json`, `method.json`) | avd-current-state, the brain |
 | C21 `avd-assessment/v1` | `schemas/assessment.schema.json` | avd-current-state | the operator, the brain |
+| C23 `avd-assessment-review/v1` | `schemas/assessment-review.schema.json` | avd-current-state's assessment portal | the plan (C24), the brain (optional import) |
 
 Contract numbers stay as the brain assigned them. The brain keeps the formats only the upper layers use (C8 to C10, C12, C13, C16, C18) and C14, the target state, which the landing zone reads when one is given.
 
