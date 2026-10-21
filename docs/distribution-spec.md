@@ -276,7 +276,7 @@ A consumer that stays on a commit pin keeps working; a release pin never invalid
 |---|---|---|
 | 0 | This spec | the owner merges it |
 | 1 | `scripts/bundle/build_bundle.py` (dry run in `check.yml`), `diff_bundle.py`, `tools/` verifiers with shared fixtures and tests in both languages, `contracts/schemas/assess-bundle.schema.json`, `NOTICE`, `$id` and the optional `deprecated` field on each schema (with a test that no schema uses a cross-file `$ref`, so no validator ever tries to resolve an `$id` over the network), the `.gitattributes` guard, `release.yml`, the `pages` job, the `v*` tag ruleset, the CLAUDE.md rule that sessions never tag | the owner, after the open questions |
-| 2 | The owner turns on immutable releases for the repo, creates the `release` environment with the owner as required reviewer, enables Pages from Actions, and tags `v1.0.0` | the owner, in Cloud Shell |
+| 2 | Immutable releases are already on for the organization (2026-10-21); the owner creates the `release` environment with the owner as required reviewer, enables Pages from Actions, and tags `v1.0.0` | the owner, in Cloud Shell |
 | 3 | Consumers, one PR each, at their next re-pin (section 12), each with the brain and avd-swarm pair rule where it applies | the owner, per PR |
 
 ## 15. Red team
@@ -307,7 +307,7 @@ A Claude code review of the PR then found ten more (a leftover `git archive` in 
 
 1. **First release:** `v1.0.0`, cut after the endpoints and governance pillar (#34), the security review map (#38) and the endpoint map (#39) merge, so the planned single re-pin lands on it. **Answered (owner, 2026-10-21): yes.**
 2. **Pages address:** **answered (owner, 2026-10-21): `assess.avd-ops.dev`**, a custom domain on this repo's own Pages. Phase 2 adds a DNS `CNAME` record `assess` pointing at `avd-ops.github.io` and verifies `avd-ops.dev` for the organization in GitHub, so no other account can claim the subdomain. Section 5 uses this address; every `$id` is under it.
-3. **Immutable releases:** turn on for avd-assess only, or for the whole avd-ops organization (decision 0008 wants it on every repo with releases)?
+3. **Immutable releases:** **answered and done (owner, 2026-10-21): turned on for the whole avd-ops organization.** No org repo had a tag, release or release workflow then, so nothing changed for existing work; every release from now on is locked once published.
 4. **Release gate:** a `release` environment with you as required reviewer, so a tag alone publishes nothing? Recommended.
 5. **Method and gap pages in the bundle** (zip only, about 1 MB in all)? Recommended yes, so the method travels with the data.
 6. **Package registries** (PyPI, npm) later? Recommended no until an outside reader asks.
