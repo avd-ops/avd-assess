@@ -1,0 +1,7 @@
+id: landing-zone-one-persona
+claim: ref:caf-avd-poc#assumptions
+verdict: agrees
+observed: The landing zone builds the proof of concept's shape. Its sizing keeps a list of host pools but allows one entry today, sized from one workload's users per vCPU, so every user is one persona until a use case assessment says otherwise.
+evidence:
+  - https://github.com/nickprignano/avd-landing-zone/blob/237aa80db7b4462473be390ed719eb8e6cbecb58/build/decisions/0010-sizing-and-cost.md
+date: 2026-10-20

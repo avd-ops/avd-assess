@@ -1,0 +1,1 @@
+{"schema":"avd-assess-evidence/v1","id":"2026-10-21-verdict-no-values","source":"lab","submitted":"2026-10-21","window":{"days":7,"hours":"peak","coverage":0.9},"scope":{"class":"light","hostPoolType":"pooled","hosts":2,"vcpuPerHost":8,"memoryGiBPerHost":32},"metrics":[{"metric":"rtt-to-region","unit":"ms","verdict":"disagrees"}]}

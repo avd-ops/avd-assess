@@ -1,0 +1,27 @@
+id: advisor-vm-rightsize
+title: Optimize VM or scale set spend by resizing or shutting down underutilized instances (Azure Advisor)
+url: https://learn.microsoft.com/azure/advisor/advisor-cost-recommendations
+pin: "Learn git_commit_id 9b9c50ebb26271d5b86b92d79c2878de15bc6edf, updated_at 2026-04-01"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [benchmarks, assessment]
+notes: The criteria behind Advisor's right-size and shutdown recommendations. The list of Advisor's cost recommendations is a separate page (advisor-cost in the FinOps method). We use these criteria as published utilization bands, not to recompute Advisor's result.
+claims:
+  - id: lookback
+    says: Advisor reads 7 days of utilization by default, configurable to 14, 21, 30, 60 or 90 days, aggregated to 30-minute points.
+    kind: published
+  - id: shutdown-criteria
+    says: A shutdown is recommended when P95 of maximum CPU is under 3%, average CPU over the last 3 days is at most 2%, and outbound network is under 2% over seven days.
+    kind: published
+  - id: user-facing-targets
+    says: A resize is recommended only when the smaller size would keep a user-facing workload at P95 CPU and outbound network of 40% or less and P99 memory of 60% or less.
+    kind: published
+  - id: non-user-facing-targets
+    says: For non user-facing workloads the targets are P95 CPU and network at 80% or less and P99 memory at 80% or less.
+    kind: published
+  - id: not-always-applicable
+    says: A recommendation may not apply when capacity is held for coming load, when other metrics matter, during testing, to keep sizes the same, or for recovery.
+    kind: guidance
+  - id: savings-at-retail
+    says: Savings are estimated at retail rates and ignore reservations and savings plans, so they may be higher than possible.
+    kind: guidance

@@ -1,0 +1,14 @@
+id: rdp-bandwidth
+title: Remote Desktop Protocol (RDP) bandwidth requirements
+url: https://learn.microsoft.com/azure/virtual-desktop/rdp-bandwidth
+pin: "Learn git_commit_id f2b8fc269ef10993c35918c2b14890ecb52de9c0, updated_at 2026-05-25"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [benchmarks]
+claims:
+  - id: monitor-real-users
+    says: The best way to know bandwidth needs is to monitor real user connections.
+    kind: guidance
+  - id: per-scenario-estimates
+    says: The page gives per-user bandwidth estimates by activity for one 1080p monitor, from idle to full-screen video.
+    kind: prior

@@ -20,8 +20,8 @@ Every check is a `warn`, not a `gap`. Each item says "consider" or "evaluate", a
 | Item | What it needs |
 |---|---|
 | `ref:review-checklists-avd#H03.05` | The profile storage account's region beside its host pool's. C11 has both regions, but nothing links a share to a pool, and the rule language has no join |
-| `ref:review-checklists-avd#E02.02`, `ref:review-checklists-avd#E02.01` | Diagnostic settings per AVD object (a new C11 fact) |
-| `ref:review-checklists-avd#E01.10`, `ref:aprl-desktop-virtualization#979ff8be-5f3a-4d8e-9aa3-407ecdd6d6f7` | The host pool's `agentUpdate` setting (`ref:avd-rest-api#hostpool-properties`; a new C11 fact) |
+| `ref:review-checklists-avd#E02.02`, `ref:review-checklists-avd#E02.01` | Diagnostic settings per AVD object, and the agent and Insights data collection rule per host (proposed facts in `gap:insights-facts`; the standard is `ref:avd-insights#hostpool-diagnostics`, `ref:avd-insights#workspace-diagnostics`, `ref:avd-insights#host-data-ama-dcr`) |
+| `ref:review-checklists-avd#E01.10`, `ref:aprl-desktop-virtualization#979ff8be-5f3a-4d8e-9aa3-407ecdd6d6f7`, `ref:psrule-azure#AZR-000437` | The host pool's `agentUpdate` setting (`ref:avd-rest-api#hostpool-properties`; a new C11 fact) |
 | `ref:review-checklists-avd#E01.11`, `ref:aprl-desktop-virtualization#013ac34e-7c4b-425f-9e0c-216f0cc06181` | C11 has `validationEnvironment` per pool, but the item asks for at least one per estate, and the rule language has no "any" |
 | `ref:aprl-desktop-virtualization#499769ae-67c9-492e-9ca5-cfd4cece5209` | Scaling plans and the pools they reference (`ref:avd-rest-api#scalingplan-hostpool-references`; a new C11 fact) |
 | `ref:review-checklists-avd#C01.05`, `ref:session-host-sizing#multisession-vcpu-range` | vCPUs per session host size (a public SKU value; a new C11 fact) |
@@ -29,5 +29,16 @@ Every check is a `warn`, not a `gap`. Each item says "consider" or "evaluate", a
 | `ref:review-checklists-avd#E01.13` | The last time each session host was on; C11's stale-heartbeat count has no stated threshold |
 | `ref:review-checklists-avd#A01.06`, `ref:aprl-desktop-virtualization#38721758-2cc2-4d6b-b7b7-8b47dadbf7df` | Site Recovery or backup protection for personal session hosts (a new C11 fact) |
 | `ref:review-checklists-avd#F01.11`, `ref:review-checklists-avd#H04.03` | Host-side settings (RDP Shortpath, FSLogix size limit): no host fact exists |
+
+## The same items in PSRule for Azure
+
+avd-landing-zone checks its templates and its deployed resources with PSRule for Azure (`ref:psrule-azure`), so a template finding there and an assessment item here should name the same thing. Searched (2026-10-21): PSRule's rule reference at the pinned version. Two of its rules match items above, and each is cited beside them:
+
+| PSRule rule | Same item | How far it matches |
+|---|---|---|
+| `ref:psrule-azure#AZR-000437` | `ref:review-checklists-avd#E01.10`, `ref:aprl-desktop-virtualization#979ff8be-5f3a-4d8e-9aa3-407ecdd6d6f7` | The same item |
+| `ref:psrule-azure#AZR-000195` | `ref:review-checklists-avd#A03.05` (check `asm-files-zone-redundant`) | Partly: the rule covers every storage account and also passes geo replication; the item and the check ask for zone-redundant file storage |
+
+PSRule has no rule for Start VM on Connect, pooled host redundancy or a private endpoint on file storage, so the other checks cite only the checklist. We write no rules of our own: a new match gets a claim in `references/psrule-azure.yaml` and a row here.
 
 The two rule-language limits (no join across subjects, and no "any") are avd-second-brain C20 changes, proposed when a check needs them.

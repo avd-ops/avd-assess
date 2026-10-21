@@ -1,0 +1,143 @@
+# The baseline profiles: what good looks like for a host pool, by workload class (methods/baseline-profile.md,
+# gap:baseline-profile). Every value carries the claims it rests on and its standing. avd-current-state judges
+# measured data against it; the tuning loop (methods/tune-rightsize.md) compares before and after against it.
+# Changed only by a pull request a person merges.
+#
+# standing: published (a source states it) | prior (a source states it but calls it an estimate)
+#   | guidance (a source gives direction, no number) | baseline (no source has a number; the estate's own
+#   first measurement sets it, as the gold-standard registry does).
+# A profile is the common block plus one class. An estate's own profile may tighten a value (a persona that
+# needs more), never loosen it without a recorded reason.
+schema: avd-assess-baselines/v1
+
+# How readings are taken before they are compared with anything below.
+window:
+  - id: days
+    rule: At least 7 days that include the estate's busiest working days; longer when use has a monthly peak.
+    claims: [ref:advisor-vm-rightsize#lookback, gap:baseline-profile]
+    standing: published
+  - id: hours
+    rule: Judge utilization in the ramp-up and peak hours from intake only; hours a scaling plan has hosts off or idle by design are not evidence of waste.
+    claims: [gap:baseline-profile, gap:intake, ref:advisor-vm-rightsize#not-always-applicable]
+    standing: guidance
+  - id: statistic
+    rule: Percentiles, not averages; P95 for CPU, network, delay and time, P99 for memory, P50 kept beside them.
+    claims: [ref:waf-performance-targets#percentiles, ref:advisor-vm-rightsize#user-facing-targets]
+    standing: published
+  - id: counting
+    rule: A host is over a threshold when at least 5% of its sampled hours are, as in the sample check.
+    claims: [gap:sample-check]
+    standing: guidance
+
+# Experience: the same for every class. Experience is a gate: no change for cost may make one of these fail.
+experience:
+  - metric: rtt-to-region
+    target: P95 under 150 ms; under 100 ms ideal; over 200 ms poor
+    claims: [ref:avd-prerequisites#rtt-under-150, ref:avd-insights-use-cases#rtt-ideal-100-poor-200]
+    standing: published
+  - metric: input-delay-session
+    target: P95 under 150 ms good, up to 500 ms acceptable, over that poor; users expect under 200 ms
+    claims: [ref:avd-insights-glossary#input-delay-bands, ref:session-host-sizing#input-delay-expectation]
+    standing: published
+  - metric: input-delay-host
+    target: Each host's P95 ideally under 100 ms
+    claims: [ref:avd-insights-use-cases#input-delay-host-100]
+    standing: published
+  - metric: logon-time
+    target: The estate's own first median and P95; later runs judge change against it
+    claims: [gap:logon-target]
+    standing: baseline
+  - metric: app-load-time
+    target: The estate's own first median and P95
+    claims: [gap:sample-check]
+    standing: baseline
+
+# Utilization bands, per host, in the hours above. A band is a finding, not a verdict; the loop decides what
+# to change from the experience gate and the bands together.
+utilization:
+  - metric: cpu
+    bands:
+      - band: under
+        rule: The next smaller size would still keep peak P95 CPU at 40% or less
+        claims: [ref:advisor-vm-rightsize#user-facing-targets]
+        standing: published
+      - band: good
+        rule: Peak P95 CPU under 50%
+        claims: [ref:perfmon-troubleshooting#cpu-bands]
+        standing: published
+      - band: watch
+        rule: Peak P95 CPU from 50% to 80%
+        claims: [ref:perfmon-troubleshooting#cpu-bands, gap:baseline-profile]
+        standing: guidance
+      - band: over
+        rule: Peak P95 CPU over 80%, or a processor queue of two or more per core while CPU is high
+        claims: [ref:perfmon-troubleshooting#cpu-bands, ref:perfmon-troubleshooting#pql-per-processor]
+        standing: published
+  - metric: memory
+    bands:
+      - band: under
+        rule: The next smaller size would still keep peak P99 memory at 60% or less
+        claims: [ref:advisor-vm-rightsize#user-facing-targets]
+        standing: published
+      - band: good
+        rule: Peak P99 memory at 60% or less
+        claims: [ref:advisor-vm-rightsize#user-facing-targets]
+        standing: published
+      - band: over
+        rule: Above 60%, judged against the estate's own first P99 and its paging; no source gives a session host a ceiling
+        claims: [gap:sample-check, gap:baseline-profile]
+        standing: baseline
+  - metric: idle
+    bands:
+      - band: idle
+        rule: P95 of maximum CPU under 3% over the window; for personal hosts a shutdown candidate, for pooled hosts a scaling plan question
+        claims: [ref:advisor-vm-rightsize#shutdown-criteria, ref:avd-insights-use-cases#utilization-for-scaling]
+        standing: published
+  - metric: disk-latency
+    bands:
+      - band: over
+        rule: Worse than the estate's own first P95; no source gives a session host a number
+        claims: [gap:sample-check]
+        standing: baseline
+
+# Density and size per workload class. Classes are the sizing guide's examples; a persona record gives each
+# host pool its class. Density starts at or under the prior and is replaced by the measured density.
+host:
+  - rule: Multi-session hosts between 6 and 24 vCPU, never under 4
+    claims: [ref:session-host-sizing#multisession-vcpu-range]
+    standing: published
+  - rule: More smaller hosts rather than fewer large ones; capacity grows by about 1.5 to 1.9 times per doubling of cores
+    claims: [ref:session-host-sizing#more-smaller-vms, ref:session-host-sizing#cpu-scaling-factor]
+    standing: published
+  - rule: At least two hosts per pooled host pool, plus headroom for sign-in storms at the start of a shift
+    claims: [ref:waf-reliability-checklist#RE:05, ref:session-host-sizing#logon-storm-headroom]
+    standing: guidance
+  - rule: Measured density is the most sessions per host at which every experience target holds at peak and CPU stays out of the over band
+    claims: [gap:baseline-profile, ref:session-host-sizing#capacity-approaches]
+    standing: guidance
+
+classes:
+  - id: light
+    multiSession: {usersPerVcpuMax: 6, minVcpu: 8, minMemoryGiB: 16, osDiskGiB: 32}
+    singleSession: {minVcpu: 2, minMemoryGiB: 8, osDiskGiB: 32}
+    profileGiB: 30
+    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#single-session-minimums, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only]
+    standing: prior
+  - id: medium
+    multiSession: {usersPerVcpuMax: 4, minVcpu: 8, minMemoryGiB: 16, osDiskGiB: 32}
+    singleSession: {minVcpu: 4, minMemoryGiB: 16, osDiskGiB: 32}
+    profileGiB: 30
+    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#single-session-minimums, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only]
+    standing: prior
+  - id: heavy
+    multiSession: {usersPerVcpuMax: 2, minVcpu: 8, minMemoryGiB: 16, osDiskGiB: 32}
+    singleSession: {minVcpu: 8, minMemoryGiB: 32, osDiskGiB: 32}
+    profileGiB: 30
+    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#single-session-minimums, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only]
+    standing: prior
+  - id: power
+    multiSession: {usersPerVcpuMax: 1, minVcpu: 6, minMemoryGiB: 56, osDiskGiB: 340}
+    profileGiB: 30
+    gpu: Consider GPU hosts for graphics-heavy apps or more than 3840 x 2160 total resolution; users per GPU has no published number
+    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#gpu-for-graphics, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only, gap:deployment-dimensions]
+    standing: prior

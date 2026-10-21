@@ -12,3 +12,5 @@ claims:
     says: It can add Azure Advisor recommendations for one subscription or resource group only.
   - id: milestones
     says: Brownfield workloads should repeat it on a cadence (every four months is the example), tracked as milestones.
+  - id: avd-workload-review
+    says: Specialized reviews, an Azure Virtual Desktop workload review among them, are taken in addition to the core review, not instead of it.

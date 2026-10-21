@@ -1,0 +1,17 @@
+id: caf-avd-poc
+title: Cloud Adoption Framework, Azure Virtual Desktop proof of concept
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/proof-of-concept
+pin: "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+claims:
+  - id: deprecated
+    says: Deprecated with the rest of the Cloud Adoption Framework AVD scenario, to be removed from Learn on 2026-10-30.
+    kind: published
+  - id: assumptions
+    says: "The proof of concept assumes low latency to the landing zone, one shared pool for everyone, the multi-session Marketplace image, profiles on a file service, one persona at 6 users per vCPU and 4 GB RAM per vCPU, every workload multi-session compatible, and acceptable latency to back ends."
+    kind: prior
+  - id: assumptions-rarely-all-true
+    says: Not every assumption will hold for every enterprise; they are a reference point for where to tailor the production design.
+    kind: guidance
