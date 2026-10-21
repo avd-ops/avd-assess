@@ -3,6 +3,6 @@ claim: ref:retail-prices-api#unauthenticated-retail
 verdict: extends
 observed: A real preflight run priced session hosts and OS disks as unmatched because the API returned lookalike meters with the same SKU and meter name, a CloudServices product at the Windows rate beside Virtual Machines at the base rate, and a Premium Page Blob meter beside Premium SSD Managed Disks. Private Link and NAT Gateway are listed only under the Global region. A price is matched on product, SKU and meter, and a line that matches none or several is reported with what it saw rather than guessed.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/lessons/0025-retail-price-lookalike-meters.md
-  - https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/lessons/0025-retail-price-lookalike-meters.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md
 date: 2026-10-20

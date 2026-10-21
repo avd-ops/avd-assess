@@ -4,7 +4,7 @@ Part of [avd-ops](https://avd-ops.dev/), the open toolkit for Azure Virtual Desk
 
 An open, curated methodology for assessing Azure Virtual Desktop estates: what to collect, how to judge it, what good looks like, and how to score it. It is a research index. It links to what Microsoft and the community already publish, pinned so a reader can see exactly what each source said on the day we read it. It adds what our own runs observed about those sources, and it writes new method only where nothing exists.
 
-Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/nickprignano/avd-current-state) is what is there now, and avd-assess is what it should be, and why: the standards both engines read. It also holds the [foundation contracts](contracts/README.md), the formats those three repos exchange, which work the same with or without the layers above them.
+Where it sits in the family: [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/avd-ops/avd-current-state) is what is there now, and avd-assess is what it should be, and why: the standards both engines read. It also holds the [foundation contracts](contracts/README.md), the formats those three repos exchange, which work the same with or without the layers above them.
 
 > [!WARNING]
 > **Personal project. Research and learning only. Not for production. No warranty.**
@@ -42,7 +42,7 @@ The [gold-standard registry](gold-standards.yaml) names, for each metric, the cl
 
 ## What this repo is not
 
-- **No tools.** Nothing here touches Azure. [avd-current-state](https://github.com/nickprignano/avd-current-state) implements the collection and assessment methods, and [avd-second-brain](https://github.com/nickprignano/avd-second-brain) cites them. Both read a pinned copy.
+- **No tools.** Nothing here touches Azure. [avd-current-state](https://github.com/avd-ops/avd-current-state) implements the collection and assessment methods, and [avd-second-brain](https://github.com/avd-ops/avd-second-brain) cites them. Both read a pinned copy.
 - **No copied guidance.** Microsoft's pages, checklists and tools stay the source of truth. When our observation disagrees with a source, we record it here and offer it back upstream.
 - **No estate data.** Observations link to public lessons, run records and knowledge base pages. No tenant, customer, user or machine data goes into this repo.
 
@@ -50,7 +50,7 @@ The [gold-standard registry](gold-standards.yaml) names, for each metric, the cl
 
 Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observation as `avd-assess@<commit>:observations/<file>.yaml`, a gap as `avd-assess@<commit>:gaps/<file>.md`, and a check as `avd-assess@<commit>:method.json#<check id>`.
 
-[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, the scoring, and a remediation hint per check (the landing zone parameter or setting that fixes it). [avd-current-state](https://github.com/nickprignano/avd-current-state) runs a pinned copy. The design is in [docs/assess-spec.md](docs/assess-spec.md).
+[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, the scoring, and a remediation hint per check (the landing zone parameter or setting that fixes it). [avd-current-state](https://github.com/avd-ops/avd-current-state) runs a pinned copy. The design is in [docs/assess-spec.md](docs/assess-spec.md).
 
 ## Checks
 

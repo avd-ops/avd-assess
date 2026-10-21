@@ -1,12 +1,12 @@
 # Spec: avd-assess, a research index for AVD assessment
 
-> **Moved from [avd-second-brain](https://github.com/nickprignano/avd-second-brain)** (`docs/assess-spec.md` at commit `38033b9`), where it was written, to the repo it designs ([avd-second-brain decision 0024](https://github.com/nickprignano/avd-second-brain/pull/59)). Links to the brain point at its `main` branch. Only the links and the non-ASCII characters (this repo's check refuses them) changed. Section 8 still shows the brain holding the schemas; decision 0021 moved them here.
+> **Moved from [avd-second-brain](https://github.com/avd-ops/avd-second-brain)** (`docs/assess-spec.md` at commit `38033b9`), where it was written, to the repo it designs ([avd-second-brain decision 0024](https://github.com/avd-ops/avd-second-brain/pull/59)). Links to the brain point at its `main` branch. Only the links and the non-ASCII characters (this repo's check refuses them) changed. Section 8 still shows the brain holding the schemas; decision 0021 moved them here.
 
 
 - **Status:** Phases 0 to 3 built: this spec, the avd-assess seed, the C19 to C21 schemas and checks here (section 7), and avd-assess's first `method.json`. Phases 4 to 6 are not built.
 - **Owner's direction (2026-10-20):** `avd-assess` gets its own public MIT repo. It holds methodology only: collection, assessment, and target, benchmark and scoring. It is a **research project**. It doesn't reinvent anything that already exists. It links out to existing sources with immutable references and adds value by validating them against our own experience and observations. It writes new method only where nothing exists.
 - **Date:** 2026-10-20
-- **Builds on:** [decision 0005](https://github.com/nickprignano/avd-second-brain/blob/main/docs/knowledge/decisions/0005-one-schema-registry-and-fact-register.md) (one schema registry and fact register), [decision 0011](https://github.com/nickprignano/avd-second-brain/blob/main/docs/knowledge/decisions/0011-family-format-upstream-sources.md) (link upstream, don't restate), [decision 0018](https://github.com/nickprignano/avd-second-brain/pull/41) (proposed: the public family ends at its contracts), and contracts C11, C14, C15 and C17 in [contracts.md](https://github.com/nickprignano/avd-second-brain/blob/main/docs/contracts.md).
+- **Builds on:** [decision 0005](https://github.com/avd-ops/avd-second-brain/blob/main/docs/knowledge/decisions/0005-one-schema-registry-and-fact-register.md) (one schema registry and fact register), [decision 0011](https://github.com/avd-ops/avd-second-brain/blob/main/docs/knowledge/decisions/0011-family-format-upstream-sources.md) (link upstream, don't restate), [decision 0018](https://github.com/avd-ops/avd-second-brain/pull/41) (proposed: the public family ends at its contracts), and contracts C11, C14, C15 and C17 in [contracts.md](https://github.com/avd-ops/avd-second-brain/blob/main/docs/contracts.md).
 
 - **Roles (owner, 2026-10-20):** avd-landing-zone is how the estate is built and changed from here; avd-current-state is what is there now; avd-assess is what it should be, and why.
 
@@ -157,7 +157,7 @@ Observations test the model like any other claim: if a high score keeps coming w
 
 ## 7. Contracts
 
-Built in phase 2, with examples in `contracts/examples/assess/` and tests in `tests/Connectors.Tests.ps1`. The details are in [contracts.md](https://github.com/nickprignano/avd-second-brain/blob/main/docs/contracts.md#c19-avd-intakev1).
+Built in phase 2, with examples in `contracts/examples/assess/` and tests in `tests/Connectors.Tests.ps1`. The details are in [contracts.md](https://github.com/avd-ops/avd-second-brain/blob/main/docs/contracts.md#c19-avd-intakev1).
 
 - **C19 `avd-intake/v1`** (`intake.schema.json`): section 6.2. The five `intake.*` facts are now `built`, at those paths.
 - **C20** is two documents, so no reader needs a YAML parser: `avd-assess-index/v1` (`assess-index.schema.json`), the references, observations and gaps that avd-assess generates as `index.json`, and `avd-assess-method/v1` (`assess-method.schema.json`), the `method.json` that holds the collection map, checks, readiness and scoring. `Test-AssessMethod` checks both against the register.

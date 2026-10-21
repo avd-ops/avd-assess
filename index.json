@@ -2923,8 +2923,8 @@
       "verdict": "extends",
       "observed": "Budgets only alert, so the landing zone wires its budget to an action group that runs a Lock runbook, and avd-swarm's spend guard enforces caps before a lab run opens instead of relying on the budget. For AVD a plain deallocate isn't enough either, because Start VM on Connect and the scaling plan start the hosts again at the next sign-in or ramp-up; Lock drains, sets the scaling plan exclusion tag and turns Start VM on Connect off. The budget-to-runbook path hasn't run against a real deployment yet.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0011-auto-shutdown.md",
-        "https://github.com/nickprignano/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0011-auto-shutdown.md",
+        "https://github.com/avd-ops/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
       ],
       "date": "2026-10-20"
     },
@@ -2934,7 +2934,7 @@
       "verdict": "not-yet-tested",
       "observed": "The landing zone turns encryption at host on by default and registers the subscription feature it needs, so it never uses Azure Disk Encryption. No run has measured whether it changes host performance, which the source says it doesn't.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep"
       ],
       "date": "2026-10-20"
     },
@@ -2944,8 +2944,8 @@
       "verdict": "agrees",
       "observed": "The landing zone prices the compiled plan from retail prices before anything is deployed, with run hours from the power settings and an upper bound where the schedule rather than use decides (168 hours a week without a scheduled stop). Lab runs in the family don't start without that written estimate, a cap and teardown evidence, and avd-swarm's spend guard refuses a run whose estimate has an unpriced line or passes a cap. Retail prices are list prices, so the estimate is an upper bound for anyone with negotiated rates or commitments.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md",
-        "https://github.com/nickprignano/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md",
+        "https://github.com/avd-ops/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
       ],
       "date": "2026-10-20"
     },
@@ -2955,7 +2955,7 @@
       "verdict": "agrees",
       "observed": "The landing zone builds the proof of concept's shape. Its sizing keeps a list of host pools but allows one entry today, sized from one workload's users per vCPU, so every user is one persona until a use case assessment says otherwise.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/237aa80db7b4462473be390ed719eb8e6cbecb58/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/237aa80db7b4462473be390ed719eb8e6cbecb58/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -2965,8 +2965,8 @@
       "verdict": "not-yet-tested",
       "observed": "The landing zone's session hosts use Premium SSD OS disks, as the source recommends for production. No run has compared disk latency on Standard SSD or an ephemeral OS disk, so the choice rests on the source, not our evidence.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/modules/sessionHosts.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/modules/sessionHosts.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -2976,7 +2976,7 @@
       "verdict": "extends",
       "observed": "The landing zone's default RDP properties turn drive, USB and COM port redirection off but keep clipboard, printers, smart cards, WebAuthn and the camera, because users need them. Restricting redirection is a per-property trade-off, so the method reports each one kept on as a warn with its reason, not as a gap.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/main.bicep"
       ],
       "date": "2026-10-20"
     },
@@ -2986,7 +2986,7 @@
       "verdict": "extends",
       "observed": "Latency measured from Cloud Shell says nothing about users, because Cloud Shell runs in an Azure datacenter. Measure round-trip time from the user's device, against endpoints verified to be regional.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md"
       ],
       "date": "2026-10-20"
     },
@@ -2996,8 +2996,8 @@
       "verdict": "extends",
       "observed": "A real preflight run priced session hosts and OS disks as unmatched because the API returned lookalike meters with the same SKU and meter name, a CloudServices product at the Windows rate beside Virtual Machines at the base rate, and a Premium Page Blob meter beside Premium SSD Managed Disks. Private Link and NAT Gateway are listed only under the Global region. A price is matched on product, SKU and meter, and a line that matches none or several is reported with what it saw rather than guessed.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/lessons/0025-retail-price-lookalike-meters.md",
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/lessons/0025-retail-price-lookalike-meters.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -3007,7 +3007,7 @@
       "verdict": "not-yet-tested",
       "observed": "The run recorder spec keeps each run's expected and actual cost as contract C17 (avd-run-cost/v1), appends a reading until it is unchanged for 72 hours, and reports pending rather than a guess until then. For scale, an earlier one-host sandbox demo cost 0.97 USD for about eight hours. How long the actual took to appear in a pay-as-you-go sandbox hasn't been measured yet (the spec's open question U5).",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/specs/run-recorder-spec.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/specs/run-recorder-spec.md"
       ],
       "date": "2026-10-20"
     },
@@ -3017,8 +3017,8 @@
       "verdict": "not-yet-tested",
       "observed": "The landing zone deploys a power management scaling plan (depth-first ramp-down that stops hosts at zero sessions, without forcing sign-out) and Start VM on Connect on by default, and every resource group and resource carries workload and environment tags. No run has yet compared a month of running hours with the schedule, so the saving is Microsoft's claim, not our evidence. The landing zone doesn't set the cm-resource-parent tag.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/modules/controlPlane.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/modules/controlPlane.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/main.bicep"
       ],
       "date": "2026-10-20"
     },
@@ -3028,7 +3028,7 @@
       "verdict": "not-yet-tested",
       "observed": "The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -3038,8 +3038,8 @@
       "verdict": "extends",
       "observed": "Hardening the profile share to AES-256-GCM as the only SMB channel encryption denied every Entra Kerberos session; allowing AES-128-GCM as well, with CCM still off, let users in. Encryption in transit stays on, but the strictest setting isn't usable with Entra Kerberos, so the method treats AES-128-GCM plus AES-256-GCM as passing.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0028-smb-channel-encryption-entra-kerberos.md",
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/storage.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0028-smb-channel-encryption-entra-kerberos.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/storage.bicep"
       ],
       "date": "2026-10-20"
     },
@@ -3049,8 +3049,8 @@
       "verdict": "agrees",
       "observed": "The landing zone deploys every session host with Trusted launch, Secure Boot and vTPM on, from Gen2 images, and the demo host pool ran on it with no boot or image problem.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/sessionHosts.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/docs/design-decisions.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/sessionHosts.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/docs/design-decisions.md"
       ],
       "date": "2026-10-20"
     },
@@ -3060,8 +3060,8 @@
       "verdict": "extends",
       "observed": "The landing zone sets size, host count and session limit as parameters, but fixes breadth-first load balancing and the scaling plan's capacity thresholds and minimum host shares (60% and 20% at ramp-up, 90% and 10% at ramp-down) in its control plane module, and lists the schedule as set by hand. A tuning loop can change the first three through the landing zone; the scaling levers it can only record until they become parameters.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/modules/controlPlane.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/contracts/target-state-capabilities.json"
+        "https://github.com/avd-ops/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/modules/controlPlane.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/contracts/target-state-capabilities.json"
       ],
       "date": "2026-10-20"
     },
@@ -3071,7 +3071,7 @@
       "verdict": "not-yet-tested",
       "observed": "Adopted as the landing zone's automatic sizing input, and its preflight warns above 6 sessions per vCPU. No real users have been measured against it, so the numbers are still Microsoft's prior, not our evidence.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -3081,8 +3081,8 @@
       "verdict": "agrees",
       "observed": "The landing zone's image build keeps WDOT's Appx package removal off for this reason; no sysprep failure has been seen with it off. Not yet tested with it on.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md",
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/specs/image-pipeline-spec.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/specs/image-pipeline-spec.md"
       ],
       "date": "2026-10-20"
     },
@@ -3092,7 +3092,7 @@
       "verdict": "extends",
       "observed": "WDOT's DiskCleanup category deletes every log, trace and event log file on the system drive, including an image build's own evidence before the image test reads it. The landing zone keeps that category off and cleans narrowly instead.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md"
       ],
       "date": "2026-10-20"
     },
@@ -3102,8 +3102,8 @@
       "verdict": "extends",
       "observed": "What runs inside the guest isn't visible from the control plane, but the landing zone's image build tags each gallery image version with the WDOT release, commit and profile hash it ran, so a Reader can see which pin and profile an image claims. Images built any other way carry no such record.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/images/build.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/Test-GoldenImage.ps1"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/images/build.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/Test-GoldenImage.ps1"
       ],
       "date": "2026-10-20"
     }
