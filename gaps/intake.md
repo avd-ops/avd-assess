@@ -18,6 +18,6 @@
 
 | Fact | Question | Answers | Why it matters |
 |---|---|---|---|
-| `intake.graphicsWorkloads` | Which graphics work do users do? (any that apply) | `none`, `media`, `design-2d`, `visualization-3d`, `unknown` | Whether a pool needs GPU hosts (`ref:session-host-sizing#gpu-for-graphics`, `ref:review-checklists-avd#C01.12`) |
+| `intake.graphicsWorkloads` | What is the heaviest graphics work any user group does? | `none`, `media`, `design-2d`, `visualization-3d`, `unknown` | Whether a pool needs GPU hosts (`ref:session-host-sizing#gpu-for-graphics`, `ref:review-checklists-avd#C01.12`) |
 | `intake.appDelivery` | How do apps reach the hosts? | `in-image`, `app-attach`, `intune`, `mixed`, `undecided` | How many images, and how they are built (`ref:review-checklists-avd#B01.01`, `ref:avd-golden-image#approaches`); shared with the app delivery pillar |
 | `intake.languages` | How many display languages do users of shared hosts need? | `one`, `few` (2 to 5), `many` (6 or more), `unknown` | Languages in a pooled image or one pool per language (`ref:avd-language-packs#pool-per-language-or-shared`, `ref:review-checklists-avd#B01.11`) |

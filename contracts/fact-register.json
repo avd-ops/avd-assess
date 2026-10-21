@@ -389,7 +389,7 @@
       "contract": "C11",
       "path": "/subscriptions/*/hostPools/*/sessionHosts/agentVersions",
       "grain": "hostPool",
-      "unit": "version",
+      "unit": "count",
       "privacy": "public",
       "status": "built",
       "evidences": []
@@ -400,7 +400,7 @@
       "contract": "C11",
       "path": "/subscriptions/*/hostPools/*/sessionHosts/sxsStackVersions",
       "grain": "hostPool",
-      "unit": "version",
+      "unit": "count",
       "privacy": "public",
       "status": "built",
       "evidences": []
@@ -411,7 +411,7 @@
       "contract": "C11",
       "path": "/subscriptions/*/hostPools/*/sessionHosts/osVersions",
       "grain": "hostPool",
-      "unit": "version",
+      "unit": "count",
       "privacy": "public",
       "status": "built",
       "evidences": []
@@ -422,7 +422,7 @@
       "contract": "C11",
       "path": "/subscriptions/*/hostPools/*/sessionHosts/updateStates",
       "grain": "hostPool",
-      "unit": "enum",
+      "unit": "count",
       "privacy": "public",
       "status": "built",
       "evidences": []
@@ -455,7 +455,7 @@
       "contract": "C11",
       "path": "/subscriptions/*/hostPools/*/sessionHosts/osDiskTypes",
       "grain": "hostPool",
-      "unit": "enum",
+      "unit": "count",
       "privacy": "public",
       "status": "specified",
       "evidences": []
@@ -472,12 +472,23 @@
       "evidences": []
     },
     {
+      "id": "c11.hostPool.sessionHosts.hyperVGenerations",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/hyperVGenerations",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c11.hostPool.imageSources",
       "tier": "azure",
       "contract": "C11",
       "path": "/subscriptions/*/hostPools/*/imageSources",
       "grain": "hostPool",
-      "unit": "enum",
+      "unit": "count",
       "privacy": "public",
       "status": "specified",
       "evidences": []
