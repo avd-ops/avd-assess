@@ -29,6 +29,6 @@ The table and the reasons are in `gap:security-scope`.
 
 ## Not yet known
 
-- Most security items need facts avd-current-state doesn't collect yet; the list is in `gap:checklist-mapping`.
+- Four security checks run (method.json version 2); the items that still need a fact, a join or a host-side read are listed in `gap:checklist-mapping`.
 - No host-side collector reads baseline drift, local administrators or app control yet (`gap:host-baseline-profile`).
 - Whether our outcomes agree with Defender for Cloud's for the same estate hasn't been tested (`ref:defender-compute-recommendations#vm-recommendations`).

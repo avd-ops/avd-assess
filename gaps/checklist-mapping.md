@@ -4,7 +4,7 @@
 
 **What we write.** For each item we can evidence, the facts that decide it, by fact ID in avd-second-brain's fact register (C15), and the rule. The rules that run are the `checks` in [method.json](../method.json). Items that need data the family doesn't collect yet stay listed here with the fact or rule they would need. That list is a to-do for avd-current-state's facts.
 
-## Checks that run (method.json version 1)
+## Checks that run (method.json version 2)
 
 | Check | Item | Facts | Rule |
 |---|---|---|---|
@@ -12,8 +12,12 @@
 | `asm-pooled-host-redundancy` | `ref:waf-reliability-checklist#RE:05` | `c11.hostPool.type`, `c11.hostPool.sessionHosts.total` | Pooled host pools have at least two session hosts (warn) |
 | `asm-files-private-endpoint` | `ref:review-checklists-avd#F01.10` | `c11.storage.kind`, `c11.storage.privateEndpoint` | Premium file storage has a private endpoint (warn) |
 | `asm-files-zone-redundant` | `ref:review-checklists-avd#A03.05` | `c11.storage.kind`, `c11.storage.sku` | Premium file storage is zone-redundant (warn) |
+| `asm-hosts-trusted-launch` | `ref:review-checklists-avd#G02.03` | `c11.hostPool.sessionHosts.notTrustedLaunch` | Every session host whose VM was read is Trusted launch with Secure Boot and vTPM on (warn; `obs:trusted-launch-by-default`) |
+| `asm-drive-usb-redirection-off` | `ref:review-checklists-avd#G02.06` | `c11.hostPool.redirection.drives`, `c11.hostPool.redirection.usb` | Drive and USB redirection are set off; not set counts as a warn too (`obs:redirection-kept-for-usability`) |
+| `asm-defender-servers` | `ref:review-checklists-avd#G03.04` | `c11.subscription.defenderPlans` | The Servers plan (`VirtualMachines`) is on the Standard tier (warn) |
+| `asm-files-smb-gcm` | `ref:mcsb-avd-baseline#DP-3` | `c11.storage.kind`, `c11.storage.smbChannelEncryption` | Premium file storage allows AES-128-GCM and AES-256-GCM and no CCM (warn; `obs:smb-channel-aes128-gcm-needed`) |
 
-Every check is a `warn`, not a `gap`. Each item says "consider" or "evaluate", and the facts can't tell which storage account holds profiles, so a failure is a trade-off to review. The two storage checks see only premium (`FileStorage`) accounts. Standard file shares in a general-purpose account are missed until a fact says which accounts hold shares.
+Every check is a `warn`, not a `gap`. The first four items say "consider" or "evaluate", and the facts can't tell which storage account holds profiles, so a failure is a trade-off to review; the security checks are warns because a deliberate trade-off is allowed with its reason (`gap:security-scope`). The storage checks see only premium (`FileStorage`) accounts. Standard file shares in a general-purpose account are missed until a fact says which accounts hold shares.
 
 ## Items that need something we don't collect yet
 
@@ -29,12 +33,9 @@ Every check is a `warn`, not a `gap`. Each item says "consider" or "evaluate", a
 | `ref:review-checklists-avd#E01.13` | The last time each session host was on; C11's stale-heartbeat count has no stated threshold |
 | `ref:review-checklists-avd#A01.06`, `ref:aprl-desktop-virtualization#38721758-2cc2-4d6b-b7b7-8b47dadbf7df` | Site Recovery or backup protection for personal session hosts (a new C11 fact) |
 | `ref:review-checklists-avd#F01.11`, `ref:review-checklists-avd#H04.03` | Host-side settings (RDP Shortpath, FSLogix size limit): no host fact exists |
-| `ref:review-checklists-avd#G02.03`, `ref:review-checklists-avd#G02.04` | Each session host's security type, Secure Boot and vTPM (a new C11 fact); the rule is every host Trusted launch with both on (`obs:trusted-launch-by-default`) |
-| `ref:review-checklists-avd#G02.06` | Redirection properties from the host pool's RDP properties (`ref:rdp-properties#redirection-properties`; a new C11 fact); each redirection kept on is a warn with its reason (`obs:redirection-kept-for-usability`) |
-| `ref:review-checklists-avd#G03.04` | Defender for Cloud plans on the subscription (a new C11 fact); the Servers plan is on |
 | `ref:review-checklists-avd#G03.05` | Diagnostic settings per AVD object, as for E02.02 (`gap:insights-facts`) |
-| `ref:review-checklists-avd#D02.01` | The profile share's identity source (a new C11 fact) beside `intake.identityConstraints`; Entra-only estates use Entra Kerberos |
-| `ref:mcsb-avd-baseline#DP-3` | The file service's SMB channel encryption (a new C11 fact); GCM only, with AES-128-GCM allowed (`obs:smb-channel-aes128-gcm-needed`) |
+| `ref:review-checklists-avd#D02.01` | `c11.storage.filesIdentity` is built, but the rule needs it beside `intake.identityConstraints` (Entra-only estates use Entra Kerberos), and the rule language has no join between a snapshot and the intake |
+| `ref:review-checklists-avd#G02.04` | Which hosts run Windows 11; C11's OS versions are build numbers per pool, so the Trusted launch check above stands in |
 | `ref:review-checklists-avd#G03.03`, `ref:review-checklists-avd#G04.01` | Local administrators on the hosts (host-side) and Conditional Access or MFA for AVD sign-in (a directory read): neither is collected (`gap:security-scope`) |
 
 ## The same items in PSRule for Azure

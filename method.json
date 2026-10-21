@@ -1,6 +1,6 @@
 {
   "schema": "avd-assess-method/v1",
-  "version": 1,
+  "version": 2,
   "factRegister": 1,
   "collection": [
     {
@@ -10,6 +10,17 @@
       "property": "location",
       "claims": [
         "ref:resource-graph-tables#avd-objects-in-resources",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.subscription.defenderPlans",
+      "from": "resource-graph",
+      "table": "SecurityResources",
+      "type": "microsoft.security/pricings",
+      "property": "properties.pricingTier",
+      "claims": [
+        "ref:review-checklists-avd#G03.04",
         "gap:collection-map"
       ]
     },
@@ -89,6 +100,102 @@
       ]
     },
     {
+      "fact": "c11.hostPool.redirection.drives",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.desktopvirtualization/hostpools",
+      "property": "properties.customRdpProperty",
+      "claims": [
+        "ref:avd-rest-api#hostpool-properties",
+        "ref:rdp-properties#redirection-properties",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.redirection.clipboard",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.desktopvirtualization/hostpools",
+      "property": "properties.customRdpProperty",
+      "claims": [
+        "ref:avd-rest-api#hostpool-properties",
+        "ref:rdp-properties#redirection-properties",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.redirection.printers",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.desktopvirtualization/hostpools",
+      "property": "properties.customRdpProperty",
+      "claims": [
+        "ref:avd-rest-api#hostpool-properties",
+        "ref:rdp-properties#redirection-properties",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.redirection.usb",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.desktopvirtualization/hostpools",
+      "property": "properties.customRdpProperty",
+      "claims": [
+        "ref:avd-rest-api#hostpool-properties",
+        "ref:rdp-properties#redirection-properties",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.redirection.comPorts",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.desktopvirtualization/hostpools",
+      "property": "properties.customRdpProperty",
+      "claims": [
+        "ref:avd-rest-api#hostpool-properties",
+        "ref:rdp-properties#redirection-properties",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.redirection.smartCards",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.desktopvirtualization/hostpools",
+      "property": "properties.customRdpProperty",
+      "claims": [
+        "ref:avd-rest-api#hostpool-properties",
+        "ref:rdp-properties#redirection-properties",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.redirection.camera",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.desktopvirtualization/hostpools",
+      "property": "properties.customRdpProperty",
+      "claims": [
+        "ref:avd-rest-api#hostpool-properties",
+        "ref:rdp-properties#redirection-properties",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.redirection.webAuthn",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.desktopvirtualization/hostpools",
+      "property": "properties.customRdpProperty",
+      "claims": [
+        "ref:avd-rest-api#hostpool-properties",
+        "ref:rdp-properties#redirection-properties",
+        "gap:collection-map"
+      ]
+    },
+    {
       "fact": "c11.hostPool.sessionHosts.total",
       "from": "resource-graph",
       "table": "DesktopVirtualizationResources",
@@ -107,6 +214,30 @@
       "claims": [
         "ref:resource-graph-tables#dv-table-session-hosts",
         "ref:avd-rest-api#sessionhost-properties"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.sessionHosts.trustedLaunch",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.compute/virtualmachines",
+      "property": "properties.securityProfile",
+      "claims": [
+        "ref:avd-rest-api#sessionhost-properties",
+        "ref:review-checklists-avd#G02.03",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.hostPool.sessionHosts.notTrustedLaunch",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.compute/virtualmachines",
+      "property": "properties.securityProfile",
+      "claims": [
+        "ref:avd-rest-api#sessionhost-properties",
+        "ref:review-checklists-avd#G02.03",
+        "gap:collection-map"
       ]
     },
     {
@@ -216,6 +347,27 @@
       ]
     },
     {
+      "fact": "c11.storage.smbChannelEncryption",
+      "from": "arm-rest",
+      "type": "microsoft.storage/storageaccounts/fileservices",
+      "property": "properties.protocolSettings.smb.channelEncryption",
+      "claims": [
+        "ref:mcsb-avd-baseline#DP-3",
+        "gap:collection-map"
+      ]
+    },
+    {
+      "fact": "c11.storage.filesIdentity",
+      "from": "resource-graph",
+      "table": "Resources",
+      "type": "microsoft.storage/storageaccounts",
+      "property": "properties.azureFilesIdentityBasedAuthentication.directoryServiceOptions",
+      "claims": [
+        "ref:review-checklists-avd#D02.01",
+        "gap:collection-map"
+      ]
+    },
+    {
       "fact": "c11.policy.assignments",
       "from": "resource-graph",
       "table": "PolicyResources",
@@ -257,6 +409,22 @@
       "fact": "intake.workingHours",
       "from": "intake",
       "claims": [
+        "gap:intake"
+      ]
+    },
+    {
+      "fact": "intake.hostSharing",
+      "from": "intake",
+      "claims": [
+        "ref:avd-security-guide#trust-boundary",
+        "gap:intake"
+      ]
+    },
+    {
+      "fact": "intake.avdMfa",
+      "from": "intake",
+      "claims": [
+        "ref:review-checklists-avd#G04.01",
         "gap:intake"
       ]
     }
@@ -375,6 +543,107 @@
         "expect": {
           "sku": {
             "eq": "Premium_ZRS"
+          }
+        },
+        "onFail": "warn"
+      },
+      "informs": []
+    },
+    {
+      "id": "asm-hosts-trusted-launch",
+      "title": "Session hosts run Trusted launch with Secure Boot and vTPM on",
+      "pillar": "security",
+      "severity": "medium",
+      "claims": [
+        "ref:review-checklists-avd#G02.03",
+        "ref:avd-security-guide#trusted-launch"
+      ],
+      "facts": [
+        "c11.hostPool.sessionHosts.notTrustedLaunch"
+      ],
+      "rule": {
+        "each": "/subscriptions/*/hostPools/*",
+        "expect": {
+          "sessionHosts/notTrustedLaunch": {
+            "max": 0
+          }
+        },
+        "onFail": "warn"
+      },
+      "informs": []
+    },
+    {
+      "id": "asm-drive-usb-redirection-off",
+      "title": "Host pools turn drive and USB redirection off",
+      "pillar": "security",
+      "severity": "medium",
+      "claims": [
+        "ref:review-checklists-avd#G02.06",
+        "ref:avd-security-guide#device-redirection"
+      ],
+      "facts": [
+        "c11.hostPool.redirection.drives",
+        "c11.hostPool.redirection.usb"
+      ],
+      "rule": {
+        "each": "/subscriptions/*/hostPools/*",
+        "expect": {
+          "redirection/drives": {
+            "eq": "off"
+          },
+          "redirection/usb": {
+            "eq": "off"
+          }
+        },
+        "onFail": "warn"
+      },
+      "informs": []
+    },
+    {
+      "id": "asm-defender-servers",
+      "title": "Defender for Cloud's Servers plan is on",
+      "pillar": "security",
+      "severity": "medium",
+      "claims": [
+        "ref:review-checklists-avd#G03.04",
+        "ref:avd-security-guide#defender-for-cloud"
+      ],
+      "facts": [
+        "c11.subscription.defenderPlans"
+      ],
+      "rule": {
+        "each": "/subscriptions/*",
+        "expect": {
+          "defenderPlans/VirtualMachines": {
+            "eq": "Standard"
+          }
+        },
+        "onFail": "warn"
+      },
+      "informs": []
+    },
+    {
+      "id": "asm-files-smb-gcm",
+      "title": "Premium file storage allows only GCM SMB channel encryption, AES-128-GCM included",
+      "pillar": "security",
+      "severity": "medium",
+      "claims": [
+        "ref:mcsb-avd-baseline#DP-3"
+      ],
+      "facts": [
+        "c11.storage.kind",
+        "c11.storage.smbChannelEncryption"
+      ],
+      "rule": {
+        "each": "/subscriptions/*/storageAccounts/*",
+        "where": {
+          "kind": {
+            "eq": "FileStorage"
+          }
+        },
+        "expect": {
+          "smbChannelEncryption": {
+            "eq": "gcm"
           }
         },
         "onFail": "warn"
