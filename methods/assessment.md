@@ -2,6 +2,16 @@
 
 How to judge what was collected against published recommendations. avd-current-state implements this method and writes the report (avd-second-brain contract C21).
 
+## Microsoft starting point
+
+Microsoft publishes no single AVD assessment standard, so the method starts from three public sources, each for one job (the numbers a healthy estate should hit are the separate [baseline profile](baseline-profile.md)):
+
+- **Scope** (what an assessment must answer): the Cloud Adoption Framework's AVD assessment questions (`ref:caf-avd-assess`). Microsoft is retiring that page; the pin keeps it.
+- **Items** (what to check, with short IDs, pillar and severity): the AVD review checklist (`ref:review-checklists-avd`), with APRL through WARA for reliability (`ref:aprl-desktop-virtualization`, `ref:wara`).
+- **Questionnaire** (the design-choice self-assessment): the Well-Architected Review, core plus the AVD workload review (`ref:waf-review-assessment#avd-workload-review`).
+
+Everything else here builds on those three: evidence mapped to items, measured targets, scoring and our own observations.
+
 ## Method
 
 1. **Start from Microsoft's lists, not ours:** the AVD review checklist for all pillars (`ref:review-checklists-avd`) and APRL through WARA for reliability (`ref:aprl-desktop-virtualization`, `ref:wara#collector-avd-json`).
