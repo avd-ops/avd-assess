@@ -144,6 +144,43 @@ claims:
     says: No proxy, SSL termination or deep packet inspection for AVD control plane traffic (Reliability, high).
   - id: C02.04
     says: Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high).
+  # App delivery and profile items read for the app-delivery and profiles pillars (2026-10-21); kept here, after the others, so the list grows without reordering.
+  - id: B02.01
+    says: Don't put App Attach packages on the storage account or share that holds FSLogix profiles (Performance, medium).
+  - id: B02.02
+    says: Review the performance considerations for App Attach packages (Performance, medium).
+  - id: B02.03
+    says: Give session hosts the right permissions on the App Attach share (Security, medium).
+  - id: B02.04
+    says: Consider vendor MSIX packages for third-party applications (Cost, low).
+  - id: B02.05
+    says: Turn off automatic updates for MSIX packages (Operations, low).
+  - id: B02.06
+    says: Review which operating systems App Attach supports (Reliability, medium).
+  - id: H01.01
+    says: Follow the Azure Files best practices for FSLogix on AVD (Performance, medium).
+  - id: H02.01
+    says: If Azure NetApp Files is needed, check it is available in the region (Reliability, medium).
+  - id: H02.02
+    says: On Azure NetApp Files, turn on Continuous Availability for profile volumes (Reliability, medium).
+  - id: H02.03
+    says: On Azure NetApp Files, check the AD site name in the Active Directory connection (Reliability, high).
+  - id: H03.03
+    says: Don't share profile storage between host pools (Performance, high).
+  - id: H04.01
+    says: Don't use Office (ODFC) containers unless they are needed and justified (Reliability, high).
+  - id: H04.04
+    says: Review the FSLogix registry settings and choose which to apply (Reliability, high).
+  - id: H04.05
+    says: Avoid concurrent or multiple FSLogix connections (Reliability, high).
+  - id: A03.01
+    says: Decide which data in profile and Office containers needs protecting (Reliability, medium).
+  - id: A03.03
+    says: Assess profile storage replication and resiliency needs for disaster recovery (Reliability, medium).
+  - id: A03.04
+    says: Review the Azure Files disaster recovery strategy (Reliability, medium).
+  - id: A03.06
+    says: Review the Azure NetApp Files disaster recovery strategy (Reliability, medium).
   # Identity items read for the identity pillar (dimensions.yaml, pillar identity, 2026-10-21); kept here, after the others.
   - id: D01.01
     says: Run at least two domain controllers in the Azure virtual network close to the host pools (Reliability, medium).

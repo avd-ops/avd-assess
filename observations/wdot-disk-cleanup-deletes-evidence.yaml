@@ -3,5 +3,5 @@ claim: ref:vdi-optimization-guide#test-cleanup-first
 verdict: extends
 observed: WDOT's DiskCleanup category deletes every log, trace and event log file on the system drive, including an image build's own evidence before the image test reads it. The landing zone keeps that category off and cleans narrowly instead.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md
 date: 2026-10-20

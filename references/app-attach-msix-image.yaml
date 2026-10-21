@@ -1,0 +1,15 @@
+id: app-attach-msix-image
+title: Create an image for App Attach in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/app-attach-create-msix-image
+pin: "Learn git_commit_id d2034cb48034470e11ffe6cebde33d761f9a932b, updated_at 2026-05-22"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [app-delivery]
+claims:
+  - id: cim-recommended
+    says: Convert MSIX packages to CIM images for the best performance, particularly on Windows 11; use VHDX over VHD.
+    kind: guidance
+  - id: build-on-older-windows
+    says: Build CIM images on a Windows version no newer than the hosts that run them; images built on Windows 11 may not work on Windows 10.
+    kind: published

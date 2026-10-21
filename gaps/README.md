@@ -26,7 +26,15 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [host-baseline-profile](host-baseline-profile.md) | Judging a multi-session host against Microsoft's OS baseline through a reviewed profile |
 | [remote-protocols-scope](remote-protocols-scope.md) | What a remote protocol and session assessment can judge from where, intent before outcome, and the split with the networking pillars |
 | [transport-classification](transport-classification.md) | One family name for the transport a connection used, mapped to the three vocabularies Microsoft uses |
+| [diagnostics-scope](diagnostics-scope.md) | Which diagnostic source answers which symptom, who can read it, tools as categories, and the facts proposed for the collector |
+| [error-code-map](error-code-map.md) | One map from the code an operator sees to the claim that explains it and the triage flow that handles it |
+| [triage-cannot-connect](triage-cannot-connect.md) | Triage when a user can't sign in, sees no resources or can't connect |
+| [triage-host-unhealthy](triage-host-unhealthy.md) | Triage when a session host isn't Available |
+| [triage-slow-logon](triage-slow-logon.md) | Triage when sign-in to a session is slow, by stage |
+| [triage-slow-session](triage-slow-session.md) | Triage when a session is slow or disconnects: network, host or client |
+| [triage-profile-failed](triage-profile-failed.md) | Triage when a user profile fails to load |
 | [network-scope](network-scope.md) | What a network assessment can judge, from which evidence, the draft network checks, and which repo does what |
 | [client-network](client-network.md) | Judging the networks users connect from, AVD Private Link from the client included |
+| [app-delivery-scope](app-delivery-scope.md) | What an app delivery and profile assessment can judge from where, the ways apps reach a host, and the joins the facts can't make yet |
 
 The parts of these gaps that a tool runs (the collection map, checks, readiness and scoring) are in [method.json](../method.json), avd-second-brain contract C20 (`avd-assess-method/v1`). avd-current-state runs a pinned copy.

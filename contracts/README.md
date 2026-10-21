@@ -1,6 +1,6 @@
 # Foundation contracts
 
-This folder is the authority for the formats the foundation repos exchange: avd-assess (the standards), [avd-current-state](https://github.com/nickprignano/avd-current-state) (the signal engine) and [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) (the deployment engine). They work the same with or without the layers above them: [avd-second-brain](https://github.com/nickprignano/avd-second-brain) and [avd-swarm](https://github.com/nickprignano/avd-swarm) read these formats and may add guidance, but nothing here requires them (owner, 2026-10-20). The brain's decision 0021 records the move; until then these files were vendored from the brain's `contracts/`, and the bytes didn't change when they moved.
+This folder is the authority for the formats the foundation repos exchange: avd-assess (the standards), [avd-current-state](https://github.com/avd-ops/avd-current-state) (the signal engine) and [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) (the deployment engine). They work the same with or without the layers above them: [avd-second-brain](https://github.com/avd-ops/avd-second-brain) and [avd-swarm](https://github.com/avd-ops/avd-swarm) read these formats and may add guidance, but nothing here requires them (owner, 2026-10-20). The brain's decision 0021 records the move; until then these files were vendored from the brain's `contracts/`, and the bytes didn't change when they moved.
 
 | Contract | Files | Produced by | Read by |
 |---|---|---|---|
@@ -17,7 +17,7 @@ Contract numbers stay as the brain assigned them. The brain keeps the formats on
 
 ## How other repos use these files
 
-Each consumer carries byte-identical copies with a `PINS.json` naming `https://github.com/nickprignano/avd-assess`, a commit here, and a SHA-256 per file, and a test that checks the hashes. Nothing fetches these files at run time. A repo still pinned to an older brain commit keeps working; it switches its `source` to this repo at its next pin bump.
+Each consumer carries byte-identical copies with a `PINS.json` naming `https://github.com/avd-ops/avd-assess`, a commit here, and a SHA-256 per file, and a test that checks the hashes. Nothing fetches these files at run time. A repo still pinned to an older brain commit keeps working; it switches its `source` to this repo at its next pin bump.
 
 `python3 tests/check_contracts.py` checks that every schema is valid JSON Schema 2020-12, every example passes its schema, and the fact register follows its rules (unique IDs, tier prefixes, known decisions, no proposed fact as evidence, every built fact's path present in its contract's schema).
 

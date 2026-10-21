@@ -1,0 +1,27 @@
+id: session-host-health-checks
+title: Session host statuses and health checks in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/session-host-status-health-checks
+pin: "Learn git_commit_id 8f1c29420d1eea32776a80c9490e90d7a05467e0, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [diagnostics]
+claims:
+  - id: available-is-healthy
+    says: Available is the one healthy status; every other status points at something to fix, and a host at its session limit stays Available.
+    kind: published
+  - id: status-load-balancing
+    says: Needs Assistance, Upgrade Failed and Upgrading hosts still take new sessions; Shutdown and Unavailable hosts don't.
+    kind: published
+  - id: needs-assistance-nonfatal
+    says: Needs Assistance means a non-fatal check failed (monitoring agent, metadata service or URL check); users connect, but the experience may degrade and connections may carry no logging.
+    kind: published
+  - id: fatal-checks
+    says: The domain joined, domain trust and side-by-side stack listener checks are fatal; a host failing one is Unavailable and takes no connections.
+    kind: published
+  - id: shutdown-vs-unavailable
+    says: A host shut down before it reported its state shows Unavailable, so the VM's power state comes from the instance view, not from the status.
+    kind: published
+  - id: app-attach-nonfatal
+    says: A failed App Attach check isn't fatal, but some apps stop working for users.
+    kind: published

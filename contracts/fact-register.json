@@ -184,6 +184,39 @@
       ]
     },
     {
+      "id": "c11.hostPool.appAttachPackages",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/appAttachPackages",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.appAttachLogonBlocking",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/appAttachLogonBlocking",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.appAttachVhdImages",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/appAttachVhdImages",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c11.hostPool.maxSessionLimit",
       "tier": "azure",
       "contract": "C11",
@@ -340,6 +373,116 @@
       "evidences": []
     },
     {
+      "id": "c11.hostPool.sessionHosts.status",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/status",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.staleHeartbeat",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/staleHeartbeat",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.failedHealthChecks",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/failedHealthChecks",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.windowDays",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/windowDays",
+      "grain": "hostPool",
+      "unit": "days",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.connections",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/connections",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.connectionsFailed",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/connectionsFailed",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.errorsByCode",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/errorsByCode",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.serviceErrors",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/serviceErrors",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.timeToConnectSecondsP95",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/timeToConnectSecondsP95",
+      "grain": "hostPool",
+      "unit": "seconds",
+      "privacy": "measure",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.subscription.diagnostics.workspaceErrorsByCode",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/diagnostics/workspaceErrorsByCode",
+      "grain": "subscription",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c11.hostPool.vmSizes",
       "tier": "azure",
       "contract": "C11",
@@ -483,6 +626,50 @@
       "unit": "enum",
       "privacy": "public",
       "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.smbMultichannel",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/smbMultichannel",
+      "grain": "storageAccount",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.kerberosTicketEncryption",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/kerberosTicketEncryption",
+      "grain": "storageAccount",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.backupProtected",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/backupProtected",
+      "grain": "storageAccount",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.netApp.smbVolumesWithoutContinuousAvailability",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/netApp/smbVolumesWithoutContinuousAvailability",
+      "grain": "subscription",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
       "evidences": []
     },
     {
@@ -1318,6 +1505,40 @@
       "evidences": []
     },
     {
+      "id": "intake.appDelivery",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/appDelivery",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": [],
+      "aggregate": "distinct"
+    },
+    {
+      "id": "intake.appCompatibility",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/appCompatibility",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "intake.profileSolution",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/profileSolution",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": []
+    },
+    {
       "id": "intake.clientApps",
       "tier": "intake",
       "contract": "C19",
@@ -1380,6 +1601,17 @@
         "network",
         "region"
       ]
+    },
+    {
+      "id": "intake.reportedSymptoms",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/reportedSymptoms",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
     },
     {
       "id": "intake.joinType",

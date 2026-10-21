@@ -3,5 +3,5 @@ claim: ref:disk-encryption-options#encryption-at-host
 verdict: not-yet-tested
 observed: The landing zone turns encryption at host on by default and registers the subscription feature it needs, so it never uses Azure Disk Encryption. No run has measured whether it changes host performance, which the source says it doesn't.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep
 date: 2026-10-20

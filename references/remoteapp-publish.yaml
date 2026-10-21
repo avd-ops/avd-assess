@@ -1,0 +1,12 @@
+id: remoteapp-publish
+title: Publish applications with RemoteApp in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/publish-applications-stream-remoteapp
+pin: "Learn git_commit_id b05bdc349ce47830c41647baf4f5242adea5d8f7, updated_at 2026-08-31"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [app-delivery]
+claims:
+  - id: two-ways
+    says: Apps reach users as part of a full desktop or as individual RemoteApps, and a RemoteApp can be installed on the hosts or delivered by App Attach.
+    kind: published
