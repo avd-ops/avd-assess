@@ -1,0 +1,30 @@
+id: avd-required-fqdn
+title: Required FQDNs and endpoints for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/required-fqdn-endpoint
+pin: "Learn git_commit_id 05df299786103f3d5886146cf73fab142cda335a, updated_at 2026-09-22"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+notes: "The lists themselves stay on Learn: cite the claim and read the page at the pin, never copy the tables."
+claims:
+  - id: blocking-unsupported
+    says: Deployments where the listed session host FQDNs and endpoints are blocked are not supported.
+    kind: published
+  - id: host-list
+    says: Session hosts need outbound access to a published list of FQDNs, one UDP range (relayed RDP on 3478) and certificate endpoints on TCP 80; no inbound port is needed.
+    kind: published
+  - id: client-list
+    says: End-user devices need outbound access to their own published list; blocking it is not supported.
+    kind: published
+  - id: service-and-fqdn-tags
+    says: AVD has a service tag and an Azure Firewall FQDN tag, both recommended; there is no AVD IP range list, so other firewalls need a dynamic list of Azure addresses.
+    kind: published
+  - id: wildcards-required
+    says: Service traffic needs the wildcard entries; agent FQDNs can be narrowed per region from the agent's event 3701.
+    kind: published
+  - id: identity-endpoints-separate
+    says: Microsoft Entra and Microsoft 365 endpoints are not in this list and may be needed on restricted networks.
+    kind: published
+  - id: url-check-tool
+    says: The AVD Agent URL Tool checks the list from a session host.
+    kind: published

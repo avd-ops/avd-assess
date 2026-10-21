@@ -1,0 +1,17 @@
+id: default-outbound
+title: Default outbound access in Azure
+url: https://learn.microsoft.com/azure/virtual-network/ip-services/default-outbound-access
+pin: "Learn git_commit_id e8c3f40845eb970c6a231bf67fbdd8132fe63e79, updated_at 2026-09-10"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: explicit-outbound
+    says: Use an explicit outbound method (NAT Gateway, load balancer outbound rules, a public IP, or a route to an appliance) rather than default outbound access.
+    kind: published
+  - id: private-subnets-default
+    says: For API versions after 2026-03-31, new virtual networks default to private subnets, whose VMs need an explicit outbound method; existing networks are unchanged.
+    kind: published
+  - id: private-subnet-removes-ip
+    says: Only a private subnet (with the VMs deallocated) removes the default outbound IP; an explicit method alone leaves it assigned though unused.
+    kind: published

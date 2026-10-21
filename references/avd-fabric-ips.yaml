@@ -1,0 +1,20 @@
+id: avd-fabric-ips
+title: Azure fabric communication IPs (Azure Virtual Desktop)
+url: https://learn.microsoft.com/azure/virtual-desktop/azurecommunicationips
+pin: "Learn git_commit_id 9df01472230d01bf9bb36b02e508abd74e4dc029, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: two-platform-ips
+    says: Session hosts need the instance metadata address and the platform (WireServer) address; losing either breaks provisioning, health reporting and connections.
+    kind: published
+  - id: never-proxy-or-tunnel
+    says: Traffic to the two platform addresses must not be proxied, inspected, or captured by a full-tunnel VPN or secure web gateway agent; split tunnel or bypass them.
+    kind: published
+  - id: no-deny-no-route
+    says: No NSG deny rule may target the AzurePlatformIMDS or AzurePlatformDNS service tags, and no route may target the two addresses.
+    kind: published
+  - id: mostly-in-vm
+    says: Most failures come from configuration inside the VM (VPN or web gateway agents, proxy and PAC settings, host firewalls, endpoint security), which network-layer checks do not see.
+    kind: published

@@ -1,0 +1,32 @@
+id: caf-avd-network
+title: Cloud Adoption Framework, Azure Virtual Desktop network topology and connectivity
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-network-topology-and-connectivity
+pin: "Learn git_commit_id a8523e4b99048e51fff225a72041a48aea28c1dc, updated_at 2026-10-01"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: deprecated
+    says: The page is deprecated, no longer updated, and is to be removed from Learn on 2026-10-30; it points to the Architecture Center and the product docs instead.
+    kind: published
+  - id: vwan-for-transit
+    says: Virtual WAN fits when you need managed transit between VPN and ExpressRoute.
+    kind: guidance
+  - id: dns-like-iaas
+    says: "Session hosts resolve names like any IaaS workload: custom DNS or linked private DNS zones, plus zones for the PaaS private endpoints."
+    kind: guidance
+  - id: entra-joined-no-private
+    says: Entra-joined hosts reach Entra ID over its public endpoints; no private connectivity is needed for that.
+    kind: guidance
+  - id: forced-tunnel-supported
+    says: Forced tunnelling and filtering are supported when the AVD requirements are met; forcing AVD traffic through on-premises routers is not recommended.
+    kind: guidance
+  - id: nsg-on-all-subnets
+    says: Network security groups on all subnets, with flow logs and traffic analytics, give monitoring even where no filtering is enforced.
+    kind: guidance
+  - id: dr-network
+    says: Recovery needs a network with the same capabilities as the source, or at least connectivity to identity and DNS.
+    kind: guidance
+  - id: hybrid-scenarios
+    says: "Three reference scenarios: hub-spoke with hybrid connectivity, the same with managed-network Shortpath, and hub-spoke with public-network Shortpath."
+    kind: guidance

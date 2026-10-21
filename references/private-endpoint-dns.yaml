@@ -1,0 +1,11 @@
+id: private-endpoint-dns
+title: Azure private endpoint DNS configuration
+url: https://learn.microsoft.com/azure/private-link/private-endpoint-dns
+pin: "Learn git_commit_id 3e5a15284eb79de0cba78c4dc29ece41a2db44d2, updated_at 2026-08-11"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: zone-per-service
+    says: Each service has its own privatelink zone name, and clients must resolve the public name to the private address through it, by a zone linked to the network or by forwarding.
+    kind: published
