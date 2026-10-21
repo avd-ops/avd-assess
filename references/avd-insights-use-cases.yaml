@@ -21,3 +21,6 @@ claims:
   - id: input-delay-then-resources
     says: When input delay is higher than expected, look at CPU, memory and disk activity in the same periods to find the cause.
     kind: guidance
+  - id: transport-pivot
+    says: The connection reliability view groups disconnections by transport, with Multipath, Relay, ShortpathPublic and ShortpathPrivate for UDP, and NotUsed or empty for TCP.
+    kind: published

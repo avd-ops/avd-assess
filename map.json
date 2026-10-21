@@ -788,23 +788,37 @@
       "area": "performance",
       "pillar": "protocol",
       "title": "RDP transport",
-      "decides": "Whether sessions use the UDP transport (RDP Shortpath) on managed and public networks.",
+      "decides": "Whether sessions use the UDP transport (RDP Shortpath) on managed and public networks, judged against the networks the operator says users connect from.",
       "home": {
         "decision": "network",
         "facts": [
-          "c12.group.rttMsP95"
+          "c12.group.rttMsP95",
+          "proposed:c12.group.transport.udpShare",
+          "proposed:c12.group.transport.relayShare"
+        ],
+        "intake": [
+          "proposed:intake.userNetworks"
         ]
       },
       "baseline": {
         "standing": "published",
         "claims": [
           "ref:rdp-shortpath#udp-transport",
-          "ref:review-checklists-avd#F01.11"
+          "ref:rdp-shortpath#tcp-first-then-udp",
+          "ref:rdp-shortpath#stun-before-turn",
+          "ref:review-checklists-avd#F01.11",
+          "gap:transport-classification",
+          "gap:remote-protocols-scope"
         ],
-        "says": "UDP transport where the network allows it, with TCP reverse connect as the fallback."
+        "says": "UDP where the network allows it, direct before relayed, with TCP reverse connect as the fallback; each connection is judged against the operator's stated networks through the family transport map. No share target is published."
       },
+      "observations": [
+        "obs:transport-column-names-disagree",
+        "obs:symmetric-nat-egress-means-turn"
+      ],
       "measure": "measured",
-      "landingZone": []
+      "landingZone": [],
+      "note": "Needs the host pool's network data and connection categories in Log Analytics (ops.monitoring)."
     },
     {
       "id": "perf.media",
@@ -830,6 +844,232 @@
       },
       "measure": "none",
       "landingZone": []
+    },
+    {
+      "id": "protocol.shortpath-managed",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "RDP Shortpath for managed networks",
+      "decides": "Whether users on ExpressRoute or VPN get a direct UDP path, through the host listener and an inbound port or through ICE/STUN.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "proposed:c11.hostPool.udp.managedPrivate",
+          "proposed:c11.hostPool.udp.direct"
+        ],
+        "intake": [
+          "proposed:intake.userNetworks"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:configure-rdp-shortpath#four-options",
+          "ref:configure-rdp-shortpath#listener-for-managed",
+          "ref:configure-rdp-shortpath#most-restrictive-wins",
+          "ref:rdp-shortpath#first-found-wins",
+          "ref:review-checklists-avd#F01.11"
+        ],
+        "says": "Evaluate Shortpath for clients on managed networks; the listener (port 3390 by default) and an inbound allow rule are needed only for the listener option, and the most restrictive of host pool and host settings wins."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "The host listener is host policy, outside the landing zone's parameters; the host pool switches are readable only through a preview API version (protocol.shortpath-public)."
+    },
+    {
+      "id": "protocol.shortpath-public",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "RDP Shortpath for public networks (STUN and TURN)",
+      "decides": "Whether users on the internet get a direct UDP path through STUN or a relayed one through TURN (expected behind symmetric NAT egress), and whether either is turned off.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "proposed:c11.hostPool.udp.public",
+          "proposed:c11.hostPool.udp.relay",
+          "proposed:c12.group.transport.relayShare"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:configure-rdp-shortpath#defaults-enabled",
+          "ref:configure-rdp-shortpath#hostpool-switches",
+          "ref:configure-rdp-shortpath#select-transport-policy",
+          "ref:configure-rdp-shortpath#turn-public-cloud-only",
+          "ref:rdp-shortpath#stun-before-turn",
+          "ref:rdp-shortpath#turn-range",
+          "ref:rdp-shortpath#symmetric-nat-means-turn",
+          "ref:rdp-shortpath#public-network-advice",
+          "ref:rdp-shortpath#turn-maintenance-drops",
+          "ref:hostpool-api-changelog#udp-switches-preview-only",
+          "ref:troubleshoot-rdp-shortpath#nat-type-test"
+        ],
+        "says": "Both options are on by default and work with no configuration when outbound UDP is allowed; hosts behind Azure Firewall or NAT Gateway relay through TURN. Turning an option off needs a reason."
+      },
+      "observations": [
+        "obs:symmetric-nat-egress-means-turn"
+      ],
+      "measure": "measured",
+      "landingZone": [],
+      "note": "The landing zone leaves the host pool switches at Default; the networking pillars own the egress rules that decide STUN or TURN."
+    },
+    {
+      "id": "protocol.port-range",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "UDP port range for STUN and TURN",
+      "decides": "Whether hosts use the default ephemeral range or a smaller, predictable one that firewalls can name.",
+      "home": {
+        "decision": "network",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:configure-rdp-shortpath#port-range",
+          "ref:rdp-multipath#ports-per-session"
+        ],
+        "says": "The default range works; narrow it only when a firewall must name ports, and size it for up to three UDP paths per session."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "Host policy, outside the landing zone's parameters."
+    },
+    {
+      "id": "protocol.multipath",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "RDP Multipath and modern auto-reconnect",
+      "decides": "Whether sessions keep backup paths and survive short network drops, which depends on the client app and version.",
+      "home": {
+        "decision": "network",
+        "facts": [],
+        "intake": [
+          "proposed:intake.clientApps"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:rdp-multipath#automatic",
+          "ref:rdp-multipath#client-floors",
+          "ref:rdp-multipath#shortpath-first",
+          "ref:avd-auto-reconnect#needs-multipath",
+          "ref:windows-app-platforms#multipath-by-platform",
+          "ref:avd-whats-new#multipath-ga"
+        ],
+        "says": "Automatic once Shortpath works, on current Windows App for Windows; other platforms are in beta or unsupported."
+      },
+      "measure": "measured",
+      "landingZone": []
+    },
+    {
+      "id": "protocol.private-link-udp",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "UDP over Private Link",
+      "decides": "Whether sessions that use Private Link can still use UDP.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "proposed:c11.hostPool.udp.privateLink",
+          "c11.network.privateEndpoints"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:hostpool-api-changelog#private-link-udp-preview-only",
+          "ref:configure-rdp-shortpath#hostpool-switches"
+        ],
+        "says": "UDP over Private Link is a separate host pool opt-in, off unless set and readable only through a preview API version; its conditions are claims in the networking pillar's Private Link reference."
+      },
+      "measure": "rebuild",
+      "landingZone": [
+        "enableAvdPrivateLink"
+      ]
+    },
+    {
+      "id": "protocol.qos",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "QoS marking and throttle rate",
+      "decides": "Whether RDP traffic on managed networks is marked for priority (DSCP) or capped per session.",
+      "home": {
+        "decision": "network",
+        "facts": [],
+        "intake": [
+          "proposed:intake.userNetworks"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:rdp-qos#managed-udp-only",
+          "ref:rdp-qos#dscp-46",
+          "ref:rdp-qos#qos-before-bandwidth",
+          "ref:rdp-shortpath#managed-qos-and-throttle",
+          "ref:rdp-bandwidth#throttle-managed-only"
+        ],
+        "says": "Only on managed-network Shortpath; DSCP 46 applied end to end, QoS before more bandwidth, and no throttle unless the network is constrained or metered."
+      },
+      "measure": "none",
+      "landingZone": []
+    },
+    {
+      "id": "protocol.graphics-encoding",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "Graphics encoding and codecs",
+      "decides": "Software or hardware encoding, AVC 444, HEVC and chroma, set by host policy against the host's GPU and the client's decoder.",
+      "home": {
+        "decision": "hostPool.vmSize",
+        "facts": [
+          "c11.hostPool.vmSizes"
+        ],
+        "intake": [
+          "proposed:intake.graphicsWorkloads"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:graphics-encoding#software-default",
+          "ref:graphics-encoding#codecs",
+          "ref:avd-gpu-acceleration#cpu-by-default",
+          "ref:avd-gpu-acceleration#avc444-needs-hw-encoding",
+          "ref:avd-gpu-acceleration#hevc-prerequisites",
+          "ref:avd-gpu-acceleration#verify-by-event",
+          "ref:graphics-chroma-444#only-support-verifies"
+        ],
+        "says": "CPU encoding by default; AVC 444 only with hardware encoding on, HEVC only on GPU desktops without multimedia redirection; verify with host events, not assumption."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "Host policy; graphics.gpu-need and graphics.gpu-size decide the hardware."
+    },
+    {
+      "id": "protocol.session-limits",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "Session time limits and lock behavior",
+      "decides": "When disconnected sessions are signed out and whether a lock disconnects the session or shows the remote lock screen.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:autoscale-faq#disconnected-time-limit",
+          "ref:session-lock-behavior#disconnect-on-lock-sso"
+        ],
+        "says": "Sign out disconnected sessions after 15 to 30 minutes where pools scale to zero; with Entra single sign-on, disconnect on lock so Conditional Access is evaluated again."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "Host policy, outside the landing zone's parameters."
     },
     {
       "id": "perf.accelerated-networking",

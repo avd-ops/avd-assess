@@ -126,6 +126,8 @@ claims:
     says: Review and apply Zero Trust principles (Security, medium).
   - id: H04.02
     says: Configure the recommended antivirus exclusions for FSLogix (Security, medium).
+  - id: C02.05
+    says: Assess and document the RDP settings for every user group (Security, low).
   - id: F01.01
     says: Decide whether host pools need hybrid connectivity to on-premises (Reliability, medium).
   - id: F01.02

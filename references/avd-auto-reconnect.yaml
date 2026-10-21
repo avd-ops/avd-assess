@@ -1,0 +1,11 @@
+id: avd-auto-reconnect
+title: Modern auto-reconnect in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/fast-reconnect
+pin: "Learn git_commit_id 16483e1e2513184e799e332b3ca712e3110d4ca4, updated_at 2026-08-13"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: needs-multipath
+    says: Modern auto-reconnect pauses the session during a network interruption and resumes it; it needs Multipath and Windows App for Windows 2.0 from build 1314, and is rolling out in phases.
+    kind: published

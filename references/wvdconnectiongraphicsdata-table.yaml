@@ -1,0 +1,11 @@
+id: wvdconnectiongraphicsdata-table
+title: WVDConnectionGraphicsDataPreview table reference
+url: https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdconnectiongraphicsdatapreview
+pin: "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, benchmarks]
+claims:
+  - id: frame-drops-by-cause
+    says: Graphics data reports end-to-end frame delay and the share of frames dropped because of the network, the client or the server, for the worst frame of each interval.
+    kind: published

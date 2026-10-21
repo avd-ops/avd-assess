@@ -2,10 +2,34 @@ id: rdp-shortpath
 title: RDP Shortpath for Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/rdp-shortpath
 pin: "Learn git_commit_id 41dcc5bdc9210cae5b9151f9851568b917ad77db, updated_at 2026-09-15"
-read: 2026-10-20
+read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:
   - id: udp-transport
     says: RDP Shortpath sets up a UDP transport between client and host, with more reliable connections and more consistent latency; TCP reverse connect stays the fallback.
+    kind: published
+  - id: tcp-first-then-udp
+    says: Every connection starts on TCP reverse connect through the gateway, then tries UDP in parallel; if UDP succeeds the TCP connection is dropped, otherwise TCP stays.
+    kind: published
+  - id: stun-before-turn
+    says: On public networks a direct STUN connection is tried first and a TURN relay second; ICE coordinates them and the fastest working path is kept.
+    kind: published
+  - id: first-found-wins
+    says: When both managed and public options can connect, whichever is established first is used for the session.
+    kind: published
+  - id: turn-range
+    says: TURN relays use one dedicated Microsoft address range, listed on the page, on UDP 3478 in the public cloud, chosen by the client's location; a client far from a relay may fall back to TCP.
+    kind: published
+  - id: symmetric-nat-means-turn
+    says: Azure Firewall and Azure NAT Gateway egress give symmetric NAT, so public-network Shortpath from such hosts uses a TURN relay.
+    kind: published
+  - id: public-network-advice
+    says: For public-network Shortpath avoid forced tunneling, double or carrier-grade NAT, cloud packet inspection and TCP-based VPNs, and allow outbound UDP from the hosts.
+    kind: guidance
+  - id: managed-qos-and-throttle
+    says: Only Shortpath for managed networks supports QoS marking (DSCP) and a per-session throttle rate.
+    kind: published
+  - id: turn-maintenance-drops
+    says: TURN connections can drop during relay updates; the client reconnects within seconds.
     kind: published

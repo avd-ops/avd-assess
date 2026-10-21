@@ -1,0 +1,15 @@
+id: windows-app-platforms
+title: Compare Windows App features across platforms and devices
+url: https://learn.microsoft.com/windows-app/compare-platforms-features
+pin: "Learn git_commit_id 4d3ffbf8caade302209f2c408b818484b73cf312, updated_at 2026-10-15"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+notes: P10 (endpoints and clients) cites this reference for client features beyond transport.
+claims:
+  - id: shortpath-by-platform
+    says: Shortpath for managed networks works on Windows, macOS, iOS, Android and Meta Quest clients; public-network STUN and TURN on Windows, Android and Meta Quest, and macOS in beta; the web browser client supports neither.
+    kind: published
+  - id: multipath-by-platform
+    says: Multipath with UDP is on Windows (macOS in beta); Multipath with UDP and TCP is on Windows only.
+    kind: published
