@@ -1,0 +1,15 @@
+id: anf-ad-connections
+title: Create and manage Active Directory connections for Azure NetApp Files
+url: https://learn.microsoft.com/azure/azure-netapp-files/create-active-directory-connections
+pin: "Learn git_commit_id 273bab81571d488f4a5f0ad079e22177dd4c9b10, updated_at 2026-09-29"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [profiles]
+claims:
+  - id: site-name-required
+    says: The AD site name is required and is how Azure NetApp Files finds domain controllers; the default is Default-First-Site-Name.
+    kind: published
+  - id: aes-256-for-2025-dcs
+    says: AES-256 encryption is required on the connection if the domain uses Windows Server 2025 domain controllers.
+    kind: published

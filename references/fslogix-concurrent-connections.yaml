@@ -1,0 +1,18 @@
+id: fslogix-concurrent-connections
+title: FSLogix concurrent and multiple connections
+url: https://learn.microsoft.com/fslogix/concepts-multi-concurrent-connections
+pin: "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [profiles]
+claims:
+  - id: concurrent-not-in-avd
+    says: Concurrent connections (two sessions on one computer with one container) aren't supported on Azure Virtual Desktop session hosts.
+    kind: published
+  - id: onedrive-never
+    says: OneDrive doesn't support concurrent or multiple connections to the same container.
+    kind: published
+  - id: multiple-needs-differencing
+    says: Multiple connections (sessions on different computers) need differencing disks and ProfileType 3.
+    kind: published

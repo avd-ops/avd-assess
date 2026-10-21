@@ -1,0 +1,31 @@
+id: compute-gallery
+title: Store and share resources in an Azure Compute Gallery
+url: https://learn.microsoft.com/azure/virtual-machines/azure-compute-gallery
+pin: "Learn git_commit_id 40aaa64a2771acda033ca09289e1e777241f201e, updated_at 2026-06-24"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [images, reliability]
+notes: The checklist's link for B01.04 (the old shared-image-galleries URL redirects here).
+claims:
+  - id: versioning-and-replication
+    says: A gallery versions images and replicates each version to the regions chosen for it.
+    kind: published
+  - id: not-global
+    says: A gallery isn't a global resource; for disaster recovery keep at least two galleries in separate regions.
+    kind: guidance
+  - id: replica-per-20-vms
+    says: Keep one replica per 20 VMs created at the same time, and one per scale set created at the same time; overprovision rather than under.
+    kind: guidance
+  - id: zrs-in-zone-regions
+    says: Replicas default to Standard LRS; Standard ZRS is available in regions with availability zones and survives a zone failure.
+    kind: published
+  - id: replicate-latest-only
+    says: Replicating only the latest version to every region, and keeping older versions in one, saves storage cost.
+    kind: guidance
+  - id: replication-takes-time
+    says: Replication can take hours, and a version can be deployed in a region only once its replication there completes.
+    kind: published
+  - id: limits
+    says: At most 10,000 image versions per subscription per region and 100 replicas per version.
+    kind: published

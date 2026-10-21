@@ -1,0 +1,22 @@
+id: accelerated-networking
+title: Accelerated Networking overview
+url: https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview
+pin: "Learn git_commit_id 12abaa80882d937c25bddcc8a9793b357e9551ee, updated_at 2026-09-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [capacity]
+notes: The checklist's link for C01.13.
+claims:
+  - id: lower-latency-jitter-cpu
+    says: Accelerated Networking bypasses the host's virtual switch, lowering latency, jitter and CPU use on the VM that has it.
+    kind: published
+  - id: supported-sizes
+    says: Most general-purpose and compute-optimized sizes with two or more vCPUs support it, or four or more where the size has hyperthreading.
+    kind: published
+  - id: not-nc-nv
+    says: NC and NV sizes don't support it, and enabling it on them has no effect.
+    kind: published
+  - id: deallocated-to-enable
+    says: It can be turned on only while the VM is stopped and deallocated.
+    kind: published
