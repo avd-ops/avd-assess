@@ -4,7 +4,7 @@ Part of [avd-ops](https://avd-ops.dev/), the open toolkit for Azure Virtual Desk
 
 An open, curated methodology for assessing Azure Virtual Desktop estates: what to collect, how to judge it, what good looks like, and how to score it. It is a research index. It links to what Microsoft and the community already publish, pinned so a reader can see exactly what each source said on the day we read it. It adds what our own runs observed about those sources, and it writes new method only where nothing exists.
 
-Where it sits in the family: [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/avd-ops/avd-current-state) is what is there now, and avd-assess is what it should be, and why: the standards both engines read. It also holds the [foundation contracts](contracts/README.md), the formats those three repos exchange, which work the same with or without the layers above them.
+Where it sits in the family: [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/avd-ops/avd-current-state) is what is there now, and avd-assess is what it should be, and why: the map and the dictionary both engines read, from the standards to the endpoint map. It also holds the [foundation contracts](contracts/README.md), the formats those three repos exchange, which work the same with or without the layers above them.
 
 > [!WARNING]
 > **Personal project. Research and learning only. Not for production. No warranty.**
@@ -30,6 +30,7 @@ Where it sits in the family: [avd-landing-zone](https://github.com/avd-ops/avd-l
 | [FinOps](methods/finops.md) | How to judge what an estate costs against Microsoft's and the FinOps Framework's guidance, and which repo holds which part |
 | [Security](methods/security.md) | How to judge an estate's security against Microsoft's AVD guidance, and which repo holds which part |
 | [Remote protocol and session](methods/remote-protocols.md) | How sessions reach their hosts: RDP transport, Shortpath and Multipath, judged against the networks users connect from, plus the session settings that ride on it |
+| [Intune and host management](methods/intune.md) | How hosts and client devices are managed: Intune enrollment, settings, baselines, compliance, apps and updates on multi-session, against Group Policy where an estate keeps it |
 | [Troubleshooting and diagnostics](methods/diagnostics.md) | Which source answers which symptom, the triage flow per symptom, the error-code map, and the diagnostic facts proposed for the collector |
 | [Network](methods/network.md) | How to judge an estate's network, Azure side and client side (AVD Private Link on both), and what can be measured from outside |
 | [Reliability](methods/reliability.md) | How to judge zones, backup, continuity and disaster recovery against the workload's own targets, and why only a test proves recovery |
@@ -48,11 +49,19 @@ The [gold-standard registry](gold-standards.yaml) names, for each metric, the cl
 
 Beyond the methods, this repo holds the **map**: one row for every detail an AVD estate is built and assessed by, in [dimensions.yaml](dimensions.yaml), each in one pillar of [pillars.yaml](pillars.yaml). A row says what the detail decides, which pinned upstream claims (or which gap page) say what good is, the facts that measure it, the checks that judge it and the landing zone parameters that set it. It is not a shadow source: where a source exists the row links to it and restates nothing. [map.json](map.json) is the same map as JSON (contract C20, `avd-assess-map/v1`) with the [baselines](baselines.yaml), the [use case library](use-cases.yaml) and the [gold-standard registry](gold-standards.yaml), for readers such as the standards library. The [security review map](security-review.yaml) (`security-review.json`, `avd-assess-security-review/v1`) indexes what a security reviewer needs to approve deploying AVD with the family: what each repo does, the pinned file that does or proves it, how strong that evidence is, what the operator still owns and the gaps ([how it is read](methods/security.md#reviewing-a-deployment)). A pillar's status in `pillars.yaml` says whether its rows exist yet; the weekly [pins workflow](.github/workflows/pins.yml) reports which checklist items and landing zone parameters still have no row, and which pins have moved.
 
+## The endpoint map
+
+[endpoints.yaml](endpoints.yaml) lists the AVD endpoints the family's tools probe or report as not tested: one row per endpoint, each citing the pinned Learn claim that lists it, with where a probe of it means something (a browser on the user's device, a native tool on the device, or a session host), whether a failure moves a tool's verdict, and the service tag in place of any address. [endpoints.json](endpoints.json) is the same map as JSON (contract C20, `avd-assess-endpoints/v1`) with a view per vantage: the rows it may probe and the rows it must report as not tested. avd-current-state's endpoint check and avd-linecheck's AVD pack read it at a pinned commit. Microsoft's page stays the source of truth; why the map exists and how readers use it is in [gaps/endpoint-map.md](gaps/endpoint-map.md).
+
 ## What this repo is not
 
-- **No tools.** Nothing here touches Azure. [avd-current-state](https://github.com/avd-ops/avd-current-state) implements the collection and assessment methods, and [avd-second-brain](https://github.com/avd-ops/avd-second-brain) cites them. Both read a pinned copy.
+- **No tools.** Nothing here touches Azure or runs a probe; the [endpoint map](#the-endpoint-map) is data that tools read. [avd-current-state](https://github.com/avd-ops/avd-current-state) implements the collection and assessment methods, and [avd-second-brain](https://github.com/avd-ops/avd-second-brain) cites them. Both read a pinned copy.
 - **No copied guidance.** Microsoft's pages, checklists and tools stay the source of truth. When our observation disagrees with a source, we record it here and offer it back upstream.
 - **No estate data.** Observations link to public lessons, run records and knowledge base pages. No tenant, customer, user or machine data goes into this repo.
+
+## Releases
+
+The map ships as a versioned bundle: the JSON documents, their schemas, the method and gap pages, a [Data Package](https://datapackage.org/) manifest (`datapackage.json`) with a SHA-256 per file, and two small verifiers (`tools/avd_assess_bundle.py`, standard library Python; `tools/AvdAssessBundle.psm1`, Windows PowerShell 5.1 and PowerShell 7). Releases are immutable and attested; every file is byte-identical to git at the tagged commit. Check a download with `gh attestation verify <file> -R avd-ops/avd-assess`, then pin the SHA-256 of `datapackage.json`. How it works, and how versions are numbered: [docs/distribution-spec.md](docs/distribution-spec.md).
 
 ## How to cite
 

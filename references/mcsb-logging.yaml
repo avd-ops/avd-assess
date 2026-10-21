@@ -1,0 +1,12 @@
+id: mcsb-logging
+title: "Microsoft cloud security benchmark: logging and threat detection"
+url: https://learn.microsoft.com/security/benchmark/azure/mcsb-logging-threat-detection
+pin: "Learn git_commit_id dc8d056f2487bbfeb72088cc6c320dc82f5e3198, updated_at 2026-02-03"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [governance]
+claims:
+  - id: LT-6
+    says: Set log retention by compliance, regulation and business need; Activity logs last 90 days unless routed elsewhere by a diagnostic setting.
+    kind: guidance

@@ -1,0 +1,18 @@
+id: windows-app-device-compliance
+title: Require local client device security compliance with Intune and Conditional Access for Windows App
+url: https://learn.microsoft.com/windows-app/require-device-security-compliance-intune
+pin: "Learn git_commit_id c09348fcde75580f3bd615935b370033eb6065c4, updated_at 2026-04-27"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [endpoints, intune]
+claims:
+  - id: app-protection-for-clients
+    says: Intune app protection policies with Conditional Access can require that the client device meets security conditions before connecting to AVD, on iOS and iPadOS and Android (managed or unmanaged) and in Edge on Windows (unmanaged only); ChromeOS isn't covered.
+    kind: published
+  - id: redirection-needs-compliance
+    says: Managing local device redirection (camera, microphone, storage, clipboard) from Intune on iOS and Android requires client device security compliance first.
+    kind: published
+  - id: filters-managed-unmanaged
+    says: Assignment filters let different requirements apply to managed and unmanaged client devices; without a filter the same requirements apply to both.
+    kind: published

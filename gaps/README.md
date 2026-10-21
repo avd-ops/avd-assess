@@ -28,13 +28,18 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [transport-classification](transport-classification.md) | One family name for the transport a connection used, mapped to the three vocabularies Microsoft uses |
 | [diagnostics-scope](diagnostics-scope.md) | Which diagnostic source answers which symptom, who can read it, tools as categories, and the facts proposed for the collector |
 | [error-code-map](error-code-map.md) | One map from the code an operator sees to the claim that explains it and the triage flow that handles it |
+| [endpoint-map](endpoint-map.md) | One map of AVD endpoints that every family probe reads: where a probe means something, and which failures move a verdict |
 | [triage-cannot-connect](triage-cannot-connect.md) | Triage when a user can't sign in, sees no resources or can't connect |
 | [triage-host-unhealthy](triage-host-unhealthy.md) | Triage when a session host isn't Available |
 | [triage-slow-logon](triage-slow-logon.md) | Triage when sign-in to a session is slow, by stage |
 | [triage-slow-session](triage-slow-session.md) | Triage when a session is slow or disconnects: network, host or client |
 | [triage-profile-failed](triage-profile-failed.md) | Triage when a user profile fails to load |
 | [network-scope](network-scope.md) | What a network assessment can judge, from which evidence, the draft network checks, and which repo does what |
+| [intune-scope](intune-scope.md) | What an Intune and host management assessment can judge from where, how devices map to pools, and what is not applicable on multi-session |
+| [monitoring-scope](monitoring-scope.md) | The facts, draft checks and intake questions for monitoring, alerts, retention, scaling plans and power, and how to judge ramp-up timing and the first-connection wait |
 | [client-network](client-network.md) | Judging the networks users connect from, AVD Private Link from the client included |
+| [endpoints-scope](endpoints-scope.md) | What an endpoints and clients assessment can judge, from which evidence, the client support map and the proposed intake questions |
+| [governance-scope](governance-scope.md) | What a governance assessment can judge, the policy guardrail checks, the benchmark control map and the proposed intake questions |
 | [workload-benchmark](workload-benchmark.md) | How a pilot or a scripted load test is run so its result can replace the sizing guide's estimates |
 | [app-delivery-scope](app-delivery-scope.md) | What an app delivery and profile assessment can judge from where, the ways apps reach a host, and the joins the facts can't make yet |
 | [security-agents-scope](security-agents-scope.md) | Antivirus, EDR and SSE, ZTNA and VPN clients as categories: what is judged from where, outcomes, and what no source covers |

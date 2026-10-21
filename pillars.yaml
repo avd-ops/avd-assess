@@ -43,7 +43,7 @@ pillars:
     title: Identity, authentication and access
     scope: Identity scenario and join type, Kerberos for file shares, single sign-on and passwordless, multifactor and Conditional Access for sign-in, device compliance, RBAC and app group assignment, admin tiers, account and sync policies.
     checklist: [D01, D02, D03, G01.01, G04.01]
-    status: missing
+    status: mapped
   - id: networking-azure
     title: "Networking: Azure side"
     scope: Virtual networks and subnets, DNS and private zones, egress, firewall and NVA, Private Link, service tags, required endpoints, admin access paths, connectivity options, preflight connectivity checks.
@@ -63,7 +63,7 @@ pillars:
     title: Endpoints and clients
     scope: Client apps per OS, client OS versions, thin clients and kiosks, managed against unmanaged devices (the management itself is the intune pillar), peripherals, printing, multi-monitor and resolution.
     checklist: [C02.03, C02.05, G02.06]
-    status: missing
+    status: mapped
   - id: ux-measurement
     title: End-user experience measurement
     scope: Round trip, input delay, time to connect, logon and app load; the sample check, baseline profiles and the tuning loop; Insights as the measure.
@@ -85,15 +85,15 @@ pillars:
     title: Governance, policy and compliance
     scope: Azure Policy guardrails, allowed locations and sizes, tagging and naming, audit logging and retention, benchmark control mapping, compliance frameworks as mappings, change control, tenant and subscription prerequisites. Host configuration delivery is the intune pillar.
     checklist: [E01.01, E01.02, G03.05, G03.06, C03, D03.01]
-    status: missing
+    status: mapped
   - id: monitoring
     title: Monitoring and operations
-    scope: Insights wiring, alerts, workbooks, log retention, agent and token health, day-2 runbooks, capacity reviews and cadence.
-    checklist: [E01, E02]
-    status: partial
+    scope: Insights wiring, alerts and who receives them, Service Health, workbooks, log retention, the monitoring cost signal, Advisor reviews, the deployment strategy, agent and token health, day-2 runbooks, capacity reviews and cadence.
+    checklist: [E01.08, E01.12, E02]
+    status: mapped
   - id: scaling
     title: Scaling and power
-    scope: Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing, personal pool deallocation.
+    scope: Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing and the first-connection wait, ramp-down and disconnected sessions, personal pool deallocation, autoscale logs.
     checklist: [E01.04, E01.05]
     status: mapped
   - id: finops
@@ -128,5 +128,6 @@ pillars:
   - id: intune
     title: Intune and host management
     scope: Microsoft Intune for session hosts and client devices as the owner asked (2026-10-21), against Group Policy where an estate keeps it; enrollment of multi-session and Entra-joined hosts, configuration profiles and the settings catalog, security baselines for session hosts, compliance policies for hosts and for the client devices Conditional Access checks, app deployment to hosts, update rings and Autopatch against image-based servicing, remote actions and reporting.
-    checklist: [E01.03]
-    status: partial
+    method: methods/intune.md
+    checklist: [E01.03, E01.09, D01.03, D01.04]
+    status: mapped

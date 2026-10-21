@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/nickprignano/avd-assess/evidence/schema.json",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-assess-evidence/v1.json",
   "title": "avd-assess-evidence/v1",
   "description": "One evidence submission for the baselines: aggregates from one host pool class over one window, compared with the claims in the gold-standard registry. No names, IDs, exact estate sizes, regions, dates of the window or free text beyond a short note. Every object is closed (additionalProperties false), so there is nowhere to put anything else. Checked by scripts/check_evidence.py (gap:evidence-intake).",
   "type": "object",

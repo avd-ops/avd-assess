@@ -1,0 +1,84 @@
+{
+  "description": "Shared verifier fixtures; written by make_fixtures.py. expect is PASS (no FAIL) or the id of the first FAIL.",
+  "cases": [
+    {
+      "case": "good",
+      "expect": "PASS",
+      "why": "a whole bundle: every check passes"
+    },
+    {
+      "case": "good",
+      "expect": "manifest-pin",
+      "why": "the manifest's SHA-256 is not the pin",
+      "args": {
+        "manifestSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    {
+      "case": "good",
+      "expect": "PASS",
+      "why": "the pin matches",
+      "args": {
+        "manifestSha256": "fabbfb16c917da429459a039f32c990abf0c6aa4765ab01d935231206f671bce"
+      }
+    },
+    {
+      "case": "changed-byte",
+      "expect": "resource-hash",
+      "why": "one byte of map.json changed, same size"
+    },
+    {
+      "case": "missing-file",
+      "expect": "resource-hash",
+      "why": "notes.md is in the manifest but not on disk"
+    },
+    {
+      "case": "bad-hash",
+      "expect": "manifest-profile",
+      "why": "a resource hash is not sha256:<64 hex>"
+    },
+    {
+      "case": "dotdot",
+      "expect": "manifest-profile",
+      "why": "a resource path climbs out of the bundle"
+    },
+    {
+      "case": "schema-unlisted",
+      "expect": "manifest-profile",
+      "why": "a document names a schema file the manifest doesn't hash"
+    },
+    {
+      "case": "unknown-major",
+      "expect": "resource-schema-string",
+      "why": "map.json is avd-assess-map/v2, a major the reader doesn't know"
+    },
+    {
+      "case": "schema-invalid",
+      "expect": "resource-schema",
+      "why": "a pillar id is a number; the schema wants a string"
+    },
+    {
+      "case": "path-map",
+      "expect": "PASS",
+      "why": "a subset in the consumer's layout, through a path map",
+      "args": {
+        "manifest": "vendor/datapackage.json",
+        "pathMap": {
+          "map.json": "vendor/assess-map.json",
+          "schemas/map.schema.json": "vendor/map.schema.json"
+        }
+      }
+    },
+    {
+      "case": "path-map",
+      "expect": "resource-wanted",
+      "why": "the path map names a file the manifest doesn't list",
+      "args": {
+        "manifest": "vendor/datapackage.json",
+        "pathMap": {
+          "other.json": "vendor/assess-map.json"
+        }
+      }
+    }
+  ]
+}

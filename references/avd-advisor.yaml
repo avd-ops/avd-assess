@@ -1,0 +1,22 @@
+id: avd-advisor
+title: How to resolve Azure Advisor recommendations for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/azure-advisor-recommendations
+pin: "Learn git_commit_id 6d2a9179f453f9b31c9795e5c9e84e5c13b1099a, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [monitoring]
+notes: The checklist's link for E01.08. Advisor's cost results are cited by the FinOps method (ref:advisor-cost); this page lists the AVD operational ones.
+claims:
+  - id: validation-pool
+    says: Advisor flags a subscription with no host pool in a validation environment.
+    kind: published
+  - id: production-majority
+    says: Advisor flags a subscription where half or more of the host pools are validation pools, or none is production.
+    kind: published
+  - id: required-urls
+    says: Advisor flags session hosts that can't reach the required URLs.
+    kind: published
+  - id: twice-a-day
+    says: Advisor refreshes twice a day, so a fixed setting clears from its list with a delay; letting it clear on its own is preferred to dismissing it.
+    kind: guidance

@@ -40,7 +40,7 @@ landingZone:
     avdServicePrincipalObjectId: The service's own identity in the tenant; fixed, not chosen.
     localAdminUsername: Break-glass account name; the security method covers local admin rights.
     localAdminPassword: A secret, recreated on every rebuild and never carried.
-    alertEmailAddresses: Contact data, kept out of shared facts; monitoring itself is ops.monitoring.
+    alertEmailAddresses: Contact data, kept out of shared facts; whether alerts have receivers is ops.alerts.
 
 dimensions:
   # Compute and density
@@ -608,7 +608,7 @@ dimensions:
     pillar: protocol
     title: RDP Multipath and modern auto-reconnect
     decides: Whether sessions keep backup paths and survive short network drops, which depends on the client app and version.
-    home: {decision: network, facts: [], intake: [intake.clientApps]}
+    home: {decision: network, facts: [c12.group.clients.byType, c12.group.clients.byVersion], intake: [intake.clientApps]}
     baseline:
       standing: published
       claims: [ref:rdp-multipath#automatic, ref:rdp-multipath#client-floors, ref:rdp-multipath#shortpath-first, ref:avd-auto-reconnect#needs-multipath, ref:windows-app-platforms#multipath-by-platform, ref:avd-whats-new#multipath-ga]
@@ -711,7 +711,7 @@ dimensions:
     home: {decision: region, facts: [c12.group.rttMsP95], intake: [intake.userNetworks]}
     baseline:
       standing: published
-      claims: [ref:avd-required-fqdn#client-list, ref:avd-prerequisites#rtt-under-150, ref:avd-proxy#client-proxy-support, ref:avd-proxy#same-geography, ref:thin-clients#reproduce-on-windows-app, ref:review-checklists-avd#C02.04]
+      claims: [ref:avd-required-fqdn#client-list, ref:avd-prerequisites#rtt-under-150, ref:avd-proxy#client-proxy-support, ref:avd-proxy#same-geography, ref:thin-clients#reproduce-on-windows-app, ref:review-checklists-avd#C02.04, gap:endpoint-map]
       says: The published client endpoints allowed from every user network, proxies bypassed or close to the region, round trip under 150 ms.
     observations: [obs:region-latency-from-the-user]
     measure: intake
@@ -790,6 +790,220 @@ dimensions:
       says: The onboarding script runs at first boot from the image, the image is never onboarded, one entry per host; multi-session hosts licensed through the server plan or per user. Third-party EDR products follow their vendor's VDI guide, read by the reviewer.
     measure: none
     landingZone: []
+  # Identity, authentication and access (pillar identity, gap:identity-scope). Most of it lives in the
+  # tenant's directory, which a Reader-only run can't see: those rows are measure directory and carry
+  # proposed: facts until a directory read exists. The landing zone takes one path (Entra joined hosts,
+  # cloud-only users, Entra Kerberos; its decision 0001), so most rows set no parameter.
+  - id: identity.scenario
+    area: identity
+    pillar: identity
+    title: Identity scenario and session host join type
+    decides: Which of the supported identity scenarios the estate uses, and whether hosts are Entra joined, hybrid joined, or joined to AD DS or Entra Domain Services.
+    home: {decision: identity, facts: [c11.hostPool.sessionHosts.entraJoined, c11.hostPool.sessionHosts.domainJoined], intake: [intake.identityConstraints, intake.joinType, intake.userIdentitySource]}
+    baseline:
+      standing: published
+      claims: [ref:avd-prerequisites#identity-scenarios, ref:avd-authentication#one-identity, ref:avd-authentication#no-ad-only-identities, ref:avd-authentication#cloud-only-entra-joined, ref:avd-entra-joined-hosts#one-join-type-per-pool, ref:review-checklists-avd#D03.02, ref:review-checklists-avd#D03.03, ref:review-checklists-avd#D03.05]
+      says: One of the six supported scenarios, documented; the same Entra identity signs in to the service and to Windows; one join type per host pool.
+    measure: intake
+    landingZone: []
+    note: The landing zone fixes Entra join with cloud-only users (its decision 0001). Join type is readable from each VM's join extension; measure becomes fact once the specified join counts are built.
+  - id: identity.tenant
+    area: identity
+    pillar: identity
+    title: Entra tenant and linked subscription
+    decides: Which Entra tenant holds the users and hosts, with a subscription linked to it.
+    home: {decision: identity, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#D03.01, ref:avd-prerequisites#hybrid-sync]
+      says: One Entra tenant with at least one linked subscription; the users must be in that tenant, and personal Microsoft accounts aren't supported.
+    measure: none
+    landingZone: []
+    note: A precondition of any run; a C11 snapshot exists only if it holds.
+  - id: identity.directory-sync
+    area: identity
+    pillar: identity
+    title: Directory sync and hybrid identities
+    decides: Whether and how AD DS users reach Entra ID, and whether their UPN or SID match.
+    home: {decision: identity, facts: [proposed:c11.directory.syncEnabled], intake: [intake.identityConstraints, intake.userIdentitySource]}
+    baseline:
+      standing: published
+      claims: [ref:avd-prerequisites#hybrid-sync, ref:avd-authentication#upn-or-sid-match, ref:caf-avd-identity#entra-ds-limits, ref:review-checklists-avd#D01.08]
+      says: Sync AD DS to Entra ID with Entra Connect (one way and automatic for Entra Domain Services, which also needs password hash sync); the UPN or the SID must match.
+    measure: directory
+    landingZone: []
+    note: Outside the landing zone, which has no AD DS.
+  - id: identity.domain-services
+    area: identity
+    pillar: identity
+    title: Domain controllers or Entra Domain Services
+    decides: Where AD DS or Entra Domain Services runs for hosts that join a domain, and how resilient it is.
+    home: {decision: identity, facts: [], intake: [intake.identityConstraints]}
+    baseline:
+      standing: published
+      claims: [ref:adds-in-azure#two-dcs-across-zones, ref:adds-in-azure#persistent-os-disk, ref:entra-ds-compare#managed-subset, ref:entra-ds-compare#self-managed-models, ref:caf-avd-identity#entra-ds-limits, ref:review-checklists-avd#D01.01, ref:review-checklists-avd#D03.06]
+      says: At least two domain controllers in Azure across zones on persistent disks; Entra Domain Services only after checking its limits (no domain admins, no hybrid join).
+    measure: intake
+    landingZone: []
+    note: Not applicable to Entra joined hosts with cloud-only users, the landing zone's path.
+  - id: identity.domain-join-account
+    area: identity
+    pillar: identity
+    title: Domain join account
+    decides: Which account joins hosts to the domain, and with what rights.
+    home: {decision: identity, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:avd-prerequisites#join-account, ref:caf-avd-identity#non-interactive-join-account, ref:review-checklists-avd#D01.05]
+      says: A dedicated account allowed only to join computers, with no MFA or interactive prompt; for Entra Domain Services, a member of its DC administrators group.
+    measure: none
+    landingZone: []
+    note: Entra join needs no join account, so the landing zone has none; a domain-joined estate keeps it outside every collector.
+  - id: identity.ou-and-group-policy
+    area: identity
+    pillar: identity
+    title: OUs and domain Group Policy for session hosts
+    decides: Which OU each host pool's hosts land in and which domain GPOs reach them.
+    home: {decision: identity, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:caf-avd-identity#ou-per-host-pool, ref:avd-prerequisites#ou-at-deploy, ref:fslogix-gpo-templates#admx-templates, ref:review-checklists-avd#D01.02, ref:review-checklists-avd#D01.03, ref:review-checklists-avd#D01.04]
+      says: One OU per host pool, the domain GPOs that reach it reviewed, and FSLogix set through its ADMX template where Group Policy configures hosts.
+    measure: host-side
+    landingZone: []
+    note: Only for domain-joined hosts. Intune against Group Policy is the intune pillar's ops.config-management.
+  - id: identity.sso
+    area: identity
+    pillar: identity
+    title: Single sign-on to session hosts
+    decides: Whether users sign in to Windows with Entra single sign-on, AD FS single sign-on or a credential prompt.
+    home: {decision: identity, facts: [c11.hostPool.entraSso, proposed:c11.directory.rdpEntraAuthEnabled, proposed:c11.directory.ssoTrustedDeviceGroups], intake: [intake.sso]}
+    baseline:
+      standing: published
+      claims: [ref:avd-authentication#sso-recommended, ref:avd-sso#join-types, ref:avd-sso#two-way-trust, ref:avd-sso#tenant-rdp-enabled, ref:avd-sso#consent-prompt, ref:avd-sso#kerberos-server-object, ref:avd-sso#host-pool-property, ref:review-checklists-avd#D03.04]
+      says: Entra single sign-on on Entra joined or hybrid joined hosts, with the host pool property on, the tenant setting on, hosts in a trusted device group, and a Kerberos server object where domain controllers exist.
+    measure: directory
+    landingZone: [rdpProperties]
+    note: The host pool half is an RDP property (control plane); the tenant half is on the Windows Cloud Login service principal (directory read).
+  - id: identity.mfa-conditional-access
+    area: identity
+    pillar: identity
+    title: MFA and Conditional Access for AVD sign-in
+    decides: Which Conditional Access policies require MFA for the AVD service and for session host sign-in, and what they exclude.
+    home: {decision: proposed:identity.signInPolicy, facts: [proposed:c11.directory.avdMfaPolicy, proposed:c11.directory.cloudLoginMfaPolicy, proposed:c11.directory.perUserMfaUsers, proposed:c11.directory.securityDefaults], intake: [intake.avdMfa, intake.mfaScope]}
+    baseline:
+      standing: published
+      claims: [ref:avd-mfa-conditional-access#licensing, ref:avd-mfa-conditional-access#target-apps, ref:avd-mfa-conditional-access#two-aligned-policies, ref:avd-mfa-conditional-access#feed-app-no-mfa, ref:avd-mfa-conditional-access#legacy-clients-off, ref:avd-mfa-conditional-access#per-user-mfa-off, ref:avd-mfa-conditional-access#all-apps-conflicts, ref:avd-entra-joined-hosts#vm-sign-in-app-exclusion, ref:avd-security-guide#mfa-conditional-access, ref:mcsb-avd-baseline#IM-7, ref:review-checklists-avd#G04.01]
+      says: Two aligned Conditional Access policies requiring MFA (the AVD app, and Windows Cloud Login with single sign-on), the feed app left out, legacy clients excluded, per-user MFA off, and policies on all apps checked for conflicts.
+    measure: directory
+    landingZone: []
+    note: Tenant-wide, outside the landing zone; until a directory read exists the intake answer stands in (gap:security-scope).
+  - id: identity.sign-in-frequency
+    area: identity
+    pillar: identity
+    title: Reauthentication and session lock
+    decides: How often users reauthenticate and whether a lock disconnects the session so Conditional Access is evaluated again.
+    home: {decision: proposed:identity.signInPolicy, facts: [proposed:c11.directory.signInFrequency]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-mfa-conditional-access#sign-in-frequency, ref:avd-sso#disconnect-on-lock, ref:session-lock-behavior#disconnect-on-lock-sso, ref:avd-security-guide#idle-limits, ref:review-checklists-avd#G01.01]
+      says: A sign-in frequency set to the organization's need (shorter for personal devices), disconnect on lock with single sign-on, and idle and disconnect limits by policy; no source gives a number.
+    measure: directory
+    landingZone: []
+    note: The disconnect and idle time limits themselves are protocol.session-limits.
+  - id: identity.device-conditions
+    area: identity
+    pillar: identity
+    title: Device compliance and location as sign-in conditions
+    decides: Whether Conditional Access requires a compliant or joined client device, or a location, and how session hosts are kept out of rules written for user devices.
+    home: {decision: proposed:identity.signInPolicy, facts: [proposed:c11.directory.compliancePolicyOnHosts], intake: [intake.clientDevices]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-mfa-conditional-access#all-apps-conflicts, ref:zero-trust-avd#seven-steps, ref:review-checklists-avd#G04.01]
+      says: Device and location conditions where the clients allow them, tested against both apps, with Entra joined hosts excluded from compliance rules meant for user endpoints.
+    measure: directory
+    landingZone: []
+    note: Compliance policies and the client device signal are the intune pillar's; which devices users bring is the endpoints pillar's.
+  - id: identity.sign-in-methods
+    area: identity
+    pillar: identity
+    title: Passwordless, smart card and federated sign-in
+    decides: Which credentials users sign in with at each phase, and what they need on the network.
+    home: {decision: identity, facts: [c11.hostPool.redirection.webAuthn, c11.hostPool.redirection.smartCards], intake: [intake.signInMethods]}
+    baseline:
+      standing: published
+      claims: [ref:avd-authentication#three-phases, ref:avd-authentication#federated-idp, ref:avd-authentication#smartcard-needs-kdc, ref:avd-authentication#in-session-passwordless]
+      says: Passwordless and federated sign-in through Entra ID; smart cards and Windows Hello for Business need Kerberos with a line of sight to a domain controller or a KDC proxy; in-session passwordless through WebAuthn redirection.
+    measure: fact
+    landingZone: [rdpProperties]
+    note: Only the in-session half is a control plane fact (the redirection properties); the rest is intake.
+  - id: identity.external-users
+    area: identity
+    pillar: identity
+    title: External identities
+    decides: Whether invited users from outside the tenant use the estate, and the host OS and client that requires.
+    home: {decision: identity, facts: [], intake: [intake.externalUsers]}
+    baseline:
+      standing: published
+      claims: [ref:avd-authentication#external-identity-requirements]
+      says: External identities need Entra joined hosts on the listed Windows builds, single sign-on and Windows App, and get no Kerberos or NTLM to on-premises resources.
+    measure: intake
+    landingZone: []
+  - id: identity.files-auth
+    area: identity
+    pillar: identity
+    title: Identity-based authentication for the profile share
+    decides: Which identity source the profile share uses (Entra Kerberos, AD DS or Entra Domain Services) and what each needs.
+    home: {decision: proposed:profile.storage, facts: [c11.storage.filesIdentity, proposed:c11.directory.storageAppMfaExcluded], intake: [intake.identityConstraints, intake.userIdentitySource]}
+    baseline:
+      standing: published
+      claims: [ref:files-entra-kerberos#cloud-only-and-hybrid, ref:files-entra-kerberos#one-identity-source, ref:files-entra-kerberos#clients-entra-joined, ref:files-entra-kerberos#hybrid-acl-line-of-sight, ref:files-entra-kerberos#admin-consent, ref:files-entra-kerberos#cloud-group-sids, ref:files-entra-kerberos#exclude-from-mfa, ref:files-entra-kerberos#settings-catalog-multisession, ref:fslogix-entra-profile#cloud-only-supported, ref:fslogix-entra-profile#host-settings, ref:files-ad-ds-password#rotate-or-exempt-ou, ref:review-checklists-avd#D02.01, ref:review-checklists-avd#D01.07]
+      says: Entra Kerberos for Entra joined hosts (cloud-only users in the public cloud, with the group SID tag and the MFA exclusion), AD DS with a rotated or non-expiring account password for domain-joined hosts; one source per account.
+    observations: [obs:fslogix-cloud-only-users-work, obs:smb-channel-aes128-gcm-needed]
+    measure: fact
+    landingZone: []
+    note: The landing zone fixes Entra Kerberos in its storage module; SMB channel and ticket encryption are encryption.profile-transit.
+  - id: identity.app-group-assignment
+    area: identity
+    pillar: identity
+    title: Application group assignment and VM sign-in roles
+    decides: Who is assigned to each application group, by group or by user, and the VM sign-in roles Entra joined hosts need.
+    home: {decision: hostPool.appGroup, facts: [c11.hostPool.appGroups, c11.hostPool.directUserAssignments]}
+    baseline:
+      standing: published
+      claims: [ref:avd-rbac#user-role, ref:caf-avd-identity#groups-not-users, ref:avd-entra-joined-hosts#vm-login-roles, ref:review-checklists-avd#D01.06]
+      says: Desktop Virtualization User assigned to groups rather than users, and on Entra joined hosts without a session host configuration, Virtual Machine User Login for users and Virtual Machine Administrator Login only for admins.
+    measure: fact
+    landingZone: []
+    note: The landing zone gives its user group Desktop Virtualization User and Virtual Machine User Login, and its admin group Virtual Machine Administrator Login (avdUsersGroupObjectId and avdAdminsGroupObjectId, wiring rather than design choices).
+  - id: identity.admin-access
+    area: identity
+    pillar: identity
+    title: Admin roles and tiers
+    decides: Who administers the estate, with which scoped roles, and how admin access is separated from user access.
+    home: {decision: proposed:identity.adminAccess, facts: [c11.subscription.privilegedAssignments]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-rbac#scoped-roles, ref:avd-rbac#contributor-no-assignment, ref:avd-security-guide#tiered-admin, ref:mcsb-avd-baseline#PA-7, ref:review-checklists-avd#G03.06]
+      says: The scoped built-in AVD roles below Owner and Contributor, custom roles only where they fall short, and admin access separated by tier; no source sets a count.
+    measure: none
+    landingZone: []
+    note: The landing zone's admin group is avdAdminsGroupObjectId, wiring rather than a design choice. Measure becomes fact once the specified assignment count is built; tiers themselves stay outside any read.
+  - id: identity.local-admin-password
+    area: identity
+    pillar: identity
+    title: Local administrator password rotation
+    decides: How the session hosts' local administrator password is kept unique and rotated.
+    home: {decision: proposed:identity.adminAccess, facts: [proposed:c11.directory.lapsEnabled]}
+    baseline:
+      standing: guidance
+      claims: [ref:caf-avd-identity#laps, ref:review-checklists-avd#G03.03]
+      says: Rotate the local administrator password with a solution like LAPS; users never hold local admin rights on pooled hosts.
+    measure: directory
+    landingZone: []
+    note: The landing zone makes a random break-glass password on every build and never stores it (its decision 0004); localAdminPassword is in notDimensions for that reason.
+
+  # Security tooling
   - id: security.endpoint-protection-tuning
     area: security
     pillar: endpoint-protection
@@ -1321,7 +1535,7 @@ dimensions:
     home: {decision: network, facts: [c11.network.hostSubnets.avdOutboundDenied, c11.network.hostSubnets.fabricDenyRules]}
     baseline:
       standing: published
-      claims: [ref:avd-required-fqdn#host-list, ref:avd-required-fqdn#blocking-unsupported, ref:avd-required-fqdn#service-and-fqdn-tags, ref:avd-fabric-ips#no-deny-no-route, ref:firewall-avd#fqdn-tag-rules, ref:review-checklists-avd#F01.05, ref:review-checklists-avd#F01.07]
+      claims: [ref:avd-required-fqdn#host-list, ref:avd-required-fqdn#blocking-unsupported, ref:avd-required-fqdn#service-and-fqdn-tags, ref:avd-fabric-ips#no-deny-no-route, ref:firewall-avd#fqdn-tag-rules, ref:avd-url-check-tool#wildcards-not-checked, ref:review-checklists-avd#F01.05, ref:review-checklists-avd#F01.07, gap:endpoint-map]
       says: The published endpoints reachable from every host, by service and FQDN tags; no rule or route aimed at the platform addresses.
     measure: host-side
     landingZone: []
@@ -1388,6 +1602,162 @@ dimensions:
     measure: fact
     landingZone: []
 
+  # Intune and host management (pillar intune, methods/intune.md). Everything delivered to a host or a
+  # client device through Intune, against Group Policy where an estate keeps it. Governance keeps the
+  # Azure side; the identity pillar owns Conditional Access, the images pillar the servicing model.
+  - id: ops.config-management
+    area: management
+    pillar: intune
+    title: Host configuration channel (Intune or Group Policy)
+    decides: Which channel delivers host settings (Intune, Group Policy, both, or co-management) and which one wins where they overlap.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneEnrollRequested, c11.hostPool.sessionHosts.intuneManaged], intake: [intake.hostManagement]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-management#intune-recommended, ref:avd-management#configuration-manager, ref:review-checklists-avd#E01.03, ref:review-checklists-avd#D01.03, ref:mdm-wins-over-gp#default-gp-wins, ref:mdm-wins-over-gp#policy-csp-only]
+      says: Microsoft recommends Intune for session hosts. Where Group Policy stays, review the GPOs on the hosts' OU, and never set one setting through both channels unless MDMWinsOverGP covers it; by default Group Policy wins.
+    observations: [obs:intune-enrolled-policies-left-to-owner]
+    measure: directory
+    landingZone: [enrollInIntune]
+  - id: intune.enrollment
+    area: management
+    pillar: intune
+    title: Host enrollment in Intune
+    decides: Whether every host enrolls, by which path (Entra join with enrollment, or hybrid join with device credentials), and whether images are captured before enrollment.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneEnrollRequested, c11.hostPool.sessionHosts.intuneManaged, c11.hostPool.sessionHosts.total]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#enrollment-prerequisites, ref:intune-avd-multisession#device-credentials, ref:intune-avd-multisession#one-mdm-provider, ref:intune-avd-multisession#no-entra-ds, ref:intune-avd-multisession#no-cloned-enrolled-image, ref:intune-avd-multisession#no-oobe, ref:intune-avd-multisession#license-required, ref:intune-avd-personal#personal-prerequisites, ref:avd-entra-joined-hosts#enroll-on-deploy]
+      says: Every host in a pool deployed through Azure Resource Manager, in Intune's tenant, on agent 1.0.2944.1400 or later, with one MDM provider; Entra join with enrollment, or hybrid join enrolled with device credentials. Hosts joined to Entra Domain Services can't enroll, an enrolled machine is never captured as an image, and Autopilot and the enrollment status page don't apply.
+    measure: directory
+    landingZone: [enrollInIntune]
+    note: Reader sees only the enrollment request (the Entra login extension's MDM ID); whether the host enrolled needs an Intune read through Graph.
+  - id: intune.configuration-profiles
+    area: management
+    pillar: intune
+    title: Configuration profiles and the settings catalog
+    decides: How settings reach hosts - settings catalog policies by scope (device or user), administrative templates, and which groups they target.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneConfigErrors]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#settings-catalog-only, ref:intune-avd-multisession#device-and-user-scope, ref:intune-avd-multisession#admx-supported, ref:intune-avd-multisession#endpoint-security-windows, ref:intune-settings-catalog#one-place, ref:review-checklists-avd#D01.04]
+      says: Multi-session hosts take settings catalog policies filtered to the multi-session edition, device settings to device groups and user settings to user groups; only certificate and device-tunnel VPN templates apply. FSLogix and other ADMX settings come through the catalog the same way.
+    measure: directory
+    landingZone: []
+  - id: intune.group-policy
+    area: management
+    pillar: intune
+    title: Group Policy alongside or instead of Intune
+    decides: Whether Group Policy stays, moves to the settings catalog, or runs beside it, and how conflicts are kept out.
+    home: {decision: proposed:operations.configuration, facts: [], intake: [intake.hostManagement]}
+    baseline:
+      standing: guidance
+      claims: [ref:intune-group-policy-analytics#mdm-support-percentage, ref:intune-group-policy-analytics#migrate-to-catalog, ref:mdm-wins-over-gp#policy-csp-only, ref:mdm-wins-over-gp#update-gp-ignore, ref:mdm-wins-over-gp#diagnostic-report, ref:review-checklists-avd#D01.03]
+      says: Group Policy is a supported alternative for hybrid joined hosts. Moving off it starts with Group Policy analytics, migrating reviewed settings only; while both run, each setting has one owner, and the host's MDM diagnostic report shows which Group Policy settings MDM blocked.
+    measure: host-side
+    landingZone: []
+  - id: intune.security-baseline
+    area: management
+    pillar: intune
+    title: Security baselines for session hosts
+    decides: Which Intune security baseline version hosts get, and the departures recorded for multi-session.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneBaselineApplied]}
+    baseline:
+      standing: guidance
+      claims: [ref:intune-avd-multisession#baselines-available, ref:intune-security-baselines#baselines-in-intune, ref:intune-security-baselines#most-restrictive-defaults, ref:intune-security-baselines#versioned-per-release, ref:intune-security-baselines#no-preview-in-production, gap:host-baseline-profile]
+      says: The baseline for the hosts' Windows release, never a preview, assigned with the departures the host baseline profile records; defaults are the most restrictive values, so conflicts are checked first.
+    measure: directory
+    landingZone: []
+    note: What the baseline should contain is the security pillar's host baseline profile; this row is how Intune delivers and reports it.
+  - id: intune.host-compliance
+    area: management
+    pillar: intune
+    title: Compliance policies for session hosts
+    decides: Which compliance policy judges the hosts, targeted at devices, and what a host with no policy counts as.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneCompliant, c11.hostPool.sessionHosts.intuneNoncompliant, c11.hostPool.sessionHosts.intuneSyncStale, c11.intune.noPolicyMeansNoncompliant]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#compliance-settings-supported, ref:intune-avd-multisession#compliance-device-targeted, ref:intune-compliance#no-policy-default-compliant, ref:intune-compliance#set-not-compliant-with-ca, ref:intune-compliance#validity-period, ref:graph-device-management-settings#secure-by-default, ref:graph-intune-managed-device#device-fields]
+      says: A device-targeted compliance policy using the settings multi-session supports, and the tenant set so a device with no policy is noncompliant; by default it counts as compliant.
+    observations: [obs:intune-enrolled-policies-left-to-owner]
+    measure: directory
+    landingZone: []
+  - id: intune.client-compliance
+    area: management
+    pillar: intune
+    title: Client device compliance for connecting
+    decides: What a user's own device must prove before it connects - Intune compliance for managed devices, app protection for unmanaged phones, tablets and the browser - enforced by Conditional Access.
+    home: {decision: identity, facts: [], intake: [intake.clientDevices]}
+    baseline:
+      standing: guidance
+      claims: [ref:ca-require-compliant-device#compliance-signal, ref:ca-require-compliant-device#exclude-break-glass, ref:windows-app-device-compliance#app-protection-for-clients, ref:windows-app-device-compliance#redirection-needs-compliance, ref:windows-app-device-compliance#filters-managed-unmanaged, ref:intune-compliance#set-not-compliant-with-ca, ref:review-checklists-avd#G04.01]
+      says: Require a compliant device where clients are managed and app protection where they aren't, through Conditional Access with break-glass accounts excluded; redirection control on mobile clients depends on it.
+    measure: intake
+    landingZone: []
+    note: The identity pillar owns the Conditional Access policy and the endpoints pillar the client apps; this row owns the device signal Intune gives them.
+  - id: intune.host-apps
+    area: management
+    pillar: intune
+    title: App deployment to hosts through Intune
+    decides: Which apps Intune installs on hosts, and how (system context, required, targeted to devices).
+    home: {decision: proposed:operations.configuration, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#apps-system-required, ref:intune-avd-multisession#no-remoteapp-app-attach, ref:intune-avd-multisession#scripts-both-contexts]
+      says: On multi-session, apps install in system context, targeted to devices, as Required or Uninstall; Available and user-context dependencies don't work, and RemoteApp and app attach stay with AVD.
+    measure: directory
+    landingZone: []
+    note: Whether an app goes in the image, through app attach or through Intune is the app delivery pillar's decision.
+  - id: intune.host-updates
+    area: management
+    pillar: intune
+    title: Windows updates through Intune
+    decides: What Intune does for updates under the chosen servicing model - quality update settings on multi-session, update rings or Autopatch on personal single-session hosts, or nothing because the image carries them.
+    home: {decision: proposed:hostPool.updates, facts: [c11.hostPool.type], intake: [intake.hostServicing]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#quality-updates-catalog-only, ref:intune-update-rings#rings-control-client-behavior, ref:autopatch-avd#personal-only, ref:autopatch-avd#exclude-multisession, ref:avd-update-methods#multisession-image-based, ref:avd-update-methods#hotpatch, ref:mdm-wins-over-gp#update-gp-ignore, ref:review-checklists-avd#E01.09]
+      says: Update rings and Autopatch don't apply to multi-session; there the image carries updates and Intune only sets quality update behavior from the catalog. Autopatch fits personal single-session hosts only. Plan the emergency patch path either way.
+    measure: intake
+    landingZone: []
+    note: The servicing model itself (image or in place) is the images pillar's updates.os-servicing row.
+  - id: intune.device-lifecycle
+    area: management
+    pillar: intune
+    title: Remote actions and device records
+    decides: Which remote actions are used on hosts, and how device records go when hosts are replaced.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.intuneOrphans]}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#remote-actions-unsupported, ref:intune-avd-multisession#orphaned-records, ref:intune-avd-personal#personal-cleanup-rules, ref:intune-device-actions#enrolled-and-online, ref:entra-device-identity-vdi#hosts-persistent-by-default, ref:entra-device-identity-vdi#stale-records-quota]
+      says: Wipe, retire, lock and reset don't exist for multi-session hosts; sync, restart and scans do. Replacing hosts leaves Entra ID and Intune records, so the step that removes a host removes its records too.
+    observations: [obs:device-records-outlive-hosts]
+    measure: directory
+    landingZone: []
+  - id: intune.reporting
+    area: management
+    pillar: intune
+    title: What the assessment reads from Intune
+    decides: Which Intune reports and Graph reads stand for a host pool, and with what permission.
+    home: {decision: proposed:operations.configuration, facts: [c11.hostPool.sessionHosts.intuneManaged, c11.hostPool.sessionHosts.intuneSyncStale]}
+    baseline:
+      standing: gap
+      claims: [ref:intune-reports#report-families, ref:graph-intune-managed-device#device-fields, gap:intune-scope]
+      says: Intune reports cover compliance, configuration, enrollment and updates, and Graph carries each device's state; no source says which an AVD assessment reads or how devices map to pools, so the scope page sets it.
+    measure: directory
+    landingZone: []
+  - id: intune.identity-roaming
+    area: management
+    pillar: intune
+    title: Identity tokens in roaming profiles
+    decides: Whether the profile tool roams identity tokens between hosts.
+    home: {decision: proposed:operations.configuration, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:intune-avd-multisession#no-token-roaming, ref:fslogix-settings#roamidentity-off]
+      says: Identity data never roams between hosts (FSLogix RoamIdentity left at 0); Intune doesn't support roamed tokens.
+    measure: host-side
+    landingZone: []
+    note: The profiles pillar owns FSLogix; this is the one profile setting Intune depends on.
   # Host pool shape, operations and cost
   - id: hostpool.type
     area: hostpool
@@ -1405,41 +1775,199 @@ dimensions:
   - id: ops.monitoring
     area: operations
     pillar: monitoring
-    title: Monitoring, Insights and alerts
-    decides: Insights wiring (diagnostics per AVD object, agent and data collection rule per host), log retention and alerts.
-    home: {decision: proposed:operations.monitoring, facts: [c11.monitoring.diagnostics, c11.hostPool.sessionHosts.monitoringAgent, c11.hostPool.sessionHosts.insightsDcr, c11.logAnalytics.retentionDays, c11.monitoring.alerts]}
+    title: Monitoring, Insights wiring
+    decides: Insights wiring - diagnostics on every AVD object, and the monitoring agent and Insights data collection rule on every host.
+    home: {decision: proposed:operations.monitoring, facts: [c11.hostPool.diagnosticsSetting, c11.monitoring.diagnostics, c11.hostPool.sessionHosts.monitoringAgent, c11.hostPool.sessionHosts.insightsDcr]}
     baseline:
       standing: published
-      claims: [ref:avd-insights#hostpool-diagnostics, ref:avd-insights#workspace-diagnostics, ref:avd-insights#host-data-ama-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#latest-version, ref:amba-avd#host-resources, gap:insights-facts, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:deployment-dimensions]
-      says: Insights' required diagnostics, agent and data collection rule as published for workbook 4.3.1, alerts against the AMBA pattern; no source sets a retention number, so retention stays a gap.
-    measure: rebuild
-    landingZone: [logRetentionDays, deploySubscriptionSettings]
-    note: Alerts are fixed in the landing zone's monitoring module. Alert facts carry counts and state only, never receivers.
-  - id: ops.config-management
+      claims: [ref:avd-insights#hostpool-diagnostics, ref:avd-insights#workspace-diagnostics, ref:avd-insights#host-data-ama-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#latest-version, ref:avd-diagnostics#per-object, ref:avd-diagnostics#categories, ref:caf-avd-management#insights-config-workbook, ref:caf-avd-management#regional-workspace, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:insights-facts, gap:monitoring-scope]
+      says: Insights' required diagnostics on host pools and workspaces, and the agent and data collection rule on every host, as published for workbook 4.3.1; one workspace in the hosts' region.
+    measure: fact
+    landingZone: [deploySubscriptionSettings]
+    note: The landing zone sends all logs from every AVD object and associates every host with its Insights rule.
+  - id: ops.alerts
     area: operations
-    pillar: intune
-    title: Host configuration management
-    decides: How host settings are delivered (Intune or Group Policy).
-    home: {decision: proposed:operations.configuration, facts: []}
+    pillar: monitoring
+    title: Alerts and who receives them
+    decides: Which alert rules exist on hosts, the host pool and the workspace, at which thresholds, and whether anyone is notified.
+    home: {decision: proposed:operations.monitoring, facts: [c11.monitoring.alerts], intake: [proposed:intake.alertResponse]}
+    baseline:
+      standing: published
+      claims: [ref:caf-avd-management#alerting-model, ref:amba-avd#host-resources, ref:amba-avd#host-pool-capacity, ref:amba-avd#fslogix, gap:monitoring-scope]
+      says: An alerting model on the collected logs and metrics, against the AMBA AVD pattern's host, capacity and FSLogix thresholds, with a receiver for every enabled rule.
+    observations: [obs:alerts-silent-without-receivers]
+    measure: fact
+    landingZone: []
+    note: The landing zone's six log alerts are fixed in its monitoring module; receivers come from alertEmailAddresses, which stays out of shared facts (notDimensions). Alert facts carry counts and state only, never receivers.
+  - id: ops.storage-alerts
+    area: operations
+    pillar: monitoring
+    title: Profile storage alerts
+    decides: Alerts on the profile share for throttling, capacity, latency and availability.
+    home: {decision: proposed:operations.monitoring, facts: [c11.storage.alerts, c11.storage.kind]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#E02.03, ref:amba-avd#storage, ref:files-monitoring-alerts#throttling, ref:files-monitoring-alerts#utilization-80, ref:files-monitoring-alerts#availability, ref:files-monitoring-alerts#per-share-needs-provisioned]
+      says: Alert on throttling, low space (80% of provisioned), latency over 50 or 100 ms and availability under 99.9% on the profile share; per-share alerts need provisioned shares.
+    observations: [obs:alerts-silent-without-receivers]
+    measure: fact
+    landingZone: []
+    note: The landing zone has no Azure Files metric alert at 91c7acf; its FSLogix alert reads host event logs.
+  - id: ops.service-health
+    area: operations
+    pillar: monitoring
+    title: Service Health alerts
+    decides: Whether service issues and health advisories for AVD and its dependencies reach someone.
+    home: {decision: proposed:operations.monitoring, facts: [c11.monitoring.serviceHealthAlerts]}
     baseline:
       standing: guidance
-      claims: [ref:review-checklists-avd#E01.03]
-      says: Evaluate Intune for session host management.
-    measure: rebuild
-    landingZone: [enrollInIntune]
+      claims: [ref:review-checklists-avd#E02.04, ref:avd-service-alerts#issue-and-advisory, ref:amba-avd#service-health]
+      says: Service Health alerts for at least service issues and health advisories; the AMBA pattern adds planned maintenance and security.
+    measure: fact
+    landingZone: []
+    note: The landing zone creates one Service Health alert, on every event type for AVD and its dependent services, only when alert addresses are given (obs:alerts-silent-without-receivers).
+  - id: ops.log-retention
+    area: operations
+    pillar: monitoring
+    title: Log retention
+    decides: How long AVD diagnostics and host data stay queryable, and whether older data is kept at all.
+    home: {decision: proposed:operations.monitoring, facts: [c11.logAnalytics.retentionDays], intake: [proposed:intake.logRetention]}
+    baseline:
+      standing: gap
+      claims: [ref:log-retention#default-30, ref:log-retention#first-31-included, ref:log-retention#analytics-two-years, ref:caf-avd-management#long-retention-export, gap:insights-facts, gap:monitoring-scope]
+      says: No source sets an AVD retention number; the first 31 days cost nothing extra, so the floor is 31 days and anything longer is the estate's own requirement.
+    measure: fact
+    landingZone: [logRetentionDays]
+  - id: ops.ingestion-cost
+    area: operations
+    pillar: monitoring
+    title: Monitoring cost signal
+    decides: Whether the monitoring data the estate collects costs what Microsoft's estimate says per host, and what to trim first if not.
+    home: {decision: proposed:operations.monitoring, facts: [proposed:c12.window.monitoring.ingestMiBPerHostDay]}
+    baseline:
+      standing: prior
+      claims: [ref:avd-insights-costs#per-vm-estimate, ref:avd-insights-costs#keep-diagnostics, ref:avd-insights-costs#counter-set, gap:monitoring-scope]
+      says: An example host ingests about 92 to 145 MB a day, mostly counters; trim counters, never the AVD diagnostics, which are under 1% of the cost.
+    measure: measured
+    landingZone: []
+  - id: ops.advisor
+    area: operations
+    pillar: monitoring
+    title: Advisor recommendations reviewed
+    decides: Whether Advisor's AVD and cost recommendations are read on a cadence and acted on or accepted.
+    home: {decision: proposed:operations.monitoring, facts: [c11.advisor.recommendations]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#E01.08, ref:avd-advisor#validation-pool, ref:avd-advisor#production-majority, ref:avd-advisor#required-urls, ref:avd-advisor#twice-a-day, ref:advisor-cost#right-size-or-shutdown-vms]
+      says: Review Advisor's AVD recommendations periodically; it flags a missing validation pool, too many validation pools and blocked required URLs, and refreshes twice a day.
+    measure: fact
+    landingZone: []
+    note: The FinOps method reads Advisor's cost results (gap:finops-scope); this row is the operational review.
+  - id: ops.deployment-automation
+    area: operations
+    pillar: monitoring
+    title: Host pool deployment strategy
+    decides: Whether host pools and hosts are deployed from code through a pipeline gated at a validation pool, or by hand.
+    home: {decision: proposed:operations.deployment, facts: [], intake: [proposed:intake.deploymentMethod]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#E01.12, ref:caf-avd-platform-automation#declarative-iac, ref:caf-avd-platform-automation#gate-to-validation, ref:caf-avd-platform-automation#tag-image-version, ref:caf-avd-platform-automation#deprecated]
+      says: Declarative infrastructure as code, pipelines that reach production only through a validation pool and an approval, and hosts tagged with their image version.
+    measure: intake
+    landingZone: []
+    note: The landing zone is itself this path (Bicep and deploy.sh); a run record (C17) proves an estate came from it. The CAF source leaves Learn on 2026-10-30, so the pin is its GitHub copy.
   - id: cost.power
     area: cost
     pillar: scaling
-    title: Power management
-    decides: Autoscale, Start VM on Connect and shutdown schedules.
-    home: {decision: hostPool.power, facts: [c11.hostPool.startVmOnConnect, intake.workingHours], checks: [asm-personal-start-vm-on-connect]}
+    title: Start VM on Connect and shutdown schedules
+    decides: Whether hosts start on demand, and what turns hosts off outside the scaling plan.
+    home: {decision: hostPool.power, facts: [c11.hostPool.startVmOnConnect, intake.workingHours], intake: [proposed:intake.coldStartTolerance], checks: [asm-personal-start-vm-on-connect]}
     baseline:
-      standing: owned
-      claims: [ref:review-checklists-avd#E01.05]
-      says: Owned by the FinOps method; Start VM on Connect for personal pools is the one check today.
-    seeAlso: https://github.com/avd-ops/avd-assess/blob/5bc5da8f17de4cca7e51d62a4210bd7da893fa40/methods/finops.md
+      standing: published
+      claims: [ref:review-checklists-avd#E01.05, ref:start-vm-on-connect#power-on-when-needed, ref:start-vm-on-connect#slower-first-connection, ref:start-vm-on-connect-faq#no-automatic-deallocation, ref:autoscale-plan#no-other-scaling-tool, gap:monitoring-scope]
+      says: Start VM on Connect powers hosts on only when a user connects, at the price of a slower first connection, and never turns them off; a schedule that does must not fight the scaling plan.
+    observations: [obs:scaling-and-start-on-connect-by-default, obs:budget-alert-needs-a-lock]
     measure: fact
-    landingZone: [startVmOnConnect, scalingTimeZone, enableAutoShutdown, autoShutdownTime, autoShutdownDays, autoShutdownTimeZone, autoShutdownScheduleAction, autoShutdownRunbookUri]
+    landingZone: [startVmOnConnect, enableAutoShutdown, autoShutdownTime, autoShutdownDays, autoShutdownTimeZone, autoShutdownScheduleAction, autoShutdownRunbookUri]
+    note: The landing zone's auto shutdown sets the scaling plan exclusion tag before it stops hosts, so autoscale doesn't start them again.
+  - id: scaling.plan
+    area: cost
+    pillar: scaling
+    title: Scaling plan per host pool
+    decides: Whether each pool has a scaling plan, power management or dynamic, and that nothing else scales it.
+    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.method, c11.hostPool.scalingPlan.exclusionTag, c11.hostPool.maxSessionLimit, c11.hostPool.type]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#E01.04, ref:avd-autoscale#scales-to-save-cost, ref:avd-autoscale#two-methods, ref:avd-autoscale#one-plan-per-pool, ref:avd-autoscale#exclusion-tags, ref:autoscale-plan#max-session-limit-required, ref:autoscale-plan#role-at-subscription, ref:autoscale-plan#no-other-scaling-tool, ref:autoscale-plan#dynamic-needs-host-config, ref:autoscale-plan#exclusion-tag]
+      says: One scaling plan per pool and no other scaling tool on it; a pooled pool needs its own session limit and the power role at subscription scope; maintenance uses the exclusion tag, because autoscale overrides drain mode.
+    observations: [obs:scaling-and-start-on-connect-by-default]
+    measure: fact
+    landingZone: [scalingTimeZone]
+    note: The landing zone fixes a power management plan in its control plane module, with exclusion tag avd-scaling-exclude.
+  - id: scaling.schedule
+    area: cost
+    pillar: scaling
+    title: Ramp-up timing and capacity threshold
+    decides: When ramp-up starts against when users arrive, the minimum hosts kept on, and the capacity threshold that starts the next host.
+    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.rampUpStart, c11.hostPool.scalingPlan.rampUpMinimumHostsPct, c11.hostPool.scalingPlan.rampUpCapacityThresholdPct, intake.workingHours, c12.group.concurrency.byHour, c12.group.scaling.occupancyP95ByPhase]}
+    baseline:
+      standing: gap
+      claims: [ref:avd-autoscale#capacity-threshold, ref:autoscale-plan#ramp-up-before-peak, ref:autoscale-plan#capacity-threshold-example, ref:autoscale-plan#off-peak-depth-first, ref:autoscale-insights#evaluation-table, gap:monitoring-scope]
+      says: Microsoft says ramp up before peak and explains the threshold, but publishes no lead time or threshold; ours is measured from when sessions actually arrive and how full the pool runs.
+    measure: measured
+    landingZone: []
+    note: The landing zone fixes weekdays at ramp-up 07:00 with 20% of hosts and a 60% threshold, in scalingTimeZone; batch S4 measures it.
+  - id: scaling.ramp-down
+    area: cost
+    pillar: scaling
+    title: Ramp-down and disconnected sessions
+    decides: Whether ramp-down signs users out, and how long disconnected sessions hold a host on.
+    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.forceLogoff]}
+    baseline:
+      standing: guidance
+      claims: [ref:autoscale-plan#ramp-down-consolidates, ref:autoscale-faq#disconnected-time-limit, ref:session-lock-behavior#disconnect-on-lock-sso]
+      says: Ramp-down only frees hosts when sessions fit on fewer; disconnected sessions count as active (and with single sign-on a lock disconnects), so a 15 to 30 minute sign-out policy lets a pool reach zero.
+    measure: fact
+    landingZone: []
+    note: The landing zone never forces sign-out and stops hosts at zero sessions; the disconnected-session time limit is a host policy, so it is host-side.
+  - id: scaling.personal
+    area: cost
+    pillar: scaling
+    title: Personal pool deallocation and hibernation
+    decides: What turns personal hosts off after use, and whether they hibernate.
+    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.method, c11.hostPool.sessionHosts.hibernation, c11.hostPool.startVmOnConnect, c11.hostPool.type]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#E01.06, ref:start-vm-on-connect-faq#no-automatic-deallocation, ref:avd-autoscale#hibernate-personal, ref:autoscale-plan#hibernate-not-with-profiles]
+      says: Start VM on Connect never deallocates, so personal hosts need a plan or automation to turn off; hibernation isn't supported with FSLogix or App Attach.
+    measure: fact
+    landingZone: []
+    note: The landing zone deploys pooled pools only.
+  - id: scaling.cold-start
+    area: cost
+    pillar: scaling
+    title: First-connection wait
+    decides: Whether the wait for a host to start is acceptable to these users, which sets minimum hosts and off-peak coverage.
+    home: {decision: hostPool.power, facts: [c12.group.scaling.coldStartConnectP95Seconds, c12.group.logonSeconds.p95], intake: [proposed:intake.coldStartTolerance]}
+    baseline:
+      standing: gap
+      claims: [ref:start-vm-on-connect#slower-first-connection, gap:monitoring-scope]
+      says: The source says a deallocated host makes the first connection slower but gives no number; ours is measured and judged against the users' own tolerance.
+    measure: measured
+    landingZone: []
+  - id: scaling.diagnostics
+    area: cost
+    pillar: scaling
+    title: Autoscale logs
+    decides: Whether autoscale's decisions and failures are recorded where someone reads them.
+    home: {decision: hostPool.power, facts: [c11.hostPool.autoscaleLogs, c12.group.scaling.failedEvaluations]}
+    baseline:
+      standing: published
+      claims: [ref:autoscale-insights#pooled-only, ref:autoscale-insights#hostpool-category, ref:autoscale-insights#evaluation-table, ref:autoscale-diagnostics#plan-to-storage-or-hub, ref:avd-diagnostics#categories]
+      says: Pooled pools send autoscale logs with the host pool's other logs to the Insights workspace; personal pools send them to storage or an event hub.
+    measure: fact
+    landingZone: []
+    note: The landing zone sends all host pool logs to its workspace and also sets diagnostics on the scaling plan; whether the plan's own setting carries data to Log Analytics isn't tested.
   - id: cost.budget
     area: cost
     pillar: finops
@@ -1585,4 +2113,221 @@ dimensions:
       claims: [ref:troubleshoot-overview#service-health-first, ref:troubleshoot-overview#escalation-tracks, ref:service-alerts#service-issue-and-advisory, ref:diagnostics-log-analytics#service-error-split]
       says: Service Health first, with alerts for AVD service issues and advisories; service errors and anything past the troubleshooting pages go to support with the correlation ID.
     measure: none
+    landingZone: []
+
+  # Endpoints and clients (pillar endpoints, gaps/endpoints-scope.md). Redirection settings stay on the
+  # protocol rows; these rows hold what the users' devices need and can do.
+  - id: endpoints.client-apps
+    area: endpoints
+    pillar: endpoints
+    title: Client apps in use
+    decides: Which client each platform uses to connect, and whether any connection still comes from a client past end of support.
+    home: {decision: proposed:endpoints.clients, facts: [c12.group.clients.byType, c12.group.clients.byVersion], intake: [intake.clientApps]}
+    baseline:
+      standing: published
+      claims: [ref:windows-app-get-started#client-platforms, ref:avd-insights-use-cases#client-version-usage, ref:remote-desktop-client-overview#windows-app-replaces, ref:remote-desktop-client-overview#msi-and-web-end-of-support, ref:remote-desktop-client-overview#store-app-ended, ref:avd-prerequisites#supported-clients, ref:wvdconnections-table#client-columns, ref:review-checklists-avd#C02.03, gap:endpoints-scope]
+      says: Windows App on every platform; the MSI and web Remote Desktop clients are unsupported in public cloud since 2026-03-27, and MSTSC and RADC never connect to AVD.
+    measure: measured
+    landingZone: []
+  - id: endpoints.client-os
+    area: endpoints
+    pillar: endpoints
+    title: Client OS and browser versions
+    decides: Which client operating systems and browsers the estate supports, and what to do with devices below the floor.
+    home: {decision: proposed:endpoints.clients, facts: [c12.group.clients.byOs], intake: [intake.clientApps]}
+    baseline:
+      standing: published
+      claims: [ref:windows-app-get-started#os-floors, ref:windows-app-get-started#web-browser-floor, ref:review-checklists-avd#C02.03, gap:endpoints-scope]
+      says: Each platform's published OS floor (Windows 10 only in support or under ESU) and a browser no older than 12 months with AVC and WebGL.
+    measure: measured
+    landingZone: []
+  - id: endpoints.thin-clients
+    area: endpoints
+    pillar: endpoints
+    title: Thin clients and kiosk devices
+    decides: Whether thin clients or locked-down kiosk devices connect, and who supports them.
+    home: {decision: proposed:endpoints.clients, facts: [], intake: [intake.clientApps]}
+    baseline:
+      standing: guidance
+      claims: [ref:thin-clients#approved-partners, ref:thin-clients#reproduce-on-windows-app, gap:endpoints-scope]
+      says: Use a thin client from Microsoft's approved partner list, reproduce issues on Windows App first; no AVD source covers kiosk-mode clients, so that part is a gap.
+    measure: intake
+    landingZone: []
+  - id: endpoints.device-management
+    area: endpoints
+    pillar: endpoints
+    title: Managed and unmanaged client devices
+    decides: Whether personal or unmanaged devices may connect, and what they may redirect compared with managed ones.
+    home: {decision: proposed:endpoints.deviceTrust, facts: [], intake: [intake.clientDeviceManagement, intake.clientDevices]}
+    baseline:
+      standing: guidance
+      claims: [ref:windows-app-device-compliance#app-protection-for-clients, ref:windows-app-device-compliance#filters-managed-unmanaged, ref:windows-app-redirection-intune#more-restrictive-wins, ref:windows-app-redirection-intune#not-a-substitute, ref:context-based-redirections#auth-context-redirection, gap:endpoints-scope]
+      says: Require device compliance where the platform allows, narrow redirection for unmanaged devices, and keep the host pool settings as the floor.
+    measure: intake
+    landingZone: []
+    note: Enrolling and judging the devices themselves is the intune pillar; the sign-in condition is the identity pillar. A directory read would move this to directory.
+  - id: endpoints.peripherals
+    area: endpoints
+    pillar: endpoints
+    title: Peripherals users need
+    decides: Which local devices (cameras, microphones, smart cards, USB devices, scanners, drives) each user group needs in the session.
+    home: {decision: proposed:hostPool.security, facts: [c11.hostPool.redirection.camera, c11.hostPool.redirection.smartCards, c11.hostPool.redirection.usb, c11.hostPool.redirection.drives], intake: [intake.peripheralNeeds, intake.clientApps], checks: [asm-drive-usb-redirection-off]}
+    baseline:
+      standing: published
+      claims: [ref:windows-app-platforms#redirection-by-platform, ref:rdp-redirection#high-level-first, ref:rdp-redirection#most-restrictive-wins, ref:mcsb-avd-baseline#DP-2, ref:review-checklists-avd#G02.06]
+      says: Allow only the redirection a group needs, on platforms that support it; the security rows judge what is left on.
+    measure: fact
+    landingZone: [rdpProperties]
+  - id: endpoints.printing
+    area: endpoints
+    pillar: endpoints
+    title: Printing
+    decides: Printer redirection, Universal Print or printers on the hosts.
+    home: {decision: proposed:hostPool.security, facts: [c11.hostPool.redirection.printers], intake: [intake.printing, intake.clientApps]}
+    baseline:
+      standing: published
+      claims: [ref:rdp-printer-redirection#all-local-printers, ref:rdp-printer-redirection#easy-print, ref:rdp-printer-redirection#enable-on-hosts-control-on-pool, ref:rdp-printer-redirection#universal-print-alternative, ref:universal-print-avd#per-user-printers, ref:universal-print-avd#location-from-client, ref:windows-app-platforms#redirection-by-platform]
+      says: Redirection brings every local printer through Easy Print, with no drivers on hosts; Universal Print is per user and roams on Windows 11 multi-session 22H2 and later.
+    measure: fact
+    landingZone: [rdpProperties]
+  - id: endpoints.displays
+    area: endpoints
+    pillar: endpoints
+    title: Multiple monitors and resolution
+    decides: Whether users need several or very high resolution displays, which limits the client platform and may call for GPU hosts.
+    home: {decision: proposed:hostPool.gpu, facts: [], intake: [intake.peripheralNeeds, intake.clientApps]}
+    baseline:
+      standing: published
+      claims: [ref:windows-app-platforms#display-by-platform, ref:session-host-sizing#gpu-for-graphics]
+      says: Multiple monitors only from Windows and macOS; CPU-only hosts show artifacts above 3840 x 2160 total resolution.
+    measure: intake
+    landingZone: [rdpProperties]
+
+  # Governance, policy and compliance (pillar governance, gaps/governance-scope.md). Azure side only;
+  # settings delivered to a host or device are the intune pillar.
+  - id: governance.policy-guardrails
+    area: governance
+    pillar: governance
+    title: Azure Policy guardrails
+    decides: Which Azure Policy assignments guard the AVD subscriptions, and whether they enforce or only audit.
+    home: {decision: proposed:governance.policy, facts: [c11.policy.assignments, c11.policy.doNotEnforce], checks: [asm-policy-guardrails-assigned, asm-policy-enforced]}
+    baseline:
+      standing: guidance
+      claims: [ref:mcsb-avd-baseline#AM-2, ref:policy-built-ins#avd-private-access, ref:policy-built-ins#allowed-locations, ref:policy-assignment-structure#do-not-enforce, ref:policy-assignment-structure#do-not-enforce-for-testing, gap:governance-scope]
+      says: Audit and enforce the service's configuration with Azure Policy; DoNotEnforce is for trying an assignment, not for keeping it. No source lists a minimum set for AVD.
+    measure: fact
+    landingZone: [enablePolicyGuardrails, deploySubscriptionSettings]
+  - id: governance.locations
+    area: governance
+    pillar: governance
+    title: Allowed locations and metadata residency
+    decides: Which regions resources may be created in, and where host pool metadata is stored.
+    home: {decision: region, facts: [c11.subscription.regions, c11.hostPool.region, proposed:c11.policy.builtInDefinitions], intake: [intake.residency]}
+    baseline:
+      standing: published
+      claims: [ref:policy-built-ins#allowed-locations, ref:avd-data-locations#geographical-default, ref:avd-data-locations#regional-scope, ref:avd-data-locations#no-user-data, ref:avd-data-locations#arm-paths-outside, ref:caf-avd-security-governance#metadata-geographies, ref:review-checklists-avd#C03.01, ref:review-checklists-avd#C03.02]
+      says: An allowed-locations guardrail that matches the residency answer, and a metadata scope (geographical or regional) chosen at creation, since it can't change.
+    measure: rebuild
+    landingZone: [allowedLocations]
+    note: The region choice itself is the capacity pillar's region row; this row is the guardrail and the metadata.
+  - id: governance.allowed-sizes
+    area: governance
+    pillar: governance
+    title: Allowed VM sizes
+    decides: Whether a policy limits session host sizes, and whether the chosen sizes are on the list.
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes, proposed:c11.policy.builtInDefinitions]}
+    baseline:
+      standing: guidance
+      claims: [ref:policy-built-ins#allowed-vm-skus, ref:review-checklists-avd#C03.03, gap:governance-scope]
+      says: An allowed-sizes policy is optional; when one exists, the sizes sizing chose must be on it before deployment.
+    measure: rebuild
+    landingZone: []
+    note: The landing zone assigns no size policy; avd-current-state's validator reads an existing one before deployment.
+  - id: governance.tags-naming
+    area: governance
+    pillar: governance
+    title: Tagging and naming
+    decides: The tags every AVD resource carries and the naming convention, and whether policy keeps them.
+    home: {decision: proposed:governance.tags, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-tagging#tag-host-pools-first, ref:avd-tagging#tags-only-direct, ref:policy-built-ins#tag-definitions, ref:caf-resource-abbreviations#avd-abbreviations, ref:review-checklists-avd#E01.07]
+      says: Tag host pools first, inherit tags by policy where resources lack them, and use the published abbreviations for AVD objects.
+    measure: rebuild
+    landingZone: [tags]
+    note: Cost allocation by tag is the finops pillar's cost.budget row.
+  - id: governance.audit-logging
+    area: governance
+    pillar: governance
+    title: Audit logging and retention
+    decides: Whether the activity log and AVD diagnostics are kept beyond their defaults, and for how long.
+    home: {decision: proposed:governance.audit, facts: [proposed:c11.subscription.activityLogExport, proposed:c11.monitoring.diagnostics], intake: [intake.auditRetentionDays]}
+    baseline:
+      standing: published
+      claims: [ref:activity-log#retention-90-days, ref:activity-log#export-by-diagnostic-setting, ref:mcsb-logging#LT-6, ref:mcsb-avd-baseline#LT-4, ref:avd-security-guide#audit-logs, ref:caf-avd-security-governance#activity-logging, ref:review-checklists-avd#G03.05]
+      says: Activity log entries vanish after 90 days unless a diagnostic setting exports them; retention beyond that is the estate's own requirement, asked at intake.
+    measure: rebuild
+    landingZone: [deploySubscriptionSettings, logRetentionDays]
+    note: Insights wiring is the monitoring pillar's ops.monitoring row; this row is the audit trail and its retention.
+  - id: governance.rbac
+    area: governance
+    pillar: governance
+    title: Admin roles and custom RBAC
+    decides: Which built-in AVD roles admins hold, and whether custom roles are needed.
+    home: {decision: proposed:governance.rbac, facts: [c11.roleAssignments.roles]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-rbac#scoped-roles, ref:avd-rbac#contributor-no-assignment, ref:mcsb-avd-baseline#PA-7, ref:mcsb-avd-baseline#IM-3, ref:avd-security-guide#tiered-admin, ref:review-checklists-avd#G03.06]
+      says: Least privilege through the built-in AVD roles per object; a custom role only for a duty none of them fits.
+    measure: fact
+    landingZone: []
+    note: The fact reports roles outside the collector's allowlist as other, so a custom role isn't told apart from an unlisted built-in one. User assignment to app groups is the identity pillar.
+  - id: governance.compliance-mapping
+    area: governance
+    pillar: governance
+    title: Compliance frameworks as mappings
+    decides: Which compliance standards the estate is assessed against, and where that assessment lives.
+    home: {decision: proposed:governance.compliance, facts: [c11.subscription.defenderPlans], intake: [intake.complianceFrameworks]}
+    baseline:
+      standing: guidance
+      claims: [ref:defender-regulatory-compliance#mcsb-default, ref:defender-regulatory-compliance#more-standards-need-paid-plan, ref:defender-regulatory-compliance#assessed-against-controls, ref:caf-avd-security-governance#compliance-dashboard, gap:governance-scope]
+      says: The benchmark comes with Defender for Cloud; other standards are added there as mappings, never claimed as certification.
+    measure: intake
+    landingZone: [enableDefenderForCloud]
+  - id: governance.config-source
+    area: governance
+    pillar: governance
+    title: Where host settings are defined
+    decides: Which tool is the source of truth for AVD host settings (the Intune settings catalog or Group Policy with the AVD template).
+    home: {decision: proposed:operations.configuration, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-admin-template#template-delivery, ref:avd-admin-template#template-settings, ref:avd-management#intune-recommended, ref:review-checklists-avd#E01.01, ref:review-checklists-avd#E01.02]
+      says: One managed source for host settings, Intune recommended, Group Policy for domain-joined hosts, never local policy at scale.
+    measure: host-side
+    landingZone: []
+    note: How the settings reach the hosts is the intune pillar's ops.config-management row.
+  - id: governance.change-control
+    area: governance
+    pillar: governance
+    title: Change control
+    decides: How changes to the AVD estate are proposed, approved and rolled out.
+    home: {decision: proposed:governance.change, facts: [], intake: [intake.changeControl]}
+    baseline:
+      standing: gap
+      claims: [ref:policy-assignment-structure#enroll-staged, gap:governance-scope]
+      says: No AVD source sets a change process; the method asks how changes are made and judges drift against it.
+    measure: intake
+    landingZone: []
+  - id: governance.prerequisites
+    area: governance
+    pillar: governance
+    title: Tenant, subscription and quota prerequisites
+    decides: Whether the tenant, subscription and quotas an AVD deployment needs are in place.
+    home: {decision: region, facts: [c11.subscription.regions]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#D03.01, ref:review-checklists-avd#C03.03]
+      says: An Entra tenant with a linked subscription and quota for the chosen sizes in the chosen regions.
+    measure: rebuild
     landingZone: []

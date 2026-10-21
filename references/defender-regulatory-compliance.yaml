@@ -1,0 +1,18 @@
+id: defender-regulatory-compliance
+title: Improve regulatory compliance in Microsoft Defender for Cloud
+url: https://learn.microsoft.com/azure/defender-for-cloud/regulatory-compliance-dashboard
+pin: "Learn git_commit_id 8f81656692736b3006aa3f62627339db34735c4e, updated_at 2026-06-17"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [governance]
+claims:
+  - id: mcsb-default
+    says: Turning on Defender for Cloud assigns the Microsoft cloud security benchmark by default.
+    kind: published
+  - id: more-standards-need-paid-plan
+    says: Other compliance standards can be added to the dashboard once at least one paid Defender plan is on.
+    kind: published
+  - id: assessed-against-controls
+    says: The dashboard assesses resources against each standard's controls continuously; it shows gaps, not a certification.
+    kind: published

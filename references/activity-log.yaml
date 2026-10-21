@@ -1,0 +1,18 @@
+id: activity-log
+title: Activity log in Azure Monitor
+url: https://learn.microsoft.com/azure/azure-monitor/fundamentals/activity-log
+pin: "Learn git_commit_id e1e0379f84a8e116f30c72567d10ade8ea2f46e5, updated_at 2026-10-19"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [governance]
+claims:
+  - id: retention-90-days
+    says: Activity log entries are kept for 90 days and then deleted; the activity log is the only record of who created a resource.
+    kind: published
+  - id: export-by-diagnostic-setting
+    says: A diagnostic setting sends the activity log to a Log Analytics workspace, storage or Event Hubs for longer retention.
+    kind: published
+  - id: workspace-retention-12-years
+    says: Exported to a Log Analytics workspace, activity log data can be kept up to 12 years; only the time beyond the first 90 days is charged.
+    kind: published

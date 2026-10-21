@@ -1,0 +1,16 @@
+id: ca-require-compliant-device
+title: Require a compliant device, hybrid joined device or MFA for all users (Conditional Access)
+url: https://learn.microsoft.com/entra/identity/conditional-access/policy-all-users-device-compliance
+pin: "Learn git_commit_id cf1507d526cc288b20dcda79d2a5661407790f43, updated_at 2026-03-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [intune]
+notes: Conditional Access belongs to the identity pillar; this pillar cites it for the compliance signal Intune feeds it.
+claims:
+  - id: compliance-signal
+    says: Conditional Access can require that a device be marked compliant by Intune compliance policies; without a compliance policy in Intune such a policy doesn't work as intended.
+    kind: published
+  - id: exclude-break-glass
+    says: Exclude emergency access accounts and directory synchronization accounts from device-compliance Conditional Access policies.
+    kind: guidance

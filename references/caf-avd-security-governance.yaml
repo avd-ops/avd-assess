@@ -1,0 +1,22 @@
+id: caf-avd-security-governance
+title: Security, governance and compliance for Azure Virtual Desktop (Cloud Adoption Framework)
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-security-governance-and-compliance
+pin: https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/9e9db6f427b04cccdc3040b31aaf3440eaf5b994/docs/scenarios/azure-virtual-desktop/eslz-security-governance-and-compliance.md
+read: 2026-10-21
+license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
+areas: [assessment]
+pillars: [governance]
+notes: Deprecated on the read date and due to be removed from Learn on 2026-10-30; the GitHub pin keeps the text readable.
+claims:
+  - id: compliance-dashboard
+    says: Use the Defender for Cloud regulatory compliance dashboard to add the compliance standards an organization follows.
+    kind: guidance
+  - id: metadata-geographies
+    says: Where data residency applies, limit AVD workspaces, application groups and host pools to geographies that store their metadata locally.
+    kind: guidance
+  - id: activity-logging
+    says: Collect Azure Activity, Microsoft Entra and Key Vault logs for the AVD landing zone and watch them in a SIEM.
+    kind: guidance
+  - id: groups-not-users
+    says: Assign application groups to Entra groups rather than individual users.
+    kind: guidance

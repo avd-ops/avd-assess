@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-intake/v1.json",
   "title": "avd-intake/v1: what telemetry can't know about an estate (intake.json)",
   "description": "Contract C19. The operator answers these once per estate, in intake.json beside their landing zone parameters. It gives the fact register's intake.* facts their paths; hostSharing, avdMfa, reportedSymptoms, appDelivery, appCompatibility, profileSolution, hostAgents, clientAgents and agentRdpBypass are optional. Every answer is an enum, a public Azure region or a clock time: the schema has no field for a name, a domain, an address, an ID or free text. Why each question matters is in avd-assess methods/collection.md and gaps/intake.md.",
   "type": "object",

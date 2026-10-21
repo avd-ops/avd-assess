@@ -8,10 +8,12 @@ This folder is the authority for the formats the foundation repos exchange: avd-
 | C15 `avd-fact-register/v1` | `fact-register.json`, `schemas/fact-register.schema.json` | here | every repo that cites a fact |
 | C17 `avd-run-record/v1`, `avd-run-cost/v1` | `schemas/run-record.schema.json`, `schemas/run-journal.schema.json`, `schemas/run-cost.schema.json`, `run-use-cases.json`, `examples/run-record/` | avd-landing-zone, then the other use cases | the operator, the run report |
 | C19 `avd-intake/v1` | `schemas/intake.schema.json` | the operator's answers | avd-current-state, the brain |
-| C20 `avd-assess-index/v1`, `avd-assess-method/v1`, `avd-assess-map/v1`, `avd-assess-security-review/v1` | `schemas/assess-index.schema.json`, `schemas/assess-method.schema.json`, `schemas/assess-map.schema.json`, `schemas/assess-security-review.schema.json` | here (`index.json`, `method.json`, `map.json`, `security-review.json`) | avd-current-state, the brain; the map by the standards library; the security review map by the avd-ops security page |
+| C20 `avd-assess-index/v1`, `avd-assess-method/v1`, `avd-assess-map/v1`, `avd-assess-endpoints/v1`, `avd-assess-security-review/v1` | `schemas/assess-index.schema.json`, `schemas/assess-method.schema.json`, `schemas/assess-map.schema.json`, `schemas/assess-endpoints.schema.json`, `schemas/assess-security-review.schema.json` | here (`index.json`, `method.json`, `map.json`, `endpoints.json`, `security-review.json`) | avd-current-state, the brain; the map by the standards library; the endpoint map by avd-current-state's endpoint check and avd-linecheck; the security review map by the avd-ops security page |
 | C21 `avd-assessment/v1` | `schemas/assessment.schema.json` | avd-current-state | the operator, the brain |
 | C23 `avd-assessment-review/v1` | `schemas/assessment-review.schema.json` | avd-current-state's assessment portal | the plan (C24), the brain (optional import) |
 | C24 `avd-remediation-plan/v1` | `schemas/remediation-plan.schema.json` | avd-current-state's assessment portal | the operator, the landing zone (later), the brain and avd-swarm (optional import) |
+
+The release manifest, `datapackage.json` with profile `avd-assess-bundle/v1` (`schemas/assess-bundle.schema.json`), is how all of the above ship together; it carries no contract number and is never committed ([distribution spec](../docs/distribution-spec.md)).
 
 Contract numbers stay as the brain assigned them. The brain keeps the formats only the upper layers use (C8 to C10, C12, C13, C16, C18) and C14, the target state, which the landing zone reads when one is given.
 

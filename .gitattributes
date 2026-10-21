@@ -1,0 +1,3 @@
+# The shared verifier fixtures are hashed byte for byte; keep them out of line-ending conversion.
+# Bundled paths must carry no text, eol or export-* attribute (scripts/bundle/build_bundle.py checks).
+tests/fixtures/bundle/** -text

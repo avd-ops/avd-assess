@@ -1,0 +1,8 @@
+{
+  "schema": "avd-assess-map/v2",
+  "pillars": [
+    {
+      "id": "identity"
+    }
+  ]
+}

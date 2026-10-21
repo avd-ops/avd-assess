@@ -1,0 +1,13 @@
+id: fslogix-settings
+title: FSLogix configuration settings reference
+url: https://learn.microsoft.com/fslogix/reference-configuration-settings
+pin: "Learn git_commit_id d91140933b18b132be63ef5f8b2f17568aa0885a, updated_at 2026-09-01"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [intune]
+notes: The profiles pillar owns FSLogix; this pillar cites the one setting Intune depends on.
+claims:
+  - id: roamidentity-off
+    says: RoamIdentity defaults to 0 (don't roam identity data, recommended); 1 turns on legacy roaming of identity data.
+    kind: published

@@ -24,3 +24,6 @@ claims:
   - id: transport-pivot
     says: The connection reliability view groups disconnections by transport, with Multipath, Relay, ShortpathPublic and ShortpathPrivate for UDP, and NotUsed or empty for TCP.
     kind: published
+  - id: client-version-usage
+    says: The Clients tab lists every client connecting and the users on versions older than the newest seen; some mobile clients report a build number, not a version.
+    kind: published

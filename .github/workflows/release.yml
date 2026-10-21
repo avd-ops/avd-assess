@@ -1,0 +1,243 @@
+name: release
+
+# Publishes the avd-assess map as an immutable, attested release bundle (docs/distribution-spec.md
+# section 7) when the owner pushes a v<MAJOR.MINOR.PATCH> tag. A Claude session never tags. The publish
+# job waits in the `release` environment for the owner's approval, so a pushed tag alone publishes
+# nothing; the build job refuses to start if that environment has no required reviewer.
+# workflow_dispatch reruns only the Pages job (a failed Pages deploy after a publish).
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+      attestations: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Refuse a tag that is not v<semver> on main
+        run: |
+          echo "Checking tag $TAG at $GITHUB_SHA ..."
+          [[ "$TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]] || { echo "RESULT FAIL $TAG is not v<MAJOR.MINOR.PATCH>"; exit 1; }
+          git fetch --no-tags origin main
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main || { echo "RESULT FAIL $TAG is not on main"; exit 1; }
+          echo "RESULT PASS $TAG is a release tag on main"
+      - name: Refuse to run without the release gate
+        env:
+          RELEASE_OWNER: ${{ vars.RELEASE_OWNER || vars.HANDOFF_OWNER || github.repository_owner }}
+        run: |
+          echo "Reading the release environment's protection rules ..."
+          gh api "repos/$GH_REPO/environments/release" > env.json || { echo "RESULT FAIL could not read the release environment; create it first (spec section 17, phase 2)"; exit 1; }
+          python3 - "$RELEASE_OWNER" <<'PY'
+          import json, os, subprocess, sys
+          owner, env = sys.argv[1], json.load(open("env.json"))
+          rules = [r for r in env.get("protection_rules") or [] if r.get("type") == "required_reviewers"]
+          logins = [r.get("reviewer", {}).get("login") for rule in rules for r in rule.get("reviewers") or []]
+          errors = []
+          if not rules:
+              errors.append("the release environment has no required reviewer")
+          elif owner not in logins:
+              errors.append(f"{owner} is not a required reviewer of the release environment (reviewers: {logins})")
+          if any(rule.get("prevent_self_review") for rule in rules):
+              errors.append("prevent self-review is on, so the owner could never approve their own tag")
+          policy = env.get("deployment_branch_policy")
+          if policy and policy.get("protected_branches"):
+              errors.append("deployments are limited to protected branches, which refuses every tag; allow tags v*")
+          elif policy and policy.get("custom_branch_policies"):
+              out = subprocess.run(["gh", "api", f"repos/{os.environ['GH_REPO']}/environments/release/deployment-branch-policies"],
+                                   capture_output=True, text=True)
+              if out.returncode:
+                  errors.append(f"could not read the deployment policies: {out.stderr.strip()}")
+              else:
+                  tags = [p["name"] for p in json.loads(out.stdout).get("branch_policies", []) if p.get("type") == "tag"]
+                  if "v*" not in tags:
+                      errors.append(f"no deployment policy admits tags v* (tag policies: {tags})")
+          for e in errors:
+              print(f"RESULT FAIL {e}")
+          if errors:
+              sys.exit(1)
+          print(f"RESULT PASS the release environment waits for {owner} and admits v* tags")
+          PY
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml jsonschema
+      - name: Every check in check.yml, at the tag
+        run: python3 scripts/check_all.py
+      - name: Release gates (determinism, profile, .gitattributes, asset names, idPaths, leak scan, verifier)
+        run: python3 scripts/bundle/build_bundle.py --check --ref "$GITHUB_SHA"
+      - name: Build the bundle from the tag's git blobs
+        run: python3 scripts/bundle/build_bundle.py --ref "$GITHUB_SHA" --tag "$TAG" --out out
+      - name: Download earlier releases (attested) for the diff and the deprecation gate
+        run: |
+          mkdir -p history
+          echo "Listing published releases ..."
+          gh release list --exclude-drafts --limit 200 --json tagName,publishedAt > history/list.json
+          python3 - "$TAG" <<'PY'
+          import json, re, sys
+          tag = sys.argv[1]
+          key = lambda t: tuple(int(x) for x in t[1:].split("."))
+          rel = [r for r in json.load(open("history/list.json")) if re.match(r"^v\d+\.\d+\.\d+$", r["tagName"])]
+          earlier = sorted((r for r in rel if key(r["tagName"]) < key(tag)), key=lambda r: key(r["tagName"]))
+          later = [r["tagName"] for r in rel if key(r["tagName"]) >= key(tag)]
+          if later:
+              sys.exit(f"RESULT FAIL a release at or above {tag} already exists: {', '.join(later)}")
+          json.dump({r["tagName"][1:]: r["publishedAt"] for r in earlier}, open("history/dates.json", "w"), indent=2)
+          open("history/previous", "w").write(earlier[-1]["tagName"][1:] if earlier else "")
+          PY
+          for v in $(python3 -c "import json; print(' '.join(json.load(open('history/dates.json'))))"); do
+            echo "Downloading and attesting v$v ..."
+            gh release download "v$v" -p "avd-assess-$v.zip" -D "history/zips"
+            gh attestation verify "history/zips/avd-assess-$v.zip" -R "$GH_REPO"
+            mkdir -p "history/$v" && (cd "history/$v" && unzip -q "../zips/avd-assess-$v.zip")
+          done
+      - name: Release PR declarations (BREAKING / NOT-BREAKING) and the tag message
+        run: |
+          prev=$(cat history/previous)
+          : > declared.txt
+          if [ -n "$prev" ]; then
+            base=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['avdAssess']['commit'])" "history/$prev/datapackage.json")
+            echo "Reading every pull request merged between v$prev ($base) and $TAG ..."
+            gh pr list --state merged --base main --limit 500 --json number,body,mergeCommit > prs.json
+            python3 - "$base" "$GITHUB_SHA" <<'PY'
+          import json, subprocess, sys
+          base, head = sys.argv[1], sys.argv[2]
+          def ancestor(a, b):
+              return subprocess.run(["git", "merge-base", "--is-ancestor", a, b]).returncode == 0
+          with open("declared.txt", "a") as out:
+              for pr in json.load(open("prs.json")):
+                  c = (pr.get("mergeCommit") or {}).get("oid")
+                  if c and ancestor(c, head) and not ancestor(c, base):
+                      print(f"  #{pr['number']}")
+                      out.write((pr.get("body") or "") + "\n")
+          PY
+          fi
+          git tag -l --format='%(contents)' "$TAG" >> declared.txt
+          grep -E '^(BREAKING|NOT-BREAKING):' declared.txt || echo "No BREAKING or NOT-BREAKING lines."
+      - name: Compute the bump, enforce it and the deprecation gate, write the notes
+        run: |
+          prev=$(cat history/previous)
+          version="${TAG#v}"
+          {
+            echo "avd-assess $version, built from \`$GITHUB_SHA\`. Personal project, not for production, as is; not affiliated with the author's employer, Liquidware or Microsoft."
+            echo
+            echo "Check before use: \`gh attestation verify avd-assess-$version.zip -R $GH_REPO\`, then pin the SHA-256 of \`datapackage.json\` (docs/distribution-spec.md section 9)."
+            echo
+          } > out/notes.md
+          if [ -z "$prev" ]; then
+            echo "First release: no earlier release, so the bump and deprecation gates are skipped."
+            echo "First release." >> out/notes.md
+          else
+            python3 -I tools/diff_bundle.py "history/$prev" out/bundle --declared declared.txt --version "$version" \
+              --history history --notes out/diff-notes.md --json out/bump.json
+            cat out/diff-notes.md >> out/notes.md
+          fi
+      - name: Leak scan of the release notes
+        run: python3 scripts/bundle/build_bundle.py --ref "$GITHUB_SHA" --scan out/notes.md
+      - name: Both verifiers on the built bundle
+        shell: bash
+        run: |
+          python3 -I tools/avd_assess_bundle.py out/bundle
+          pwsh -NoProfile -Command '
+            Import-Module ./tools/AvdAssessBundle.psm1
+            $r = @(Get-AvdAssessBundleCheck -Path ./out/bundle)
+            $r | ForEach-Object { "RESULT {0} {1}: {2}" -f $_.status, $_.id, $_.detail }
+            if (@($r | Where-Object status -eq "FAIL").Count) { exit 1 }'
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: release
+          path: |
+            out/assets/
+            out/notes.md
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: release
+          path: out
+      - uses: actions/attest-build-provenance@7668571508540a607bdfd90a87a560489fe372eb # v2.1.0
+        with:
+          subject-path: 'out/assets/*'
+      - name: Create a draft release with every asset, then publish it (immutable from here)
+        run: |
+          echo "Creating draft release $TAG with $(ls out/assets | wc -l) assets ..."
+          gh release create "$TAG" out/assets/* --draft --verify-tag --title "avd-assess ${TAG#v}" --notes-file out/notes.md
+          echo "Publishing $TAG ..."
+          gh release edit "$TAG" --draft=false
+          echo "RESULT PASS published $TAG"
+
+  pages:
+    needs: publish
+    if: always() && (github.event_name == 'workflow_dispatch' || needs.publish.result == 'success')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      attestations: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+      - name: Download every published release's assets (attested)
+        run: |
+          echo "Listing published releases ..."
+          for tag in $(gh release list --exclude-drafts --limit 200 --json tagName --jq '.[].tagName' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$'); do
+            v="${tag#v}"; d="rel/$v"; mkdir -p "$d"
+            echo "Downloading $tag ..."
+            gh release download "$tag" -p "avd-assess-$v.zip" -p datapackage.json -D "$d"
+            gh attestation verify "$d/avd-assess-$v.zip" -R "$GH_REPO"
+            gh attestation verify "$d/datapackage.json" -R "$GH_REPO"
+            gh release view "$tag" --json tagName,publishedAt,url,body > "$d/release.json"
+          done
+      - name: Build the site
+        run: python3 scripts/bundle/build_site.py --releases rel --out site
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5

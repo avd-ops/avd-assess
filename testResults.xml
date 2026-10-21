@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="16" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="1" invalid="0" date="2026-10-21" time="23:05:28">
+  <environment user-domain="" user="root" machine-name="vm" clr-version="8.0.10" platform="Linux" cwd="/home/user/avd-assess" os-version="6.18.44-fc-v140" nunit-version="2.5.8.0" />
+  <culture-info current-culture="" current-uiculture="" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Ignored" success="True" time="2.0117" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="/home/user/avd-assess/tests/AvdAssessBundle.Tests.ps1" executed="True" result="Ignored" success="True" time="2.0117" asserts="0" description="/home/user/avd-assess/tests/AvdAssessBundle.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Get-AvdAssessBundleCheck on the shared fixtures" executed="True" result="Ignored" success="True" time="0.8318" asserts="0" description="Get-AvdAssessBundleCheck on the shared fixtures">
+            <results>
+              <test-case description="emits the family check-item shape" name="Get-AvdAssessBundleCheck on the shared fixtures.emits the family check-item shape" time="0.0227" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="refuses a schema string the caller does not know" name="Get-AvdAssessBundleCheck on the shared fixtures.refuses a schema string the caller does not know" time="0.0205" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="warns, never passes, when it cannot validate schemas" name="Get-AvdAssessBundleCheck on the shared fixtures.warns, never passes, when it cannot validate schemas" time="0.0047" asserts="0" success="False" result="Ignored" executed="False" />
+              <test-suite type="ParameterizedTest" name="Get-AvdAssessBundleCheck on the shared fixtures.&lt;case&gt;: &lt;why&gt;" executed="True" result="Success" success="True" time="0.7375" asserts="0" description="&lt;case&gt;: &lt;why&gt;">
+                <results>
+                  <test-case description="good: a whole bundle: every check passes" name="Get-AvdAssessBundleCheck on the shared fixtures.good: a whole bundle: every check passes" time="0.3636" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="good: the manifest's SHA-256 is not the pin" name="Get-AvdAssessBundleCheck on the shared fixtures.good: the manifest's SHA-256 is not the pin" time="0.0211" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="good: the pin matches" name="Get-AvdAssessBundleCheck on the shared fixtures.good: the pin matches" time="0.0314" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="changed-byte: one byte of map.json changed, same size" name="Get-AvdAssessBundleCheck on the shared fixtures.changed-byte: one byte of map.json changed, same size" time="0.0195" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="missing-file: notes.md is in the manifest but not on disk" name="Get-AvdAssessBundleCheck on the shared fixtures.missing-file: notes.md is in the manifest but not on disk" time="0.0187" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="bad-hash: a resource hash is not sha256:&lt;64 hex&gt;" name="Get-AvdAssessBundleCheck on the shared fixtures.bad-hash: a resource hash is not sha256:&lt;64 hex&gt;" time="0.0213" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="dotdot: a resource path climbs out of the bundle" name="Get-AvdAssessBundleCheck on the shared fixtures.dotdot: a resource path climbs out of the bundle" time="0.1553" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="schema-unlisted: a document names a schema file the manifest doesn't hash" name="Get-AvdAssessBundleCheck on the shared fixtures.schema-unlisted: a document names a schema file the manifest doesn't hash" time="0.0126" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="unknown-major: map.json is avd-assess-map/v2, a major the reader doesn't know" name="Get-AvdAssessBundleCheck on the shared fixtures.unknown-major: map.json is avd-assess-map/v2, a major the reader doesn't know" time="0.015" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="schema-invalid: a pillar id is a number; the schema wants a string" name="Get-AvdAssessBundleCheck on the shared fixtures.schema-invalid: a pillar id is a number; the schema wants a string" time="0.0407" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="path-map: a subset in the consumer's layout, through a path map" name="Get-AvdAssessBundleCheck on the shared fixtures.path-map: a subset in the consumer's layout, through a path map" time="0.0262" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="path-map: the path map names a file the manifest doesn't list" name="Get-AvdAssessBundleCheck on the shared fixtures.path-map: the path map names a file the manifest doesn't list" time="0.0123" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Get-AvdAssessBundleCheck on a built bundle" executed="True" result="Success" success="True" time="1.5456" asserts="0" description="Get-AvdAssessBundleCheck on a built bundle">
+            <results>
+              <test-case description="passes the bundle scripts/bundle/build_bundle.py wrote" name="Get-AvdAssessBundleCheck on a built bundle.passes the bundle scripts/bundle/build_bundle.py wrote" time="0.7071" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

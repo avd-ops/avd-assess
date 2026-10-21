@@ -1,0 +1,21 @@
+avd-assess: the AVD assessment map
+Copyright (c) the avd-assess contributors. Licensed under the MIT License (LICENSE).
+
+Personal project, not for production, provided as is. Not affiliated with, endorsed by or supported
+by the author's employer, Liquidware or Microsoft. Azure Virtual Desktop is a trademark of its owner.
+
+What the data is made of
+
+- Our own files (the map, the method, the gap pages, the contracts, the tools) are MIT.
+- References link to and pin their sources: Microsoft Learn pages by their git_commit_id and
+  updated_at, GitHub sources by commit. A claim is one line in our own words, with an ID; no table
+  or text from a source is copied.
+- The Azure Virtual Desktop review checklist is cited by item short ID (such as A01.01), never
+  reproduced. Cloud Adoption Framework content (CC BY 4.0) is linked, never reproduced.
+- A reader who reproduces a source's text must follow that source's license, not this one.
+- Third-party products appear only as categories, never by name. Liquidware, the one partner the
+  family names, appears only in this notice and the partner rule.
+- No tenant, customer, user or machine data is in the map.
+
+tests/public-ids.txt and tests/public-ipv4.txt list the published Microsoft identifiers and
+addresses the leak scan allows, so anyone can rerun it on a release.
