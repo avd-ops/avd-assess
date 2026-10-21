@@ -1,0 +1,130 @@
+# The pillars of the map: every detail an AVD estate is built and assessed by belongs to exactly one
+# (gap:deployment-dimensions; the review and plan of 2026-10-21). A pillar is a name and a scope line, not
+# a document: its content is the map rows in dimensions.yaml that carry its id, the references that list
+# it in `pillars`, the checks those rows cite, and a method page only where the pillar is a flow rather
+# than a list of settings. Changed only by a pull request a person merges.
+#
+# status: mapped (rows exist with a pin or a gap page, or the pillar is a method page whose steps cite pins)
+#   | partial (some rows, most of its checklist items unpinned) | missing (no rows and no method page yet)
+#   | extension (a named extension point with no content). tests/check_dimensions.py checks a status
+#   against the rows: missing and extension mean no rows; mapped and partial mean rows or a method page.
+# checklist: the AVD review checklist subcategories (ref:review-checklists-avd) whose items the pillar
+#   pins first. method: the methods/ page, if one exists.
+schema: avd-assess-pillars/v1
+pillars:
+  - id: use-cases
+    title: Use cases and personas
+    scope: Who uses the estate for what, the persona library, and what moves a persona.
+    method: methods/use-cases.md
+    checklist: [C02.01, C02.04]
+    status: mapped
+  - id: capacity
+    title: Capacity, compute and density
+    scope: Region placement, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, OS disks.
+    method: methods/targets-benchmarks.md
+    checklist: [C01, C03]
+    status: partial
+  - id: images
+    title: Images and host servicing
+    scope: Golden image, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.
+    checklist: [B01, E01.09, E01.10, E01.11, E01.13]
+    status: partial
+  - id: app-delivery
+    title: App delivery
+    scope: App Attach and MSIX, RemoteApp against desktops, app compatibility on multi-session hosts, app groups.
+    checklist: [B02, C01.06]
+    status: partial
+  - id: profiles
+    title: Profiles and storage
+    scope: FSLogix containers, Cloud Cache, exclusions and size limits; Azure Files and Azure NetApp Files; capacity, performance, resilience and cross-region profiles.
+    checklist: [H01, H02, H03, H04, A03]
+    status: partial
+  - id: identity
+    title: Identity, authentication and access
+    scope: Identity scenario and join type, Kerberos for file shares, single sign-on and passwordless, multifactor and Conditional Access for sign-in, device compliance, RBAC and app group assignment, admin tiers, account and sync policies.
+    checklist: [D01, D02, D03, G01.01, G04.01]
+    status: missing
+  - id: networking-azure
+    title: "Networking: Azure side"
+    scope: Virtual networks and subnets, DNS and private zones, egress, firewall and NVA, Private Link, service tags, required endpoints, admin access paths, connectivity options, preflight connectivity checks.
+    checklist: [F01]
+    status: mapped
+  - id: networking-client
+    title: "Networking: client side"
+    scope: The user's network and what the client must reach, Private Link from the client, bandwidth, and the SSE, ZTNA and VPN client categories (what must bypass, split tunneling, inspection, effect on the UDP transport).
+    checklist: [C02.01, F01.11]
+    status: partial
+  - id: protocol
+    title: Remote protocol and session
+    scope: RDP transport and Shortpath, RDP properties, redirection, graphics modes and codecs, bandwidth per activity, Teams and multimedia redirection, session limits and timeouts.
+    checklist: [C02.05, B01.10, B03.02, F01.11]
+    status: partial
+  - id: endpoints
+    title: Endpoints and clients
+    scope: Client apps per OS, client OS versions, thin clients and kiosks, managed against unmanaged devices (the management itself is the intune pillar), peripherals, printing, multi-monitor and resolution.
+    checklist: [C02.03, C02.05, G02.06]
+    status: missing
+  - id: ux-measurement
+    title: End-user experience measurement
+    scope: Round trip, input delay, time to connect, logon and app load; the sample check, baseline profiles and the tuning loop; Insights as the measure.
+    method: methods/sample-check.md
+    checklist: [C02.04, E02]
+    status: mapped
+  - id: security-posture
+    title: "Security: posture and hosts"
+    scope: Shared responsibility and trust boundary, Trusted launch and confidential VMs, encryption, OS hardening, app control, screen capture and watermarking, the host baseline profile, Defender for Cloud plans, logging.
+    method: methods/security.md
+    checklist: [G02, G03, G05.01]
+    status: mapped
+  - id: endpoint-protection
+    title: Endpoint protection and security agents
+    scope: Antivirus and endpoint detection and response on multi-session hosts, as categories; VDI settings, image sealing, exclusions for profiles and App Attach, update sharing, measured cost; vulnerability assessment.
+    checklist: [G03.04]
+    status: partial
+  - id: governance
+    title: Governance, policy and compliance
+    scope: Azure Policy guardrails, allowed locations and sizes, tagging and naming, audit logging and retention, benchmark control mapping, compliance frameworks as mappings, change control, tenant and subscription prerequisites. Host configuration delivery is the intune pillar.
+    checklist: [E01.01, E01.02, G03.05, G03.06, C03, D03.01]
+    status: missing
+  - id: monitoring
+    title: Monitoring and operations
+    scope: Insights wiring, alerts, workbooks, log retention, agent and token health, day-2 runbooks, capacity reviews and cadence.
+    checklist: [E01, E02]
+    status: partial
+  - id: scaling
+    title: Scaling and power
+    scope: Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing, personal pool deallocation.
+    checklist: [E01.04, E01.05]
+    status: mapped
+  - id: finops
+    title: FinOps
+    scope: Licensing, hours before rates, commitments, allocation, budgets, pricing and unit cost.
+    method: methods/finops.md
+    checklist: [E01.06, E01.07]
+    status: mapped
+  - id: reliability
+    title: Reliability, disaster recovery and continuity
+    scope: Zones, a recovery model per pool, the workload's own recovery targets, profiles across regions, images in both regions, dependencies, backup, failover tests.
+    checklist: [A01, A02, A03]
+    status: partial
+  - id: review-plan
+    title: Review, remediation and plan
+    scope: Dispositions of findings, accepted risk, plan order, which change fixes which finding.
+    method: methods/remediation.md
+    checklist: []
+    status: mapped
+  - id: hybrid
+    title: Hybrid and Azure Local
+    scope: AVD on Azure Local and the hybrid identity and network overlaps; an extension point only.
+    checklist: []
+    status: extension
+  - id: diagnostics
+    title: Troubleshooting and diagnostics
+    scope: Triage flows per symptom; the data sources (Insights, the diagnostic tables, agent health and logs, event, profile and client logs, Resource Graph); tools as categories; error-code maps; the diagnostic facts the collector reads.
+    checklist: []
+    status: missing
+  - id: intune
+    title: Intune and host management
+    scope: Microsoft Intune for session hosts and client devices as the owner asked (2026-10-21), against Group Policy where an estate keeps it; enrollment of multi-session and Entra-joined hosts, configuration profiles and the settings catalog, security baselines for session hosts, compliance policies for hosts and for the client devices Conditional Access checks, app deployment to hosts, update rings and Autopatch against image-based servicing, remote actions and reporting.
+    checklist: [E01.03]
+    status: partial

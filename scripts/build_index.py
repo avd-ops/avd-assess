@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Builds index.json (avd-second-brain contract C20, avd-assess-index/v1) from references/,
-observations/ and gaps/, so readers need no YAML parser. --check fails when index.json is stale.
+"""Builds index.json (contract C20, avd-assess-index/v1) from references/, observations/ and gaps/, and
+map.json (avd-assess-map/v1) from pillars.yaml, dimensions.yaml, baselines.yaml, use-cases.yaml and
+gold-standards.yaml, so readers need no YAML parser. --check fails when either file is stale.
 
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
@@ -13,7 +14,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "index.json"
-REF_KEYS = ["id", "title", "url", "pin", "read", "license", "areas", "notes", "claims"]
+MAP = ROOT / "map.json"
+REF_KEYS = ["id", "title", "url", "pin", "archive", "read", "license", "areas", "pillars", "notes", "claims"]
 CLAIM_KEYS = ["id", "says", "kind"]
 OBS_KEYS = ["id", "claim", "verdict", "observed", "evidence", "date"]
 
@@ -40,16 +42,35 @@ def build():
     return json.dumps(doc, indent=2, ensure_ascii=True) + "\n"
 
 
+def build_map():
+    """The map as one document: the pillars and every row, baseline, persona and registry entry, as written."""
+    def read(name):
+        return yaml.safe_load((ROOT / name).read_text(encoding="utf-8")) or {}
+    dims = read("dimensions.yaml")
+    doc = {
+        "schema": "avd-assess-map/v1",
+        "pillars": read("pillars.yaml").get("pillars", []),
+        "landingZone": dims.get("landingZone", {}),
+        "dimensions": dims.get("dimensions", []),
+        "baselines": {k: v for k, v in read("baselines.yaml").items() if k != "schema"},
+        "useCases": read("use-cases.yaml").get("entries", []),
+        "goldStandards": read("gold-standards.yaml").get("entries", []),
+    }
+    return json.dumps(doc, indent=2, ensure_ascii=True, default=str) + "\n"
+
+
 def main():
-    text = build()
+    wanted = {OUT: build(), MAP: build_map()}
     if "--check" in sys.argv:
-        if not OUT.exists() or OUT.read_text(encoding="utf-8") != text:
-            print("RESULT FAIL index.json is stale; run python3 scripts/build_index.py")
+        stale = [p.name for p, text in wanted.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
+        if stale:
+            print(f"RESULT FAIL {', '.join(stale)} stale; run python3 scripts/build_index.py")
             return 1
-        print("RESULT PASS index.json is current")
+        print("RESULT PASS index.json and map.json are current")
         return 0
-    OUT.write_text(text, encoding="utf-8")
-    print(f"Wrote {OUT.relative_to(ROOT)}")
+    for p, text in wanted.items():
+        p.write_text(text, encoding="utf-8")
+        print(f"Wrote {p.relative_to(ROOT)}")
     return 0
 
 

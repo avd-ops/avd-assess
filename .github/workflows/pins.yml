@@ -1,0 +1,39 @@
+name: pins
+
+# Weekly pin drift report (scripts/check_pins.py): Learn pages whose commit moved, GitHub paths gone at
+# head, landing zone parameters and review checklist items not yet in the map. It opens or updates one
+# issue and never edits a file; a pin moves only by a reviewed pull request.
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml
+      - name: Compare every pin with its source
+        run: python3 scripts/check_pins.py --write-report report.md
+      - name: Open or update the drift issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Pin drift report"
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --label pins --search "$title in:title" --json number --jq '.[0].number // empty')
+          if [ -z "$number" ]; then
+            gh label create pins --repo "$GITHUB_REPOSITORY" --description "Pin drift reports" --color 0E8A16 2>/dev/null || true
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --label pins --body-file report.md
+          else
+            gh issue edit "$number" --repo "$GITHUB_REPOSITORY" --body-file report.md
+            gh issue comment "$number" --repo "$GITHUB_REPOSITORY" --body "Report refreshed on $(date -u +%Y-%m-%d) by the pins workflow."
+          fi
