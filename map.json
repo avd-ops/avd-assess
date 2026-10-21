@@ -166,17 +166,18 @@
     {
       "id": "monitoring",
       "title": "Monitoring and operations",
-      "scope": "Insights wiring, alerts, workbooks, log retention, agent and token health, day-2 runbooks, capacity reviews and cadence.",
+      "scope": "Insights wiring, alerts and who receives them, Service Health, workbooks, log retention, the monitoring cost signal, Advisor reviews, the deployment strategy, agent and token health, day-2 runbooks, capacity reviews and cadence.",
       "checklist": [
-        "E01",
+        "E01.08",
+        "E01.12",
         "E02"
       ],
-      "status": "partial"
+      "status": "mapped"
     },
     {
       "id": "scaling",
       "title": "Scaling and power",
-      "scope": "Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing, personal pool deallocation.",
+      "scope": "Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing and the first-connection wait, ramp-down and disconnected sessions, personal pool deallocation, autoscale logs.",
       "checklist": [
         "E01.04",
         "E01.05"
@@ -310,7 +311,7 @@
       "avdServicePrincipalObjectId": "The service's own identity in the tenant; fixed, not chosen.",
       "localAdminUsername": "Break-glass account name; the security method covers local admin rights.",
       "localAdminPassword": "A secret, recreated on every rebuild and never carried.",
-      "alertEmailAddresses": "Contact data, kept out of shared facts; monitoring itself is ops.monitoring."
+      "alertEmailAddresses": "Contact data, kept out of shared facts; whether alerts have receivers is ops.alerts."
     }
   },
   "dimensions": [
@@ -3360,16 +3361,15 @@
       "id": "ops.monitoring",
       "area": "operations",
       "pillar": "monitoring",
-      "title": "Monitoring, Insights and alerts",
-      "decides": "Insights wiring (diagnostics per AVD object, agent and data collection rule per host), log retention and alerts.",
+      "title": "Monitoring, Insights wiring",
+      "decides": "Insights wiring - diagnostics on every AVD object, and the monitoring agent and Insights data collection rule on every host.",
       "home": {
         "decision": "proposed:operations.monitoring",
         "facts": [
+          "c11.hostPool.diagnosticsSetting",
           "c11.monitoring.diagnostics",
           "c11.hostPool.sessionHosts.monitoringAgent",
-          "c11.hostPool.sessionHosts.insightsDcr",
-          "c11.logAnalytics.retentionDays",
-          "c11.monitoring.alerts"
+          "c11.hostPool.sessionHosts.insightsDcr"
         ]
       },
       "baseline": {
@@ -3381,20 +3381,225 @@
           "ref:avd-insights#designated-workspace",
           "ref:avd-insights-costs#counter-set",
           "ref:avd-insights-whats-new#latest-version",
-          "ref:amba-avd#host-resources",
-          "gap:insights-facts",
+          "ref:avd-diagnostics#per-object",
+          "ref:avd-diagnostics#categories",
+          "ref:caf-avd-management#insights-config-workbook",
+          "ref:caf-avd-management#regional-workspace",
           "ref:review-checklists-avd#E02.01",
           "ref:review-checklists-avd#E02.02",
-          "gap:deployment-dimensions"
+          "gap:insights-facts",
+          "gap:monitoring-scope"
         ],
-        "says": "Insights' required diagnostics, agent and data collection rule as published for workbook 4.3.1, alerts against the AMBA pattern; no source sets a retention number, so retention stays a gap."
+        "says": "Insights' required diagnostics on host pools and workspaces, and the agent and data collection rule on every host, as published for workbook 4.3.1; one workspace in the hosts' region."
       },
-      "measure": "rebuild",
+      "measure": "fact",
       "landingZone": [
-        "logRetentionDays",
         "deploySubscriptionSettings"
       ],
-      "note": "Alerts are fixed in the landing zone's monitoring module. Alert facts carry counts and state only, never receivers."
+      "note": "The landing zone sends all logs from every AVD object and associates every host with its Insights rule."
+    },
+    {
+      "id": "ops.alerts",
+      "area": "operations",
+      "pillar": "monitoring",
+      "title": "Alerts and who receives them",
+      "decides": "Which alert rules exist on hosts, the host pool and the workspace, at which thresholds, and whether anyone is notified.",
+      "home": {
+        "decision": "proposed:operations.monitoring",
+        "facts": [
+          "c11.monitoring.alerts"
+        ],
+        "intake": [
+          "proposed:intake.alertResponse"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:caf-avd-management#alerting-model",
+          "ref:amba-avd#host-resources",
+          "ref:amba-avd#host-pool-capacity",
+          "ref:amba-avd#fslogix",
+          "gap:monitoring-scope"
+        ],
+        "says": "An alerting model on the collected logs and metrics, against the AMBA AVD pattern's host, capacity and FSLogix thresholds, with a receiver for every enabled rule."
+      },
+      "observations": [
+        "obs:alerts-silent-without-receivers"
+      ],
+      "measure": "fact",
+      "landingZone": [],
+      "note": "The landing zone's six log alerts are fixed in its monitoring module; receivers come from alertEmailAddresses, which stays out of shared facts (notDimensions). Alert facts carry counts and state only, never receivers."
+    },
+    {
+      "id": "ops.storage-alerts",
+      "area": "operations",
+      "pillar": "monitoring",
+      "title": "Profile storage alerts",
+      "decides": "Alerts on the profile share for throttling, capacity, latency and availability.",
+      "home": {
+        "decision": "proposed:operations.monitoring",
+        "facts": [
+          "c11.storage.alerts",
+          "c11.storage.kind"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#E02.03",
+          "ref:amba-avd#storage",
+          "ref:files-monitoring-alerts#throttling",
+          "ref:files-monitoring-alerts#utilization-80",
+          "ref:files-monitoring-alerts#availability",
+          "ref:files-monitoring-alerts#per-share-needs-provisioned"
+        ],
+        "says": "Alert on throttling, low space (80% of provisioned), latency over 50 or 100 ms and availability under 99.9% on the profile share; per-share alerts need provisioned shares."
+      },
+      "observations": [
+        "obs:alerts-silent-without-receivers"
+      ],
+      "measure": "fact",
+      "landingZone": [],
+      "note": "The landing zone has no Azure Files metric alert at 91c7acf; its FSLogix alert reads host event logs."
+    },
+    {
+      "id": "ops.service-health",
+      "area": "operations",
+      "pillar": "monitoring",
+      "title": "Service Health alerts",
+      "decides": "Whether service issues and health advisories for AVD and its dependencies reach someone.",
+      "home": {
+        "decision": "proposed:operations.monitoring",
+        "facts": [
+          "c11.monitoring.serviceHealthAlerts"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#E02.04",
+          "ref:avd-service-alerts#issue-and-advisory",
+          "ref:amba-avd#service-health"
+        ],
+        "says": "Service Health alerts for at least service issues and health advisories; the AMBA pattern adds planned maintenance and security."
+      },
+      "measure": "fact",
+      "landingZone": [],
+      "note": "The landing zone creates one Service Health alert, on every event type for AVD and its dependent services, only when alert addresses are given (obs:alerts-silent-without-receivers)."
+    },
+    {
+      "id": "ops.log-retention",
+      "area": "operations",
+      "pillar": "monitoring",
+      "title": "Log retention",
+      "decides": "How long AVD diagnostics and host data stay queryable, and whether older data is kept at all.",
+      "home": {
+        "decision": "proposed:operations.monitoring",
+        "facts": [
+          "c11.logAnalytics.retentionDays"
+        ],
+        "intake": [
+          "proposed:intake.logRetention"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:log-retention#default-30",
+          "ref:log-retention#first-31-included",
+          "ref:log-retention#analytics-two-years",
+          "ref:caf-avd-management#long-retention-export",
+          "gap:insights-facts",
+          "gap:monitoring-scope"
+        ],
+        "says": "No source sets an AVD retention number; the first 31 days cost nothing extra, so the floor is 31 days and anything longer is the estate's own requirement."
+      },
+      "measure": "fact",
+      "landingZone": [
+        "logRetentionDays"
+      ]
+    },
+    {
+      "id": "ops.ingestion-cost",
+      "area": "operations",
+      "pillar": "monitoring",
+      "title": "Monitoring cost signal",
+      "decides": "Whether the monitoring data the estate collects costs what Microsoft's estimate says per host, and what to trim first if not.",
+      "home": {
+        "decision": "proposed:operations.monitoring",
+        "facts": [
+          "proposed:c12.window.monitoring.ingestMiBPerHostDay"
+        ]
+      },
+      "baseline": {
+        "standing": "prior",
+        "claims": [
+          "ref:avd-insights-costs#per-vm-estimate",
+          "ref:avd-insights-costs#keep-diagnostics",
+          "ref:avd-insights-costs#counter-set",
+          "gap:monitoring-scope"
+        ],
+        "says": "An example host ingests about 92 to 145 MB a day, mostly counters; trim counters, never the AVD diagnostics, which are under 1% of the cost."
+      },
+      "measure": "measured",
+      "landingZone": []
+    },
+    {
+      "id": "ops.advisor",
+      "area": "operations",
+      "pillar": "monitoring",
+      "title": "Advisor recommendations reviewed",
+      "decides": "Whether Advisor's AVD and cost recommendations are read on a cadence and acted on or accepted.",
+      "home": {
+        "decision": "proposed:operations.monitoring",
+        "facts": [
+          "c11.advisor.recommendations"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#E01.08",
+          "ref:avd-advisor#validation-pool",
+          "ref:avd-advisor#production-majority",
+          "ref:avd-advisor#required-urls",
+          "ref:avd-advisor#twice-a-day",
+          "ref:advisor-cost#right-size-or-shutdown-vms"
+        ],
+        "says": "Review Advisor's AVD recommendations periodically; it flags a missing validation pool, too many validation pools and blocked required URLs, and refreshes twice a day."
+      },
+      "measure": "fact",
+      "landingZone": [],
+      "note": "The FinOps method reads Advisor's cost results (gap:finops-scope); this row is the operational review."
+    },
+    {
+      "id": "ops.deployment-automation",
+      "area": "operations",
+      "pillar": "monitoring",
+      "title": "Host pool deployment strategy",
+      "decides": "Whether host pools and hosts are deployed from code through a pipeline gated at a validation pool, or by hand.",
+      "home": {
+        "decision": "proposed:operations.deployment",
+        "facts": [],
+        "intake": [
+          "proposed:intake.deploymentMethod"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#E01.12",
+          "ref:caf-avd-platform-automation#declarative-iac",
+          "ref:caf-avd-platform-automation#gate-to-validation",
+          "ref:caf-avd-platform-automation#tag-image-version",
+          "ref:caf-avd-platform-automation#deprecated"
+        ],
+        "says": "Declarative infrastructure as code, pipelines that reach production only through a validation pool and an approval, and hosts tagged with their image version."
+      },
+      "measure": "intake",
+      "landingZone": [],
+      "note": "The landing zone is itself this path (Bicep and deploy.sh); a run record (C17) proves an estate came from it. The CAF source leaves Learn on 2026-10-30, so the pin is its GitHub copy."
     },
     {
       "id": "ops.config-management",
@@ -3422,37 +3627,230 @@
       "id": "cost.power",
       "area": "cost",
       "pillar": "scaling",
-      "title": "Power management",
-      "decides": "Autoscale, Start VM on Connect and shutdown schedules.",
+      "title": "Start VM on Connect and shutdown schedules",
+      "decides": "Whether hosts start on demand, and what turns hosts off outside the scaling plan.",
       "home": {
         "decision": "hostPool.power",
         "facts": [
           "c11.hostPool.startVmOnConnect",
           "intake.workingHours"
         ],
+        "intake": [
+          "proposed:intake.coldStartTolerance"
+        ],
         "checks": [
           "asm-personal-start-vm-on-connect"
         ]
       },
       "baseline": {
-        "standing": "owned",
+        "standing": "published",
         "claims": [
-          "ref:review-checklists-avd#E01.05"
+          "ref:review-checklists-avd#E01.05",
+          "ref:start-vm-on-connect#power-on-when-needed",
+          "ref:start-vm-on-connect#slower-first-connection",
+          "ref:start-vm-on-connect-faq#no-automatic-deallocation",
+          "ref:autoscale-plan#no-other-scaling-tool",
+          "gap:monitoring-scope"
         ],
-        "says": "Owned by the FinOps method; Start VM on Connect for personal pools is the one check today."
+        "says": "Start VM on Connect powers hosts on only when a user connects, at the price of a slower first connection, and never turns them off; a schedule that does must not fight the scaling plan."
       },
-      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/5bc5da8f17de4cca7e51d62a4210bd7da893fa40/methods/finops.md",
+      "observations": [
+        "obs:scaling-and-start-on-connect-by-default",
+        "obs:budget-alert-needs-a-lock"
+      ],
       "measure": "fact",
       "landingZone": [
         "startVmOnConnect",
-        "scalingTimeZone",
         "enableAutoShutdown",
         "autoShutdownTime",
         "autoShutdownDays",
         "autoShutdownTimeZone",
         "autoShutdownScheduleAction",
         "autoShutdownRunbookUri"
-      ]
+      ],
+      "note": "The landing zone's auto shutdown sets the scaling plan exclusion tag before it stops hosts, so autoscale doesn't start them again."
+    },
+    {
+      "id": "scaling.plan",
+      "area": "cost",
+      "pillar": "scaling",
+      "title": "Scaling plan per host pool",
+      "decides": "Whether each pool has a scaling plan, power management or dynamic, and that nothing else scales it.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": [
+          "c11.hostPool.scalingPlan.method",
+          "c11.hostPool.scalingPlan.exclusionTag",
+          "c11.hostPool.maxSessionLimit",
+          "c11.hostPool.type"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#E01.04",
+          "ref:avd-autoscale#scales-to-save-cost",
+          "ref:avd-autoscale#two-methods",
+          "ref:avd-autoscale#one-plan-per-pool",
+          "ref:avd-autoscale#exclusion-tags",
+          "ref:autoscale-plan#max-session-limit-required",
+          "ref:autoscale-plan#role-at-subscription",
+          "ref:autoscale-plan#no-other-scaling-tool",
+          "ref:autoscale-plan#dynamic-needs-host-config",
+          "ref:autoscale-plan#exclusion-tag"
+        ],
+        "says": "One scaling plan per pool and no other scaling tool on it; a pooled pool needs its own session limit and the power role at subscription scope; maintenance uses the exclusion tag, because autoscale overrides drain mode."
+      },
+      "observations": [
+        "obs:scaling-and-start-on-connect-by-default"
+      ],
+      "measure": "fact",
+      "landingZone": [
+        "scalingTimeZone"
+      ],
+      "note": "The landing zone fixes a power management plan in its control plane module, with exclusion tag avd-scaling-exclude."
+    },
+    {
+      "id": "scaling.schedule",
+      "area": "cost",
+      "pillar": "scaling",
+      "title": "Ramp-up timing and capacity threshold",
+      "decides": "When ramp-up starts against when users arrive, the minimum hosts kept on, and the capacity threshold that starts the next host.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": [
+          "c11.hostPool.scalingPlan.rampUpStart",
+          "c11.hostPool.scalingPlan.rampUpMinimumHostsPct",
+          "c11.hostPool.scalingPlan.rampUpCapacityThresholdPct",
+          "intake.workingHours",
+          "c12.group.concurrency.byHour",
+          "c12.group.scaling.occupancyP95ByPhase"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:avd-autoscale#capacity-threshold",
+          "ref:autoscale-plan#ramp-up-before-peak",
+          "ref:autoscale-plan#capacity-threshold-example",
+          "ref:autoscale-plan#off-peak-depth-first",
+          "ref:autoscale-insights#evaluation-table",
+          "gap:monitoring-scope"
+        ],
+        "says": "Microsoft says ramp up before peak and explains the threshold, but publishes no lead time or threshold; ours is measured from when sessions actually arrive and how full the pool runs."
+      },
+      "measure": "measured",
+      "landingZone": [],
+      "note": "The landing zone fixes weekdays at ramp-up 07:00 with 20% of hosts and a 60% threshold, in scalingTimeZone; batch S4 measures it."
+    },
+    {
+      "id": "scaling.ramp-down",
+      "area": "cost",
+      "pillar": "scaling",
+      "title": "Ramp-down and disconnected sessions",
+      "decides": "Whether ramp-down signs users out, and how long disconnected sessions hold a host on.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": [
+          "c11.hostPool.scalingPlan.forceLogoff"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:autoscale-plan#ramp-down-consolidates",
+          "ref:autoscale-faq#disconnected-time-limit",
+          "ref:session-lock-behavior#disconnect-on-lock-sso"
+        ],
+        "says": "Ramp-down only frees hosts when sessions fit on fewer; disconnected sessions count as active (and with single sign-on a lock disconnects), so a 15 to 30 minute sign-out policy lets a pool reach zero."
+      },
+      "measure": "fact",
+      "landingZone": [],
+      "note": "The landing zone never forces sign-out and stops hosts at zero sessions; the disconnected-session time limit is a host policy, so it is host-side."
+    },
+    {
+      "id": "scaling.personal",
+      "area": "cost",
+      "pillar": "scaling",
+      "title": "Personal pool deallocation and hibernation",
+      "decides": "What turns personal hosts off after use, and whether they hibernate.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": [
+          "c11.hostPool.scalingPlan.method",
+          "c11.hostPool.sessionHosts.hibernation",
+          "c11.hostPool.startVmOnConnect",
+          "c11.hostPool.type"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#E01.06",
+          "ref:start-vm-on-connect-faq#no-automatic-deallocation",
+          "ref:avd-autoscale#hibernate-personal",
+          "ref:autoscale-plan#hibernate-not-with-profiles"
+        ],
+        "says": "Start VM on Connect never deallocates, so personal hosts need a plan or automation to turn off; hibernation isn't supported with FSLogix or App Attach."
+      },
+      "measure": "fact",
+      "landingZone": [],
+      "note": "The landing zone deploys pooled pools only."
+    },
+    {
+      "id": "scaling.cold-start",
+      "area": "cost",
+      "pillar": "scaling",
+      "title": "First-connection wait",
+      "decides": "Whether the wait for a host to start is acceptable to these users, which sets minimum hosts and off-peak coverage.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": [
+          "c12.group.scaling.coldStartConnectP95Seconds",
+          "c12.group.logonSeconds.p95"
+        ],
+        "intake": [
+          "proposed:intake.coldStartTolerance"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:start-vm-on-connect#slower-first-connection",
+          "gap:monitoring-scope"
+        ],
+        "says": "The source says a deallocated host makes the first connection slower but gives no number; ours is measured and judged against the users' own tolerance."
+      },
+      "measure": "measured",
+      "landingZone": []
+    },
+    {
+      "id": "scaling.diagnostics",
+      "area": "cost",
+      "pillar": "scaling",
+      "title": "Autoscale logs",
+      "decides": "Whether autoscale's decisions and failures are recorded where someone reads them.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": [
+          "c11.hostPool.autoscaleLogs",
+          "c12.group.scaling.failedEvaluations"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:autoscale-insights#pooled-only",
+          "ref:autoscale-insights#hostpool-category",
+          "ref:autoscale-insights#evaluation-table",
+          "ref:autoscale-diagnostics#plan-to-storage-or-hub",
+          "ref:avd-diagnostics#categories"
+        ],
+        "says": "Pooled pools send autoscale logs with the host pool's other logs to the Insights workspace; personal pools send them to storage or an event hub."
+      },
+      "measure": "fact",
+      "landingZone": [],
+      "note": "The landing zone sends all host pool logs to its workspace and also sets diagnostics on the scaling plan; whether the plan's own setting carries data to Log Analytics isn't tested."
     },
     {
       "id": "cost.budget",
@@ -4163,6 +4561,8 @@
         "density.sessions-per-host",
         "compute.host-count",
         "cost.power",
+        "scaling.schedule",
+        "scaling.cold-start",
         "profile.storage-performance"
       ]
     },
@@ -4358,6 +4758,7 @@
         "hostpool.type",
         "compute.vm-size",
         "cost.power",
+        "scaling.personal",
         "security.host-type"
       ]
     },
@@ -5010,7 +5411,8 @@
       ],
       "dimensions": [
         "compute.host-count",
-        "cost.power"
+        "cost.power",
+        "scaling.plan"
       ]
     }
   ],

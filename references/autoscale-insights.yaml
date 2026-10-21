@@ -1,0 +1,18 @@
+id: autoscale-insights
+title: Monitor Autoscale operations with Insights in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/autoscale-monitor-operations-insights
+pin: "Learn git_commit_id a2a9e65a51ae1c976e7dc98dfea2ca6d522e5028, updated_at 2025-06-24"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [scaling, monitoring]
+claims:
+  - id: pooled-only
+    says: Autoscale data in Insights is for pooled host pools only; personal host pools send autoscale logs to a storage account or an event hub.
+    kind: published
+  - id: hostpool-category
+    says: The host pool's diagnostic setting needs the autoscale category for pooled host pools, sent to the same workspace as its other logs.
+    kind: published
+  - id: evaluation-table
+    says: Each autoscale evaluation is a row with the phase, the configured threshold and minimum, session occupancy, active and unhealthy host counts and the result; failed ones join to the errors table by correlation ID.
+    kind: published

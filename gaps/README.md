@@ -34,6 +34,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [triage-slow-session](triage-slow-session.md) | Triage when a session is slow or disconnects: network, host or client |
 | [triage-profile-failed](triage-profile-failed.md) | Triage when a user profile fails to load |
 | [network-scope](network-scope.md) | What a network assessment can judge, from which evidence, the draft network checks, and which repo does what |
+| [monitoring-scope](monitoring-scope.md) | The facts, draft checks and intake questions for monitoring, alerts, retention, scaling plans and power, and how to judge ramp-up timing and the first-connection wait |
 | [client-network](client-network.md) | Judging the networks users connect from, AVD Private Link from the client included |
 | [workload-benchmark](workload-benchmark.md) | How a pilot or a scripted load test is run so its result can replace the sizing guide's estimates |
 | [app-delivery-scope](app-delivery-scope.md) | What an app delivery and profile assessment can judge from where, the ways apps reach a host, and the joins the facts can't make yet |

@@ -28,3 +28,5 @@
 | `intake.profileSolution` (optional) | What carries the profile (`fslogix`, `other-profile-product`, `local-only`, `undecided`)? | Which profile rows apply (`ref:fslogix-azure-files#files-or-anf`) |
 
 **Proposed for the reliability pillar (2026-10-21).** Five more optional answers, `specified` in the register and not yet in the schema: `intake.recoveryTime`, `intake.recoveryPoint`, `intake.regionRecovery`, `intake.recoveryDependencies` and `intake.profileData`. Their questions and enums are in `gap:reliability-scope`; they join the schema as optional fields, so an intake file written today stays valid.
+
+**Proposed, not yet in the schema:** `intake.alertResponse`, `intake.logRetention`, `intake.coldStartTolerance` and `intake.deploymentMethod`, with their values and reasons in `gap:monitoring-scope`; the FinOps license and commitment questions in `gap:finops-scope`.

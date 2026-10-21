@@ -225,3 +225,10 @@ claims:
     says: Plan for the golden image to be available across regions (Reliability, low).
   - id: A02.02
     says: Assess infrastructure and application dependencies (Reliability, medium).
+  # Monitoring and operations items read for the monitoring and scaling pillars (2026-10-21).
+  - id: E01.08
+    says: Check Azure Advisor recommendations for AVD periodically (Operations, low).
+  - id: E01.12
+    says: Decide the host pool deployment strategy (Operations, medium).
+  - id: E02.04
+    says: Configure Azure Service Health alerts for AVD (Reliability, medium).
