@@ -1,0 +1,27 @@
+id: avd-entra-joined-hosts
+title: Microsoft Entra joined session hosts in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/azure-ad-joined-session-hosts
+pin: "Learn git_commit_id 56121a97d2baa489be592daaeede59f7e9148999, updated_at 2026-05-19"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [identity]
+claims:
+  - id: one-join-type-per-pool
+    says: A host pool should hold session hosts of one join type only.
+    kind: published
+  - id: vm-login-roles
+    says: Without a session host configuration, users of Entra joined hosts also need the Virtual Machine User Login role and local admins the Virtual Machine Administrator Login role, best assigned to the same group as the application group.
+    kind: published
+  - id: legacy-auth-property
+    says: Without single sign-on, clients that aren't Entra joined, hybrid joined or registered to the same tenant need the targetisaadjoined RDP property and can only use a user name and password.
+    kind: published
+  - id: vm-sign-in-app-exclusion
+    says: To keep Windows Hello for Business and similar methods working with MFA, exclude the Azure Windows VM Sign-In app from the Conditional Access policy.
+    kind: published
+  - id: fslogix-hybrid-users
+    says: FSLogix profiles on Entra joined hosts are supported on Azure Files with hybrid user accounts.
+    kind: published
+  - id: on-premises-line-of-sight
+    says: Entra joined hosts need no domain controller to deploy or sign in, but still need Active Directory and a line of sight to it to reach on-premises resources.
+    kind: published

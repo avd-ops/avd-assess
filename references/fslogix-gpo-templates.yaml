@@ -1,0 +1,12 @@
+id: fslogix-gpo-templates
+title: How to use FSLogix Group Policy template files
+url: https://learn.microsoft.com/fslogix/how-to-use-group-policy-templates
+pin: "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [identity, profiles]
+claims:
+  - id: admx-templates
+    says: FSLogix ships ADMX and ADML templates for the local and the domain Group Policy editors, copied to the local or the central store.
+    kind: published

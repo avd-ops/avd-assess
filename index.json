@@ -2,6 +2,33 @@
   "schema": "avd-assess-index/v1",
   "references": [
     {
+      "id": "adds-in-azure",
+      "title": "Deploy AD DS in an Azure virtual network (Azure Architecture Center)",
+      "url": "https://learn.microsoft.com/azure/architecture/example-scenario/identity/adds-extend-domain",
+      "pin": "Learn git_commit_id 317c21f64e5270088105ad6d42b59ad26e40241c, updated_at 2026-06-17",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "notes": "The review checklist's D01.01 links to an older address of this page.",
+      "claims": [
+        {
+          "id": "two-dcs-across-zones",
+          "says": "Run at least two domain controllers in Azure, in different availability zones or an availability set where zones aren't available.",
+          "kind": "published"
+        },
+        {
+          "id": "persistent-os-disk",
+          "says": "Domain controllers use persistent managed OS disks, never ephemeral ones.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "advisor-cost",
       "title": "Cost recommendations (Azure Advisor)",
       "url": "https://learn.microsoft.com/azure/advisor/advisor-reference-cost-recommendations",
@@ -275,6 +302,73 @@
       ]
     },
     {
+      "id": "avd-authentication",
+      "title": "Supported identities and authentication methods for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/authentication",
+      "pin": "Learn git_commit_id 74270aaa6471ca1c29c36103e393e55d95578ccb, updated_at 2026-10-15",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "notes": "The identity scenario page the review checklist's D03.02 links to. It splits sign-in into three phases (the service, the session host, inside the session); each row of the identity pillar names which phase it judges.",
+      "claims": [
+        {
+          "id": "one-identity",
+          "says": "The same Entra identity must sign in to the service and to Windows on the session host; a different Windows account, a local account included, isn't supported and can bypass Conditional Access.",
+          "kind": "published"
+        },
+        {
+          "id": "no-ad-only-identities",
+          "says": "Users that exist only in Active Directory, including standalone AD with AD FS, can't use AVD, because the service has to find them in Entra ID.",
+          "kind": "published"
+        },
+        {
+          "id": "upn-or-sid-match",
+          "says": "Hybrid identities work only when the UPN or the SID matches between Active Directory and Entra ID.",
+          "kind": "published"
+        },
+        {
+          "id": "cloud-only-entra-joined",
+          "says": "Cloud-only identities are supported on Entra joined session hosts.",
+          "kind": "published"
+        },
+        {
+          "id": "federated-idp",
+          "says": "A third-party identity provider must federate with Entra ID, with Entra joined or hybrid joined hosts and Entra authentication to the session host turned on.",
+          "kind": "published"
+        },
+        {
+          "id": "external-identity-requirements",
+          "says": "External identities need Entra joined hosts on recent Windows 11 or Windows Server 2025 builds, single sign-on on the host pool and Windows App, and they can't use Kerberos or NTLM to on-premises resources.",
+          "kind": "published"
+        },
+        {
+          "id": "three-phases",
+          "says": "Sign-in has three phases, the AVD service (where Conditional Access applies), the remote session and in-session authentication, each with its own set of supported credentials.",
+          "kind": "published"
+        },
+        {
+          "id": "sso-recommended",
+          "says": "Single sign-on with Entra authentication is the recommended way to sign in to Entra joined and hybrid joined hosts; without it users get a credential prompt every connection or must save credentials on the client.",
+          "kind": "guidance"
+        },
+        {
+          "id": "smartcard-needs-kdc",
+          "says": "Smart cards and Windows Hello for Business sign in to the session host with Kerberos only, so the client needs a line of sight to a domain controller, a VPN or a KDC proxy.",
+          "kind": "published"
+        },
+        {
+          "id": "in-session-passwordless",
+          "says": "In-session passwordless sign-in redirects WebAuthn requests to the local device on supported builds and is turned off with the WebAuthn redirection RDP property.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-auto-reconnect",
       "title": "Modern auto-reconnect in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/fast-reconnect",
@@ -471,6 +565,53 @@
         {
           "id": "no-public-inbound",
           "says": "Azure Virtual Desktop needs no public inbound ports on session hosts.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-entra-joined-hosts",
+      "title": "Microsoft Entra joined session hosts in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/azure-ad-joined-session-hosts",
+      "pin": "Learn git_commit_id 56121a97d2baa489be592daaeede59f7e9148999, updated_at 2026-05-19",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "claims": [
+        {
+          "id": "one-join-type-per-pool",
+          "says": "A host pool should hold session hosts of one join type only.",
+          "kind": "published"
+        },
+        {
+          "id": "vm-login-roles",
+          "says": "Without a session host configuration, users of Entra joined hosts also need the Virtual Machine User Login role and local admins the Virtual Machine Administrator Login role, best assigned to the same group as the application group.",
+          "kind": "published"
+        },
+        {
+          "id": "legacy-auth-property",
+          "says": "Without single sign-on, clients that aren't Entra joined, hybrid joined or registered to the same tenant need the targetisaadjoined RDP property and can only use a user name and password.",
+          "kind": "published"
+        },
+        {
+          "id": "vm-sign-in-app-exclusion",
+          "says": "To keep Windows Hello for Business and similar methods working with MFA, exclude the Azure Windows VM Sign-In app from the Conditional Access policy.",
+          "kind": "published"
+        },
+        {
+          "id": "fslogix-hybrid-users",
+          "says": "FSLogix profiles on Entra joined hosts are supported on Azure Files with hybrid user accounts.",
+          "kind": "published"
+        },
+        {
+          "id": "on-premises-line-of-sight",
+          "says": "Entra joined hosts need no domain controller to deploy or sign in, but still need Active Directory and a line of sight to it to reach on-premises resources.",
           "kind": "published"
         }
       ]
@@ -968,6 +1109,64 @@
       ]
     },
     {
+      "id": "avd-mfa-conditional-access",
+      "title": "Enforce Microsoft Entra multifactor authentication for Azure Virtual Desktop using Conditional Access",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/set-up-mfa",
+      "pin": "Learn git_commit_id 9e91f2c9068a0844f3041110ca90b6a25540b566, updated_at 2026-07-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "notes": "The page the review checklist's G04.01 links to. Every claim here lives in the tenant's directory, not in Azure Resource Manager, so a Reader-only run can't see it (gap:identity-scope). App IDs are on the page and aren't repeated here.",
+      "claims": [
+        {
+          "id": "licensing",
+          "says": "Conditional Access needs Entra ID P1 or P2 for the users and can't be used while Security Defaults are on.",
+          "kind": "published"
+        },
+        {
+          "id": "target-apps",
+          "says": "Target the Azure Virtual Desktop app for the service and gateway, and the Windows Cloud Login app for session host sign-in when single sign-on is on.",
+          "kind": "published"
+        },
+        {
+          "id": "two-aligned-policies",
+          "says": "Create two policies, one per app, with matching conditions except sign-in frequency, so users aren't prompted unexpectedly.",
+          "kind": "guidance"
+        },
+        {
+          "id": "feed-app-no-mfa",
+          "says": "Never put the AVD Azure Resource Manager provider app, which only retrieves the feed, in a policy that requires MFA.",
+          "kind": "published"
+        },
+        {
+          "id": "legacy-clients-off",
+          "says": "Apply the policy to browser and desktop and mobile clients, and leave legacy authentication clients out.",
+          "kind": "guidance"
+        },
+        {
+          "id": "per-user-mfa-off",
+          "says": "Legacy per-user MFA alongside Conditional Access breaks sign-in to Entra joined hosts; turn it off and use Conditional Access only.",
+          "kind": "published"
+        },
+        {
+          "id": "sign-in-frequency",
+          "says": "Sign-in frequency decides how often users reauthenticate; \"every time\" works only on the Windows Cloud Login app with single sign-on, and a running connection isn't interrupted.",
+          "kind": "published"
+        },
+        {
+          "id": "all-apps-conflicts",
+          "says": "Policies on all cloud apps also hit AVD; check them for device compliance (which Entra joined hosts may not meet), location rules (the IP differs between the two apps) and blocks on the Windows 365 app that Windows App also signs in to.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-multiregion-bcdr",
       "title": "Multiregion BCDR for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/architecture/example-scenario/azure-virtual-desktop/azure-virtual-desktop-multi-region-bcdr",
@@ -1054,6 +1253,31 @@
         {
           "id": "rtt-under-150",
           "says": "Round-trip time from the client's network to the host pool's Azure region should be under 150 ms; put session hosts in the region closest to users.",
+          "kind": "published"
+        },
+        {
+          "id": "identity-scenarios",
+          "says": "Six identity scenarios are supported, from Entra-only users on Entra joined hosts to synced users on hosts joined to AD DS or Entra Domain Services; Entra ID always authenticates the user.",
+          "kind": "published"
+        },
+        {
+          "id": "hybrid-sync",
+          "says": "With AD DS, users must be synced to Entra ID with Entra Connect; with Entra Domain Services the sync from Entra ID is one way and automatic; personal Microsoft accounts aren't supported.",
+          "kind": "published"
+        },
+        {
+          "id": "fslogix-entra-joined-hybrid",
+          "says": "FSLogix profiles on Entra joined hosts need Azure Files or Azure NetApp Files and hybrid user accounts created in AD DS.",
+          "kind": "published"
+        },
+        {
+          "id": "join-account",
+          "says": "Joining hosts needs an account that can join devices to the tenant or computers to the domain (for Entra Domain Services, a member of its DC administrators group), and that account can't have MFA.",
+          "kind": "published"
+        },
+        {
+          "id": "ou-at-deploy",
+          "says": "Hosts can be placed in an OU at deployment time with an optional parameter.",
           "kind": "published"
         }
       ]
@@ -1205,6 +1429,38 @@
         {
           "id": "client-proxy-support",
           "says": "Proxy support differs by client platform (the Android client has none).",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-rbac",
+      "title": "Built-in Azure RBAC roles for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/rbac",
+      "pin": "Learn git_commit_id a2c9d3b52ffe73e75a81d5f757380994c65169e1, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "claims": [
+        {
+          "id": "scoped-roles",
+          "says": "AVD has built-in roles scoped to host pools, application groups, workspaces, sessions and session hosts, so admin duties can be split below Owner and Contributor.",
+          "kind": "published"
+        },
+        {
+          "id": "user-role",
+          "says": "Desktop Virtualization User on an application group lets a user use its apps or desktop as a non-administrator.",
+          "kind": "published"
+        },
+        {
+          "id": "contributor-no-assignment",
+          "says": "The contributor roles don't include assigning users or groups; that needs User Access Administrator or a role with the same right.",
           "kind": "published"
         }
       ]
@@ -1392,6 +1648,59 @@
           "id": "test-on-aligned-pool",
           "says": "Test the update process and the new image on a test host pool aligned to the one being updated before updating production.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-sso",
+      "title": "Configure single sign-on for Azure Virtual Desktop using Microsoft Entra ID",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/configure-single-sign-on",
+      "pin": "Learn git_commit_id 9e91f2c9068a0844f3041110ca90b6a25540b566, updated_at 2026-07-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "notes": "Single sign-on has a host pool half (an RDP property, readable from the control plane) and a tenant half (a setting on the Windows Cloud Login service principal and the trusted device groups, which only a directory read sees).",
+      "claims": [
+        {
+          "id": "join-types",
+          "says": "Single sign-on needs Entra joined or Entra hybrid joined hosts; hosts joined only to AD DS or to Entra Domain Services aren't supported.",
+          "kind": "published"
+        },
+        {
+          "id": "two-way-trust",
+          "says": "Hybrid joined hosts in a different domain from the users need a two-way trust, or connections fall back to older authentication.",
+          "kind": "published"
+        },
+        {
+          "id": "tenant-rdp-enabled",
+          "says": "The tenant must allow Entra authentication for Windows by turning on the Remote Desktop protocol setting of the Windows Cloud Login service principal.",
+          "kind": "published"
+        },
+        {
+          "id": "consent-prompt",
+          "says": "Users see a consent prompt for each new host, remembered for up to 15 hosts and 30 days, unless the hosts are in a trusted device group on the service principal.",
+          "kind": "published"
+        },
+        {
+          "id": "kerberos-server-object",
+          "says": "A Kerberos server object is needed for hybrid joined hosts, and for Entra joined hosts that must reach on-premises resources where domain controllers exist.",
+          "kind": "published"
+        },
+        {
+          "id": "host-pool-property",
+          "says": "The host pool turns single sign-on on with the Entra authentication RDP property.",
+          "kind": "published"
+        },
+        {
+          "id": "disconnect-on-lock",
+          "says": "With single sign-on a locked session disconnects by default instead of showing the remote lock screen.",
+          "kind": "published"
         }
       ]
     },
@@ -1675,6 +1984,48 @@
         {
           "id": "app-remediation-blocks",
           "says": "Some apps need remediation, modernization or a move to Azure first; when latency would hurt the business, that can block a persona's migration.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "caf-avd-identity",
+      "title": "Cloud Adoption Framework, identity and access management for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-identity-and-access-management",
+      "pin": "https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/5c44a2accff2018eba5dd738b648eef4c9db179b/docs/scenarios/azure-virtual-desktop/eslz-identity-and-access-management.md",
+      "read": "2026-10-21",
+      "license": "CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "notes": "Deprecated; Microsoft says the Learn page is removed on 2026-10-30. The GitHub pin stays readable after that, and the claims below are kept only where a current product page doesn't say the same.",
+      "claims": [
+        {
+          "id": "ou-per-host-pool",
+          "says": "Put each host pool's session hosts in their own Active Directory OU to keep policy simple and orphaned objects easy to find.",
+          "kind": "guidance"
+        },
+        {
+          "id": "non-interactive-join-account",
+          "says": "The domain join account must not need MFA or any interactive prompt.",
+          "kind": "guidance"
+        },
+        {
+          "id": "entra-ds-limits",
+          "says": "Entra Domain Services needs password hash sync and doesn't allow hybrid join of the hosts.",
+          "kind": "guidance"
+        },
+        {
+          "id": "laps",
+          "says": "Rotate session hosts' local administrator passwords with a solution like LAPS.",
+          "kind": "guidance"
+        },
+        {
+          "id": "groups-not-users",
+          "says": "Assign Desktop Virtualization User to security groups, not to individual users.",
           "kind": "guidance"
         }
       ]
@@ -2217,6 +2568,118 @@
       ]
     },
     {
+      "id": "entra-ds-compare",
+      "title": "Compare self-managed AD DS, Microsoft Entra ID and managed Microsoft Entra Domain Services",
+      "url": "https://learn.microsoft.com/entra/identity/domain-services/compare-identity-solutions",
+      "pin": "Learn git_commit_id a3426c07f689ba04846e8a3e6ce2d546b1fda515, updated_at 2026-02-19",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "notes": "The page the review checklist's D03.06 links to for the Entra Domain Services limits.",
+      "claims": [
+        {
+          "id": "managed-subset",
+          "says": "Entra Domain Services is a managed domain with a subset of AD DS features and no domain or enterprise admin rights; schema extensions and the rest of a self-managed domain need AD DS.",
+          "kind": "published"
+        },
+        {
+          "id": "self-managed-models",
+          "says": "Self-managed AD DS in Azure is either a standalone cloud domain or the on-premises domain extended over VPN or ExpressRoute, with replica domain controllers in Azure.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "files-ad-ds-password",
+      "title": "Update the password for an AD DS storage account identity",
+      "url": "https://learn.microsoft.com/azure/storage/files/storage-files-identity-ad-ds-update-password",
+      "pin": "Learn git_commit_id bd12a01faea5017614970fb1ee17ddbcf67fa790, updated_at 2026-03-11",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "claims": [
+        {
+          "id": "rotate-or-exempt-ou",
+          "says": "The AD account that represents a storage account has a password that is one of its Kerberos keys; rotate it before the OU's password policy expires it, or place it in an OU that doesn't expire passwords.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "files-entra-kerberos",
+      "title": "Microsoft Entra Kerberos authentication for Azure Files",
+      "url": "https://learn.microsoft.com/azure/storage/files/storage-files-identity-auth-hybrid-identities-enable",
+      "pin": "Learn git_commit_id 0edc2293e31d70060489c0caa331c73379574a8a, updated_at 2026-09-22",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "identity",
+        "profiles"
+      ],
+      "notes": "The page the review checklist's D02.01 links to. The landing zone uses it for cloud-only users (obs:smb-channel-aes128-gcm-needed, obs:fslogix-cloud-only-users-work).",
+      "claims": [
+        {
+          "id": "cloud-only-and-hybrid",
+          "says": "Entra Kerberos authenticates hybrid and cloud-only identities to Azure Files; cloud-only identities need no domain controller at all and are supported in the Azure public cloud only.",
+          "kind": "published"
+        },
+        {
+          "id": "one-identity-source",
+          "says": "A storage account takes one identity source; another source must be turned off before Entra Kerberos is turned on.",
+          "kind": "published"
+        },
+        {
+          "id": "clients-entra-joined",
+          "says": "Clients must be Entra joined or Entra hybrid joined, not joined to Entra Domain Services or to AD only.",
+          "kind": "published"
+        },
+        {
+          "id": "hybrid-acl-line-of-sight",
+          "says": "For hybrid identities, setting Windows ACLs needs a device with a line of sight to a domain controller.",
+          "kind": "published"
+        },
+        {
+          "id": "admin-consent",
+          "says": "The storage account's generated app needs admin consent after Entra Kerberos is turned on.",
+          "kind": "published"
+        },
+        {
+          "id": "cloud-group-sids",
+          "says": "Cloud-only identities need a manifest tag on the storage account's app so cloud groups go in the ticket, or authentication fails; a ticket holds at most 1,010 group SIDs.",
+          "kind": "published"
+        },
+        {
+          "id": "exclude-from-mfa",
+          "says": "Entra Kerberos doesn't support MFA to the share, so the storage account's app must be excluded from Conditional Access MFA policies that target all apps.",
+          "kind": "published"
+        },
+        {
+          "id": "settings-catalog-multisession",
+          "says": "Set cloud Kerberos ticket retrieval on multi-session hosts through the Intune settings catalog; the OMA-URI method doesn't work on them.",
+          "kind": "published"
+        },
+        {
+          "id": "ticket-aes256",
+          "says": "Entra Kerberos tickets are always AES-256; SMB channel encryption is set separately.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "finops-framework",
       "title": "FinOps Framework overview (Microsoft's guide to the FinOps Foundation framework)",
       "url": "https://learn.microsoft.com/cloud-computing/finops/framework/finops-framework",
@@ -2380,6 +2843,56 @@
           "id": "events-rarely-graceful",
           "says": "Disaster events are rarely graceful; profiles may be lost or corrupted on failover, so critical data belongs in OneDrive or SharePoint.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-entra-profile",
+      "title": "Store FSLogix profile containers on Azure Files using Microsoft Entra ID",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/create-profile-container-azure-ad",
+      "pin": "Learn git_commit_id 2afc1a6eb7f7a4b901c8679945c754ac3ebe4e5b, updated_at 2026-05-19",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "pillars": [
+        "identity",
+        "profiles"
+      ],
+      "claims": [
+        {
+          "id": "cloud-only-supported",
+          "says": "Profile containers on Azure Files with Entra Kerberos work for hybrid identities from Entra joined or hybrid joined hosts, and for cloud-only and external identities in the Azure public cloud.",
+          "kind": "published"
+        },
+        {
+          "id": "host-settings",
+          "says": "Each host needs cloud Kerberos ticket retrieval turned on and credential keys loaded from the profile, set in the image, Intune or Group Policy.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-gpo-templates",
+      "title": "How to use FSLogix Group Policy template files",
+      "url": "https://learn.microsoft.com/fslogix/how-to-use-group-policy-templates",
+      "pin": "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "identity",
+        "profiles"
+      ],
+      "claims": [
+        {
+          "id": "admx-templates",
+          "says": "FSLogix ships ADMX and ADML templates for the local and the domain Group Policy editors, copied to the local or the central store.",
+          "kind": "published"
         }
       ]
     },
@@ -3279,6 +3792,62 @@
         {
           "id": "C02.04",
           "says": "Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high)."
+        },
+        {
+          "id": "D01.01",
+          "says": "Run at least two domain controllers in the Azure virtual network close to the host pools (Reliability, medium)."
+        },
+        {
+          "id": "D01.02",
+          "says": "Give each host pool its own OU in Active Directory (Operations, medium)."
+        },
+        {
+          "id": "D01.03",
+          "says": "Review the domain GPOs that reach the host pools' OUs and affect session host features (Operations, medium)."
+        },
+        {
+          "id": "D01.04",
+          "says": "Configure FSLogix with its Group Policy ADMX template (Operations, medium)."
+        },
+        {
+          "id": "D01.05",
+          "says": "Use a dedicated account that may only join VMs to the domain (Security, medium)."
+        },
+        {
+          "id": "D01.06",
+          "says": "Create a domain user group per set of users granted each host pool's application group (Security, medium)."
+        },
+        {
+          "id": "D01.07",
+          "says": "Check the password expiration policy for the accounts Azure Files AD integration uses (Security, high)."
+        },
+        {
+          "id": "D01.08",
+          "says": "The Active Directory forest or domain must sync with Entra ID (Reliability, high)."
+        },
+        {
+          "id": "D03.01",
+          "says": "An Entra tenant with at least one linked subscription must exist (Reliability, high)."
+        },
+        {
+          "id": "D03.02",
+          "says": "Review and document the identity scenario (Security, high)."
+        },
+        {
+          "id": "D03.03",
+          "says": "Assess the user account types and their requirements (Security, medium)."
+        },
+        {
+          "id": "D03.04",
+          "says": "If single sign-on is required, review the supported scenarios and prerequisites (Reliability, medium)."
+        },
+        {
+          "id": "D03.05",
+          "says": "Choose the right session host join type (Security, high)."
+        },
+        {
+          "id": "D03.06",
+          "says": "Review the limits of Entra Domain Services before using it for AVD (Reliability, low)."
         }
       ]
     },
@@ -4155,6 +4724,17 @@
       "date": "2026-10-20"
     },
     {
+      "id": "fslogix-cloud-only-users-work",
+      "claim": "ref:avd-prerequisites#fslogix-entra-joined-hybrid",
+      "verdict": "disagrees",
+      "observed": "The landing zone loads FSLogix profiles from Azure Files with Entra Kerberos for cloud-only users on Entra joined hosts, with no AD DS and no synced accounts, once the share allowed AES-128-GCM. The prerequisites page and the Entra joined hosts page (ref:avd-entra-joined-hosts#fslogix-hybrid-users) still say hybrid accounts are needed, while the Azure Files and FSLogix pages support cloud-only identities (ref:files-entra-kerberos#cloud-only-and-hybrid, ref:fslogix-entra-profile#cloud-only-supported). The method follows the newer pages and treats cloud-only users as supported in the Azure public cloud.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/lessons/0028-smb-channel-encryption-entra-kerberos.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/storage.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
       "id": "hub-route-without-avd-bypass",
       "claim": "ref:firewall-avd#bypass-route-for-scale-in",
       "verdict": "not-yet-tested",
@@ -4414,6 +4994,10 @@
     {
       "id": "host-baseline-profile",
       "title": "a security baseline profile for multi-session hosts"
+    },
+    {
+      "id": "identity-scope",
+      "title": "what an identity assessment can see, and what it can't yet"
     },
     {
       "id": "insights-facts",

@@ -480,6 +480,219 @@ dimensions:
     measure: none
     landingZone: []
 
+  # Identity, authentication and access (pillar identity, gap:identity-scope). Most of it lives in the
+  # tenant's directory, which a Reader-only run can't see: those rows are measure directory and carry
+  # proposed: facts until a directory read exists. The landing zone takes one path (Entra joined hosts,
+  # cloud-only users, Entra Kerberos; its decision 0001), so most rows set no parameter.
+  - id: identity.scenario
+    area: identity
+    pillar: identity
+    title: Identity scenario and session host join type
+    decides: Which of the supported identity scenarios the estate uses, and whether hosts are Entra joined, hybrid joined, or joined to AD DS or Entra Domain Services.
+    home: {decision: identity, facts: [c11.hostPool.sessionHosts.entraJoined, c11.hostPool.sessionHosts.domainJoined], intake: [intake.identityConstraints, intake.joinType, intake.userIdentitySource]}
+    baseline:
+      standing: published
+      claims: [ref:avd-prerequisites#identity-scenarios, ref:avd-authentication#one-identity, ref:avd-authentication#no-ad-only-identities, ref:avd-authentication#cloud-only-entra-joined, ref:avd-entra-joined-hosts#one-join-type-per-pool, ref:review-checklists-avd#D03.02, ref:review-checklists-avd#D03.03, ref:review-checklists-avd#D03.05]
+      says: One of the six supported scenarios, documented; the same Entra identity signs in to the service and to Windows; one join type per host pool.
+    measure: fact
+    landingZone: []
+    note: The landing zone fixes Entra join with cloud-only users (its decision 0001); join type is readable from each VM's join extension, a specified fact here.
+  - id: identity.tenant
+    area: identity
+    pillar: identity
+    title: Entra tenant and linked subscription
+    decides: Which Entra tenant holds the users and hosts, with a subscription linked to it.
+    home: {decision: identity, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#D03.01, ref:avd-prerequisites#hybrid-sync]
+      says: One Entra tenant with at least one linked subscription; the users must be in that tenant, and personal Microsoft accounts aren't supported.
+    measure: none
+    landingZone: []
+    note: A precondition of any run; a C11 snapshot exists only if it holds.
+  - id: identity.directory-sync
+    area: identity
+    pillar: identity
+    title: Directory sync and hybrid identities
+    decides: Whether and how AD DS users reach Entra ID, and whether their UPN or SID match.
+    home: {decision: identity, facts: [], intake: [intake.identityConstraints, intake.userIdentitySource]}
+    baseline:
+      standing: published
+      claims: [ref:avd-prerequisites#hybrid-sync, ref:avd-authentication#upn-or-sid-match, ref:caf-avd-identity#entra-ds-limits, ref:review-checklists-avd#D01.08]
+      says: Sync AD DS to Entra ID with Entra Connect (one way and automatic for Entra Domain Services, which also needs password hash sync); the UPN or the SID must match.
+    measure: directory
+    landingZone: []
+    note: Outside the landing zone, which has no AD DS.
+  - id: identity.domain-services
+    area: identity
+    pillar: identity
+    title: Domain controllers or Entra Domain Services
+    decides: Where AD DS or Entra Domain Services runs for hosts that join a domain, and how resilient it is.
+    home: {decision: identity, facts: [], intake: [intake.identityConstraints]}
+    baseline:
+      standing: published
+      claims: [ref:adds-in-azure#two-dcs-across-zones, ref:adds-in-azure#persistent-os-disk, ref:entra-ds-compare#managed-subset, ref:entra-ds-compare#self-managed-models, ref:caf-avd-identity#entra-ds-limits, ref:review-checklists-avd#D01.01, ref:review-checklists-avd#D03.06]
+      says: At least two domain controllers in Azure across zones on persistent disks; Entra Domain Services only after checking its limits (no domain admins, no hybrid join).
+    measure: intake
+    landingZone: []
+    note: Not applicable to Entra joined hosts with cloud-only users, the landing zone's path.
+  - id: identity.domain-join-account
+    area: identity
+    pillar: identity
+    title: Domain join account
+    decides: Which account joins hosts to the domain, and with what rights.
+    home: {decision: identity, facts: []}
+    baseline:
+      standing: published
+      claims: [ref:avd-prerequisites#join-account, ref:caf-avd-identity#non-interactive-join-account, ref:review-checklists-avd#D01.05]
+      says: A dedicated account allowed only to join computers, with no MFA or interactive prompt; for Entra Domain Services, a member of its DC administrators group.
+    measure: none
+    landingZone: []
+    note: Entra join needs no join account, so the landing zone has none; a domain-joined estate keeps it outside every collector.
+  - id: identity.ou-and-group-policy
+    area: identity
+    pillar: identity
+    title: OUs and domain Group Policy for session hosts
+    decides: Which OU each host pool's hosts land in and which domain GPOs reach them.
+    home: {decision: identity, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:caf-avd-identity#ou-per-host-pool, ref:avd-prerequisites#ou-at-deploy, ref:fslogix-gpo-templates#admx-templates, ref:review-checklists-avd#D01.02, ref:review-checklists-avd#D01.03, ref:review-checklists-avd#D01.04]
+      says: One OU per host pool, the domain GPOs that reach it reviewed, and FSLogix set through its ADMX template where Group Policy configures hosts.
+    measure: host-side
+    landingZone: []
+    note: Only for domain-joined hosts. Intune against Group Policy is the intune pillar's ops.config-management.
+  - id: identity.sso
+    area: identity
+    pillar: identity
+    title: Single sign-on to session hosts
+    decides: Whether users sign in to Windows with Entra single sign-on, AD FS single sign-on or a credential prompt.
+    home: {decision: identity, facts: [c11.hostPool.entraSso, proposed:c11.directory.rdpEntraAuthEnabled, proposed:c11.directory.ssoTrustedDeviceGroups], intake: [intake.sso]}
+    baseline:
+      standing: published
+      claims: [ref:avd-authentication#sso-recommended, ref:avd-sso#join-types, ref:avd-sso#two-way-trust, ref:avd-sso#tenant-rdp-enabled, ref:avd-sso#consent-prompt, ref:avd-sso#kerberos-server-object, ref:avd-sso#host-pool-property, ref:review-checklists-avd#D03.04]
+      says: Entra single sign-on on Entra joined or hybrid joined hosts, with the host pool property on, the tenant setting on, hosts in a trusted device group, and a Kerberos server object where domain controllers exist.
+    measure: directory
+    landingZone: [rdpProperties]
+    note: The host pool half is an RDP property (control plane); the tenant half is on the Windows Cloud Login service principal (directory read).
+  - id: identity.mfa-conditional-access
+    area: identity
+    pillar: identity
+    title: MFA and Conditional Access for AVD sign-in
+    decides: Which Conditional Access policies require MFA for the AVD service and for session host sign-in, and what they exclude.
+    home: {decision: proposed:identity.signInPolicy, facts: [proposed:c11.directory.avdMfaPolicy, proposed:c11.directory.cloudLoginMfaPolicy, proposed:c11.directory.perUserMfaUsers, proposed:c11.directory.securityDefaults], intake: [intake.avdMfa, intake.mfaScope]}
+    baseline:
+      standing: published
+      claims: [ref:avd-mfa-conditional-access#licensing, ref:avd-mfa-conditional-access#target-apps, ref:avd-mfa-conditional-access#two-aligned-policies, ref:avd-mfa-conditional-access#feed-app-no-mfa, ref:avd-mfa-conditional-access#legacy-clients-off, ref:avd-mfa-conditional-access#per-user-mfa-off, ref:avd-mfa-conditional-access#all-apps-conflicts, ref:avd-entra-joined-hosts#vm-sign-in-app-exclusion, ref:avd-security-guide#mfa-conditional-access, ref:mcsb-avd-baseline#IM-7, ref:review-checklists-avd#G04.01]
+      says: Two aligned Conditional Access policies requiring MFA (the AVD app, and Windows Cloud Login with single sign-on), the feed app left out, legacy clients excluded, per-user MFA off, and policies on all apps checked for conflicts.
+    measure: directory
+    landingZone: []
+    note: Tenant-wide, outside the landing zone; until a directory read exists the intake answer stands in (gap:security-scope).
+  - id: identity.sign-in-frequency
+    area: identity
+    pillar: identity
+    title: Reauthentication and session lock
+    decides: How often users reauthenticate and whether a lock disconnects the session so Conditional Access is evaluated again.
+    home: {decision: proposed:identity.signInPolicy, facts: [proposed:c11.directory.signInFrequency]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-mfa-conditional-access#sign-in-frequency, ref:avd-sso#disconnect-on-lock, ref:session-lock-behavior#disconnect-on-lock-sso, ref:avd-security-guide#idle-limits, ref:review-checklists-avd#G01.01]
+      says: A sign-in frequency set to the organization's need (shorter for personal devices), disconnect on lock with single sign-on, and idle and disconnect limits by policy; no source gives a number.
+    measure: directory
+    landingZone: []
+    note: The disconnect and idle time limits themselves are protocol.session-limits.
+  - id: identity.device-conditions
+    area: identity
+    pillar: identity
+    title: Device compliance and location as sign-in conditions
+    decides: Whether Conditional Access requires a compliant or joined client device, or a location, and how session hosts are kept out of rules written for user devices.
+    home: {decision: proposed:identity.signInPolicy, facts: [proposed:c11.directory.compliancePolicyOnHosts], intake: [intake.clientDevices]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-mfa-conditional-access#all-apps-conflicts, ref:zero-trust-avd#seven-steps, ref:review-checklists-avd#G04.01]
+      says: Device and location conditions where the clients allow them, tested against both apps, with Entra joined hosts excluded from compliance rules meant for user endpoints.
+    measure: directory
+    landingZone: []
+    note: Compliance policies and the client device signal are the intune pillar's; which devices users bring is the endpoints pillar's.
+  - id: identity.sign-in-methods
+    area: identity
+    pillar: identity
+    title: Passwordless, smart card and federated sign-in
+    decides: Which credentials users sign in with at each phase, and what they need on the network.
+    home: {decision: identity, facts: [c11.hostPool.redirection.webAuthn, c11.hostPool.redirection.smartCards], intake: [intake.signInMethods]}
+    baseline:
+      standing: published
+      claims: [ref:avd-authentication#three-phases, ref:avd-authentication#federated-idp, ref:avd-authentication#smartcard-needs-kdc, ref:avd-authentication#in-session-passwordless]
+      says: Passwordless and federated sign-in through Entra ID; smart cards and Windows Hello for Business need Kerberos with a line of sight to a domain controller or a KDC proxy; in-session passwordless through WebAuthn redirection.
+    measure: fact
+    landingZone: [rdpProperties]
+    note: Only the in-session half is a control plane fact (the redirection properties); the rest is intake.
+  - id: identity.external-users
+    area: identity
+    pillar: identity
+    title: External identities
+    decides: Whether invited users from outside the tenant use the estate, and the host OS and client that requires.
+    home: {decision: identity, facts: [], intake: [intake.externalUsers]}
+    baseline:
+      standing: published
+      claims: [ref:avd-authentication#external-identity-requirements]
+      says: External identities need Entra joined hosts on the listed Windows builds, single sign-on and Windows App, and get no Kerberos or NTLM to on-premises resources.
+    measure: intake
+    landingZone: []
+  - id: identity.files-auth
+    area: identity
+    pillar: identity
+    title: Identity-based authentication for the profile share
+    decides: Which identity source the profile share uses (Entra Kerberos, AD DS or Entra Domain Services) and what each needs.
+    home: {decision: proposed:profile.storage, facts: [c11.storage.filesIdentity, proposed:c11.directory.storageAppMfaExcluded], intake: [intake.identityConstraints, intake.userIdentitySource]}
+    baseline:
+      standing: published
+      claims: [ref:files-entra-kerberos#cloud-only-and-hybrid, ref:files-entra-kerberos#one-identity-source, ref:files-entra-kerberos#clients-entra-joined, ref:files-entra-kerberos#hybrid-acl-line-of-sight, ref:files-entra-kerberos#admin-consent, ref:files-entra-kerberos#cloud-group-sids, ref:files-entra-kerberos#exclude-from-mfa, ref:files-entra-kerberos#settings-catalog-multisession, ref:fslogix-entra-profile#cloud-only-supported, ref:fslogix-entra-profile#host-settings, ref:avd-prerequisites#fslogix-entra-joined-hybrid, ref:files-ad-ds-password#rotate-or-exempt-ou, ref:review-checklists-avd#D02.01, ref:review-checklists-avd#D01.07]
+      says: Entra Kerberos for Entra joined hosts (cloud-only users in the public cloud, with the group SID tag and the MFA exclusion), AD DS with a rotated or non-expiring account password for domain-joined hosts; one source per account.
+    observations: [obs:fslogix-cloud-only-users-work, obs:smb-channel-aes128-gcm-needed]
+    measure: fact
+    landingZone: []
+    note: The landing zone fixes Entra Kerberos in its storage module; SMB channel and ticket encryption are encryption.profile-transit.
+  - id: identity.app-group-assignment
+    area: identity
+    pillar: identity
+    title: Application group assignment and VM sign-in roles
+    decides: Who is assigned to each application group, by group or by user, and the VM sign-in roles Entra joined hosts need.
+    home: {decision: hostPool.appGroup, facts: [c11.hostPool.appGroups, c11.hostPool.appGroups.directUserAssignments]}
+    baseline:
+      standing: published
+      claims: [ref:avd-rbac#user-role, ref:caf-avd-identity#groups-not-users, ref:avd-entra-joined-hosts#vm-login-roles, ref:review-checklists-avd#D01.06]
+      says: Desktop Virtualization User assigned to groups rather than users, and on Entra joined hosts without a session host configuration, Virtual Machine User Login for users and Virtual Machine Administrator Login only for admins.
+    measure: fact
+    landingZone: []
+    note: The landing zone assigns all three roles to the operator's user group (avdUsersGroupObjectId, wiring rather than a design choice).
+  - id: identity.admin-access
+    area: identity
+    pillar: identity
+    title: Admin roles and tiers
+    decides: Who administers the estate, with which scoped roles, and how admin access is separated from user access.
+    home: {decision: proposed:identity.adminAccess, facts: [c11.subscription.privilegedAssignments]}
+    baseline:
+      standing: guidance
+      claims: [ref:avd-rbac#scoped-roles, ref:avd-rbac#contributor-no-assignment, ref:avd-security-guide#tiered-admin, ref:mcsb-avd-baseline#PA-7, ref:review-checklists-avd#G03.06]
+      says: The scoped built-in AVD roles below Owner and Contributor, custom roles only where they fall short, and admin access separated by tier; no source sets a count.
+    measure: fact
+    landingZone: []
+    note: The landing zone's admin group is avdAdminsGroupObjectId, wiring rather than a design choice.
+  - id: identity.local-admin-password
+    area: identity
+    pillar: identity
+    title: Local administrator password rotation
+    decides: How the session hosts' local administrator password is kept unique and rotated.
+    home: {decision: proposed:identity.adminAccess, facts: [proposed:c11.directory.lapsEnabled]}
+    baseline:
+      standing: guidance
+      claims: [ref:caf-avd-identity#laps, ref:review-checklists-avd#G03.03]
+      says: Rotate the local administrator password with a solution like LAPS; users never hold local admin rights on pooled hosts.
+    measure: directory
+    landingZone: []
+    note: The landing zone makes a random break-glass password on every build and never stores it (its decision 0004); localAdminPassword is in notDimensions for that reason.
+
   # Security tooling
   - id: security.endpoint-protection-tuning
     area: security

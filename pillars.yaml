@@ -43,7 +43,7 @@ pillars:
     title: Identity, authentication and access
     scope: Identity scenario and join type, Kerberos for file shares, single sign-on and passwordless, multifactor and Conditional Access for sign-in, device compliance, RBAC and app group assignment, admin tiers, account and sync policies.
     checklist: [D01, D02, D03, G01.01, G04.01]
-    status: missing
+    status: mapped
   - id: networking-azure
     title: "Networking: Azure side"
     scope: Virtual networks and subnets, DNS and private zones, egress, firewall and NVA, Private Link, service tags, required endpoints, admin access paths, connectivity options, preflight connectivity checks.

@@ -1,0 +1,25 @@
+id: caf-avd-identity
+title: Cloud Adoption Framework, identity and access management for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-identity-and-access-management
+pin: https://github.com/MicrosoftDocs/cloud-adoption-framework/blob/5c44a2accff2018eba5dd738b648eef4c9db179b/docs/scenarios/azure-virtual-desktop/eslz-identity-and-access-management.md
+read: 2026-10-21
+license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
+areas: [assessment]
+pillars: [identity]
+notes: Deprecated; Microsoft says the Learn page is removed on 2026-10-30. The GitHub pin stays readable after that, and the claims below are kept only where a current product page doesn't say the same.
+claims:
+  - id: ou-per-host-pool
+    says: Put each host pool's session hosts in their own Active Directory OU to keep policy simple and orphaned objects easy to find.
+    kind: guidance
+  - id: non-interactive-join-account
+    says: The domain join account must not need MFA or any interactive prompt.
+    kind: guidance
+  - id: entra-ds-limits
+    says: Entra Domain Services needs password hash sync and doesn't allow hybrid join of the hosts.
+    kind: guidance
+  - id: laps
+    says: Rotate session hosts' local administrator passwords with a solution like LAPS.
+    kind: guidance
+  - id: groups-not-users
+    says: Assign Desktop Virtualization User to security groups, not to individual users.
+    kind: guidance

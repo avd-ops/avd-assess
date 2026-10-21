@@ -13,3 +13,15 @@
 | `intake.workingHours` | When do people work (start, end, time zone)? | Power settings and scaling (`ref:avd-insights-use-cases#utilization-for-scaling`) |
 | `intake.hostSharing` (optional) | Who shares a session host (`one-org-standard`, `needs-admin`, `multi-org`, `undecided`)? | The security guide's trust boundary decides between pooled, personal and a separate tenant (`ref:avd-security-guide#trust-boundary`) |
 | `intake.avdMfa` (optional) | Does sign-in to AVD require MFA (`required`, `not-required`, `unknown`)? | Stands in for a directory read until one exists (`ref:review-checklists-avd#G04.01`, `gap:security-scope`) |
+
+**Specified for the identity pillar (2026-10-21), not yet in the C19 schema.** The fact register lists these as `specified` with their paths, so the intake form and avd-current-state's reader can add them together in one contract change; every answer is an enum, with no names, domains or IDs (`gap:identity-scope`).
+
+| Fact | Question | Answers | Why it matters |
+|---|---|---|---|
+| `intake.joinType` | How will session hosts join? | `entra-joined`, `hybrid-joined`, `ad-ds-joined`, `entra-ds-joined`, `undecided` | Single sign-on, Entra Kerberos and external users all depend on it (`ref:avd-sso#join-types`, `ref:files-entra-kerberos#clients-entra-joined`) |
+| `intake.userIdentitySource` | Where do user accounts live? | `cloud-only`, `hybrid-synced`, `mixed`, `undecided` | Profile share authentication and the cloud the estate can use (`ref:files-entra-kerberos#cloud-only-and-hybrid`, `obs:fslogix-cloud-only-users-work`) |
+| `intake.sso` | How do users sign in to Windows on the host? | `entra`, `adfs`, `none`, `undecided` | Credential prompts, the Windows Cloud Login policy and lock behavior (`ref:avd-authentication#sso-recommended`) |
+| `intake.mfaScope` | When does AVD sign-in require MFA? | `every-sign-in`, `conditional`, `none`, `unknown` | Refines `intake.avdMfa` until a directory read exists (`ref:avd-mfa-conditional-access#two-aligned-policies`) |
+| `intake.clientDevices` | Which devices do users connect from? | `managed-compliant`, `managed`, `unmanaged`, `mixed`, `unknown` | Whether device conditions are possible and how often to reauthenticate (`ref:avd-mfa-conditional-access#sign-in-frequency`); the endpoints pillar reads it too |
+| `intake.signInMethods` | Which credentials do users sign in with (any of)? | `password`, `passwordless`, `smartcard`, `federated` | Smart cards and Windows Hello for Business need a domain controller line of sight or a KDC proxy (`ref:avd-authentication#smartcard-needs-kdc`) |
+| `intake.externalUsers` | Do invited users from outside the tenant use the estate? | `none`, `invited`, `undecided` | External identities need Entra joined hosts, recent builds, single sign-on and Windows App (`ref:avd-authentication#external-identity-requirements`) |

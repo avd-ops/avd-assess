@@ -37,6 +37,7 @@ Every check is a `warn`, not a `gap`. The first four items say "consider" or "ev
 | `ref:review-checklists-avd#D02.01` | `c11.storage.filesIdentity` is built, but the rule needs it beside `intake.identityConstraints` (Entra-only estates use Entra Kerberos), and the rule language has no join between a snapshot and the intake |
 | `ref:review-checklists-avd#G02.04` | Which hosts run Windows 11; C11's OS versions are build numbers per pool, so the Trusted launch check above stands in |
 | `ref:review-checklists-avd#G03.03`, `ref:review-checklists-avd#G04.01` | Local administrators on the hosts (host-side) and Conditional Access or MFA for AVD sign-in (a directory read): neither is collected (`gap:security-scope`) |
+| `ref:review-checklists-avd#D03.02`, `ref:review-checklists-avd#D03.04`, `ref:review-checklists-avd#D03.05`, `ref:review-checklists-avd#D01.06`, `ref:review-checklists-avd#G04.01` | The identity pillar's facts: join type, single sign-on and direct user assignments are `specified` C11 facts no collector reads yet; Conditional Access, per-user MFA and the tenant's single sign-on setting need a directory read (`gap:identity-scope`). The other D items are about Active Directory, which no collector reads, and stay intake or manual |
 
 ## The same items in PSRule for Azure
 
