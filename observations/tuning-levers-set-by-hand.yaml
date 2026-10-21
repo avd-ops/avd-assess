@@ -3,6 +3,6 @@ claim: ref:waf-performance-checklist#PE:05
 verdict: extends
 observed: The landing zone sets size, host count and session limit as parameters, but fixes breadth-first load balancing and the scaling plan's capacity thresholds and minimum host shares (60% and 20% at ramp-up, 90% and 10% at ramp-down) in its control plane module, and lists the schedule as set by hand. A tuning loop can change the first three through the landing zone; the scaling levers it can only record until they become parameters.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/modules/controlPlane.bicep
-  - https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/contracts/target-state-capabilities.json
+  - https://github.com/avd-ops/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/modules/controlPlane.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/contracts/target-state-capabilities.json
 date: 2026-10-20

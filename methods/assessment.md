@@ -23,7 +23,8 @@ Everything else here builds on those three: evidence mapped to items, measured t
 6. **Judge the security pillar with the [security method](security.md)**, which adds the sources security needs (`ref:avd-security-guide`, `gap:security-scope`).
 7. **Judge transport and session settings with the [remote protocol and session method](remote-protocols.md)**, which maps the transport vocabularies and judges each connection against the networks users connect from (`gap:remote-protocols-scope`, `gap:transport-classification`).
 8. **Judge host and device management with the [Intune and host management method](intune.md)**, which reads Intune state per host pool and scores what multi-session can't receive as not applicable (`gap:intune-scope`).
-9. **Repeat on a cadence** and compare to the last run, as the Well-Architected Review does with milestones (`ref:waf-review-assessment#milestones`).
+9. **When something is wrong, find the cause with the [troubleshooting and diagnostics method](diagnostics.md)**, which maps each symptom to the sources that explain it and the pillar that owns the fix (`gap:diagnostics-scope`, `gap:error-code-map`).
+10. **Repeat on a cadence** and compare to the last run, as the Well-Architected Review does with milestones (`ref:waf-review-assessment#milestones`).
 
 ## Not yet known
 

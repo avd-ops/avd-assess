@@ -20,14 +20,14 @@ Values are public only: a SKU, a count, a boolean, a region. Anything that needs
 
 | Check | Kind | Name, value | Where the landing zone does it |
 |---|---|---|---|
-| `asm-personal-start-vm-on-connect` | lz-parameter | `startVmOnConnect`, true | [main.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
-| `asm-pooled-host-redundancy` | lz-parameter | `sessionHostCount`, 2 | [main.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
-| `asm-files-private-endpoint` | lz-setting | `profile-storage-private-endpoint` | [storage.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/storage.bicep) (private endpoint on the profile share) |
-| `asm-files-zone-redundant` | lz-parameter | `profileStorageSku`, Premium_ZRS | [main.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
-| `asm-hosts-trusted-launch` | manual, `rebuild-hosts` | none: the security type is set when a VM is created, so a redeploy doesn't convert existing hosts | [sessionHosts.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/sessionHosts.bicep) (`securityType`) |
-| `asm-drive-usb-redirection-off` | lz-parameter | `rdpProperties` (its default leaves drive and USB redirection empty) | [main.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
-| `asm-defender-servers` | lz-parameter | `enableDefenderForCloud`, true | [governance.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/governance.bicep) |
-| `asm-files-smb-gcm` | lz-setting | `profile-storage-smb-gcm` | [storage.bicep](https://github.com/nickprignano/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/storage.bicep) (`channelEncryption`) |
+| `asm-personal-start-vm-on-connect` | lz-parameter | `startVmOnConnect`, true | [main.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
+| `asm-pooled-host-redundancy` | lz-parameter | `sessionHostCount`, 2 | [main.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
+| `asm-files-private-endpoint` | lz-setting | `profile-storage-private-endpoint` | [storage.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/storage.bicep) (private endpoint on the profile share) |
+| `asm-files-zone-redundant` | lz-parameter | `profileStorageSku`, Premium_ZRS | [main.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
+| `asm-hosts-trusted-launch` | manual, `rebuild-hosts` | none: the security type is set when a VM is created, so a redeploy doesn't convert existing hosts | [sessionHosts.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/sessionHosts.bicep) (`securityType`) |
+| `asm-drive-usb-redirection-off` | lz-parameter | `rdpProperties` (its default leaves drive and USB redirection empty) | [main.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/main.bicep) |
+| `asm-defender-servers` | lz-parameter | `enableDefenderForCloud`, true | [governance.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/governance.bicep) |
+| `asm-files-smb-gcm` | lz-setting | `profile-storage-smb-gcm` | [storage.bicep](https://github.com/avd-ops/avd-landing-zone/blob/ae6e80b574cccde570d0053d4c62b519d31052a8/bicep/modules/storage.bicep) (`channelEncryption`) |
 
 **The order of the plan.** Items are numbered 1, 2, 3 by a rule a tool applies with no judgment: gap before warn before unknown, then severity (high, medium, low), then the check ID. The order says what matters most, not when it is done: every `lz-parameter` and `lz-setting` item lands in the same landing zone redeploy. A person changes priorities in the review (C23), not in the plan.
 

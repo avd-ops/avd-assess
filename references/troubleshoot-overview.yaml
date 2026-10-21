@@ -1,0 +1,21 @@
+id: troubleshoot-overview
+title: Troubleshooting overview, feedback, and support for Azure Virtual Desktop
+url: https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-set-up-overview
+pin: "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [diagnostics]
+claims:
+  - id: insights-or-kql
+    says: Insights is the dashboard for finding issues; Log Analytics queries over the diagnostic tables are the alternative.
+    kind: guidance
+  - id: service-health-first
+    says: Before anything else, check the Azure status page and Service Health.
+    kind: guidance
+  - id: escalation-tracks
+    says: Each problem area (network, VM creation, management, FSLogix, clients, feed, connections, apps) has its own troubleshooting page and support path.
+    kind: published
+  - id: network-is-local
+    says: Client network and feed discovery problems on the user's network go to that network's administrators.
+    kind: guidance
