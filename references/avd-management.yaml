@@ -1,0 +1,18 @@
+id: avd-management
+title: Manage session hosts with Microsoft Intune
+url: https://learn.microsoft.com/azure/virtual-desktop/management
+pin: "Learn git_commit_id dd46df7408629964cd4e6e9a3185dffcf0bbda70, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [intune]
+claims:
+  - id: intune-recommended
+    says: Microsoft recommends Intune to manage AVD session hosts; it manages Entra joined and hybrid joined hosts, device and user configuration on multi-session included.
+    kind: guidance
+  - id: configuration-manager
+    says: Configuration Manager 1906 and later manages domain joined and hybrid joined session hosts.
+    kind: published
+  - id: clouds
+    says: Managing session hosts with Intune is supported in Azure public and Azure Government clouds.
+    kind: published

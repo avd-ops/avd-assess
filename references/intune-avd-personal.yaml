@@ -1,0 +1,21 @@
+id: intune-avd-personal
+title: Using Azure Virtual Desktop with Microsoft Intune (single session)
+url: https://learn.microsoft.com/intune/solutions/azure-virtual-desktop
+pin: "Learn git_commit_id 33abeb2a1b2ebf656960ad63747edf509b3f019e, updated_at 2026-07-31"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [intune]
+claims:
+  - id: personal-like-physical
+    says: Intune treats single-session personal AVD VMs like physical Windows Enterprise desktops, so existing configuration, compliance and Conditional Access apply; Intune doesn't interfere with AVD's own management of the VM.
+    kind: published
+  - id: personal-prerequisites
+    says: Supported single-session VMs run Windows Enterprise as personal desktops, in a subscription in the same tenant as Intune, Entra joined with Intune enrollment or hybrid joined and enrolled; cross-cloud enrollment isn't supported.
+    kind: published
+  - id: personal-unsupported-profiles
+    says: Domain join and Wi-Fi profiles aren't supported on AVD VMs, and the policy allowing users to connect remotely must not be disabled.
+    kind: published
+  - id: personal-cleanup-rules
+    says: Deleting a personal VM leaves its Intune device record, which the tenant's device cleanup rules remove.
+    kind: published

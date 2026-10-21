@@ -1,0 +1,12 @@
+id: intune-reports
+title: Microsoft Intune reports
+url: https://learn.microsoft.com/intune/device-management/reports/overview
+pin: "Learn git_commit_id a6e85fce52359c58245c729c6a820e0a669b7cda, updated_at 2026-07-16"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection]
+pillars: [intune]
+claims:
+  - id: report-families
+    says: Intune reports cover device compliance (with a 30-day trend), configuration, enrollment and software updates, as operational, organizational and historical reports.
+    kind: published

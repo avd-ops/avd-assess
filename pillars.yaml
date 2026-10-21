@@ -128,5 +128,6 @@ pillars:
   - id: intune
     title: Intune and host management
     scope: Microsoft Intune for session hosts and client devices as the owner asked (2026-10-21), against Group Policy where an estate keeps it; enrollment of multi-session and Entra-joined hosts, configuration profiles and the settings catalog, security baselines for session hosts, compliance policies for hosts and for the client devices Conditional Access checks, app deployment to hosts, update rings and Autopatch against image-based servicing, remote actions and reporting.
-    checklist: [E01.03]
-    status: partial
+    method: methods/intune.md
+    checklist: [E01.03, E01.09, D01.03, D01.04]
+    status: mapped

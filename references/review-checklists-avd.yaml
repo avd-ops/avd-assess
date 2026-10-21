@@ -232,3 +232,8 @@ claims:
     says: Decide the host pool deployment strategy (Operations, medium).
   - id: E02.04
     says: Configure Azure Service Health alerts for AVD (Reliability, medium).
+  # Group Policy items read for methods/intune.md (2026-10-21); kept here, after the others, so the list grows without reordering.
+  - id: D01.03
+    says: Review the domain GPOs applied to the session hosts' OU for settings that affect host functions (Operations, medium).
+  - id: D01.04
+    says: Configure FSLogix settings with the provided ADMX template (Operations, medium).

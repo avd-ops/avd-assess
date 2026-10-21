@@ -1,0 +1,73 @@
+id: intune-avd-multisession
+title: Using Azure Virtual Desktop multi-session with Microsoft Intune
+url: https://learn.microsoft.com/intune/solutions/azure-virtual-desktop-multi-session
+pin: "Learn git_commit_id a5e9242650217721f235f2864d110c429542db15, updated_at 2026-10-12"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [intune]
+notes: The one Microsoft page that says what Intune can and can't do on Windows Enterprise multi-session hosts. Most of this pillar's limits come from it.
+claims:
+  - id: device-and-user-scope
+    says: Intune manages multi-session hosts with device-scope configuration assigned to device groups and user-scope configuration assigned to user groups; a device setting assigned to users, or the reverse, reports Error or Not applicable.
+    kind: published
+  - id: enrollment-prerequisites
+    says: Supported hosts are in a host pool deployed through Azure Resource Manager, in the same tenant as Intune, run AVD agent 1.0.2944.1400 or later, and are Entra joined with Intune enrollment turned on, or hybrid joined and enrolled with device credentials through Group Policy or co-management.
+    kind: published
+  - id: device-credentials
+    says: Hybrid joined multi-session hosts must enroll with device credentials; enrollment with user credentials isn't supported and settings catalog policies fail on such hosts.
+    kind: published
+  - id: one-mdm-provider
+    says: Enrollment fails when the tenant has more than one MDM provider, or when the VM isn't part of a host pool created through Azure Resource Manager.
+    kind: published
+  - id: no-entra-ds
+    says: Session hosts joined to Microsoft Entra Domain Services can't be managed with Intune.
+    kind: published
+  - id: no-cloned-enrolled-image
+    says: Intune doesn't support a cloned image of a machine that is already enrolled; replicated enrollment or identity tokens cause enrollment and sync failures, so images are captured before enrollment.
+    kind: published
+  - id: no-token-roaming
+    says: Intune doesn't support token roaming between devices; with FSLogix or similar profile tools, identity tokens must not roam (FSLogix RoamIdentity off).
+    kind: published
+  - id: settings-catalog-only
+    says: Configure multi-session hosts through the settings catalog filtered to the Enterprise multi-session edition; the only templates supported are trusted, SCEP and PKCS certificates and device-tunnel VPN, and other templates report Not applicable.
+    kind: published
+  - id: admx-supported
+    says: ADMX-backed and ADMX-ingested administrative templates in the settings catalog work on multi-session, with some settings not yet available or not applicable.
+    kind: published
+  - id: compliance-settings-supported
+    says: Only OS version and build, password and Defender antimalware, firewall, antivirus, antispyware, real-time protection and risk score compliance settings apply to multi-session; the rest report Not applicable.
+    kind: published
+  - id: compliance-device-targeted
+    says: Compliance policies for multi-session hosts must target a device group; user-targeted compliance isn't supported, while Conditional Access supports user and device based configuration.
+    kind: published
+  - id: endpoint-security-windows
+    says: Endpoint security profiles apply to multi-session when created for the Windows platform; profiles without that platform aren't supported.
+    kind: published
+  - id: apps-system-required
+    says: Apps on multi-session must install in system context, be targeted to devices, and use Required or Uninstall intent; Available isn't supported, and a system app that depends on or supersedes a user-context app won't install.
+    kind: published
+  - id: no-remoteapp-app-attach
+    says: AVD RemoteApp and MSIX app attach aren't supported in Intune; they are delivered through AVD itself.
+    kind: published
+  - id: scripts-both-contexts
+    says: Scripts run in system context when assigned to devices and in user context when assigned to users.
+    kind: published
+  - id: quality-updates-catalog-only
+    says: Windows Update rings aren't supported on multi-session; quality update settings (deferral, deadlines, active hours, pause) are set through the settings catalog's Windows Update for Business category.
+    kind: published
+  - id: remote-actions-unsupported
+    says: Autopilot reset, BitLocker key rotation, Fresh Start, remote lock, reset password, wipe and retire are disabled for multi-session hosts in the admin center and in Graph.
+    kind: published
+  - id: orphaned-records
+    says: Deleting a host VM in Azure leaves its device record in Intune; Intune tries to remove records inactive for 60 days or more, separately from the tenant's cleanup rules, with no guarantee of timing.
+    kind: published
+  - id: baselines-available
+    says: Security baselines are available for multi-session; review them and configure the recommended values in the settings catalog.
+    kind: guidance
+  - id: no-oobe
+    says: Out-of-box enrollment isn't supported on multi-session, so Windows Autopilot and the enrollment status page don't apply.
+    kind: published
+  - id: license-required
+    says: An Intune license is needed for every user or device that benefits from the service, in addition to AVD licensing.
+    kind: published
