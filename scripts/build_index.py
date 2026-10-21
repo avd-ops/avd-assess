@@ -66,16 +66,12 @@ def build_security():
     doc = yaml.safe_load((ROOT / "security-review.yaml").read_text(encoding="utf-8")) or {}
     pins = doc.get("pins", {})
 
-    def url(ev):
-        path, _, anchor = ev["path"].partition("#")
-        if ev["repo"] == "avd-assess":
-            return None
-        return f"https://github.com/avd-ops/{ev['repo']}/blob/{pins[ev['repo']]}/{path}" + (f"#{anchor}" if anchor else "")
-
     def add_urls(node):
         if isinstance(node, dict):
-            if {"repo", "path", "kind"} <= node.keys() and url(node):
-                node["url"] = url(node)
+            # avd-assess evidence has no url: a reader resolves it at the avd-assess commit it pinned.
+            # A repo with no pin gets none either; tests/check_security_review.py reports it.
+            if {"repo", "path", "kind"} <= node.keys() and node["repo"] in pins:
+                node["url"] = f"https://github.com/avd-ops/{node['repo']}/blob/{pins[node['repo']]}/{node['path']}"
             for v in node.values():
                 add_urls(v)
         elif isinstance(node, list):

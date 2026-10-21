@@ -17,7 +17,7 @@
       "properties": {
         "repo": {"$ref": "#/$defs/repo"},
         "path": {"type": "string", "pattern": "^[A-Za-z0-9._/-]+(#[A-Za-z0-9._-]+)?$"},
-        "kind": {"enum": ["lesson", "run", "test", "ci", "code", "decision", "doc"]},
+        "kind": {"enum": ["lesson", "run", "test", "ci", "code", "license", "decision", "doc"]},
         "url": {"type": "string", "pattern": "^https://github\\.com/avd-ops/[a-z-]+/blob/[0-9a-f]{40}/"}
       }
     },
@@ -35,6 +35,7 @@
     "maturity": {
       "type": "object",
       "required": ["source", "repos"],
+      "additionalProperties": false,
       "properties": {
         "source": {"$ref": "#/$defs/evidence"},
         "repos": {
@@ -47,6 +48,7 @@
     "standards": {
       "type": "object",
       "required": ["method", "pillars", "references"],
+      "additionalProperties": false,
       "properties": {
         "method": {"type": "string"},
         "scope": {"$ref": "#/$defs/cite"},

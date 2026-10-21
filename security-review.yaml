@@ -13,7 +13,8 @@
 #   designed written down only: a spec or a proposed decision, not built or not run
 # A claim is never stronger than its evidence. Repo maturity (proven, pre-beta, design) is the owner's
 # call and comes from avd-ops docs/roadmap-spec.md section 6; a claim's standing never raises it.
-# evidence: {repo, path, kind}, kind one of lesson | run | test | ci | code | decision | doc. path is
+# evidence: {repo, path, kind}, kind one of lesson | run | test | ci | code | license | decision | doc,
+#   checked against the path (a test under tests/, a CI job under .github/workflows/ and so on). path is
 #   relative to the repo at pins.<repo>, with an optional #anchor; for avd-assess it is this repo.
 # Nothing here is a security audit, a compliance attestation or a penetration test.
 schema: avd-assess-security-review/v1
@@ -288,7 +289,7 @@ areas:
           - {repo: avd-assess, path: tests/check_wording.py, kind: test}
           - {repo: avd-ops, path: docs/guardrails.md, kind: doc}
           - {repo: avd-ops, path: .github/workflows/kb-validate.yml, kind: ci}
-          - {repo: avd-ops, path: scripts/privacy_check.py, kind: ci}
+          - {repo: avd-ops, path: .github/workflows/privacy.yml, kind: ci}
 
   - id: supply-chain
     title: Supply chain and CI
@@ -299,12 +300,12 @@ areas:
         says: All six public repos are MIT licensed; what they adopt is listed with its license on the credits page, and code from unlicensed repos is used as reference only.
         standing: built
         evidence:
-          - {repo: avd-landing-zone, path: LICENSE, kind: code}
-          - {repo: avd-current-state, path: LICENSE, kind: code}
-          - {repo: avd-assess, path: LICENSE, kind: code}
-          - {repo: avd-second-brain, path: LICENSE, kind: code}
-          - {repo: avd-swarm, path: LICENSE, kind: code}
-          - {repo: avd-ops, path: LICENSE, kind: code}
+          - {repo: avd-landing-zone, path: LICENSE, kind: license}
+          - {repo: avd-current-state, path: LICENSE, kind: license}
+          - {repo: avd-assess, path: LICENSE, kind: license}
+          - {repo: avd-second-brain, path: LICENSE, kind: license}
+          - {repo: avd-swarm, path: LICENSE, kind: license}
+          - {repo: avd-ops, path: LICENSE, kind: license}
           - {repo: avd-ops, path: credits.json, kind: doc}
           - {repo: avd-ops, path: docs/build-or-adopt.md, kind: doc}
       - id: lz-pinned-tools
@@ -336,13 +337,14 @@ areas:
         says: In avd-landing-zone, 26 of 28 action references are pinned to a full commit SHA; the browser test job still uses two tags. The other repos reference actions by tag.
         standing: built
         evidence:
-          - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L147, kind: code}
+          - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L147, kind: ci}
       - id: pinned-sources
         repo: avd-assess
         says: Every source the method reads is pinned to a commit or a Learn page's git_commit_id, and the family's shared contracts are byte-identical copies whose hashes each consumer's tests check.
         standing: guarded
         evidence:
-          - {repo: avd-assess, path: scripts/check_pins.py, kind: ci}
+          - {repo: avd-assess, path: .github/workflows/pins.yml, kind: ci}
+          - {repo: avd-assess, path: scripts/check_pins.py, kind: code}
           - {repo: avd-assess, path: contracts/README.md#how-other-repos-use-these-files, kind: doc}
           - {repo: avd-current-state, path: tests/Facts.Tests.ps1#L203, kind: test}
 
@@ -484,7 +486,7 @@ threats:
 gaps:
   - id: security-policy
     repos: [avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm]
-    says: No SECURITY.md saying how to report a vulnerability privately; GitHub private vulnerability reporting is a repository setting the owner turns on. avd-assess and avd-ops gain one with this map.
+    says: No SECURITY.md saying how to report a vulnerability privately; GitHub private vulnerability reporting is a repository setting the owner turns on. avd-assess gains one with this map, and avd-ops with the pull request that adds its security page.
   - id: actions-sha-pinning
     repos: [avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess, avd-ops]
     says: Actions referenced by tag can change under a passing build; pin each to a full commit SHA with the tag as a comment, as avd-landing-zone mostly does.

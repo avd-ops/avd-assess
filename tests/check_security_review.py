@@ -22,7 +22,16 @@ from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parent.parent
 REPOS = {"avd-landing-zone", "avd-current-state", "avd-assess", "avd-second-brain", "avd-swarm", "avd-ops"}
-NEEDS = {"run": {"lesson", "run"}, "guarded": {"test", "ci"}, "built": {"code", "test", "ci"}}
+NEEDS = {"run": {"lesson", "run"}, "guarded": {"test", "ci"}, "built": {"code", "license", "test", "ci"}}
+# A kind must match its path, so a doc can't be labeled a test to raise a claim's standing.
+KIND_PATH = {
+    "test": re.compile(r"(^|/)tests?/|\.test\.mjs$|\.Tests\.ps1$"),
+    "ci": re.compile(r"^\.github/workflows/[^/]+\.ya?ml$"),
+    "lesson": re.compile(r"(^|/)lessons/"),
+    "decision": re.compile(r"(^|/)decisions/"),
+    "license": re.compile(r"(^|/)LICENSE$"),
+    "code": re.compile(r"\.(bicep|bicepparam|ps1|psm1|py|mjs|js|json|ya?ml|sh|toml)$"),
+}
 
 errors = []
 
@@ -40,6 +49,16 @@ schema = json.loads((ROOT / "contracts/schemas/assess-security-review.schema.jso
 built = json.loads((ROOT / "security-review.json").read_text(encoding="utf-8"))
 for e in Draft202012Validator(schema).iter_errors(built):
     err(f"security-review.json {'/'.join(map(str, e.absolute_path))}: {e.message}")
+
+
+def finish():
+    if errors:
+        print("\n".join(errors))
+        print(f"RESULT FAIL {len(errors)} problem(s) in the security review map")
+        sys.exit(1)
+
+
+finish()  # the rest reads fields the schema requires
 
 known = set()
 for path in (ROOT / "references").glob("*.yaml"):
@@ -106,6 +125,8 @@ for cid in sorted(set(claims) | ops):
 
 for owner, ev in evidence:
     repo, (path, _, anchor) = ev["repo"], ev["path"].partition("#")
+    if ev["kind"] in KIND_PATH and not KIND_PATH[ev["kind"]].search(path):
+        err(f"{owner}: {path} is labeled {ev['kind']}, which its path doesn't look like")
     if repo == "avd-assess":
         if not (ROOT / path).is_file():
             err(f"{owner}: {path} is not a file here")
@@ -116,20 +137,25 @@ family = sys.argv[sys.argv.index("--family-root") + 1] if "--family-root" in sys
 if family:
     for owner, ev in evidence:
         repo, (path, _, anchor) = ev["repo"], ev["path"].partition("#")
-        if repo == "avd-assess":
+        if repo == "avd-assess" or repo not in pins:
             continue
         out = subprocess.run(["git", "-C", str(Path(family) / repo), "show", f"{pins[repo]}:{path}"],
                              capture_output=True, text=True)
         if out.returncode:
             err(f"{owner}: {repo}@{pins[repo][:7]}:{path} not found ({out.stderr.strip()[:80]})")
             continue
-        m = re.fullmatch(r"L(\d+)", anchor)
-        if m and int(m.group(1)) > out.stdout.count("\n") + 1:
-            err(f"{owner}: {repo}:{path} has no line {m.group(1)}")
+        lines = out.stdout.splitlines()
+        m = re.fullmatch(r"L(\d+)(?:-L(\d+))?", anchor)
+        if m:
+            if max(int(n) for n in m.groups() if n) > len(lines):
+                err(f"{owner}: {repo}:{path} has {len(lines)} lines, not {anchor}")
+        elif anchor and path.endswith(".md"):
+            # GitHub's heading anchor: lowercase, punctuation dropped, spaces to hyphens.
+            slugs = {re.sub(r"[^\w\- ]", "", l.lstrip("#").strip().lower()).replace(" ", "-")
+                     for l in lines if l.startswith("#")}
+            if anchor not in slugs:
+                err(f"{owner}: {repo}:{path} has no heading #{anchor}")
 
-if errors:
-    print("\n".join(errors))
-    print(f"RESULT FAIL {len(errors)} problem(s) in the security review map")
-    sys.exit(1)
+finish()
 print(f"RESULT PASS security review map: {len(claims)} claims, {len(ops)} operator items, "
       f"{len(doc.get('gaps', []))} gaps" + (", every pinned path found" if family else ""))

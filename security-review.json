@@ -741,9 +741,9 @@
             },
             {
               "repo": "avd-ops",
-              "path": "scripts/privacy_check.py",
+              "path": ".github/workflows/privacy.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/scripts/privacy_check.py"
+              "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/.github/workflows/privacy.yml"
             }
           ]
         }
@@ -765,36 +765,36 @@
             {
               "repo": "avd-landing-zone",
               "path": "LICENSE",
-              "kind": "code",
+              "kind": "license",
               "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/LICENSE"
             },
             {
               "repo": "avd-current-state",
               "path": "LICENSE",
-              "kind": "code",
+              "kind": "license",
               "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/LICENSE"
             },
             {
               "repo": "avd-assess",
               "path": "LICENSE",
-              "kind": "code"
+              "kind": "license"
             },
             {
               "repo": "avd-second-brain",
               "path": "LICENSE",
-              "kind": "code",
+              "kind": "license",
               "url": "https://github.com/avd-ops/avd-second-brain/blob/f59a1c5207f89ba71f4752fe2a52a091ca6fd376/LICENSE"
             },
             {
               "repo": "avd-swarm",
               "path": "LICENSE",
-              "kind": "code",
+              "kind": "license",
               "url": "https://github.com/avd-ops/avd-swarm/blob/c81fbcbda8d6a268f66bec24381aac76850a5c2c/LICENSE"
             },
             {
               "repo": "avd-ops",
               "path": "LICENSE",
-              "kind": "code",
+              "kind": "license",
               "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/LICENSE"
             },
             {
@@ -893,7 +893,7 @@
             {
               "repo": "avd-landing-zone",
               "path": ".github/workflows/validate.yml#L147",
-              "kind": "code",
+              "kind": "ci",
               "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/.github/workflows/validate.yml#L147"
             }
           ]
@@ -906,8 +906,13 @@
           "evidence": [
             {
               "repo": "avd-assess",
-              "path": "scripts/check_pins.py",
+              "path": ".github/workflows/pins.yml",
               "kind": "ci"
+            },
+            {
+              "repo": "avd-assess",
+              "path": "scripts/check_pins.py",
+              "kind": "code"
             },
             {
               "repo": "avd-assess",
@@ -1299,7 +1304,7 @@
         "avd-second-brain",
         "avd-swarm"
       ],
-      "says": "No SECURITY.md saying how to report a vulnerability privately; GitHub private vulnerability reporting is a repository setting the owner turns on. avd-assess and avd-ops gain one with this map."
+      "says": "No SECURITY.md saying how to report a vulnerability privately; GitHub private vulnerability reporting is a repository setting the owner turns on. avd-assess gains one with this map, and avd-ops with the pull request that adds its security page."
     },
     {
       "id": "actions-sha-pinning",
