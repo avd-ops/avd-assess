@@ -986,6 +986,28 @@
       ]
     },
     {
+      "id": "psrule-azure",
+      "title": "PSRule for Azure, rule reference",
+      "url": "https://github.com/Azure/PSRule.Rules.Azure",
+      "pin": "https://github.com/Azure/PSRule.Rules.Azure/tree/ee878876de6554b75d9fdff974f9ef6fdc88391c/docs/en/rules",
+      "read": "2026-10-21",
+      "license": "MIT",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Well-Architected rules for Azure resources, run on templates and on exported live resources. avd-landing-zone runs this version (v1.47.0) in CI on its templates and in its live Well-Architected review. Claim IDs are the rules' AZR IDs, so a finding there and an assessment item here name the same thing. Only one rule is AVD-specific; the AVD review checklist and APRL stay the main lists.",
+      "claims": [
+        {
+          "id": "AZR-000437",
+          "says": "Azure.AVD.ScheduleAgentUpdate, define a maintenance window for host pool agent updates (Reliability, important)."
+        },
+        {
+          "id": "AZR-000195",
+          "says": "Azure.Storage.UseReplication, a storage account on locally redundant storage lives in one zone; use zone or geo replication (Reliability, important)."
+        }
+      ]
+    },
+    {
       "id": "rdp-bandwidth",
       "title": "Remote Desktop Protocol (RDP) bandwidth requirements",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-bandwidth",
