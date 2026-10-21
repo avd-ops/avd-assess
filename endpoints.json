@@ -4,7 +4,9 @@
   "cloud": "azure-public",
   "readAt": {
     "avd-required-fqdn": "05df299786103f3d5886146cf73fab142cda335a",
-    "avd-fabric-ips": "9df01472230d01bf9bb36b02e508abd74e4dc029"
+    "avd-fabric-ips": "9df01472230d01bf9bb36b02e508abd74e4dc029",
+    "avd-url-check-tool": "c0f1884420aae53e640ac0be2683cc30b519e621",
+    "rdp-shortpath": "41dcc5bdc9210cae5b9151f9851568b917ad77db"
   },
   "lists": [
     {
@@ -118,7 +120,6 @@
       "purpose": "relay",
       "verdict": "informational",
       "probeFrom": [],
-      "serviceTag": "WindowsVirtualDesktop",
       "note": "Relayed RDP (TURN). Not probeable from a browser; the device-side network test or a STUN check against the pack's own server says more (ref:rdp-shortpath#turn-range).",
       "source": {
         "claim": "ref:avd-required-fqdn#client-list",
@@ -762,10 +763,7 @@
       "port": 80,
       "purpose": "platform",
       "verdict": "required",
-      "probeFrom": [
-        "host"
-      ],
-      "serviceTag": "AzurePlatformIMDS",
+      "probeFrom": [],
       "note": "Instance metadata.",
       "source": {
         "claim": "ref:avd-fabric-ips#two-platform-ips",
@@ -781,11 +779,8 @@
       "port": 80,
       "purpose": "platform",
       "verdict": "required",
-      "probeFrom": [
-        "host"
-      ],
-      "serviceTag": "AzurePlatformDNS",
-      "note": "Platform health and, with Azure-provided DNS, name resolution; other ports are on the cited page.",
+      "probeFrom": [],
+      "note": "Platform health and, with Azure-provided DNS, name resolution; the other ports are on the cited page.",
       "source": {
         "claim": "ref:avd-fabric-ips#two-platform-ips",
         "url": "https://learn.microsoft.com/azure/virtual-desktop/azurecommunicationips",
@@ -794,64 +789,96 @@
     }
   ],
   "views": {
-    "browser": [
-      "client.sign-in",
-      "client.fwlink",
-      "client.shortener",
-      "client.docs",
-      "client.privacy",
-      "client.graph",
-      "client.connection-center",
-      "client.windows365",
-      "client.ecs"
-    ],
-    "device": [
-      "client.sign-in",
-      "client.fwlink",
-      "client.shortener",
-      "client.docs",
-      "client.privacy",
-      "client.graph",
-      "client.connection-center",
-      "client.windows365",
-      "client.ecs",
-      "client.cert-www",
-      "client.cert-publish"
-    ],
-    "host": [
-      "host.sign-in",
-      "host.marketplace",
-      "host.monitor-gcs",
-      "host.activation",
-      "host.agent-updates",
-      "host.portal-support",
-      "host.cert-ocsp",
-      "host.cert-www",
-      "host.cert-publish",
-      "host.cert-ctl",
-      "host.shortener",
-      "platform.metadata",
-      "platform.wireserver"
-    ],
-    "notProbed": [
-      "client.service",
-      "client.windows-cloud",
-      "client.windows-static",
-      "client.relay",
-      "client.wvd",
-      "client.troubleshooting",
-      "client.office-cdn",
-      "client.telemetry",
-      "client.cert-aik",
-      "client.cert-aikcertaia",
-      "host.relay",
-      "host.wvd",
-      "host.monitor-ingest",
-      "host.cert-aikcertaia",
-      "host.cert-aik",
-      "host.service",
-      "host.windows-cloud",
-      "host.windows-static"
-    ]
+    "browser": {
+      "lists": [
+        "client"
+      ],
+      "probe": [
+        "client.sign-in",
+        "client.fwlink",
+        "client.shortener",
+        "client.docs",
+        "client.privacy",
+        "client.graph",
+        "client.connection-center",
+        "client.windows365",
+        "client.ecs"
+      ],
+      "notTested": [
+        "client.service",
+        "client.windows-cloud",
+        "client.windows-static",
+        "client.relay",
+        "client.wvd",
+        "client.troubleshooting",
+        "client.office-cdn",
+        "client.telemetry",
+        "client.cert-aik",
+        "client.cert-www",
+        "client.cert-aikcertaia",
+        "client.cert-publish"
+      ]
+    },
+    "device": {
+      "lists": [
+        "client"
+      ],
+      "probe": [
+        "client.sign-in",
+        "client.fwlink",
+        "client.shortener",
+        "client.docs",
+        "client.privacy",
+        "client.graph",
+        "client.connection-center",
+        "client.windows365",
+        "client.ecs",
+        "client.cert-www",
+        "client.cert-publish"
+      ],
+      "notTested": [
+        "client.service",
+        "client.windows-cloud",
+        "client.windows-static",
+        "client.relay",
+        "client.wvd",
+        "client.troubleshooting",
+        "client.office-cdn",
+        "client.telemetry",
+        "client.cert-aik",
+        "client.cert-aikcertaia"
+      ]
+    },
+    "host": {
+      "lists": [
+        "host",
+        "platform"
+      ],
+      "probe": [
+        "host.sign-in",
+        "host.marketplace",
+        "host.monitor-gcs",
+        "host.activation",
+        "host.agent-updates",
+        "host.portal-support",
+        "host.cert-ocsp",
+        "host.cert-www",
+        "host.cert-publish",
+        "host.cert-ctl",
+        "host.shortener"
+      ],
+      "notTested": [
+        "host.relay",
+        "host.wvd",
+        "host.monitor-ingest",
+        "host.cert-aikcertaia",
+        "host.cert-aik",
+        "host.service",
+        "host.windows-cloud",
+        "host.windows-static",
+        "platform.metadata",
+        "platform.wireserver"
+      ]
+    }
   }
 }

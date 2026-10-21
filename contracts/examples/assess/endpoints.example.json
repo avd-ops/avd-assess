@@ -4,7 +4,9 @@
   "cloud": "azure-public",
   "readAt": {
     "avd-required-fqdn": "05df299786103f3d5886146cf73fab142cda335a",
-    "avd-fabric-ips": "9df01472230d01bf9bb36b02e508abd74e4dc029"
+    "avd-fabric-ips": "9df01472230d01bf9bb36b02e508abd74e4dc029",
+    "avd-url-check-tool": "c0f1884420aae53e640ac0be2683cc30b519e621",
+    "rdp-shortpath": "41dcc5bdc9210cae5b9151f9851568b917ad77db"
   },
   "lists": [
     {
@@ -105,10 +107,7 @@
       "port": 80,
       "purpose": "platform",
       "verdict": "required",
-      "probeFrom": [
-        "host"
-      ],
-      "serviceTag": "AzurePlatformIMDS",
+      "probeFrom": [],
       "note": "Instance metadata.",
       "source": {
         "claim": "ref:avd-fabric-ips#two-platform-ips",
@@ -118,18 +117,39 @@
     }
   ],
   "views": {
-    "browser": [
-      "client.sign-in"
-    ],
-    "device": [
-      "client.sign-in"
-    ],
-    "host": [
-      "host.cert-ocsp",
-      "platform.metadata"
-    ],
-    "notProbed": [
-      "client.wvd"
-    ]
+    "browser": {
+      "lists": [
+        "client"
+      ],
+      "probe": [
+        "client.sign-in"
+      ],
+      "notTested": [
+        "client.wvd"
+      ]
+    },
+    "device": {
+      "lists": [
+        "client"
+      ],
+      "probe": [
+        "client.sign-in"
+      ],
+      "notTested": [
+        "client.wvd"
+      ]
+    },
+    "host": {
+      "lists": [
+        "host",
+        "platform"
+      ],
+      "probe": [
+        "host.cert-ocsp"
+      ],
+      "notTested": [
+        "platform.metadata"
+      ]
+    }
   }
 }

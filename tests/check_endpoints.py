@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Checks the endpoint map (endpoints.yaml, gap:endpoint-map): every row cites a list whose claim exists
-in references/ with an immutable Learn pin, the map was read at the pin each reference now carries, no
-row restates an address, wildcards are never probed by name, a browser probes only HTTPS on 443, every
-claim a note cites exists, and endpoints.json passes its schema (contract C20, avd-assess-endpoints/v1).
+in references/ with an immutable Learn pin, the map was read at the pin each cited reference now carries
+(lists and notes alike), no row restates an address, only concrete names are probed, a browser probes
+only HTTPS on 443, every claim a note cites exists, and endpoints.json passes its schema (contract C20, avd-assess-endpoints/v1).
 
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
@@ -61,7 +61,7 @@ for lst in doc.get("lists") or []:
     if lst.get("dimension") not in dimensions:
         err(f"list {lid}: dimension {lst.get('dimension')} is not a row in dimensions.yaml")
 
-seen = set()
+seen, cited = set(), {lst.get("claim", "").removeprefix("ref:").split("#")[0] for lst in lists.values()}
 for e in doc.get("endpoints") or []:
     eid, kind, host = e.get("id", "?"), e.get("kind"), e.get("host", "")
     if eid in seen:
@@ -80,13 +80,20 @@ for e in doc.get("endpoints") or []:
     if (kind == "wildcard") != host.startswith("*."):
         err(f"{eid}: kind {kind} doesn't match host {host!r}")
     probe = e.get("probeFrom") or []
-    if kind == "wildcard" and probe:
-        err(f"{eid}: a wildcard can't be probed by name; probeFrom must be empty")
+    if kind != "fqdn" and probe:
+        err(f"{eid}: a {kind} row is never probed from the map; probeFrom must be empty")
     if "browser" in probe and (e.get("protocol"), e.get("port")) != ("tcp", 443):
         err(f"{eid}: a browser can probe only HTTPS on TCP 443")
     for cite in CITE.findall(e.get("note", "")):
+        cited.add(cite.removeprefix("ref:").split("#")[0])
         if cite not in claims:
             err(f"{eid}: note cites {cite}, which is not in references/")
+
+# Every page a note cites is read at a pin too, and readAt names no page nothing cites.
+for ref_id in sorted(cited - set(read_at)):
+    err(f"readAt has no entry for {ref_id}, which a note cites")
+for ref_id in sorted(set(read_at) - cited):
+    err(f"readAt names {ref_id}, which no list or note cites")
 
 schema = json.loads((ROOT / "contracts" / "schemas" / "assess-endpoints.schema.json").read_text(encoding="utf-8"))
 built = json.loads((ROOT / "endpoints.json").read_text(encoding="utf-8"))

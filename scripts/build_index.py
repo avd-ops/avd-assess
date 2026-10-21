@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "index.json"
 MAP = ROOT / "map.json"
 ENDPOINTS = ROOT / "endpoints.json"
-# Where a probe can run, in the order views are written.
-VANTAGES = ["browser", "device", "host"]
+# Where a probe can run, and the lists each vantage judges, in the order views are written.
+VANTAGES = {"browser": ["client"], "device": ["client"], "host": ["host", "platform"]}
 REF_KEYS = ["id", "title", "url", "pin", "archive", "read", "license", "areas", "pillars", "notes", "claims"]
 CLAIM_KEYS = ["id", "says", "kind"]
 OBS_KEYS = ["id", "claim", "verdict", "observed", "evidence", "date"]
@@ -64,8 +64,9 @@ def build_map():
 
 
 def build_endpoints():
-    """The endpoint map with each row's source URL and pin filled in from its reference, plus one list of
-    row IDs per vantage, so a reader such as avd-linecheck's pack builder filters nothing itself."""
+    """The endpoint map with each row's source URL and pin filled in from its reference, plus a view per
+    vantage (the lists it judges, the rows it may probe, the rest of those lists as not tested), so a
+    reader such as avd-linecheck's pack builder filters nothing itself."""
     doc = yaml.safe_load((ROOT / "endpoints.yaml").read_text(encoding="utf-8")) or {}
     refs = {}
     for path in (ROOT / "references").glob("*.yaml"):
@@ -89,8 +90,11 @@ def build_endpoints():
         "readAt": doc.get("readAt", {}),
         "lists": [dict(lst, source=source(lst.get("claim", ""))) for lst in doc.get("lists", [])],
         "endpoints": rows,
-        "views": {v: [r["id"] for r in rows if v in (r.get("probeFrom") or [])] for v in VANTAGES}
-                 | {"notProbed": [r["id"] for r in rows if not r.get("probeFrom")]},
+        "views": {v: {"lists": judged,
+                      "probe": [r["id"] for r in rows if r.get("list") in judged and v in (r.get("probeFrom") or [])],
+                      "notTested": [r["id"] for r in rows
+                                    if r.get("list") in judged and v not in (r.get("probeFrom") or [])]}
+                  for v, judged in VANTAGES.items()},
     }
     return json.dumps(out, indent=2, ensure_ascii=True, default=str) + "\n"
 

@@ -51,7 +51,7 @@ Beyond the methods, this repo holds the **map**: one row for every detail an AVD
 
 ## The endpoint map
 
-[endpoints.yaml](endpoints.yaml) lists the AVD endpoints the family's tools probe or report as not tested: one row per endpoint, each citing the pinned Learn claim that lists it, with where a probe of it means something (a browser on the user's device, a native tool on the device, or a session host), whether a failure moves a tool's verdict, and the service tag in place of any address. [endpoints.json](endpoints.json) is the same map as JSON (contract C20, `avd-assess-endpoints/v1`) with one list of row IDs per vantage. avd-current-state's endpoint check and avd-linecheck's AVD pack read it at a pinned commit. Microsoft's page stays the source of truth; why the map exists and how readers use it is in [gaps/endpoint-map.md](gaps/endpoint-map.md).
+[endpoints.yaml](endpoints.yaml) lists the AVD endpoints the family's tools probe or report as not tested: one row per endpoint, each citing the pinned Learn claim that lists it, with where a probe of it means something (a browser on the user's device, a native tool on the device, or a session host), whether a failure moves a tool's verdict, and the service tag in place of any address. [endpoints.json](endpoints.json) is the same map as JSON (contract C20, `avd-assess-endpoints/v1`) with a view per vantage: the rows it may probe and the rows it must report as not tested. avd-current-state's endpoint check and avd-linecheck's AVD pack read it at a pinned commit. Microsoft's page stays the source of truth; why the map exists and how readers use it is in [gaps/endpoint-map.md](gaps/endpoint-map.md).
 
 ## What this repo is not
 

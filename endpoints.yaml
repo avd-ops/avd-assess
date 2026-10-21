@@ -8,15 +8,17 @@
 # Built into endpoints.json (contract C20, avd-assess-endpoints/v1) by scripts/build_index.py, which adds
 # each row's source URL and pin from references/. tests/check_endpoints.py checks it.
 #
-# readAt: the Learn git_commit_id of each source page this map was read at. When the weekly pins workflow
-#   moves a reference's pin, the test fails until a person re-reads the page and updates rows and readAt.
+# readAt: the Learn git_commit_id of each page a list or a note cites, as read for this map. When a person
+#   moves a reference's pin (the weekly pins workflow reports drift as an issue), the test fails until the
+#   rows and readAt are updated from the page at the new pin.
 # version: bumped when a row is renamed or removed (readers key on ids); adding a row doesn't bump it.
 # kind: fqdn (a concrete name) | wildcard (a pattern; never probed by name) | range (an address range) |
 #   address (a single platform address).
 # probeFrom: where a probe of this row says something. browser = a web page on the user's device (HTTPS
 #   on 443 only); device = a native tool on the user's device; host = a session host. A probe from
 #   anywhere else (Cloud Shell, an operator's machine) is unknown, never pass (gaps/network-scope.md
-#   item 3). Empty for wildcards, ranges a probe can't reach by name, and anything nothing probes.
+#   item 3). Only fqdn rows may have one; wildcards, ranges and addresses are never probed from the map.
+# serviceTag: only where the cited table gives one.
 # verdict: required = a failed probe moves a tool's overall verdict; informational = it gets its own
 #   sentence and never moves the verdict. Both stay required by Microsoft (ref:avd-required-fqdn#
 #   blocking-unsupported); informational only means a lone failure is more often a proxy or blocker than
@@ -27,6 +29,8 @@ cloud: azure-public
 readAt:
   avd-required-fqdn: 05df299786103f3d5886146cf73fab142cda335a
   avd-fabric-ips: 9df01472230d01bf9bb36b02e508abd74e4dc029
+  avd-url-check-tool: c0f1884420aae53e640ac0be2683cc30b519e621
+  rdp-shortpath: 41dcc5bdc9210cae5b9151f9851568b917ad77db
 lists:
   - id: client
     title: End-user devices
@@ -46,7 +50,7 @@ endpoints:
   - {id: client.windows-cloud, list: client, kind: wildcard, host: "*.windows.cloud.microsoft", protocol: tcp, port: 443, purpose: service, verdict: required, probeFrom: []}
   - {id: client.windows-static, list: client, kind: wildcard, host: "*.windows.static.microsoft", protocol: tcp, port: 443, purpose: service, verdict: required, probeFrom: []}
   - {id: client.sign-in, list: client, kind: fqdn, host: login.microsoftonline.com, protocol: tcp, port: 443, purpose: sign-in, verdict: required, probeFrom: [browser, device]}
-  - {id: client.relay, list: client, kind: range, protocol: udp, port: 3478, purpose: relay, verdict: informational, probeFrom: [], serviceTag: WindowsVirtualDesktop, note: "Relayed RDP (TURN). Not probeable from a browser; the device-side network test or a STUN check against the pack's own server says more (ref:rdp-shortpath#turn-range)."}
+  - {id: client.relay, list: client, kind: range, protocol: udp, port: 3478, purpose: relay, verdict: informational, probeFrom: [], note: "Relayed RDP (TURN). Not probeable from a browser; the device-side network test or a STUN check against the pack's own server says more (ref:rdp-shortpath#turn-range)."}
   - {id: client.wvd, list: client, kind: wildcard, host: "*.wvd.microsoft.com", protocol: tcp, port: 443, purpose: service, verdict: required, probeFrom: [], note: "Feed, broker and gateway. No concrete name is listed at the pin; older names are not probed (avd-linecheck spec Q5)."}
   - {id: client.troubleshooting, list: client, kind: wildcard, host: "*.servicebus.windows.net", protocol: tcp, port: 443, purpose: troubleshooting, verdict: informational, probeFrom: []}
   - {id: client.fwlink, list: client, kind: fqdn, host: go.microsoft.com, protocol: tcp, port: 443, purpose: links-and-docs, verdict: informational, probeFrom: [browser, device], note: "Answers with a redirect; a browser probe lists the redirect targets beside it."}
@@ -86,5 +90,7 @@ endpoints:
   - {id: host.windows-static, list: host, kind: wildcard, host: "*.windows.static.microsoft", protocol: tcp, port: 443, purpose: service, verdict: required, probeFrom: []}
 
   # Azure platform addresses: never proxied, inspected or tunneled (ref:avd-fabric-ips#never-proxy-or-tunnel).
-  - {id: platform.metadata, list: platform, kind: address, protocol: tcp, port: 80, purpose: platform, verdict: required, probeFrom: [host], serviceTag: AzurePlatformIMDS, note: "Instance metadata."}
-  - {id: platform.wireserver, list: platform, kind: address, protocol: tcp, port: 80, purpose: platform, verdict: required, probeFrom: [host], serviceTag: AzurePlatformDNS, note: "Platform health and, with Azure-provided DNS, name resolution; other ports are on the cited page."}
+  # The map carries no address, so nothing probes these rows from it: they are judged by configuration
+  # (no deny rule or route aimed at them, ref:avd-fabric-ips#no-deny-no-route) and listed as not tested.
+  - {id: platform.metadata, list: platform, kind: address, protocol: tcp, port: 80, purpose: platform, verdict: required, probeFrom: [], note: "Instance metadata."}
+  - {id: platform.wireserver, list: platform, kind: address, protocol: tcp, port: 80, purpose: platform, verdict: required, probeFrom: [], note: "Platform health and, with Azure-provided DNS, name resolution; the other ports are on the cited page."}
