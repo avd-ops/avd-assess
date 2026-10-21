@@ -18,7 +18,7 @@
 - **Breaks** say what discovery or measurement finds that moves a persona off the entry, and where to: another entry, or a field change.
 - **Links** name the fact register decisions the entry moves most and the `dimensions.yaml` rows it leans on (`gap:deployment-dimensions`), so a reader goes from a use case to the baselines and checks that apply.
 
-How it is used is in the use case method (step 4). The library holds no estate data: a match is recorded in the operator's record as enums, and groups under 10 users still fold into a neighbor (`gap:use-cases`).
+How it is used is in the use case method (step 4). The library is the one shared list: other tools, in this family or outside it, read it as a primitive and don't keep their own persona list; a use case they need is added here by pull request. The library holds no estate data: a match is recorded in the operator's record as enums, and groups under 10 users still fold into a neighbor (`gap:use-cases`).
 
 ## How an entry changes
 
