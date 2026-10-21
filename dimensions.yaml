@@ -18,7 +18,7 @@
 schema: avd-assess-dimensions/v1
 landingZone:
   commit: ae5c2877d53d9af8e1efbf47b85cfdef06c51364
-  source: https://github.com/nickprignano/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep
+  source: https://github.com/avd-ops/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep
   parameters: [namePrefix, environmentName, location, tags, avdUsersGroupObjectId, avdAdminsGroupObjectId,
     avdServicePrincipalObjectId, enrollInIntune, connectivityMode, spokeAddressPrefix, sessionHostSubnetPrefix,
     privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix,
@@ -99,7 +99,7 @@ dimensions:
     pillar: capacity
     title: Load balancing algorithm
     decides: Breadth-first (performance) or depth-first (cost) placement of new sessions.
-    home: {decision: proposed:hostPool.loadBalancing, facts: [proposed:c11.hostPool.loadBalancerType]}
+    home: {decision: proposed:hostPool.loadBalancing, facts: [c11.hostPool.loadBalancer]}
     baseline:
       standing: guidance
       claims: [ref:avd-load-balancing#breadth-first-performance, ref:avd-load-balancing#depth-first-cost, ref:avd-load-balancing#set-limit-from-insights, ref:review-checklists-avd#C01.04]
@@ -126,7 +126,7 @@ dimensions:
     pillar: capacity
     title: Whether hosts need a GPU
     decides: GPU or CPU-only hosts for each workload.
-    home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes], intake: [proposed:intake.graphicsWorkloads]}
+    home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes], intake: [intake.graphicsWorkloads]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#C01.12, ref:session-host-sizing#gpu-for-graphics]
@@ -165,7 +165,7 @@ dimensions:
     pillar: capacity
     title: OS disk type
     decides: Premium SSD, Standard SSD or an ephemeral OS disk for session hosts.
-    home: {decision: proposed:hostPool.osDisk, facts: [proposed:c11.sessionHost.osDiskType]}
+    home: {decision: proposed:hostPool.osDisk, facts: [c11.hostPool.sessionHosts.osDiskTypes]}
     baseline:
       standing: published
       claims: [ref:avd-deploy-host-pool#premium-ssd-os-disk, ref:review-checklists-avd#H03.01, ref:session-host-sizing#ssd-storage]
@@ -179,7 +179,7 @@ dimensions:
     pillar: capacity
     title: Ephemeral OS disks for stateless pools
     decides: Whether a pooled, stateless pool uses ephemeral OS disks.
-    home: {decision: proposed:hostPool.osDisk, facts: [proposed:c11.sessionHost.osDiskType]}
+    home: {decision: proposed:hostPool.osDisk, facts: [c11.hostPool.sessionHosts.osDiskTypes]}
     baseline:
       standing: published
       claims: [ref:avd-ephemeral-os-disks#stateless-only, ref:avd-ephemeral-os-disks#pooled-with-configuration, ref:avd-ephemeral-os-disks#unsupported-features, ref:avd-ephemeral-os-disks#size-must-fit-image, ref:avd-ephemeral-os-disks#autoscale-full-active]
@@ -270,7 +270,7 @@ dimensions:
     pillar: protocol
     title: RDP transport
     decides: Whether sessions use the UDP transport (RDP Shortpath) on managed and public networks, judged against the networks the operator says users connect from.
-    home: {decision: network, facts: [c12.group.rttMsP95, proposed:c12.group.transport.udpShare, proposed:c12.group.transport.relayShare], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [c12.group.rttMsP95, proposed:c12.group.transport.udpShare, proposed:c12.group.transport.relayShare], intake: [intake.userNetworks]}
     baseline:
       standing: published
       claims: [ref:rdp-shortpath#udp-transport, ref:rdp-shortpath#tcp-first-then-udp, ref:rdp-shortpath#stun-before-turn, ref:review-checklists-avd#F01.11, gap:transport-classification, gap:remote-protocols-scope]
@@ -297,7 +297,7 @@ dimensions:
     pillar: protocol
     title: RDP Shortpath for managed networks
     decides: Whether users on ExpressRoute or VPN get a direct UDP path, through the host listener and an inbound port or through ICE/STUN.
-    home: {decision: network, facts: [proposed:c11.hostPool.udp.managedPrivate, proposed:c11.hostPool.udp.direct], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [c11.hostPool.udp.managedPrivate, c11.hostPool.udp.direct], intake: [intake.userNetworks]}
     baseline:
       standing: published
       claims: [ref:configure-rdp-shortpath#four-options, ref:configure-rdp-shortpath#listener-for-managed, ref:configure-rdp-shortpath#most-restrictive-wins, ref:rdp-shortpath#first-found-wins, ref:review-checklists-avd#F01.11]
@@ -310,7 +310,7 @@ dimensions:
     pillar: protocol
     title: RDP Shortpath for public networks (STUN and TURN)
     decides: Whether users on the internet get a direct UDP path through STUN or a relayed one through TURN (expected behind symmetric NAT egress), and whether either is turned off.
-    home: {decision: network, facts: [proposed:c11.hostPool.udp.public, proposed:c11.hostPool.udp.relay, proposed:c12.group.transport.relayShare]}
+    home: {decision: network, facts: [c11.hostPool.udp.public, c11.hostPool.udp.relay, proposed:c12.group.transport.relayShare]}
     baseline:
       standing: published
       claims: [ref:configure-rdp-shortpath#defaults-enabled, ref:configure-rdp-shortpath#hostpool-switches, ref:configure-rdp-shortpath#select-transport-policy, ref:configure-rdp-shortpath#turn-public-cloud-only, ref:rdp-shortpath#stun-before-turn, ref:rdp-shortpath#turn-range, ref:rdp-shortpath#symmetric-nat-means-turn, ref:rdp-shortpath#public-network-advice, ref:rdp-shortpath#turn-maintenance-drops, ref:hostpool-api-changelog#udp-switches-preview-only, ref:troubleshoot-rdp-shortpath#nat-type-test]
@@ -337,7 +337,7 @@ dimensions:
     pillar: protocol
     title: RDP Multipath and modern auto-reconnect
     decides: Whether sessions keep backup paths and survive short network drops, which depends on the client app and version.
-    home: {decision: network, facts: [], intake: [proposed:intake.clientApps]}
+    home: {decision: network, facts: [], intake: [intake.clientApps]}
     baseline:
       standing: published
       claims: [ref:rdp-multipath#automatic, ref:rdp-multipath#client-floors, ref:rdp-multipath#shortpath-first, ref:avd-auto-reconnect#needs-multipath, ref:windows-app-platforms#multipath-by-platform, ref:avd-whats-new#multipath-ga]
@@ -349,7 +349,7 @@ dimensions:
     pillar: protocol
     title: UDP over Private Link
     decides: Whether sessions that use Private Link can still use UDP.
-    home: {decision: network, facts: [proposed:c11.hostPool.udp.privateLink, c11.network.privateEndpoints]}
+    home: {decision: network, facts: [c11.hostPool.udp.privateLink, c11.network.privateEndpoints]}
     baseline:
       standing: published
       claims: [ref:hostpool-api-changelog#private-link-udp-preview-only, ref:configure-rdp-shortpath#hostpool-switches]
@@ -361,7 +361,7 @@ dimensions:
     pillar: protocol
     title: QoS marking and throttle rate
     decides: Whether RDP traffic on managed networks is marked for priority (DSCP) or capped per session.
-    home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [], intake: [intake.userNetworks]}
     baseline:
       standing: guidance
       claims: [ref:rdp-qos#managed-udp-only, ref:rdp-qos#dscp-46, ref:rdp-qos#qos-before-bandwidth, ref:rdp-shortpath#managed-qos-and-throttle, ref:rdp-bandwidth#throttle-managed-only]
@@ -373,7 +373,7 @@ dimensions:
     pillar: protocol
     title: Graphics encoding and codecs
     decides: Software or hardware encoding, AVC 444, HEVC and chroma, set by host policy against the host's GPU and the client's decoder.
-    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes], intake: [proposed:intake.graphicsWorkloads]}
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes], intake: [intake.graphicsWorkloads]}
     baseline:
       standing: published
       claims: [ref:graphics-encoding#software-default, ref:graphics-encoding#codecs, ref:avd-gpu-acceleration#cpu-by-default, ref:avd-gpu-acceleration#avc444-needs-hw-encoding, ref:avd-gpu-acceleration#hevc-prerequisites, ref:avd-gpu-acceleration#verify-by-event, ref:graphics-chroma-444#only-support-verifies]
@@ -399,7 +399,7 @@ dimensions:
     pillar: capacity
     title: Accelerated networking
     decides: Whether host NICs use accelerated networking.
-    home: {decision: hostPool.vmSize, facts: [proposed:c11.sessionHost.acceleratedNetworking]}
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.sessionHosts.acceleratedNetworking]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#C01.13]
@@ -424,7 +424,7 @@ dimensions:
     pillar: networking-client
     title: Bandwidth per user
     decides: Whether user networks and host sizes carry the expected RDP traffic.
-    home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [], intake: [intake.userNetworks]}
     baseline:
       standing: prior
       claims: [ref:rdp-bandwidth#per-scenario-estimates, ref:rdp-bandwidth#monitor-real-users, ref:review-checklists-avd#F01.09]
@@ -436,7 +436,7 @@ dimensions:
     pillar: networking-client
     title: User networks and client reachability
     decides: What each user network (office, branch, home, guest Wi-Fi) must allow, and whether it reaches the region within the round-trip target.
-    home: {decision: region, facts: [c12.group.rttMsP95], intake: [proposed:intake.userNetworks]}
+    home: {decision: region, facts: [c12.group.rttMsP95], intake: [intake.userNetworks]}
     baseline:
       standing: published
       claims: [ref:avd-required-fqdn#client-list, ref:avd-prerequisites#rtt-under-150, ref:avd-proxy#client-proxy-support, ref:avd-proxy#same-geography, ref:thin-clients#reproduce-on-windows-app, ref:review-checklists-avd#C02.04]
@@ -449,7 +449,7 @@ dimensions:
     pillar: networking-client
     title: AVD Private Link from the client
     decides: Whether users reach feed and gateway privately, and how their networks resolve the private names.
-    home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [], intake: [intake.userNetworks]}
     baseline:
       standing: published
       claims: [ref:avd-private-link#client-dns-sequence, ref:avd-private-link#mixed-feed-limit, ref:avd-private-link#global-workspace, ref:avd-private-link-setup#client-versions, ref:dns-private-resolver#hybrid-resolution, gap:client-network]
@@ -512,7 +512,7 @@ dimensions:
     pillar: security-posture
     title: Trusted launch and VM generation
     decides: Gen2 with Trusted launch, or confidential VMs.
-    home: {decision: proposed:hostPool.security, facts: [proposed:c11.sessionHost.securityType]}
+    home: {decision: proposed:hostPool.security, facts: [c11.hostPool.sessionHosts.trustedLaunch, c11.hostPool.sessionHosts.notTrustedLaunch]}
     baseline:
       standing: published
       claims: [ref:avd-deploy-host-pool#trusted-launch-default, ref:review-checklists-avd#B03.01]
@@ -540,7 +540,7 @@ dimensions:
     pillar: security-posture
     title: Disk encryption
     decides: Server-side encryption only, encryption at host, or confidential disk encryption.
-    home: {decision: proposed:hostPool.encryption, facts: [proposed:c11.sessionHost.encryptionAtHost]}
+    home: {decision: proposed:hostPool.encryption, facts: [c11.hostPool.sessionHosts.encryptionAtHost]}
     baseline:
       standing: published
       claims: [ref:disk-encryption-options#encryption-at-host, ref:disk-encryption-options#sse-always-on, ref:disk-encryption-options#ade-retirement]
@@ -553,7 +553,7 @@ dimensions:
     pillar: security-posture
     title: Key ownership
     decides: Platform-managed or customer-managed keys.
-    home: {decision: proposed:hostPool.encryption, facts: [], intake: [proposed:intake.keyRequirements]}
+    home: {decision: proposed:hostPool.encryption, facts: [], intake: [intake.keyRequirements]}
     baseline:
       standing: guidance
       claims: [ref:disk-encryption-options#customer-keys]
@@ -831,7 +831,7 @@ dimensions:
     pillar: networking-azure
     title: Address space and subnet sizing
     decides: Spoke and subnet prefixes, and the headroom left for hosts and private endpoints.
-    home: {decision: network, facts: [c11.network.virtualNetworks, proposed:c11.network.hostSubnets.freeAddresses]}
+    home: {decision: network, facts: [c11.network.virtualNetworks, c11.network.hostSubnets.freeAddresses]}
     baseline:
       standing: guidance
       claims: [ref:avd-private-link#address-headroom, ref:arch-private-link-hub-spoke#placement-decision-tree, gap:network-scope]
@@ -843,7 +843,7 @@ dimensions:
     pillar: networking-azure
     title: Name resolution and private DNS zones
     decides: Azure-provided or custom DNS, private DNS zones local or central, and how on-premises and the hub resolve them.
-    home: {decision: network, facts: [c11.network.customDnsVirtualNetworks, proposed:c11.network.privateDnsZoneLinks]}
+    home: {decision: network, facts: [c11.network.customDnsVirtualNetworks, c11.network.privateDnsZoneLinks]}
     baseline:
       standing: published
       claims: [ref:private-endpoint-dns#zone-per-service, ref:dns-private-resolver#hybrid-resolution, ref:caf-avd-network#dns-like-iaas, ref:avd-private-link-setup#dns-zones]
@@ -855,7 +855,7 @@ dimensions:
     pillar: networking-azure
     title: Outbound connectivity
     decides: NAT Gateway, a route to a firewall or appliance, or load balancer outbound rules; default outbound access off.
-    home: {decision: network, facts: [c11.network.defaultRoutes, proposed:c11.network.hostSubnets.explicitEgress, proposed:c11.network.hostSubnets.defaultOutboundAccess]}
+    home: {decision: network, facts: [c11.network.defaultRoutes, c11.network.hostSubnets.explicitEgress, c11.network.hostSubnets.defaultOutboundAccess]}
     baseline:
       standing: published
       claims: [ref:default-outbound#explicit-outbound, ref:default-outbound#private-subnets-default, ref:nat-gateway#subnet-egress, ref:review-checklists-avd#F01.04, ref:review-checklists-avd#F01.06]
@@ -867,7 +867,7 @@ dimensions:
     pillar: networking-azure
     title: Required endpoints, ports and service tags
     decides: How hosts reach the published AVD endpoints, the platform addresses and the identity endpoints through NSGs, routes and firewalls.
-    home: {decision: network, facts: [proposed:c11.network.hostSubnets.avdOutboundDenied, proposed:c11.network.hostSubnets.fabricDenyRules]}
+    home: {decision: network, facts: [c11.network.hostSubnets.avdOutboundDenied, c11.network.hostSubnets.fabricDenyRules]}
     baseline:
       standing: published
       claims: [ref:avd-required-fqdn#host-list, ref:avd-required-fqdn#blocking-unsupported, ref:avd-required-fqdn#service-and-fqdn-tags, ref:avd-fabric-ips#no-deny-no-route, ref:firewall-avd#fqdn-tag-rules, ref:review-checklists-avd#F01.05, ref:review-checklists-avd#F01.07]
@@ -879,7 +879,7 @@ dimensions:
     pillar: networking-azure
     title: Inspection, proxies and forced tunneling
     decides: Which traffic a firewall, proxy or tunnel may carry or inspect, and what bypasses it.
-    home: {decision: network, facts: [c11.network.defaultRoutes], intake: [proposed:intake.inspection]}
+    home: {decision: network, facts: [c11.network.defaultRoutes], intake: [intake.inspection]}
     baseline:
       standing: published
       claims: [ref:avd-proxy#bypass-proxies, ref:avd-proxy#no-ssl-termination, ref:avd-proxy#no-auth-proxy, ref:avd-fabric-ips#never-proxy-or-tunnel, ref:firewall-avd#bypass-route-for-scale-in, ref:caf-avd-network#forced-tunnel-supported, ref:review-checklists-avd#F01.08]
@@ -892,7 +892,7 @@ dimensions:
     pillar: networking-azure
     title: Private endpoints and AVD Private Link (Azure side)
     decides: Which AVD Private Link layout (connection, feed, global) and public access settings, and private endpoints for profile storage and Key Vault.
-    home: {decision: network, facts: [c11.network.privateEndpoints, c11.storage.privateEndpoint, proposed:c11.hostPool.publicNetworkAccess, proposed:c11.workspace.publicNetworkAccess, proposed:c11.network.privateEndpoints.groupId], checks: [asm-files-private-endpoint]}
+    home: {decision: network, facts: [c11.network.privateEndpoints, c11.storage.privateEndpoint, c11.hostPool.publicNetworkAccess, c11.workspace.publicNetworkAccess], checks: [asm-files-private-endpoint]}
     baseline:
       standing: published
       claims: [ref:avd-private-link#three-sub-resources, ref:avd-private-link#four-scenarios, ref:avd-private-link#public-access-settings, ref:avd-private-link#global-workspace, ref:avd-private-link#udp-opt-in, ref:avd-private-link#full-port-range, ref:avd-private-link-setup#re-register-provider, ref:review-checklists-avd#F01.10]
@@ -905,7 +905,7 @@ dimensions:
     pillar: networking-azure
     title: Administrative access path
     decides: How operators reach hosts and private endpoints (Bastion SKU or a jumpbox), separate from the user path through AVD.
-    home: {decision: proposed:network.adminAccess, facts: [proposed:c11.network.bastionHosts, proposed:c11.network.hostPublicRdp]}
+    home: {decision: proposed:network.adminAccess, facts: [c11.network.bastionHosts, c11.network.hostPublicRdp]}
     baseline:
       standing: guidance
       claims: [ref:bastion#admin-path, gap:network-scope]
@@ -929,7 +929,7 @@ dimensions:
     pillar: networking-azure
     title: Network monitoring
     decides: Flow logs with traffic analytics and path tests for the host network.
-    home: {decision: proposed:network.monitoring, facts: [proposed:c11.network.flowLogs]}
+    home: {decision: proposed:network.monitoring, facts: [c11.network.flowLogs]}
     baseline:
       standing: guidance
       claims: [ref:vnet-flow-logs#flow-logging, ref:connection-monitor#path-tests, ref:caf-avd-network#nsg-on-all-subnets]
@@ -968,7 +968,7 @@ dimensions:
     pillar: monitoring
     title: Monitoring, Insights and alerts
     decides: Insights wiring (diagnostics per AVD object, agent and data collection rule per host), log retention and alerts.
-    home: {decision: proposed:operations.monitoring, facts: [proposed:c11.monitoring.diagnostics, proposed:c11.hostPool.sessionHosts.monitoringAgent, proposed:c11.hostPool.sessionHosts.insightsDcr, proposed:c11.monitoring.workspace.retentionDays, proposed:c11.monitoring.alerts]}
+    home: {decision: proposed:operations.monitoring, facts: [c11.monitoring.diagnostics, c11.hostPool.sessionHosts.monitoringAgent, c11.hostPool.sessionHosts.insightsDcr, c11.logAnalytics.retentionDays, c11.monitoring.alerts]}
     baseline:
       standing: published
       claims: [ref:avd-insights#hostpool-diagnostics, ref:avd-insights#workspace-diagnostics, ref:avd-insights#host-data-ama-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#latest-version, ref:amba-avd#host-resources, gap:insights-facts, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:deployment-dimensions]

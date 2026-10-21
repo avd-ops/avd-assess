@@ -22,21 +22,21 @@ The configuration workbook checks the setup interactively, one host pool at a ti
 
 No source sets a retention number. Retention stays the estate's choice and is reported, not graded.
 
-## Configuration facts (proposed, C11)
+## Configuration facts (specified, C11)
 
 | Fact | Type | Read from |
 |---|---|---|
-| `c11.monitoring.diagnostics` | per host pool, app group and workspace: on, sends all logs or the listed categories | REST `diagnosticSettings` per object |
+| `c11.monitoring.diagnostics` | count map: host pools, app groups and workspaces by diagnostic setting (all logs, the listed categories, off) | REST `diagnosticSettings` per object |
 | `c11.hostPool.sessionHosts.monitoringAgent` | hosts with the Azure Monitor Agent `Succeeded`, out of the total | Resource Graph VM extensions |
 | `c11.hostPool.sessionHosts.insightsDcr` | hosts associated with a rule whose name starts `microsoft-avdi-` | Resource Graph `InsightsResources` |
-| `c11.monitoring.workspace.retentionDays` | count map | Resource Graph workspaces |
+| `c11.logAnalytics.retentionDays` | count map, workspaces by retention days (built) | Resource Graph workspaces |
 | `c11.monitoring.alerts` | enabled log and metric alert rules on the workspace or the hosts' resource groups: a count, never their receivers | Resource Graph `scheduledqueryrules`, `metricalerts` |
 
 With these, two checks can run:
 - E02.02: every AVD object sends the listed categories.
 - E02.01: every host sends Insights data.
 
-They join `method.json` once the facts are in the register.
+They join `method.json` once avd-current-state collects these facts and they are built in the register.
 
 ## Measured facts (proposed)
 

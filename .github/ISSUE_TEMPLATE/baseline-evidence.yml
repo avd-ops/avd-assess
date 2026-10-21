@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you. Read [evidence/README.md](https://github.com/nickprignano/avd-assess/blob/main/evidence/README.md) first. Paste only a file that passed `python3 scripts/check_evidence.py`. Never paste raw exports, host or user names, tenant or subscription IDs, domains or IP addresses. Issues are public.
+        Thank you. Read [evidence/README.md](https://github.com/avd-ops/avd-assess/blob/main/evidence/README.md) first. Paste only a file that passed `python3 scripts/check_evidence.py`. Never paste raw exports, host or user names, tenant or subscription IDs, domains or IP addresses. Issues are public.
   - type: dropdown
     id: source
     attributes:
