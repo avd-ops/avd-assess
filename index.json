@@ -122,6 +122,34 @@
       ]
     },
     {
+      "id": "anf-replication",
+      "title": "Understand Azure NetApp Files replication",
+      "url": "https://learn.microsoft.com/azure/azure-netapp-files/replication",
+      "pin": "Learn git_commit_id 28ba1f62eadc3d9b096c20ec4ea8e84cdc550d86, updated_at 2026-04-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "profiles"
+      ],
+      "notes": "The checklist's link for A03.06 (cross-region-replication-create-peering) belongs to this page's family. How the multiregion guide applies it to AVD is ref:avd-multiregion-bcdr#anf-zone-or-region.",
+      "claims": [
+        {
+          "id": "cross-zone-and-cross-region",
+          "says": "Azure NetApp Files offers cross-zone replication (in zone-enabled regions) and cross-region replication (between listed region pairs) as volume recovery options.",
+          "kind": "published"
+        },
+        {
+          "id": "zone-and-region-together",
+          "says": "One source volume can carry both a cross-zone and a cross-region replication relationship (cross-zone-region replication), with at most two destination volumes.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "app-attach",
       "title": "App Attach in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/app-attach-overview",
@@ -257,6 +285,38 @@
       ]
     },
     {
+      "id": "asr-zone-to-zone",
+      "title": "Enable Azure VM disaster recovery between availability zones (Site Recovery)",
+      "url": "https://learn.microsoft.com/azure/site-recovery/azure-to-azure-how-to-enable-zone-to-zone-disaster-recovery",
+      "pin": "Learn git_commit_id 5e88feaf574a0f668f71c00fbea1026485d672c0, updated_at 2026-09-03",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "notes": "The checklist's link for A01.06 (a local recovery strategy for personal host pools).",
+      "claims": [
+        {
+          "id": "limited-regions",
+          "says": "Zone-to-zone recovery works only in a listed subset of regions with availability zones, and not for VMs on zone-redundant managed disks or Ultra Disks.",
+          "kind": "published"
+        },
+        {
+          "id": "may-fall-short-region-wide",
+          "says": "Zone-to-zone recovery can fall short of resilience requirements in a region-wide disaster.",
+          "kind": "published"
+        },
+        {
+          "id": "rto-sla-not-rpo",
+          "says": "Site Recovery's SLA promises an RTO of up to one hour; there is no SLA for RPO.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "autoscale-faq",
       "title": "Azure Virtual Desktop autoscale FAQ",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-faq",
@@ -271,6 +331,32 @@
           "id": "disconnected-time-limit",
           "says": "Autoscale counts disconnected sessions as active; a host policy that signs out disconnected sessions after 15 to 30 minutes lets a pool scale to zero.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "availability-zones",
+      "title": "What are Azure availability zones?",
+      "url": "https://learn.microsoft.com/azure/reliability/availability-zones-overview",
+      "pin": "Learn git_commit_id 2f7ee4c8b45127943bcd615810dc882f9ddd598e, updated_at 2026-10-13",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "claims": [
+        {
+          "id": "zonal-needs-multiple",
+          "says": "A zonal resource isn't resilient to a zone outage on its own; resilience needs instances spread across zones or a zone-redundant configuration.",
+          "kind": "published"
+        },
+        {
+          "id": "nonzonal-placement",
+          "says": "A resource not configured for zones may be placed in any zone of the region and can go down with whichever zone fails.",
+          "kind": "published"
         }
       ]
     },
@@ -382,6 +468,38 @@
           "id": "no-mixed-pools",
           "says": "A host pool holds session hosts on Azure or on Azure Local, never both.",
           "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-bcdr-concepts",
+      "title": "Azure Virtual Desktop business continuity and disaster recovery concepts",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/disaster-recovery-concepts",
+      "pin": "Learn git_commit_id 1775de02212032150bdac28deed32d92c928e8b8, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "notes": "The checklist's disaster-recovery links (A01.03, A01.05, A02.02, A03.02, A03.03) point at an older URL that now redirects here. The page is an index; the detail is in the multiregion guide (ref:avd-multiregion-bcdr).",
+      "claims": [
+        {
+          "id": "customer-managed-components",
+          "says": "Session hosts, profile management, applications, user data and user identities are the customer's or partner's to make resilient; the rest is Microsoft's.",
+          "kind": "published"
+        },
+        {
+          "id": "no-native-dr",
+          "says": "AVD has no native disaster recovery features; recovery is built from other Azure services such as zones, availability sets, Site Recovery and storage redundancy.",
+          "kind": "published"
+        },
+        {
+          "id": "ha-bc-dr",
+          "says": "A recovery plan covers high availability, business continuity and disaster recovery as three different things.",
+          "kind": "guidance"
         }
       ]
     },
@@ -1018,6 +1136,86 @@
           "id": "selective-failover-test",
           "says": "Test failover by moving a subset of users or application groups to the secondary pool.",
           "kind": "guidance"
+        },
+        {
+          "id": "zones-not-dr",
+          "says": "Availability zones are a high availability feature; don't treat them as disaster recovery for a region-wide event.",
+          "kind": "published"
+        },
+        {
+          "id": "spread-and-overprovision",
+          "says": "Spread session hosts across zones (an availability set where the region has none) and consider extra hosts so the pool still serves users with one zone lost.",
+          "kind": "guidance"
+        },
+        {
+          "id": "dependencies-zone-resilient",
+          "says": "Review each dependency for a single zone outage, for example domain controllers, gateways and other resources users reach, and deploy them across zones.",
+          "kind": "guidance"
+        },
+        {
+          "id": "networking-in-both-regions",
+          "says": "Before multiregion recovery, deploy the landing zone in both regions, each spoke on a hub in its own region with connectivity between the hubs, and confirm line-of-business apps and dependent resources are available in the recovery region.",
+          "kind": "guidance"
+        },
+        {
+          "id": "personal-site-recovery",
+          "says": "Personal host pools recover with Site Recovery per VM, failed over and back by an administrator at the VM level; VM extensions aren't kept and must be set up again.",
+          "kind": "published"
+        },
+        {
+          "id": "no-asr-test-failover",
+          "says": "Don't use Site Recovery test failover for session hosts, because the duplicate VM registers with the control plane and conflicts with the original; start secondary hosts on a schedule and run the failover procedure with a test group instead.",
+          "kind": "published"
+        },
+        {
+          "id": "rto-rpo-by-model",
+          "says": "Microsoft's estimates are near-zero RTO for active-active, 15 to 60 minutes for active-passive with Cloud Cache (RPO seconds to minutes), and an RPO of 5 to 15 minutes for personal pools with Site Recovery.",
+          "kind": "prior"
+        },
+        {
+          "id": "token-refresh-90-days",
+          "says": "Each standby session host must start for a few hours at least every 90 days to refresh its control plane token.",
+          "kind": "published"
+        },
+        {
+          "id": "log-workspace-per-region",
+          "says": "One Log Analytics workspace for both regions gives one view but is lost to the recovery region if the primary fails; a workspace per region or workspace replication avoids that.",
+          "kind": "guidance"
+        },
+        {
+          "id": "premium-files-no-grs",
+          "says": "Premium Azure Files has no geo-redundant storage, so profiles needing Premium performance rely on Cloud Cache for cross-region copies.",
+          "kind": "published"
+        },
+        {
+          "id": "anf-zone-or-region",
+          "says": "The guide treats Azure NetApp Files cross-zone and cross-region replication as mutually exclusive per volume, and failover as not transparent.",
+          "kind": "published"
+        },
+        {
+          "id": "msix-account-per-region",
+          "says": "Keep App Attach and MSIX packages in their own storage account in each region, zone-redundant at least in the primary, with every package copied to and registered in both pools.",
+          "kind": "guidance"
+        },
+        {
+          "id": "identity-in-recovery-region",
+          "says": "Entra ID needs no recovery action; AD DS needs domain controllers in the recovery region with DNS and global catalog roles, Entra Connect a staging server there, and Domain Services a replica set.",
+          "kind": "guidance"
+        },
+        {
+          "id": "office-container-no-backup",
+          "says": "Office containers that hold only cached Microsoft 365 data needn't be backed up; separate them from profile containers to give each its own backup policy.",
+          "kind": "guidance"
+        },
+        {
+          "id": "back-up-primary-only",
+          "says": "Back up primary region storage; the recovery environment usually needs no backup of its own. The vault uses ZRS unless an offsite or cross-region copy is needed, then GRS.",
+          "kind": "guidance"
+        },
+        {
+          "id": "automate-and-align",
+          "says": "Automate failover, test the full failover and failback periodically, and check regularly that the two regions' host pools stay aligned.",
+          "kind": "guidance"
         }
       ]
     },
@@ -1363,6 +1561,37 @@
       ]
     },
     {
+      "id": "avd-service-resilience",
+      "title": "Azure Virtual Desktop service architecture and resilience",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/service-architecture-resilience",
+      "pin": "Learn git_commit_id 2448264961c9205321bb4012907ade9122c2871a, updated_at 2026-09-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "claims": [
+        {
+          "id": "control-plane-microsoft",
+          "says": "The web, broker, gateway and resource directory services and the metadata databases are Microsoft's and fail over without customer action; a database failover briefly fails new connections but not existing ones.",
+          "kind": "published"
+        },
+        {
+          "id": "customer-owns-hosts",
+          "says": "The customer creates and manages session hosts, their images, network, resiliency, backup and recovery, and the user identities.",
+          "kind": "published"
+        },
+        {
+          "id": "deployment-scope-fixed",
+          "says": "A host pool's deployment scope (geographical or regional) decides where its metadata is kept, can't be changed after creation, and regional and geographical objects can't be mixed.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-session-host-update",
       "title": "Session host update for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/session-host-update",
@@ -1652,6 +1881,53 @@
       ]
     },
     {
+      "id": "caf-avd-bcdr",
+      "title": "Business continuity and disaster recovery considerations for Azure Virtual Desktop (Cloud Adoption Framework)",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-business-continuity-and-disaster-recovery",
+      "pin": "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "notes": "Deprecated; Microsoft says it will be removed on 2026-10-30. Claims are cited only where the multiregion guide (ref:avd-multiregion-bcdr) doesn't say the same; when the page goes, the pin drift report flags it and each claim moves to a living source or becomes a gap.",
+      "claims": [
+        {
+          "id": "no-financial-sla",
+          "says": "Microsoft offers no financially backed SLA for the AVD service itself and aims for at least 99.9 percent availability of its URLs; the hosts' own SLA follows from their availability option and disks.",
+          "kind": "published"
+        },
+        {
+          "id": "availability-option-at-create",
+          "says": "A VM's availability option is chosen at creation and can't be changed later, so the pool's resiliency option is a build-time decision.",
+          "kind": "published"
+        },
+        {
+          "id": "separate-critical-apps",
+          "says": "Decide which applications are critical and consider separate host pools for them, each with its own recovery approach.",
+          "kind": "guidance"
+        },
+        {
+          "id": "hosts-stateless-no-vm-backup",
+          "says": "Pooled hosts should be stateless, so backing up their VM state isn't recommended even though it is supported.",
+          "kind": "guidance"
+        },
+        {
+          "id": "assess-what-to-protect",
+          "says": "Assess which profile and Office container data needs protecting; with OneDrive or another external store it may need none.",
+          "kind": "guidance"
+        },
+        {
+          "id": "dependencies-in-recovery-region",
+          "says": "Network, hybrid connectivity and Active Directory authentication must be available in the recovery region, and dependent applications need their own recovery plans.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "caf-avd-deploy",
       "title": "Cloud Adoption Framework, Azure Virtual Desktop deployment or migration",
       "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/migrate-deploy",
@@ -1830,6 +2106,29 @@
       ]
     },
     {
+      "id": "capacity-reservation",
+      "title": "On-demand capacity reservation in Azure",
+      "url": "https://learn.microsoft.com/azure/virtual-machines/capacity-reservation-overview",
+      "pin": "Learn git_commit_id df3374f199244806e2eb8f52b25fcd3afd9c3f8c, updated_at 2026-09-22",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "capacity"
+      ],
+      "notes": "The multiregion guide's capacity claims (ref:avd-multiregion-bcdr#capacity-not-guaranteed) point here.",
+      "claims": [
+        {
+          "id": "reserves-capacity",
+          "says": "An on-demand capacity reservation holds compute capacity for a VM size in a region or zone, billed whether or not VMs use it.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "commitment-choice",
       "title": "Decide between a savings plan and a reservation (Microsoft Cost Management)",
       "url": "https://learn.microsoft.com/azure/cost-management-billing/savings-plan/decide-between-savings-plan-reservation",
@@ -1854,6 +2153,39 @@
           "id": "right-size-first",
           "says": "Right-size first, fix existing commitments next, and only then buy new ones; discounts reduce rates, not waste.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "compute-gallery",
+      "title": "Store and share resources in Azure Compute Gallery",
+      "url": "https://learn.microsoft.com/azure/virtual-machines/azure-compute-gallery",
+      "pin": "Learn git_commit_id 40aaa64a2771acda033ca09289e1e777241f201e, updated_at 2026-06-24",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "images"
+      ],
+      "notes": "The checklist's link for A02.01.",
+      "claims": [
+        {
+          "id": "two-galleries-for-dr",
+          "says": "The gallery isn't a global resource; for disaster recovery keep at least two galleries in separate regions, because a gallery's region going down stops new or updated gallery resources.",
+          "kind": "published"
+        },
+        {
+          "id": "zrs-replicas",
+          "says": "Use zone-redundant storage for image versions where the region supports it, and keep at least three replicas of production images, one more for every 20 VMs created at once.",
+          "kind": "guidance"
+        },
+        {
+          "id": "replicate-per-version",
+          "says": "Each image version is replicated to the regions chosen for it, and replication can take hours; a version is usable in a region only once its replication there completes.",
+          "kind": "published"
         }
       ]
     },
@@ -2212,6 +2544,117 @@
         {
           "id": "hybrid-resolution",
           "says": "DNS Private Resolver answers private DNS zones for on-premises networks and forwards Azure queries on-premises, without DNS servers to run; it needs ExpressRoute or VPN.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "entra-recoverability",
+      "title": "Recoverability best practices in Microsoft Entra ID",
+      "url": "https://learn.microsoft.com/entra/architecture/recoverability-overview",
+      "pin": "Learn git_commit_id 572a585809c1b6f1c66792dc7e79a7c52cdddb43, updated_at 2026-06-26",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "identity"
+      ],
+      "claims": [
+        {
+          "id": "soft-then-hard-delete",
+          "says": "Only some object types (users, Microsoft 365 groups, cloud security groups, applications) are soft deleted for 30 days; everything else is hard deleted at once and must be recreated.",
+          "kind": "published"
+        },
+        {
+          "id": "document-known-good",
+          "says": "Export and keep a known-good state of the directory configuration so a deletion or misconfiguration can be compared and reapplied.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "files-backup-support",
+      "title": "Support matrix for Azure Files backup",
+      "url": "https://learn.microsoft.com/azure/backup/azure-file-share-support-matrix",
+      "pin": "Learn git_commit_id 61a22ef60bd18c850befbd4c64c118893ae42770, updated_at 2026-09-23",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "profiles"
+      ],
+      "notes": "Read with the landing zone's recovery spec (fact F14 and open question U1 there), which found that the page asks for storage account key access.",
+      "claims": [
+        {
+          "id": "key-access-needed",
+          "says": "Azure Files backup uses key-based access to the storage account, so the account must allow storage account key access for backup and restore, even when identity-based access is configured.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "files-backup",
+      "title": "About Azure Files backup",
+      "url": "https://learn.microsoft.com/azure/backup/azure-file-share-backup-overview",
+      "pin": "Learn git_commit_id 212480dfa1539e795b65c4bbf2588eebfe648ad1, updated_at 2026-02-17",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "profiles"
+      ],
+      "notes": "The checklist's link for A03.04 (backup-afs) now lands on this family of pages. Prerequisites and region support are on the support matrix (ref:files-backup-support).",
+      "claims": [
+        {
+          "id": "snapshot-and-vaulted",
+          "says": "Azure Files backup has a snapshot tier, whose share snapshots stay in the storage account, and a vaulted tier, which keeps an offsite copy in the vault.",
+          "kind": "published"
+        },
+        {
+          "id": "vaulted-survives-source-loss",
+          "says": "Only the vaulted tier protects against loss of the source account itself, with no dependency on the source data being available.",
+          "kind": "published"
+        },
+        {
+          "id": "soft-delete-enabled",
+          "says": "Configuring backup turns on file share soft delete for the storage account, which keeps a deleted share and its snapshots for a retention period.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "files-redundancy",
+      "title": "Azure Files data redundancy",
+      "url": "https://learn.microsoft.com/azure/storage/files/files-redundancy",
+      "pin": "Learn git_commit_id 1d15a8e33868d3040cdb321fa98ca4a15fe3292d, updated_at 2026-07-17",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability",
+        "profiles"
+      ],
+      "notes": "The checklist's link for A03.05.",
+      "claims": [
+        {
+          "id": "zrs-not-regional",
+          "says": "Zone-redundant storage keeps a share available through a zone loss but may not protect against a regional disaster.",
+          "kind": "published"
+        },
+        {
+          "id": "geo-only-hdd",
+          "says": "Geo-redundancy (GRS or GZRS) is supported only for HDD (standard) file shares; SSD (premium) shares are LRS or ZRS, and the secondary region is the fixed pair.",
           "kind": "published"
         }
       ]
@@ -2969,6 +3412,11 @@
           "id": "policy-table",
           "says": "Policy assignments are in the PolicyResources table.",
           "kind": "published"
+        },
+        {
+          "id": "recovery-services-table",
+          "says": "Backup protected items and Site Recovery replication protected items are in the RecoveryServicesResources table.",
+          "kind": "published"
         }
       ]
     },
@@ -3279,6 +3727,46 @@
         {
           "id": "C02.04",
           "says": "Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high)."
+        },
+        {
+          "id": "A01.01",
+          "says": "Determine the expected high availability SLA for the apps and desktops published through AVD (Reliability, high)."
+        },
+        {
+          "id": "A01.02",
+          "says": "Assess the geo disaster recovery requirements for the host pools (Reliability, medium)."
+        },
+        {
+          "id": "A01.03",
+          "says": "Separate critical applications into different host pools (Reliability, low)."
+        },
+        {
+          "id": "A01.05",
+          "says": "Assess whether session host VMs need backing up (Reliability, medium)."
+        },
+        {
+          "id": "A02.01",
+          "says": "Plan for the golden image to be available across regions (Reliability, low)."
+        },
+        {
+          "id": "A02.02",
+          "says": "Assess infrastructure and application dependencies (Reliability, medium)."
+        },
+        {
+          "id": "A03.01",
+          "says": "Assess which data in the profile and Office containers needs protecting (Reliability, medium)."
+        },
+        {
+          "id": "A03.03",
+          "says": "Assess profile container storage replication and resiliency requirements for recovery (Reliability, medium)."
+        },
+        {
+          "id": "A03.04",
+          "says": "Review the disaster recovery strategy for Azure Files (Reliability, medium)."
+        },
+        {
+          "id": "A03.06",
+          "says": "Review the disaster recovery strategy for Azure NetApp Files (Reliability, medium)."
         }
       ]
     },
@@ -3709,6 +4197,37 @@
         {
           "id": "CO:14",
           "says": "Consolidate resources and increase density where the workload allows.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "waf-disaster-recovery",
+      "title": "Architecture strategies for disaster recovery (Well-Architected Framework, RE:09)",
+      "url": "https://learn.microsoft.com/azure/well-architected/reliability/disaster-recovery",
+      "pin": "Learn git_commit_id f28b7d43eeabdd2fc945944b071c1109b20b75d1, updated_at 2026-08-20",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "reliability"
+      ],
+      "claims": [
+        {
+          "id": "RE:09",
+          "says": "Implement structured, tested and documented recovery plans that match the recovery targets and cover every component and the system as a whole.",
+          "kind": "guidance"
+        },
+        {
+          "id": "drills-prove-targets",
+          "says": "Only production-level drills show that the plan meets its RTO and RPO; tabletop and non-production runs come first, and test results feed back into the plan.",
+          "kind": "guidance"
+        },
+        {
+          "id": "plan-reachable-in-outage",
+          "says": "Keep recovery plans, scripts and the tools to run them where they stay available during a regional outage.",
           "kind": "guidance"
         }
       ]
@@ -4155,6 +4674,17 @@
       "date": "2026-10-20"
     },
     {
+      "id": "files-backup-key-access-off",
+      "claim": "ref:files-backup-support#key-access-needed",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone keeps storage account key access off on its profile account for the default snapshot-tier backup and turns it on only for the vaulted tier, because two Microsoft pages differ on whether a snapshot backup needs it when public network access is disabled (its recovery spec, fact F14 and open question U1). No real backup job has run with keys off, so whether the default profile backup works at all is unproven. The first landing zone run that reads the last backup job answers it; until then a reviewer treats a key-access-off share with a snapshot policy as unknown, not as backed up.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/specs/recovery-spec.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
       "id": "hub-route-without-avd-bypass",
       "claim": "ref:firewall-avd#bypass-route-for-scale-in",
       "verdict": "not-yet-tested",
@@ -4203,6 +4733,16 @@
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/controlPlane.bicep",
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/docs/design-decisions.md"
+      ],
+      "date": "2026-10-21"
+    },
+    {
+      "id": "recovery-tiers-not-yet-tested",
+      "claim": "ref:avd-multiregion-bcdr#rto-rpo-by-model",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone's same-tenant recovery design (recovery spec, scope and section 4) chooses a tier per landing zone, R0 rebuild, R1 restore anywhere or R2 warm standby (active-passive), and takes its RTO and RPO from Microsoft's estimates; active-active is a non-goal there. Its status check, configuration snapshot and profile recovery test are built and tested offline only: no recovery test has run against a real tenant, so none of the tier targets is measured. The first profile recovery test needs a written estimate and the owner's go; its run record (C17, use case recovery) becomes the evidence that turns this into agrees or disagrees.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/specs/recovery-spec.md"
       ],
       "date": "2026-10-21"
     },
@@ -4364,6 +4904,16 @@
         "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/Test-GoldenImage.ps1"
       ],
       "date": "2026-10-20"
+    },
+    {
+      "id": "zones-by-default",
+      "claim": "ref:avd-multiregion-bcdr#spread-and-overprovision",
+      "verdict": "extends",
+      "observed": "The landing zone spreads session hosts across zones 1, 2 and 3 by default (availabilityZones; an empty list deploys them regional) and keeps its profile share on zone-redundant storage, which follows the source. It doesn't add hosts for a lost zone: the host count is the operator's, so the n-1 headroom the source asks for is a sizing decision left to compute.host-count, and a two-host pool loses half its capacity with one zone.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep"
+      ],
+      "date": "2026-10-21"
     }
   ],
   "gaps": [
@@ -4430,6 +4980,10 @@
     {
       "id": "network-scope",
       "title": "what a network assessment covers, what it can measure, and which repo does what"
+    },
+    {
+      "id": "reliability-scope",
+      "title": "what a reliability assessment covers, what it can measure, and which repo does what"
     },
     {
       "id": "remediation-plan",

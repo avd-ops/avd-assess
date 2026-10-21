@@ -926,6 +926,116 @@
       "privacy": "public",
       "status": "built",
       "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.zones",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/zones",
+      "grain": "hostPool",
+      "unit": "zones",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.backupProtected",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/backupProtected",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.replicated",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/replicated",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.imageRegions",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/imageRegions",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.backupTier",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/backupTier",
+      "grain": "storageAccount",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.recoveryTime",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/recoveryTime",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.recoveryPoint",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/recoveryPoint",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.regionRecovery",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/regionRecovery",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.recoveryDependencies",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/recoveryDependencies",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.profileData",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/profileData",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
     }
   ]
 }

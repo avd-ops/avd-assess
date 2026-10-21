@@ -28,5 +28,6 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [transport-classification](transport-classification.md) | One family name for the transport a connection used, mapped to the three vocabularies Microsoft uses |
 | [network-scope](network-scope.md) | What a network assessment can judge, from which evidence, the draft network checks, and which repo does what |
 | [client-network](client-network.md) | Judging the networks users connect from, AVD Private Link from the client included |
+| [reliability-scope](reliability-scope.md) | What a reliability and disaster recovery assessment can judge, from which evidence, the draft checks, the recovery intake questions, and which repo does what |
 
 The parts of these gaps that a tool runs (the collection map, checks, readiness and scoring) are in [method.json](../method.json), avd-second-brain contract C20 (`avd-assess-method/v1`). avd-current-state runs a pinned copy.

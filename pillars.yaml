@@ -105,8 +105,9 @@ pillars:
   - id: reliability
     title: Reliability, disaster recovery and continuity
     scope: Zones, a recovery model per pool, the workload's own recovery targets, profiles across regions, images in both regions, dependencies, backup, failover tests.
+    method: methods/reliability.md
     checklist: [A01, A02, A03]
-    status: partial
+    status: mapped
   - id: review-plan
     title: Review, remediation and plan
     scope: Dispositions of findings, accepted risk, plan order, which change fixes which finding.

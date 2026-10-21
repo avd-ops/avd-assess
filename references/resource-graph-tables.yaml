@@ -16,3 +16,6 @@ claims:
   - id: policy-table
     says: Policy assignments are in the PolicyResources table.
     kind: published
+  - id: recovery-services-table
+    says: Backup protected items and Site Recovery replication protected items are in the RecoveryServicesResources table.
+    kind: published

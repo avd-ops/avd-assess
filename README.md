@@ -31,6 +31,7 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 | [Security](methods/security.md) | How to judge an estate's security against Microsoft's AVD guidance, and which repo holds which part |
 | [Remote protocol and session](methods/remote-protocols.md) | How sessions reach their hosts: RDP transport, Shortpath and Multipath, judged against the networks users connect from, plus the session settings that ride on it |
 | [Network](methods/network.md) | How to judge an estate's network, Azure side and client side (AVD Private Link on both), and what can be measured from outside |
+| [Reliability](methods/reliability.md) | How to judge zones, backup, continuity and disaster recovery against the workload's own targets, and why only a test proves recovery |
 
 Every step on those pages cites one of three things:
 

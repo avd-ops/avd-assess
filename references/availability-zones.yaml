@@ -1,0 +1,15 @@
+id: availability-zones
+title: What are Azure availability zones?
+url: https://learn.microsoft.com/azure/reliability/availability-zones-overview
+pin: "Learn git_commit_id 2f7ee4c8b45127943bcd615810dc882f9ddd598e, updated_at 2026-10-13"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability]
+claims:
+  - id: zonal-needs-multiple
+    says: A zonal resource isn't resilient to a zone outage on its own; resilience needs instances spread across zones or a zone-redundant configuration.
+    kind: published
+  - id: nonzonal-placement
+    says: A resource not configured for zones may be placed in any zone of the region and can go down with whichever zone fails.
+    kind: published

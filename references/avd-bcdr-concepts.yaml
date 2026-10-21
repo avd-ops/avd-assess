@@ -1,0 +1,19 @@
+id: avd-bcdr-concepts
+title: Azure Virtual Desktop business continuity and disaster recovery concepts
+url: https://learn.microsoft.com/azure/virtual-desktop/disaster-recovery-concepts
+pin: "Learn git_commit_id 1775de02212032150bdac28deed32d92c928e8b8, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability]
+notes: The checklist's disaster-recovery links (A01.03, A01.05, A02.02, A03.02, A03.03) point at an older URL that now redirects here. The page is an index; the detail is in the multiregion guide (ref:avd-multiregion-bcdr).
+claims:
+  - id: customer-managed-components
+    says: Session hosts, profile management, applications, user data and user identities are the customer's or partner's to make resilient; the rest is Microsoft's.
+    kind: published
+  - id: no-native-dr
+    says: AVD has no native disaster recovery features; recovery is built from other Azure services such as zones, availability sets, Site Recovery and storage redundancy.
+    kind: published
+  - id: ha-bc-dr
+    says: A recovery plan covers high availability, business continuity and disaster recovery as three different things.
+    kind: guidance

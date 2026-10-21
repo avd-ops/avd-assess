@@ -1,0 +1,19 @@
+id: compute-gallery
+title: Store and share resources in Azure Compute Gallery
+url: https://learn.microsoft.com/azure/virtual-machines/azure-compute-gallery
+pin: "Learn git_commit_id 40aaa64a2771acda033ca09289e1e777241f201e, updated_at 2026-06-24"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability, images]
+notes: The checklist's link for A02.01.
+claims:
+  - id: two-galleries-for-dr
+    says: The gallery isn't a global resource; for disaster recovery keep at least two galleries in separate regions, because a gallery's region going down stops new or updated gallery resources.
+    kind: published
+  - id: zrs-replicas
+    says: Use zone-redundant storage for image versions where the region supports it, and keep at least three replicas of production images, one more for every 20 VMs created at once.
+    kind: guidance
+  - id: replicate-per-version
+    says: Each image version is replicated to the regions chosen for it, and replication can take hours; a version is usable in a region only once its replication there completes.
+    kind: published

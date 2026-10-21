@@ -1,0 +1,7 @@
+id: recovery-tiers-not-yet-tested
+claim: ref:avd-multiregion-bcdr#rto-rpo-by-model
+verdict: not-yet-tested
+observed: "The landing zone's same-tenant recovery design (recovery spec, scope and section 4) chooses a tier per landing zone, R0 rebuild, R1 restore anywhere or R2 warm standby (active-passive), and takes its RTO and RPO from Microsoft's estimates; active-active is a non-goal there. Its status check, configuration snapshot and profile recovery test are built and tested offline only: no recovery test has run against a real tenant, so none of the tier targets is measured. The first profile recovery test needs a written estimate and the owner's go; its run record (C17, use case recovery) becomes the evidence that turns this into agrees or disagrees."
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/specs/recovery-spec.md
+date: 2026-10-21

@@ -1,0 +1,28 @@
+id: caf-avd-bcdr
+title: Business continuity and disaster recovery considerations for Azure Virtual Desktop (Cloud Adoption Framework)
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-business-continuity-and-disaster-recovery
+pin: "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability]
+notes: Deprecated; Microsoft says it will be removed on 2026-10-30. Claims are cited only where the multiregion guide (ref:avd-multiregion-bcdr) doesn't say the same; when the page goes, the pin drift report flags it and each claim moves to a living source or becomes a gap.
+claims:
+  - id: no-financial-sla
+    says: Microsoft offers no financially backed SLA for the AVD service itself and aims for at least 99.9 percent availability of its URLs; the hosts' own SLA follows from their availability option and disks.
+    kind: published
+  - id: availability-option-at-create
+    says: A VM's availability option is chosen at creation and can't be changed later, so the pool's resiliency option is a build-time decision.
+    kind: published
+  - id: separate-critical-apps
+    says: Decide which applications are critical and consider separate host pools for them, each with its own recovery approach.
+    kind: guidance
+  - id: hosts-stateless-no-vm-backup
+    says: Pooled hosts should be stateless, so backing up their VM state isn't recommended even though it is supported.
+    kind: guidance
+  - id: assess-what-to-protect
+    says: Assess which profile and Office container data needs protecting; with OneDrive or another external store it may need none.
+    kind: guidance
+  - id: dependencies-in-recovery-region
+    says: Network, hybrid connectivity and Active Directory authentication must be available in the recovery region, and dependent applications need their own recovery plans.
+    kind: guidance

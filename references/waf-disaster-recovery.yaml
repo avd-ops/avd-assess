@@ -1,0 +1,18 @@
+id: waf-disaster-recovery
+title: Architecture strategies for disaster recovery (Well-Architected Framework, RE:09)
+url: https://learn.microsoft.com/azure/well-architected/reliability/disaster-recovery
+pin: "Learn git_commit_id f28b7d43eeabdd2fc945944b071c1109b20b75d1, updated_at 2026-08-20"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability]
+claims:
+  - id: RE:09
+    says: Implement structured, tested and documented recovery plans that match the recovery targets and cover every component and the system as a whole.
+    kind: guidance
+  - id: drills-prove-targets
+    says: Only production-level drills show that the plan meets its RTO and RPO; tabletop and non-production runs come first, and test results feed back into the plan.
+    kind: guidance
+  - id: plan-reachable-in-outage
+    says: Keep recovery plans, scripts and the tools to run them where they stay available during a regional outage.
+    kind: guidance

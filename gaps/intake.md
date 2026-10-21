@@ -13,3 +13,5 @@
 | `intake.workingHours` | When do people work (start, end, time zone)? | Power settings and scaling (`ref:avd-insights-use-cases#utilization-for-scaling`) |
 | `intake.hostSharing` (optional) | Who shares a session host (`one-org-standard`, `needs-admin`, `multi-org`, `undecided`)? | The security guide's trust boundary decides between pooled, personal and a separate tenant (`ref:avd-security-guide#trust-boundary`) |
 | `intake.avdMfa` (optional) | Does sign-in to AVD require MFA (`required`, `not-required`, `unknown`)? | Stands in for a directory read until one exists (`ref:review-checklists-avd#G04.01`, `gap:security-scope`) |
+
+**Proposed for the reliability pillar (2026-10-21).** Five more optional answers, `specified` in the register and not yet in the schema: `intake.recoveryTime`, `intake.recoveryPoint`, `intake.regionRecovery`, `intake.recoveryDependencies` and `intake.profileData`. Their questions and enums are in `gap:reliability-scope`; they join the schema as optional fields, so an intake file written today stays valid.

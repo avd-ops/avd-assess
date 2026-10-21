@@ -652,30 +652,139 @@ dimensions:
     observations: [obs:region-latency-from-the-user]
     measure: fact
     landingZone: [location, allowedLocations]
+  # Reliability, disaster recovery and continuity (methods/reliability.md, gap:reliability-scope): the
+  # A01 to A03 checklist items, targets first, then hosts, images, dependencies, profiles and the test.
+  - id: reliability.targets
+    area: reliability
+    pillar: reliability
+    title: Recovery targets and expected availability
+    decides: The RTO, RPO and availability the business expects per workload, which every later reliability row is judged against.
+    home: {decision: proposed:hostPool.recovery, facts: [], intake: [intake.recoveryTime, intake.recoveryPoint]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#A01.01, ref:waf-reliability-checklist#RE:04, ref:caf-avd-bcdr#no-financial-sla, ref:avd-service-resilience#control-plane-microsoft, ref:avd-bcdr-concepts#customer-managed-components, ref:avd-bcdr-concepts#ha-bc-dr]
+      says: The targets are the workload's own, set with the business; the AVD service has no financially backed SLA, the control plane is Microsoft's, and everything from the hosts down is the customer's to make available.
+    measure: intake
+    landingZone: []
+    note: The landing zone takes a recovery tier, not a target; the operator's targets choose the tier (obs:recovery-tiers-not-yet-tested).
+  - id: reliability.critical-pools
+    area: reliability
+    pillar: reliability
+    title: Critical workloads in their own pools
+    decides: Which apps or user groups are critical enough for a host pool with its own recovery approach.
+    home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.count]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#A01.03, ref:caf-avd-bcdr#separate-critical-apps]
+      says: Separate critical apps into their own pools so each pool gets the recovery model its targets need.
+    measure: intake
+    landingZone: []
+    note: The use case record (methods/use-cases.md) names the critical workloads; the landing zone deploys one pool per landing zone.
   - id: reliability.zones
     area: reliability
     pillar: reliability
     title: Availability zones
-    decides: Whether hosts spread across zones.
-    home: {decision: proposed:hostPool.zones, facts: [proposed:c11.sessionHost.zone]}
+    decides: Whether hosts spread across zones, and how much headroom covers a lost zone.
+    home: {decision: proposed:hostPool.zones, facts: [c11.hostPool.sessionHosts.zones, c11.hostPool.sessionHosts.total]}
     baseline:
       standing: guidance
-      claims: [ref:review-checklists-avd#A01.04]
-      says: Choose the resiliency option per host pool; zones where the region has them.
-    measure: rebuild
+      claims: [ref:review-checklists-avd#A01.04, ref:avd-multiregion-bcdr#spread-and-overprovision, ref:avd-multiregion-bcdr#zones-not-dr, ref:availability-zones#zonal-needs-multiple, ref:availability-zones#nonzonal-placement, ref:caf-avd-bcdr#availability-option-at-create]
+      says: Spread hosts across zones where the region has them (an availability set where it doesn't), with hosts to spare for a lost zone; zones are high availability, not disaster recovery, and the option is fixed when a VM is created.
+    observations: [obs:zones-by-default]
+    measure: fact
     landingZone: [availabilityZones]
   - id: reliability.dr-model
     area: reliability
     pillar: reliability
     title: Disaster recovery model
     decides: Per pool, how it comes back after a region loss - rebuild, restore, warm standby (active-passive) or active-active - and where.
-    home: {decision: region, facts: []}
+    home: {decision: region, facts: [c11.hostPool.region, c11.subscription.regions], intake: [intake.regionRecovery, intake.recoveryTime]}
     baseline:
       standing: guidance
-      claims: [ref:review-checklists-avd#A01.06, ref:avd-multiregion-bcdr#active-active-vs-passive, ref:avd-multiregion-bcdr#estimates-to-test, ref:avd-multiregion-bcdr#capacity-not-guaranteed, ref:avd-multiregion-bcdr#image-in-both-regions, ref:avd-multiregion-bcdr#selective-failover-test]
-      says: A recovery model per pool type with targets treated as estimates until tested; the same image in both regions; recovery-region capacity is not guaranteed; test with a subset of users first.
-    measure: none
+      claims: [ref:review-checklists-avd#A01.02, ref:avd-bcdr-concepts#no-native-dr, ref:avd-multiregion-bcdr#active-active-vs-passive, ref:avd-multiregion-bcdr#rto-rpo-by-model, ref:avd-multiregion-bcdr#estimates-to-test, ref:avd-multiregion-bcdr#capacity-not-guaranteed, ref:capacity-reservation#reserves-capacity, ref:avd-multiregion-bcdr#token-refresh-90-days, ref:avd-service-resilience#deployment-scope-fixed]
+      says: A recovery model per pool chosen from its targets, with Microsoft's RTO and RPO figures treated as estimates until tested; recovery-region capacity is guaranteed only for running VMs or a capacity reservation, and standby hosts start every 90 days.
+    observations: [obs:recovery-tiers-not-yet-tested]
+    measure: intake
     landingZone: [recoveryLocation]
+    note: The landing zone builds same-tenant recovery only (rebuild, restore, warm standby); active-active is outside it.
+  - id: reliability.personal-hosts
+    area: reliability
+    pillar: reliability
+    title: Personal pool recovery
+    decides: How personal session hosts, which hold state, come back after a zone or region loss.
+    home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.replicated]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#A01.06, ref:avd-multiregion-bcdr#personal-site-recovery, ref:avd-multiregion-bcdr#no-asr-test-failover, ref:asr-zone-to-zone#limited-regions, ref:asr-zone-to-zone#may-fall-short-region-wide, ref:asr-zone-to-zone#rto-sla-not-rpo]
+      says: Replicate personal hosts with Site Recovery, to another zone where the region supports it or to another region; reapply extensions after failover; never run Site Recovery test failover on session hosts.
+    measure: fact
+    landingZone: []
+    note: The landing zone has no Site Recovery option; its tiers rebuild or restore pooled hosts.
+  - id: reliability.host-backup
+    area: reliability
+    pillar: reliability
+    title: Session host backup
+    decides: Whether session host VMs are backed up at all.
+    home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.backupProtected]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#A01.05, ref:caf-avd-bcdr#hosts-stateless-no-vm-backup, ref:avd-service-resilience#customer-owns-hosts]
+      says: Pooled hosts are stateless and rebuilt from the image, so their VM backup isn't recommended; personal hosts that keep data locally are backed up at the VM level or replicated.
+    measure: fact
+    landingZone: []
+    note: The landing zone backs up the profile share and rebuilds hosts from code; it never backs up a host.
+  - id: reliability.image-regions
+    area: reliability
+    pillar: reliability
+    title: Golden image in the recovery region
+    decides: Whether the image a pool deploys from is available, at the same version, in every region a pool may be rebuilt in.
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images, c11.hostPool.imageRegions]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#A02.01, ref:avd-multiregion-bcdr#image-in-both-regions, ref:compute-gallery#two-galleries-for-dr, ref:compute-gallery#zrs-replicas, ref:compute-gallery#replicate-per-version]
+      says: Replicate each image version to both regions on zone-redundant storage with enough replicas, and keep a gallery in the recovery region too, because a gallery's own region going down stops new versions.
+    measure: fact
+    landingZone: []
+    note: Set by the landing zone's image pipeline (gallery replica in the recovery region is its planned R1 step), not a template parameter.
+  - id: reliability.dependencies
+    area: reliability
+    pillar: reliability
+    title: Dependencies in the recovery region
+    decides: Whether identity, DNS, network paths, line-of-business apps, app packages and logging are there when the pool fails over.
+    home: {decision: proposed:hostPool.recovery, facts: [c11.network.customDnsVirtualNetworks], intake: [intake.recoveryDependencies, intake.identityConstraints, intake.existingHub]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#A02.02, ref:caf-avd-bcdr#dependencies-in-recovery-region, ref:avd-multiregion-bcdr#dependencies-zone-resilient, ref:avd-multiregion-bcdr#networking-in-both-regions, ref:avd-multiregion-bcdr#identity-in-recovery-region, ref:avd-multiregion-bcdr#msix-account-per-region, ref:avd-multiregion-bcdr#log-workspace-per-region, ref:entra-recoverability#soft-then-hard-delete, ref:entra-recoverability#document-known-good]
+      says: Every dependency users reach is zone resilient and present in the recovery region - domain controllers with DNS, sync staging, hub and hybrid links, app packages per region, a log workspace that survives - and the directory's own configuration has a known-good export.
+    measure: intake
+    landingZone: []
+    note: Most dependencies sit outside the landing zone; its configuration snapshot covers the AVD-scoped identity objects (recovery spec section 7).
+  - id: reliability.profile-data
+    area: reliability
+    pillar: reliability
+    title: What profile data needs protecting
+    decides: Whether profile and Office containers hold data worth recovering, or only settings and caches.
+    home: {decision: proposed:profile.storage, facts: [], intake: [intake.profileData]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#A03.01, ref:caf-avd-bcdr#assess-what-to-protect, ref:avd-multiregion-bcdr#office-container-no-backup, ref:fslogix-bcdr#events-rarely-graceful]
+      says: Decide what in the containers must survive; with user data in OneDrive or SharePoint the profile holds settings, and an Office container of cached Microsoft 365 data needs no backup.
+    measure: intake
+    landingZone: []
+  - id: profile.backup-copy
+    area: reliability
+    pillar: reliability
+    title: Profile backup tier and its offsite copy
+    decides: Whether the profile backup survives loss of the share and its account, and whether it can run at all.
+    home: {decision: proposed:profile.storage, facts: [c11.storage.backupTier, c11.storage.sku]}
+    baseline:
+      standing: published
+      claims: [ref:review-checklists-avd#A03.04, ref:files-backup#snapshot-and-vaulted, ref:files-backup#vaulted-survives-source-loss, ref:files-backup#soft-delete-enabled, ref:files-backup-support#key-access-needed, ref:avd-multiregion-bcdr#back-up-primary-only]
+      says: A snapshot-tier backup dies with its account; only the vaulted tier keeps an offsite copy, on GRS when a cross-region copy is needed. Back up primary storage; the backup needs the account's key access.
+    observations: [obs:files-backup-key-access-off]
+    measure: fact
+    landingZone: [enableProfileBackup, profileBackupTier, profileBackupRetentionDays]
+    note: Redundancy of the share itself stays in profile.resilience.
   - id: profile.cross-region
     area: reliability
     pillar: reliability
@@ -684,10 +793,24 @@ dimensions:
     home: {decision: proposed:profile.storage, facts: [c11.storage.sku]}
     baseline:
       standing: published
-      claims: [ref:avd-multiregion-bcdr#cloud-cache-over-storage-replication, ref:avd-multiregion-bcdr#one-pool-at-a-time, ref:avd-multiregion-bcdr#cache-disk-sizing, ref:fslogix-bcdr#options, ref:fslogix-bcdr#events-rarely-graceful]
-      says: FSLogix Cloud Cache, not storage replication (Premium Files has no GRS); users in one pool at a time; a local cache disk at least as large as the largest profile; critical data in OneDrive or SharePoint.
+      claims: [ref:review-checklists-avd#A03.03, ref:review-checklists-avd#A03.06, ref:avd-multiregion-bcdr#cloud-cache-over-storage-replication, ref:avd-multiregion-bcdr#premium-files-no-grs, ref:files-redundancy#geo-only-hdd, ref:files-redundancy#zrs-not-regional, ref:avd-multiregion-bcdr#one-pool-at-a-time, ref:avd-multiregion-bcdr#cache-disk-sizing, ref:fslogix-bcdr#options, ref:fslogix-bcdr#events-rarely-graceful, ref:avd-multiregion-bcdr#anf-zone-or-region, ref:anf-replication#cross-zone-and-cross-region, ref:anf-replication#zone-and-region-together]
+      says: FSLogix Cloud Cache, not storage replication (Premium Files has no GRS); users in one pool at a time; a local cache disk at least as large as the largest profile; on Azure NetApp Files, its own zone or region replication, read at its own page; critical data in OneDrive or SharePoint.
     measure: none
     landingZone: []
+  - id: reliability.recovery-test
+    area: reliability
+    pillar: reliability
+    title: Recovery test and failover drill
+    decides: Whether recovery has been proven - a restore and a failover with a test group, timed against the targets - and how often.
+    home: {decision: proposed:hostPool.recovery, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:waf-disaster-recovery#RE:09, ref:waf-disaster-recovery#drills-prove-targets, ref:waf-disaster-recovery#plan-reachable-in-outage, ref:avd-multiregion-bcdr#selective-failover-test, ref:avd-multiregion-bcdr#no-asr-test-failover, ref:avd-multiregion-bcdr#automate-and-align, ref:avd-multiregion-bcdr#estimates-to-test, gap:reliability-scope]
+      says: A documented plan, tested with a subset of users first and then a full failover and failback, timed against the RTO and RPO, kept where it survives the outage, and rerun as the estate changes.
+    observations: [obs:recovery-tiers-not-yet-tested]
+    measure: none
+    landingZone: []
+    note: The evidence is a run record (contract C17, use case recovery) from the landing zone's recovery test; avd-current-state doesn't read run records, so a reviewer cites one.
   # Networking (methods/network.md): Azure side, then client side. pillar is the map field the
   # map plan adds; host-side marks what only a read on a session host can see.
   - id: network.mode

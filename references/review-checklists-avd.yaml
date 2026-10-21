@@ -144,3 +144,24 @@ claims:
     says: No proxy, SSL termination or deep packet inspection for AVD control plane traffic (Reliability, high).
   - id: C02.04
     says: Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high).
+  # Items read for the reliability pillar (2026-10-21), at the same pin: A01 to A03 are now all here.
+  - id: A01.01
+    says: Determine the expected high availability SLA for the apps and desktops published through AVD (Reliability, high).
+  - id: A01.02
+    says: Assess the geo disaster recovery requirements for the host pools (Reliability, medium).
+  - id: A01.03
+    says: Separate critical applications into different host pools (Reliability, low).
+  - id: A01.05
+    says: Assess whether session host VMs need backing up (Reliability, medium).
+  - id: A02.01
+    says: Plan for the golden image to be available across regions (Reliability, low).
+  - id: A02.02
+    says: Assess infrastructure and application dependencies (Reliability, medium).
+  - id: A03.01
+    says: Assess which data in the profile and Office containers needs protecting (Reliability, medium).
+  - id: A03.03
+    says: Assess profile container storage replication and resiliency requirements for recovery (Reliability, medium).
+  - id: A03.04
+    says: Review the disaster recovery strategy for Azure Files (Reliability, medium).
+  - id: A03.06
+    says: Review the disaster recovery strategy for Azure NetApp Files (Reliability, medium).
