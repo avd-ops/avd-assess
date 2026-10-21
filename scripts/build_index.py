@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Builds index.json (contract C20, avd-assess-index/v1) from references/, observations/ and gaps/,
 map.json (avd-assess-map/v1) from pillars.yaml, dimensions.yaml, baselines.yaml, use-cases.yaml and
-gold-standards.yaml, and endpoints.json (avd-assess-endpoints/v1) from endpoints.yaml, so readers need no
-YAML parser. --check fails when any of them is stale.
+gold-standards.yaml, endpoints.json (avd-assess-endpoints/v1) from endpoints.yaml, and security-review.json
+(avd-assess-security-review/v1) from security-review.yaml, so readers need no YAML parser. --check fails
+when any of them is stale.
 
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
@@ -17,6 +18,7 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "index.json"
 MAP = ROOT / "map.json"
+SECURITY = ROOT / "security-review.json"
 ENDPOINTS = ROOT / "endpoints.json"
 # Where a probe can run, and the lists each vantage judges, in the order views are written.
 VANTAGES = {"browser": ["client"], "device": ["client"], "host": ["host", "platform"]}
@@ -108,14 +110,34 @@ def build_endpoints():
     return json.dumps(out, indent=2, ensure_ascii=True, default=str) + "\n"
 
 
+def build_security():
+    """The security review map as written, with each evidence item's pinned URL added for readers."""
+    doc = yaml.safe_load((ROOT / "security-review.yaml").read_text(encoding="utf-8")) or {}
+    pins = doc.get("pins", {})
+
+    def add_urls(node):
+        if isinstance(node, dict):
+            # avd-assess evidence has no url: a reader resolves it at the avd-assess commit it pinned.
+            # A repo with no pin gets none either; tests/check_security_review.py reports it.
+            if {"repo", "path", "kind"} <= node.keys() and node["repo"] in pins:
+                node["url"] = f"https://github.com/avd-ops/{node['repo']}/blob/{pins[node['repo']]}/{node['path']}"
+            for v in node.values():
+                add_urls(v)
+        elif isinstance(node, list):
+            for v in node:
+                add_urls(v)
+    add_urls(doc)
+    return json.dumps(doc, indent=2, ensure_ascii=True, default=str) + "\n"
+
+
 def main():
-    wanted = {OUT: build(), MAP: build_map(), ENDPOINTS: build_endpoints()}
+    wanted = {OUT: build(), MAP: build_map(), ENDPOINTS: build_endpoints(), SECURITY: build_security()}
     if "--check" in sys.argv:
         stale = [p.name for p, text in wanted.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
         if stale:
             print(f"RESULT FAIL {', '.join(stale)} stale; run python3 scripts/build_index.py")
             return 1
-        print("RESULT PASS index.json, map.json and endpoints.json are current")
+        print("RESULT PASS index.json, map.json, endpoints.json and security-review.json are current")
         return 0
     for p, text in wanted.items():
         p.write_text(text, encoding="utf-8")

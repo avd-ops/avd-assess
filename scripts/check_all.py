@@ -21,6 +21,7 @@ CHECKS = [
     ["tests/check_evidence_fixtures.py"],
     ["tests/check_endpoints.py"],
     ["tests/check_wording.py"],
+    ["tests/check_security_review.py"],
     ["tests/check_bundle.py"],
 ]
 

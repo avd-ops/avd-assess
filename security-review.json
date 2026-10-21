@@ -1,0 +1,1372 @@
+{
+  "schema": "avd-assess-security-review/v1",
+  "checked": "2026-10-21",
+  "pins": {
+    "avd-landing-zone": "e66d8660b8054ef0b827912d9ebed2d45676c828",
+    "avd-current-state": "f914918d939a8395ea2db4e6dc500409821f3353",
+    "avd-second-brain": "f59a1c5207f89ba71f4752fe2a52a091ca6fd376",
+    "avd-swarm": "c81fbcbda8d6a268f66bec24381aac76850a5c2c",
+    "avd-ops": "753f62b60e808efcff5654a0c22b2ebbe3eb3676"
+  },
+  "maturity": {
+    "source": {
+      "repo": "avd-ops",
+      "path": "docs/roadmap-spec.md#6-proven-pre-beta-and-design",
+      "kind": "doc",
+      "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/docs/roadmap-spec.md#6-proven-pre-beta-and-design"
+    },
+    "repos": {
+      "avd-landing-zone": "proven",
+      "avd-current-state": "proven",
+      "avd-assess": "pre-beta",
+      "avd-second-brain": "pre-beta",
+      "avd-ops": "pre-beta",
+      "avd-swarm": "design"
+    }
+  },
+  "standards": {
+    "method": "methods/security.md",
+    "scope": "gap:security-scope",
+    "pillars": [
+      "security-posture",
+      "identity",
+      "networking-azure",
+      "networking-client",
+      "protocol",
+      "endpoint-protection",
+      "intune",
+      "governance"
+    ],
+    "references": [
+      "ref:avd-security-guide",
+      "ref:mcsb-avd-baseline",
+      "ref:zero-trust-avd",
+      "ref:review-checklists-avd",
+      "ref:windows-security-baselines",
+      "ref:intune-security-baselines",
+      "ref:rdp-properties",
+      "ref:screen-capture-protection",
+      "ref:watermarking",
+      "ref:defender-compute-recommendations",
+      "ref:avd-private-link",
+      "ref:bastion",
+      "ref:psrule-azure"
+    ]
+  },
+  "areas": [
+    {
+      "id": "identity-access",
+      "title": "Identity and access",
+      "pillars": [
+        "identity",
+        "security-posture"
+      ],
+      "claims": [
+        {
+          "id": "lz-deploy-owner",
+          "repo": "avd-landing-zone",
+          "says": "Deploying needs Owner on a dedicated subscription, because the template creates role and policy assignments; the post-deployment admin consent needs Cloud Application Administrator or Application Administrator.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "docs/deploy.md#1-prerequisites",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/docs/deploy.md#1-prerequisites"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/governance.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/governance.bicep"
+            }
+          ]
+        },
+        {
+          "id": "lz-ci-oidc",
+          "repo": "avd-landing-zone",
+          "says": "GitHub Actions sign in to Azure with OpenID Connect federated credentials, one exact subject per environment; no Azure secret is stored. The image build identity is federated to the images environment only.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "docs/ci.md#azure-access-oidc-no-stored-secrets",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/docs/ci.md#azure-access-oidc-no-stored-secrets"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": ".github/workflows/deploy.yml",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/.github/workflows/deploy.yml"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/Template.Tests.ps1#L159",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/Template.Tests.ps1#L159"
+            }
+          ],
+          "note": "The optional break-glass password can be a repository secret for CI; unset, deploy.sh generates one."
+        },
+        {
+          "id": "lz-graph-delegated",
+          "repo": "avd-landing-zone",
+          "says": "Scripts reach Microsoft Graph as the signed-in person through a public client app with delegated permissions, no secret or certificate, assignment required. Every purpose signs in with one union of scopes, which includes write scopes even for a read-only preflight.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/decisions/0016-graph-operator-app.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/decisions/0016-graph-operator-app.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "scripts/ops/AvdLandingZone.psm1#L295",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/scripts/ops/AvdLandingZone.psm1#L295"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/AvdLandingZone.Tests.ps1#L177",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/AvdLandingZone.Tests.ps1#L177"
+            }
+          ]
+        },
+        {
+          "id": "lz-break-glass",
+          "repo": "avd-landing-zone",
+          "says": "The hosts' local administrator password is random per deployment unless one is supplied, stored in Key Vault for the hosts that deployment created, and recovered with VM reset password; nobody has to remember it.",
+          "standing": "run",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/decisions/0004-random-break-glass.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/decisions/0004-random-break-glass.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/lessons/0002-break-glass-password.md",
+              "kind": "lesson",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/lessons/0002-break-glass-password.md"
+            }
+          ]
+        },
+        {
+          "id": "lz-rbac",
+          "repo": "avd-landing-zone",
+          "says": "Built-in roles only, each at the narrowest scope the template knows; users get Desktop Virtualization User and Virtual Machine User Login, admins Virtual Machine Administrator Login and the elevated SMB role, the AVD service Power On Off Contributor, and the shutdown runbook's identity only what its actions need.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/sessionHosts.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/sessionHosts.bicep"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/storage.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/storage.bicep"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/controlPlane.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/controlPlane.bicep"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/Template.Tests.ps1#L85",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/Template.Tests.ps1#L85"
+            }
+          ],
+          "note": "Only the runbook's roles have a template test; the other assignments are in the code with no test."
+        },
+        {
+          "id": "lz-jumpbox",
+          "repo": "avd-landing-zone",
+          "says": "The admin jumpbox and Bastion Developer are opt-in and off by default; the box has no public IP, an NSG that denies the internet and onward RDP and SSH, a managed identity with no roles, a one-time password per connection, and a daily stop.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/decisions/0019-jumpbox-bastion-developer.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/decisions/0019-jumpbox-bastion-developer.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/Template.Tests.ps1#L444",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/Template.Tests.ps1#L444"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/Template.Tests.ps1#L539",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/Template.Tests.ps1#L539"
+            }
+          ],
+          "note": "Decision 0019 stays proposed until a sandbox run confirms the connection."
+        },
+        {
+          "id": "cs-reader-only",
+          "repo": "avd-current-state",
+          "says": "The collector and validator need Reader (Desktop Virtualization Reader recommended) and no write role; they read through Resource Graph and REST GET, every request is listed in rebuild/scope.json, and files are written only to the local output folder.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-current-state",
+              "path": "README.md#read-only-by-design",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/README.md#read-only-by-design"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "rebuild/scope.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/rebuild/scope.json"
+            }
+          ],
+          "note": "No test fails when a script gains a write call (gap ci-read-only-guard)."
+        },
+        {
+          "id": "swarm-identities",
+          "repo": "avd-swarm",
+          "says": "Each agent and job has its own identity with least privilege, federated credentials and managed identities only, and its own named Graph apps so sign-in logs and Conditional Access can target them.",
+          "standing": "designed",
+          "evidence": [
+            {
+              "repo": "avd-swarm",
+              "path": "docs/identities.md",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-swarm/blob/c81fbcbda8d6a268f66bec24381aac76850a5c2c/docs/identities.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "title": "Network exposure",
+      "pillars": [
+        "networking-azure",
+        "networking-client"
+      ],
+      "claims": [
+        {
+          "id": "lz-private-link",
+          "repo": "avd-landing-zone",
+          "says": "AVD Private Link is on by default for the host pool (session hosts reach the service privately, users still connect over the public gateway); the workspace feed stays public so users can subscribe from any network.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/main.bicep#L96",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/main.bicep#L96"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/controlPlane.bicep#L60",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/controlPlane.bicep#L60"
+            }
+          ]
+        },
+        {
+          "id": "lz-private-data-plane",
+          "repo": "avd-landing-zone",
+          "says": "The profile storage account, the Key Vault and the backup vault turn public network access off and are reached through private endpoints.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/storage.bicep#L49",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/storage.bicep#L49"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/keyVault.bicep#L31",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/keyVault.bicep#L31"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/backup.bicep#L59",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/backup.bicep#L59"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/lessons/0010-private-endpoint-rg.md",
+              "kind": "lesson",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/lessons/0010-private-endpoint-rg.md"
+            }
+          ],
+          "note": "The lesson is about where private endpoints live, not their access settings, so the standing stays built."
+        },
+        {
+          "id": "lz-nsg",
+          "repo": "avd-landing-zone",
+          "says": "The session host subnet denies inbound from the internet and outbound RDP and SSH to the virtual network (no lateral movement); the private endpoint subnet allows only SMB from the hosts and HTTPS inside the virtual network.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/network.bicep#L61",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/network.bicep#L61"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data-storage",
+      "title": "Profiles, secrets and encryption",
+      "pillars": [
+        "profiles",
+        "security-posture"
+      ],
+      "claims": [
+        {
+          "id": "lz-profile-share",
+          "repo": "avd-landing-zone",
+          "says": "The FSLogix share uses Entra Kerberos with no domain controllers, SMB 3.1.1 with Kerberos only, AES-256 tickets and GCM channel encryption; AES-128-GCM stays allowed because a real run showed AES-256-GCM alone denies cloud-only users. Shared key access is off unless the vaulted backup tier needs it, and deleted shares are kept 14 days.",
+          "standing": "run",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/storage.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/storage.bicep"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/lessons/0028-smb-channel-encryption-entra-kerberos.md",
+              "kind": "lesson",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/lessons/0028-smb-channel-encryption-entra-kerberos.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/lessons/0011-azure-files-rest.md",
+              "kind": "lesson",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/lessons/0011-azure-files-rest.md"
+            }
+          ]
+        },
+        {
+          "id": "lz-key-vault",
+          "repo": "avd-landing-zone",
+          "says": "Key Vault uses Azure RBAC, purge protection and no public network access; a purge-protected vault is recovered rather than waited out.",
+          "standing": "run",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/keyVault.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/keyVault.bicep"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/lessons/0022-key-vault-recovery.md",
+              "kind": "lesson",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/lessons/0022-key-vault-recovery.md"
+            }
+          ]
+        },
+        {
+          "id": "lz-encryption-at-host",
+          "repo": "avd-landing-zone",
+          "says": "Encryption at host is on by default for session hosts.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/main.bicep#L144",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/main.bicep#L144"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hosts",
+      "title": "Session hosts",
+      "pillars": [
+        "security-posture",
+        "endpoint-protection",
+        "intune",
+        "protocol"
+      ],
+      "claims": [
+        {
+          "id": "lz-trusted-launch",
+          "repo": "avd-landing-zone",
+          "says": "Session hosts and the jumpbox are Trusted Launch VMs with Secure Boot and vTPM, and the Well-Architected review warns when they are not.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/sessionHosts.bicep#L61",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/sessionHosts.bicep#L61"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/Template.Tests.ps1#L467",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/Template.Tests.ps1#L467"
+            }
+          ],
+          "note": "The template test covers the jumpbox; the hosts' setting is in the code."
+        },
+        {
+          "id": "lz-host-baseline",
+          "repo": "avd-landing-zone",
+          "says": "Hosts are checked against a reviewed twelve-control baseline profile with recorded departures, read-only through Run Command, reported as warnings (pass, departure, gap or unknown), never failures.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/decisions/0018-host-security-baseline.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/decisions/0018-host-security-baseline.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "scripts/security/host-baseline.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/scripts/security/host-baseline.json"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/AvdLandingZone.Tests.ps1#L874",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/AvdLandingZone.Tests.ps1#L874"
+            }
+          ],
+          "note": "Decision 0018 is proposed; no sandbox run has confirmed the expected values yet."
+        },
+        {
+          "id": "lz-redirection",
+          "repo": "avd-landing-zone",
+          "says": "The default RDP properties turn drive and USB redirection off and keep clipboard, printers, smart cards, WebAuthn and the camera on, a usability trade-off the method records; the Well-Architected review warns when drive or USB redirection is on.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/main.bicep#L155",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/main.bicep#L155"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/decisions/0018-host-security-baseline.md#decision",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/decisions/0018-host-security-baseline.md#decision"
+            },
+            {
+              "repo": "avd-assess",
+              "path": "observations/redirection-kept-for-usability.yaml",
+              "kind": "doc"
+            }
+          ]
+        },
+        {
+          "id": "lz-defender-intune",
+          "repo": "avd-landing-zone",
+          "says": "Intune enrollment is on by default; Defender for Cloud plans are on in the prod parameter file and off in dev and test. Under a platform that already assigns Defender and policy, the operator turns them off and the platform owns them.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/main.bicep#L283",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/main.bicep#L283"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "parameters/prod.bicepparam#L75",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/parameters/prod.bicepparam#L75"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/governance.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/governance.bicep"
+            }
+          ]
+        },
+        {
+          "id": "lz-registration-token",
+          "repo": "avd-landing-zone",
+          "says": "The host registration token is generated per deployment and valid for four hours.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/controlPlane.bicep#L58",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/controlPlane.bicep#L58"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "governance-spend",
+      "title": "Governance, spend and teardown",
+      "pillars": [
+        "governance",
+        "finops"
+      ],
+      "claims": [
+        {
+          "id": "lz-policy",
+          "repo": "avd-landing-zone",
+          "says": "Subscription guardrails are on by default; Azure Policy built-ins (allowed locations and others) and the activity log exported to Log Analytics, kept 90 days by default. A budget is created only when the operator sets an amount.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "bicep/modules/governance.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/governance.bicep"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/Template.Tests.ps1#L132",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/Template.Tests.ps1#L132"
+            }
+          ]
+        },
+        {
+          "id": "lz-budget-shutdown",
+          "repo": "avd-landing-zone",
+          "says": "Hosts stop on a daily schedule by default unless the operator opts out with an expiry, and a budget, when set, calls the same shutdown action.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/decisions/0011-auto-shutdown.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/decisions/0011-auto-shutdown.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/Template.Tests.ps1#L106",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/Template.Tests.ps1#L106"
+            }
+          ]
+        },
+        {
+          "id": "lz-last-copy",
+          "repo": "avd-landing-zone",
+          "says": "Teardown refuses to delete the last copy of profiles, logs and evidence without -DiscardLastCopy, which -Force never implies.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-second-brain",
+              "path": "docs/knowledge/decisions/0016-never-delete-the-last-copy.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/f59a1c5207f89ba71f4752fe2a52a091ca6fd376/docs/knowledge/decisions/0016-never-delete-the-last-copy.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/OfflineScenarios.Tests.ps1#L60",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/OfflineScenarios.Tests.ps1#L60"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "privacy",
+      "title": "Data handling and privacy of the tools",
+      "pillars": [
+        "diagnostics",
+        "security-posture"
+      ],
+      "claims": [
+        {
+          "id": "lz-portal-local",
+          "repo": "avd-landing-zone",
+          "says": "The deployment portal is a static page; output pasted into it stays in the browser. Its Content Security Policy allows no inline or third-party script, and its only outbound requests are the latency and reachability probes to Azure endpoints.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "site/portal/README.md",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/site/portal/README.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/decisions/0017-portal-hosting.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/decisions/0017-portal-hosting.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/portal/portal-core.test.mjs#L630",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/portal/portal-core.test.mjs#L630"
+            }
+          ],
+          "note": "connect-src allows any https origin so the probes work; the test guards that the page itself fetches only through the timed probe."
+        },
+        {
+          "id": "lz-portal-report",
+          "repo": "avd-landing-zone",
+          "says": "Report a problem redacts emails, IDs, subscription and resource names, the name prefix, group names and secrets in the browser; the person reviews the text and files the public issue themselves.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/decisions/0008-portal-issue-reports.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/decisions/0008-portal-issue-reports.md"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/tests/portal/report.test.mjs",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/portal/report.test.mjs"
+            }
+          ]
+        },
+        {
+          "id": "cs-facts-redaction",
+          "repo": "avd-current-state",
+          "says": "The facts snapshot keeps counts and public values; names, resource and object IDs, users, IPs and tags never leave. Resources become keyed HMAC pseudonyms, unknown values become other, and the script refuses to write if anything shaped like a GUID, email, UNC path or IP is left. One tenant per snapshot.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-current-state",
+              "path": "README.md#facts-snapshot-for-the-brain-and-avd-swarm",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/README.md#facts-snapshot-for-the-brain-and-avd-swarm"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "tests/Facts.Tests.ps1#L103",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L103"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "tests/Facts.Tests.ps1#L275",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L275"
+            }
+          ],
+          "note": "The pseudonym key stays with the operator; whoever holds the key and the IDs can reverse a pseudonym."
+        },
+        {
+          "id": "cs-portal-state",
+          "repo": "avd-current-state",
+          "says": "The assessment portal reads a state line that holds counts and pseudonyms only, and refuses values that look private.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-current-state",
+              "path": "tests/PortalState.Tests.ps1#L43",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/PortalState.Tests.ps1#L43"
+            }
+          ]
+        },
+        {
+          "id": "brain-layers",
+          "repo": "avd-second-brain",
+          "says": "Public knowledge holds generalized knowledge only; one customer's estate data lives in that customer's private vault repo, and knowledge changes only by a reviewed pull request that a leak check passes.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-second-brain",
+              "path": "docs/architecture.md",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/f59a1c5207f89ba71f4752fe2a52a091ca6fd376/docs/architecture.md"
+            },
+            {
+              "repo": "avd-second-brain",
+              "path": "scripts/Test-KbLeaks.ps1",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/f59a1c5207f89ba71f4752fe2a52a091ca6fd376/scripts/Test-KbLeaks.ps1"
+            },
+            {
+              "repo": "avd-second-brain",
+              "path": ".github/workflows/kb-validate.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/f59a1c5207f89ba71f4752fe2a52a091ca6fd376/.github/workflows/kb-validate.yml"
+            }
+          ]
+        },
+        {
+          "id": "family-no-ids",
+          "repo": "avd-assess",
+          "says": "Public text names no tenant, subscription, customer, user or machine, and third-party products only as categories; avd-assess's wording check and the leak checks in the KB repos enforce it, and a public repo fails CI if it carries the private notes layer.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-assess",
+              "path": "tests/check_wording.py",
+              "kind": "test"
+            },
+            {
+              "repo": "avd-ops",
+              "path": "docs/guardrails.md",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/docs/guardrails.md"
+            },
+            {
+              "repo": "avd-ops",
+              "path": ".github/workflows/kb-validate.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/.github/workflows/kb-validate.yml"
+            },
+            {
+              "repo": "avd-ops",
+              "path": ".github/workflows/privacy.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/.github/workflows/privacy.yml"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "supply-chain",
+      "title": "Supply chain and CI",
+      "pillars": [
+        "governance"
+      ],
+      "claims": [
+        {
+          "id": "family-licenses",
+          "repo": "avd-ops",
+          "says": "All six public repos are MIT licensed; what they adopt is listed with its license on the credits page, and code from unlicensed repos is used as reference only.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/LICENSE"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/LICENSE"
+            },
+            {
+              "repo": "avd-assess",
+              "path": "LICENSE",
+              "kind": "license"
+            },
+            {
+              "repo": "avd-second-brain",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/f59a1c5207f89ba71f4752fe2a52a091ca6fd376/LICENSE"
+            },
+            {
+              "repo": "avd-swarm",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-swarm/blob/c81fbcbda8d6a268f66bec24381aac76850a5c2c/LICENSE"
+            },
+            {
+              "repo": "avd-ops",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/LICENSE"
+            },
+            {
+              "repo": "avd-ops",
+              "path": "credits.json",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/credits.json"
+            },
+            {
+              "repo": "avd-ops",
+              "path": "docs/build-or-adopt.md",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/docs/build-or-adopt.md"
+            }
+          ]
+        },
+        {
+          "id": "lz-pinned-tools",
+          "repo": "avd-landing-zone",
+          "says": "CI pins Bicep, PSRule and its Azure rules, PSScriptAnalyzer, Pester and gitleaks to exact versions, and Azure Verified Modules to exact versions in the templates.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": ".github/workflows/validate.yml#L51",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/.github/workflows/validate.yml#L51"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/lessons/0016-analyzer-version.md",
+              "kind": "lesson",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/lessons/0016-analyzer-version.md"
+            }
+          ]
+        },
+        {
+          "id": "lz-psrule",
+          "repo": "avd-landing-zone",
+          "says": "PSRule for Azure checks the templates against Well-Architected rules on every change, and every suppression carries a justification.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": ".github/workflows/validate.yml#L159",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/.github/workflows/validate.yml#L159"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": ".ps-rule/Suppressions.Rule.yaml",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/.ps-rule/Suppressions.Rule.yaml"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "build/lessons/0018-psrule.md",
+              "kind": "lesson",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/lessons/0018-psrule.md"
+            }
+          ]
+        },
+        {
+          "id": "secret-scan",
+          "repo": "avd-landing-zone",
+          "says": "gitleaks scans the full history on every pull request in avd-landing-zone, avd-second-brain and avd-ops; avd-landing-zone's job also proves its subscription ID rule still fires on a planted ID.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": ".github/workflows/secret-scan.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/.github/workflows/secret-scan.yml"
+            },
+            {
+              "repo": "avd-second-brain",
+              "path": ".github/workflows/secrets.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/f59a1c5207f89ba71f4752fe2a52a091ca6fd376/.github/workflows/secrets.yml"
+            },
+            {
+              "repo": "avd-ops",
+              "path": ".github/workflows/secrets.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-ops/blob/753f62b60e808efcff5654a0c22b2ebbe3eb3676/.github/workflows/secrets.yml"
+            }
+          ],
+          "note": "avd-current-state, avd-swarm and avd-assess have no secret scan (gap secret-scan-everywhere)."
+        },
+        {
+          "id": "lz-actions-pinned",
+          "repo": "avd-landing-zone",
+          "says": "In avd-landing-zone, 26 of 28 action references are pinned to a full commit SHA; the browser test job still uses two tags. The other repos reference actions by tag.",
+          "standing": "built",
+          "evidence": [
+            {
+              "repo": "avd-landing-zone",
+              "path": ".github/workflows/validate.yml#L147",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/.github/workflows/validate.yml#L147"
+            }
+          ]
+        },
+        {
+          "id": "pinned-sources",
+          "repo": "avd-assess",
+          "says": "Every source the method reads is pinned to a commit or a Learn page's git_commit_id, and the family's shared contracts are byte-identical copies whose hashes each consumer's tests check.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-assess",
+              "path": ".github/workflows/pins.yml",
+              "kind": "ci"
+            },
+            {
+              "repo": "avd-assess",
+              "path": "scripts/check_pins.py",
+              "kind": "code"
+            },
+            {
+              "repo": "avd-assess",
+              "path": "contracts/README.md#how-other-repos-use-these-files",
+              "kind": "doc"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "tests/Facts.Tests.ps1#L203",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L203"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agents",
+      "title": "Agents and automation",
+      "pillars": [
+        "review-plan"
+      ],
+      "claims": [
+        {
+          "id": "brain-no-write",
+          "repo": "avd-second-brain",
+          "says": "The second brain holds no write credential; every change to an estate goes through avd-swarm's approval.",
+          "standing": "designed",
+          "evidence": [
+            {
+              "repo": "avd-second-brain",
+              "path": "docs/knowledge/decisions/0003-brain-thinks-swarm-acts.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/f59a1c5207f89ba71f4752fe2a52a091ca6fd376/docs/knowledge/decisions/0003-brain-thinks-swarm-acts.md"
+            }
+          ]
+        },
+        {
+          "id": "swarm-gate",
+          "repo": "avd-swarm",
+          "says": "Agents read and propose; any write is a plan a person approves in a protected GitHub environment, checked by a governance gate, watched by an observer outside the swarm's trust boundary, behind a layered kill switch that only the owner resets.",
+          "standing": "designed",
+          "evidence": [
+            {
+              "repo": "avd-swarm",
+              "path": "docs/governance.md",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-swarm/blob/c81fbcbda8d6a268f66bec24381aac76850a5c2c/docs/governance.md"
+            },
+            {
+              "repo": "avd-swarm",
+              "path": "docs/decisions/0002-governance-and-kill-switch.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-swarm/blob/c81fbcbda8d6a268f66bec24381aac76850a5c2c/docs/decisions/0002-governance-and-kill-switch.md"
+            }
+          ]
+        },
+        {
+          "id": "swarm-prompt-shields",
+          "repo": "avd-swarm",
+          "says": "A prompt injection scan of untrusted text in the model client is built in the first spike, off unless asked for, and not yet run. Estate facts reach the agents only as redacted, cited facts from the brain, never as collector packages or exports.",
+          "standing": "designed",
+          "evidence": [
+            {
+              "repo": "avd-swarm",
+              "path": "docs/security-tooling.md",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-swarm/blob/c81fbcbda8d6a268f66bec24381aac76850a5c2c/docs/security-tooling.md"
+            },
+            {
+              "repo": "avd-swarm",
+              "path": "docs/spec.md",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-swarm/blob/c81fbcbda8d6a268f66bec24381aac76850a5c2c/docs/spec.md"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "operator": [
+    {
+      "id": "op-subscription-owner",
+      "says": "Who holds Owner on the landing zone subscription, and whether it is standing or just in time.",
+      "see": [
+        "lz-deploy-owner"
+      ]
+    },
+    {
+      "id": "op-conditional-access",
+      "says": "Conditional Access and MFA for AVD users and admins; the landing zone needs one Conditional Access exclusion for the storage account's app, which the reviewer should see.",
+      "see": [
+        "ref:review-checklists-avd#G04.01",
+        "lz-profile-share"
+      ]
+    },
+    {
+      "id": "op-admin-consent",
+      "says": "Admin consent for the storage account's Entra app and for the Graph operator app, and who is assigned to the operator app.",
+      "see": [
+        "lz-graph-delegated",
+        "lz-profile-share"
+      ]
+    },
+    {
+      "id": "op-ntfs",
+      "says": "The share's root ACL, which the post-deployment step hardens to the FSLogix layout.",
+      "see": [
+        "lz-profile-share"
+      ]
+    },
+    {
+      "id": "op-trust-boundary",
+      "says": "Who may share a host (pooled, personal or a separate tenant), from the intake, not telemetry.",
+      "see": [
+        "ref:avd-security-guide#trust-boundary"
+      ]
+    },
+    {
+      "id": "op-host-baseline",
+      "says": "The baseline controls left to the organization, and every departure with its reason.",
+      "see": [
+        "lz-host-baseline",
+        "gap:host-baseline-profile"
+      ]
+    },
+    {
+      "id": "op-endpoint-protection",
+      "says": "The endpoint detection and response product on hosts, its exclusions for profiles and App Attach, and its cost.",
+      "see": [
+        "gap:security-agents-scope"
+      ]
+    },
+    {
+      "id": "op-redirection",
+      "says": "Whether clipboard, printing, camera and the other redirections stay on, and whether screen capture protection and watermarking are needed.",
+      "see": [
+        "lz-redirection",
+        "ref:screen-capture-protection",
+        "ref:watermarking"
+      ]
+    },
+    {
+      "id": "op-platform-policy",
+      "says": "Whether Defender plans and policy come from this landing zone or from an existing platform.",
+      "see": [
+        "lz-defender-intune",
+        "lz-policy"
+      ]
+    },
+    {
+      "id": "op-logging",
+      "says": "Log retention past the default and where security logs go for monitoring and incident response.",
+      "see": [
+        "lz-policy"
+      ]
+    },
+    {
+      "id": "op-environment-reviewers",
+      "says": "Required reviewers on the prod GitHub environment, so a production deployment needs an approval.",
+      "see": [
+        "lz-ci-oidc"
+      ]
+    },
+    {
+      "id": "op-pseudonym-key",
+      "says": "Custody of each estate's pseudonymization key.",
+      "see": [
+        "cs-facts-redaction"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "rc-identity",
+      "ask": "Which identities deploy, read and change the estate, with which roles and for how long?",
+      "see": [
+        "lz-deploy-owner",
+        "lz-ci-oidc",
+        "lz-graph-delegated",
+        "lz-rbac",
+        "cs-reader-only",
+        "swarm-identities",
+        "op-subscription-owner"
+      ]
+    },
+    {
+      "id": "rc-secrets",
+      "ask": "Where is every secret, who can read it, and does any operator have to remember or paste one?",
+      "see": [
+        "lz-break-glass",
+        "lz-key-vault",
+        "lz-jumpbox",
+        "lz-ci-oidc",
+        "lz-registration-token"
+      ]
+    },
+    {
+      "id": "rc-exposure",
+      "ask": "What is reachable from the internet, and how do admins reach hosts?",
+      "see": [
+        "lz-private-link",
+        "lz-private-data-plane",
+        "lz-nsg",
+        "lz-jumpbox"
+      ]
+    },
+    {
+      "id": "rc-profiles",
+      "ask": "How are user profiles authenticated, encrypted and protected from deletion?",
+      "see": [
+        "lz-profile-share",
+        "op-ntfs",
+        "lz-last-copy"
+      ]
+    },
+    {
+      "id": "rc-hosts",
+      "ask": "How are hosts hardened, checked for drift and protected?",
+      "see": [
+        "lz-trusted-launch",
+        "lz-encryption-at-host",
+        "lz-host-baseline",
+        "lz-defender-intune",
+        "op-trust-boundary",
+        "op-host-baseline",
+        "op-endpoint-protection"
+      ]
+    },
+    {
+      "id": "rc-session",
+      "ask": "What can move between the user's device and the session?",
+      "see": [
+        "lz-redirection",
+        "op-redirection"
+      ]
+    },
+    {
+      "id": "rc-access",
+      "ask": "Which Conditional Access, MFA and consent decisions does the deployment need from the tenant?",
+      "see": [
+        "op-conditional-access",
+        "op-admin-consent"
+      ]
+    },
+    {
+      "id": "rc-governance",
+      "ask": "Which guardrails, logs and budgets are on, and which come from the platform?",
+      "see": [
+        "lz-policy",
+        "lz-budget-shutdown",
+        "op-platform-policy",
+        "op-logging"
+      ]
+    },
+    {
+      "id": "rc-data",
+      "ask": "What do the tools collect, where does it go, and what leaves the browser or the tenant?",
+      "see": [
+        "cs-reader-only",
+        "cs-facts-redaction",
+        "cs-portal-state",
+        "lz-portal-local",
+        "lz-portal-report",
+        "brain-layers",
+        "family-no-ids",
+        "op-pseudonym-key"
+      ]
+    },
+    {
+      "id": "rc-supply-chain",
+      "ask": "Can the code and its dependencies change under a passing build?",
+      "see": [
+        "lz-pinned-tools",
+        "lz-psrule",
+        "secret-scan",
+        "lz-actions-pinned",
+        "pinned-sources",
+        "family-licenses"
+      ]
+    },
+    {
+      "id": "rc-automation",
+      "ask": "Can any automation change the estate without a person's approval?",
+      "see": [
+        "brain-no-write",
+        "swarm-gate",
+        "swarm-prompt-shields",
+        "op-environment-reviewers"
+      ]
+    }
+  ],
+  "threats": [
+    {
+      "repo": "avd-landing-zone",
+      "touches": "Creates and changes every resource in the landing zone subscription, the groups and apps it needs in Entra, and deletes on teardown.",
+      "risks": [
+        "An over-privileged deploying identity",
+        "A secret in the repo or a log",
+        "Public exposure of data services",
+        "A teardown that deletes the only copy"
+      ],
+      "limits": [
+        "lz-deploy-owner",
+        "lz-ci-oidc",
+        "lz-break-glass",
+        "lz-private-data-plane",
+        "secret-scan",
+        "lz-last-copy"
+      ],
+      "formal": "none"
+    },
+    {
+      "repo": "avd-current-state",
+      "touches": "Reads the subscriptions it is pointed at; writes only local files.",
+      "risks": [
+        "A read identity granted more than Reader",
+        "Collected names or IDs leaving with the facts"
+      ],
+      "limits": [
+        "cs-reader-only",
+        "cs-facts-redaction",
+        "cs-portal-state"
+      ],
+      "formal": "none"
+    },
+    {
+      "repo": "avd-assess",
+      "touches": "Nothing in Azure; publishes method, references and contracts that the other repos pin.",
+      "risks": [
+        "A changed contract or rule reaching readers unreviewed"
+      ],
+      "limits": [
+        "pinned-sources"
+      ],
+      "formal": "none"
+    },
+    {
+      "repo": "avd-second-brain",
+      "touches": "Reads redacted facts and knowledge; holds no write credential.",
+      "risks": [
+        "Estate data reaching public knowledge"
+      ],
+      "limits": [
+        "brain-layers",
+        "brain-no-write"
+      ],
+      "formal": "none"
+    },
+    {
+      "repo": "avd-swarm",
+      "touches": "In design, the only write path for the layers above the foundation.",
+      "risks": [
+        "An unapproved write",
+        "A fooled agent proposing a bad plan",
+        "Prompt injection through tool output"
+      ],
+      "limits": [
+        "swarm-gate",
+        "swarm-identities",
+        "swarm-prompt-shields"
+      ],
+      "formal": {
+        "repo": "avd-swarm",
+        "path": "docs/redteam.md",
+        "kind": "doc",
+        "url": "https://github.com/avd-ops/avd-swarm/blob/c81fbcbda8d6a268f66bec24381aac76850a5c2c/docs/redteam.md"
+      }
+    },
+    {
+      "repo": "avd-ops",
+      "touches": "The static site; no Azure access.",
+      "risks": [
+        "Private material published by mistake"
+      ],
+      "limits": [
+        "family-no-ids",
+        "secret-scan"
+      ],
+      "formal": "none"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "security-policy",
+      "repos": [
+        "avd-landing-zone",
+        "avd-current-state",
+        "avd-second-brain",
+        "avd-swarm"
+      ],
+      "says": "No SECURITY.md saying how to report a vulnerability privately; GitHub private vulnerability reporting is a repository setting the owner turns on. avd-assess gains one with this map, and avd-ops with the pull request that adds its security page."
+    },
+    {
+      "id": "actions-sha-pinning",
+      "repos": [
+        "avd-landing-zone",
+        "avd-current-state",
+        "avd-second-brain",
+        "avd-swarm",
+        "avd-assess",
+        "avd-ops"
+      ],
+      "says": "Actions referenced by tag can change under a passing build; pin each to a full commit SHA with the tag as a comment, as avd-landing-zone mostly does."
+    },
+    {
+      "id": "dependency-updates",
+      "repos": [
+        "avd-landing-zone",
+        "avd-current-state",
+        "avd-second-brain",
+        "avd-swarm",
+        "avd-assess",
+        "avd-ops"
+      ],
+      "says": "No automated update proposals for pinned actions and no dependency list or SBOM per repo."
+    },
+    {
+      "id": "secret-scan-everywhere",
+      "repos": [
+        "avd-current-state",
+        "avd-swarm",
+        "avd-assess"
+      ],
+      "says": "No secret scan in CI."
+    },
+    {
+      "id": "graph-scope-per-purpose",
+      "repos": [
+        "avd-landing-zone"
+      ],
+      "says": "A read-only preflight signs in with the full delegated scope set, write scopes included (decision 0016's trade-off for one sign-in per session); document it for reviewers or offer a read-only set."
+    },
+    {
+      "id": "ci-read-only-guard",
+      "repos": [
+        "avd-current-state"
+      ],
+      "says": "The read-only promise is documented and request-listed but no test fails when a script gains a write cmdlet or a non-GET call."
+    },
+    {
+      "id": "security-run-evidence",
+      "repos": [
+        "avd-landing-zone"
+      ],
+      "says": "The host baseline (decision 0018) and the jumpbox (decision 0019) have no real-run evidence yet; the hosts' Trusted Launch, network rules and role assignments have no template test."
+    },
+    {
+      "id": "threat-models",
+      "repos": [
+        "avd-landing-zone",
+        "avd-current-state"
+      ],
+      "says": "No written threat model for the two proven repos; avd-swarm's red team is the only formal review."
+    }
+  ]
+}
