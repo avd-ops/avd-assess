@@ -1,0 +1,18 @@
+id: avd-azure-local-workload
+title: Azure Architecture Center, Azure Virtual Desktop for Azure Local
+url: https://learn.microsoft.com/azure/architecture/hybrid/azure-local-workload-virtual-desktop
+pin: "Learn git_commit_id 8f71fd371da3cdf6d81669d029e7636f0253242d, updated_at 2026-03-06"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+notes: Written for AVD on Azure Local, but its comparison of single-session and multi-session hosts holds for Azure-hosted session hosts too; we cite only that comparison.
+claims:
+  - id: workload-types-examples
+    says: The light, medium, heavy and power workload types are examples only; test a deployment with load simulation and real-life usage.
+    kind: guidance
+  - id: single-session-when
+    says: Single-session hosts suit work that needs consistent performance, heavy apps, or per-user customization and installs, at a higher cost per user.
+    kind: guidance
+  - id: multi-session-when
+    says: Multi-session hosts suit standard apps and lighter work, such as task workers, with customization limited and managed centrally to keep every user stable.
+    kind: guidance

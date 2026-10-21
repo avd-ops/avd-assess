@@ -1,0 +1,18 @@
+id: avd-gis-workload-example
+title: Azure Architecture Center, a GIS desktop app on Azure Virtual Desktop (example scenario)
+url: https://learn.microsoft.com/azure/architecture/example-scenario/data/esri-arcgis-azure-virtual-desktop
+pin: "Learn git_commit_id 069a83fe2cc8d78c25f4123a93ba3b9819821147, updated_at 2026-06-03"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [benchmarks]
+notes: Read as an example of an app-specific workload scale for a graphics app, not for its numbers.
+claims:
+  - id: app-specific-tiers
+    says: The scenario defines its own light, medium and heavy tiers by what users do in one app (viewing, editing, visualizing in 2D and 3D) rather than the generic workload types.
+    kind: guidance
+  - id: limit-users-per-vm
+    says: Give each user enough GPU, CPU and memory, and limit simultaneous users per VM so a host isn't oversaturated.
+    kind: guidance
+  - id: monitor-then-resize
+    says: Its sizes are initial estimates; monitor actual use after deployment and resize up or down.
+    kind: guidance

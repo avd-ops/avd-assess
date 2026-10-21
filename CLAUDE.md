@@ -7,6 +7,7 @@ avd-assess: the AVD family's assessment methodology (collection, assessment, tar
 python3 scripts/build_index.py --check   # index.json is generated; run without --check to rebuild
 python3 tests/check_method.py
 python3 tests/check_contracts.py
+python3 tests/check_use_cases.py
 ```
 
 ## Rules

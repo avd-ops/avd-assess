@@ -1,0 +1,20 @@
+id: avd-internal-external
+title: Recommendations for deploying Azure Virtual Desktop for internal or external commercial purposes
+url: https://learn.microsoft.com/azure/virtual-desktop/organization-internal-external-commercial-purposes-recommendations
+pin: "Learn git_commit_id 46e84e5b054723a7a4392fec7e7dc222ce61f04c, updated_at 2025-12-04"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: internal-minimum
+    says: Internal use needs at least one host pool, one subscription and one tenant; more host pools can offer different apps to different groups of users.
+    kind: guidance
+  - id: subscription-per-suborganization
+    says: Some organizations put each deployment in its own subscription, or use billing scopes, to separate costs by the part of the organization served.
+    kind: guidance
+  - id: tenant-per-customer
+    says: For users outside the organization, Microsoft strongly recommends a separate Entra tenant, subscription and directory per customer, so no customer's VMs can reach another's resources.
+    kind: guidance
+  - id: external-identities
+    says: AVD supports external identities, users invited into the organization who sign in with their existing credentials.
+    kind: published

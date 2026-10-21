@@ -18,6 +18,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [tune-loop](tune-loop.md) | The order of tuning levers, one change per round, and the record each round leaves |
 | [discovery](discovery.md) | The interview questions, and which answers become intake facts and which stay private narrative |
 | [use-cases](use-cases.md) | The structured use case record, the decisions it informs, and how it is checked against what is deployed and measured |
+| [use-case-library](use-case-library.md) | Common AVD use cases (base personas and overlays) as cited starting points for that record |
 | [finops-scope](finops-scope.md) | What a FinOps assessment can judge, from which evidence, and which repo does what |
 | [commitment-floor](commitment-floor.md) | How much compute to commit for host pools a scaling plan turns off |
 | [security-scope](security-scope.md) | What a security assessment can judge, from which evidence, and which repo does what |
