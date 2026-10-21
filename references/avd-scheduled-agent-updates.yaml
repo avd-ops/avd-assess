@@ -1,0 +1,19 @@
+id: avd-scheduled-agent-updates
+title: Scheduled Agent Updates for Azure Virtual Desktop host pools
+url: https://learn.microsoft.com/azure/virtual-desktop/scheduled-agent-updates
+pin: "Learn git_commit_id 4dcb5ff3082014aa907a3d4327649e7705d8fba5, updated_at 2025-06-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [images]
+notes: The checklist's link for E01.10.
+claims:
+  - id: off-by-default
+    says: Scheduled agent updates are off by default, so the agent, side-by-side stack and monitoring agent can update at any time; the setting is per host pool, with one or two maintenance windows.
+    kind: published
+  - id: two-hour-windows
+    says: Each maintenance window lasts two hours, in a set time zone or each host's local time.
+    kind: published
+  - id: hosts-on-during-window
+    says: An update fails on a host that is shut down or deallocated during the window, so every host must be on then; after four failed windows, or for a critical update, the broker installs it by force.
+    kind: published

@@ -1,11 +1,21 @@
 id: intune-security-baselines
 title: Intune security baselines for Windows devices
-url: https://learn.microsoft.com/mem/intune/protect/security-baselines
+url: https://learn.microsoft.com/intune/device-security/security-baselines/overview
 pin: "Learn git_commit_id 63ff44f43d17d04e8cbcf5c1ab60f7614f49762e, updated_at 2026-10-05"
-read: 2026-10-20
+read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment]
+pillars: [intune]
 claims:
   - id: baselines-in-intune
     says: Intune ships versioned security baselines (Windows, Defender for Endpoint, Edge and others) that enrolled devices, session hosts included, can be assigned and reported against.
+    kind: guidance
+  - id: most-restrictive-defaults
+    says: Baseline defaults are almost always the most restrictive values; confirm they don't conflict with other policies or features before assigning them.
+    kind: guidance
+  - id: versioned-per-release
+    says: Windows baselines are versioned per Windows release (24H2, 25H2, 26H2 and so on), and moving a profile to a newer baseline version is a one-time migration.
+    kind: published
+  - id: no-preview-in-production
+    says: Preview baseline versions aren't recommended in production, because their settings can change.
     kind: guidance

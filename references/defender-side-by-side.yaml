@@ -1,0 +1,21 @@
+id: defender-side-by-side
+title: Microsoft Defender for Endpoint alongside other security solutions
+url: https://learn.microsoft.com/defender-endpoint/mde-side-by-side
+pin: "Learn git_commit_id e5e024df2189c2f05c8a7a66f60fff59a0c0bfd8, updated_at 2026-04-13"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [endpoint-protection]
+claims:
+  - id: avoid-duplication
+    says: Don't run two security products for the same function; turn the overlapping capabilities off in one of them and leave each function to one product.
+    kind: guidance
+  - id: mutual-exclusions
+    says: Products running side by side need mutual exclusions, limited to processes and paths known to be benign, and those gaps are managed as products change.
+    kind: guidance
+  - id: stagger-heavy-tasks
+    says: Even well configured products are limited by the system underneath; meet hardware requirements and stagger resource-heavy tasks such as scans.
+    kind: guidance
+  - id: remove-to-troubleshoot
+    says: Support may ask for a conflicting product to be removed temporarily while a performance or reliability problem is isolated.
+    kind: published

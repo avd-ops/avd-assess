@@ -1,0 +1,12 @@
+id: intune-settings-catalog
+title: Use the settings catalog to configure settings on devices with Microsoft Intune
+url: https://learn.microsoft.com/intune/device-configuration/settings-catalog/
+pin: "Learn git_commit_id d7d0fe53d55f70241056b9c9cfb3937d7504b5fb, updated_at 2026-09-23"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [intune]
+claims:
+  - id: one-place
+    says: The settings catalog lists every configurable setting in one place; a policy starts empty and holds only the settings it manages, the cloud counterpart of a granular Group Policy Object.
+    kind: published

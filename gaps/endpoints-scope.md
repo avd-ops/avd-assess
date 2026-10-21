@@ -30,7 +30,7 @@ The redirection settings themselves belong to the protocol and security rows. Th
 
 ## Managed and unmanaged devices
 
-Device management is asked, not read, until a directory read exists. Where unmanaged devices connect, the published pattern is to require client compliance on the platforms that support it and to narrow redirection for those devices, keeping the host pool settings as the floor (`ref:windows-app-device-compliance#platform-scope`, `ref:windows-app-redirection-intune#not-a-substitute`). Context-based redirection was in preview on the read date (`ref:context-based-redirections`), so a node that cites it stays guidance.
+Device management is asked, not read, until a directory read exists. Where unmanaged devices connect, the published pattern is to require client compliance on the platforms that support it and to narrow redirection for those devices, keeping the host pool settings as the floor (`ref:windows-app-device-compliance#app-protection-for-clients`, `ref:windows-app-redirection-intune#not-a-substitute`). Context-based redirection was in preview on the read date (`ref:context-based-redirections`), so a node that cites it stays guidance.
 
 ## Thin clients and kiosks
 
@@ -43,7 +43,7 @@ Four answers, two of them lists, registered as `specified` C19 facts; the intake
 | Fact | Question | Values |
 |---|---|---|
 | `intake.clientApps` | Which client apps and platforms do users connect from? Already registered (the remote protocol rows use it too); this page defines its values. | a list of `windows`, `macos`, `ios`, `android`, `web`, `thin-client`, `kiosk`, `other` |
-| `intake.clientDeviceManagement` | Are the connecting devices managed? | `managed-only`, `managed-and-personal`, `personal-only`, `unknown` |
+| `intake.clientDeviceManagement` | Are the connecting devices managed? What a device must prove to connect is the Intune pillar's `intake.clientDevices`. | `managed-only`, `managed-and-personal`, `personal-only`, `unknown` |
 | `intake.peripheralNeeds` | What must reach the session? | a list of `camera`, `microphone`, `smart-card`, `usb-device`, `scanner`, `local-drive`, `multi-monitor`, or `none` alone |
 | `intake.printing` | How do users print? | `redirection`, `universal-print`, `host-printers`, `mixed`, `none`, `unknown` |
 

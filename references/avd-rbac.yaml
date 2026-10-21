@@ -4,13 +4,15 @@ url: https://learn.microsoft.com/azure/virtual-desktop/rbac
 pin: "Learn git_commit_id a2c9d3b52ffe73e75a81d5f757380994c65169e1, updated_at 2026-05-25"
 read: 2026-10-21
 license: Microsoft Learn content (link only)
-areas: [assessment]
-pillars: [governance]
-notes: Cited by role name, never by role GUID.
+areas: [assessment, collection]
+pillars: [governance, identity]
 claims:
-  - id: built-in-roles
-    says: AVD has built-in roles per object (contributor and reader for host pools, application groups and workspaces) plus session host and user session operators.
+  - id: scoped-roles
+    says: AVD has built-in roles scoped to host pools, application groups, workspaces, sessions and session hosts, so admin duties can be split below Owner and Contributor.
     kind: published
-  - id: assignment-needs-uaa
-    says: The Desktop Virtualization contributor roles can't assign users or groups; that needs User Access Administrator as well.
+  - id: user-role
+    says: Desktop Virtualization User on an application group lets a user use its apps or desktop as a non-administrator.
+    kind: published
+  - id: contributor-no-assignment
+    says: The contributor roles don't include assigning users or groups; that needs User Access Administrator or a role with the same right.
     kind: published

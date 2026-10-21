@@ -1,0 +1,15 @@
+id: fslogix-entra-profile
+title: Store FSLogix profile containers on Azure Files using Microsoft Entra ID
+url: https://learn.microsoft.com/azure/virtual-desktop/create-profile-container-azure-ad
+pin: "Learn git_commit_id 2afc1a6eb7f7a4b901c8679945c754ac3ebe4e5b, updated_at 2026-05-19"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [identity, profiles]
+claims:
+  - id: cloud-only-supported
+    says: Profile containers on Azure Files with Entra Kerberos work for hybrid identities from Entra joined or hybrid joined hosts, and for cloud-only and external identities in the Azure public cloud.
+    kind: published
+  - id: host-settings
+    says: Each host needs cloud Kerberos ticket retrieval turned on and credential keys loaded from the profile, set in the image, Intune or Group Policy.
+    kind: published

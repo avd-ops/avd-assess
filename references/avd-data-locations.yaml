@@ -5,11 +5,18 @@ pin: "Learn git_commit_id ebbe087e9ad40882b4901691bb5c93bab04a149c, updated_at 2
 read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment]
-pillars: [governance]
+pillars: [capacity, governance]
+notes: The checklist's link for C03.02.
 claims:
-  - id: deployment-scope
-    says: Host pool metadata is stored in the geography of the chosen region by default (Geographical scope), or inside that one region (Regional scope).
+  - id: geographical-default
+    says: By default a host pool's deployment scope is geographical, and its metadata is stored in the geography of the region chosen, with no dependency on that region.
     kind: published
-  - id: user-data-in-region
-    says: User and app data stays in the region chosen for it and isn't managed by the AVD service; ARM paths are stored outside the geography.
+  - id: regional-scope
+    says: A regional deployment scope keeps the metadata of the host pool and its service objects in one region, where the region offers it; elsewhere host pools are geographical.
+    kind: published
+  - id: arm-paths-outside
+    says: Resource Manager paths count as organizational information, not customer data, and are stored outside the chosen geography.
+    kind: published
+  - id: no-user-data
+    says: The service stores object names, VM names and user principal names, but no user documents or app data.
     kind: published

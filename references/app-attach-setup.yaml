@@ -1,0 +1,21 @@
+id: app-attach-setup
+title: Add and manage App Attach applications in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/app-attach-setup
+pin: "Learn git_commit_id d3cfc7bae558344fa9de1867ba11fbec56683de1, updated_at 2026-09-30"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [app-delivery]
+claims:
+  - id: supported-os
+    says: Session hosts must run a supported Windows client or server OS; Windows Server 2022 and 2025 are supported from 14 April 2026.
+    kind: published
+  - id: packages-are-resources
+    says: Each package is an Azure resource (an App Attach package) carrying its image path, version, active state, registration type and host pool assignments, readable through the management plane.
+    kind: published
+  - id: health-check-on-failure
+    says: A package sets what the session host health check reports when it fails to stage, so a staging failure can show as host health.
+    kind: published
+  - id: disable-auto-update
+    says: Disable automatic updates for MSIX and Appx apps on session hosts (Store auto-download and content delivery settings), through Group Policy, Intune or the image.
+    kind: published

@@ -1,0 +1,40 @@
+id: avd-authentication
+title: Supported identities and authentication methods for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/authentication
+pin: "Learn git_commit_id 74270aaa6471ca1c29c36103e393e55d95578ccb, updated_at 2026-10-15"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [identity]
+notes: The identity scenario page the review checklist's D03.02 links to. It splits sign-in into three phases (the service, the session host, inside the session); each row of the identity pillar names which phase it judges.
+claims:
+  - id: one-identity
+    says: The same Entra identity must sign in to the service and to Windows on the session host; a different Windows account, a local account included, isn't supported and can bypass Conditional Access.
+    kind: published
+  - id: no-ad-only-identities
+    says: Users that exist only in Active Directory, including standalone AD with AD FS, can't use AVD, because the service has to find them in Entra ID.
+    kind: published
+  - id: upn-or-sid-match
+    says: Hybrid identities work only when the UPN or the SID matches between Active Directory and Entra ID.
+    kind: published
+  - id: cloud-only-entra-joined
+    says: Cloud-only identities are supported on Entra joined session hosts.
+    kind: published
+  - id: federated-idp
+    says: A third-party identity provider must federate with Entra ID, with Entra joined or hybrid joined hosts and Entra authentication to the session host turned on.
+    kind: published
+  - id: external-identity-requirements
+    says: External identities need Entra joined hosts on recent Windows 11 or Windows Server 2025 builds, single sign-on on the host pool and Windows App, and they can't use Kerberos or NTLM to on-premises resources.
+    kind: published
+  - id: three-phases
+    says: Sign-in has three phases, the AVD service (where Conditional Access applies), the remote session and in-session authentication, each with its own set of supported credentials.
+    kind: published
+  - id: sso-recommended
+    says: Single sign-on with Entra authentication is the recommended way to sign in to Entra joined and hybrid joined hosts; without it users get a credential prompt every connection or must save credentials on the client.
+    kind: guidance
+  - id: smartcard-needs-kdc
+    says: Smart cards and Windows Hello for Business sign in to the session host with Kerberos only, so the client needs a line of sight to a domain controller, a VPN or a KDC proxy.
+    kind: published
+  - id: in-session-passwordless
+    says: In-session passwordless sign-in redirects WebAuthn requests to the local device on supported builds and is turned off with the WebAuthn redirection RDP property.
+    kind: published

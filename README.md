@@ -30,8 +30,10 @@ Where it sits in the family: [avd-landing-zone](https://github.com/avd-ops/avd-l
 | [FinOps](methods/finops.md) | How to judge what an estate costs against Microsoft's and the FinOps Framework's guidance, and which repo holds which part |
 | [Security](methods/security.md) | How to judge an estate's security against Microsoft's AVD guidance, and which repo holds which part |
 | [Remote protocol and session](methods/remote-protocols.md) | How sessions reach their hosts: RDP transport, Shortpath and Multipath, judged against the networks users connect from, plus the session settings that ride on it |
+| [Intune and host management](methods/intune.md) | How hosts and client devices are managed: Intune enrollment, settings, baselines, compliance, apps and updates on multi-session, against Group Policy where an estate keeps it |
 | [Troubleshooting and diagnostics](methods/diagnostics.md) | Which source answers which symptom, the triage flow per symptom, the error-code map, and the diagnostic facts proposed for the collector |
 | [Network](methods/network.md) | How to judge an estate's network, Azure side and client side (AVD Private Link on both), and what can be measured from outside |
+| [Reliability](methods/reliability.md) | How to judge zones, backup, continuity and disaster recovery against the workload's own targets, and why only a test proves recovery |
 
 Every step on those pages cites one of three things:
 

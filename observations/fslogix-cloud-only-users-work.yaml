@@ -1,0 +1,8 @@
+id: fslogix-cloud-only-users-work
+claim: ref:avd-prerequisites#fslogix-entra-joined-hybrid
+verdict: disagrees
+observed: The landing zone loads FSLogix profiles from Azure Files with Entra Kerberos for cloud-only users on Entra joined hosts, with no AD DS and no synced accounts, once the share allowed AES-128-GCM. The prerequisites page and the Entra joined hosts page (ref:avd-entra-joined-hosts#fslogix-hybrid-users) still say hybrid accounts are needed, while the Azure Files and FSLogix pages support cloud-only identities (ref:files-entra-kerberos#cloud-only-and-hybrid, ref:fslogix-entra-profile#cloud-only-supported). The method follows the newer pages and treats cloud-only users as supported in the Azure public cloud.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/lessons/0028-smb-channel-encryption-entra-kerberos.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/storage.bicep
+date: 2026-10-21
