@@ -1360,7 +1360,7 @@
         ],
         "says": "The onboarding script runs at first boot from the image, the image is never onboarded, one entry per host; multi-session hosts licensed through the server plan or per user. Third-party EDR products follow their vendor's VDI guide, read by the reviewer."
       },
-      "measure": "intake",
+      "measure": "none",
       "landingZone": []
     },
     {

@@ -64,17 +64,19 @@
     },
     "hostAgents": {
       "type": "array",
-      "description": "Fact intake.hostAgents (optional). The security agent categories on session hosts, never product names (avd-assess gaps/security-agents-scope.md). Microsoft's own antivirus and EDR are named because the published guidance is theirs.",
+      "description": "Fact intake.hostAgents (optional). The security agent categories on session hosts, never product names (avd-assess gaps/security-agents-scope.md); none or unknown stands alone. Microsoft's own antivirus and EDR are named because the published guidance is theirs.",
       "uniqueItems": true,
       "minItems": 1,
-      "items": { "enum": ["defender-antivirus", "defender-endpoint", "third-party-antivirus", "third-party-edr", "sse-ztna-client", "vpn-client", "web-proxy", "dlp-agent", "none", "unknown"] }
+      "items": { "enum": ["defender-antivirus", "defender-endpoint", "third-party-antivirus", "third-party-edr", "sse-ztna-client", "vpn-client", "web-proxy", "dlp-agent", "none", "unknown"] },
+      "anyOf": [{ "not": { "contains": { "enum": ["none", "unknown"] } } }, { "maxItems": 1 }]
     },
     "clientAgents": {
       "type": "array",
-      "description": "Fact intake.clientAgents (optional). What sits in the path on the devices users connect from, as categories: a security service edge or zero trust client, a full or split tunnel VPN, a web proxy, TLS inspection (avd-assess gaps/security-agents-scope.md).",
+      "description": "Fact intake.clientAgents (optional). What sits in the path on the devices users connect from, as categories: a security service edge or zero trust client, a full or split tunnel VPN, a web proxy, TLS inspection (avd-assess gaps/security-agents-scope.md); none or unknown stands alone.",
       "uniqueItems": true,
       "minItems": 1,
-      "items": { "enum": ["sse-ztna-client", "vpn-full-tunnel", "vpn-split-tunnel", "web-proxy", "tls-inspection", "none", "unknown"] }
+      "items": { "enum": ["sse-ztna-client", "vpn-full-tunnel", "vpn-split-tunnel", "web-proxy", "tls-inspection", "none", "unknown"] },
+      "anyOf": [{ "not": { "contains": { "enum": ["none", "unknown"] } } }, { "maxItems": 1 }]
     },
     "agentRdpBypass": {
       "description": "Fact intake.agentRdpBypass (optional). Whether RDP traffic is split out of tunnels, proxies and inspection on the user devices, the session hosts, both or neither.",

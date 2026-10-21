@@ -17,7 +17,7 @@ Every agent appears here as a category (tests/wording.json): antivirus, an endpo
 |---|---|---|---|
 | `agents.av-edr-present` | Antivirus and EDR run on every session host | `c11.subscription.defenderPlans` (built); Defender for Cloud's EDR recommendation per host, `c11.hostPool.sessionHosts.edrMissing` (specified); `intake.hostAgents` | Reader, and a Defender plan that runs the agentless scan |
 | `agents.coexistence` | One active antivirus; any other passive and mutually excluded | Defender Antivirus running mode (`proposed:c11.sessionHost.defenderRunningMode`); `intake.hostAgents` | A host-side read |
-| `agents.edr-onboarding` | EDR onboarded at first boot as one entry per host, the image itself never onboarded | `intake.hostAgents`; the Defender portal | Intake |
+| `agents.edr-onboarding` | EDR onboarded at first boot as one entry per host, the image itself never onboarded | A reviewer's look at the image build and the EDR console; `intake.hostAgents` says only which EDR | A reviewer, recorded with the date; no fact yet |
 | `security.endpoint-protection-tuning` | The published VDI antivirus settings and image sealing | Defender preferences (`proposed:c11.sessionHost.defenderVdiSettings`) | A host-side read |
 | `agents.exclusions` | The FSLogix exclusions in every security layer | Defender exclusions against the published list (`proposed:c11.sessionHost.fslogixExclusions`) | A host-side read, plus intake for the other layers |
 | `agents.vulnerability-assessment` | Vulnerability assessment covers the hosts | `c11.hostPool.sessionHosts.vulnerabilityFindings` (specified) | Reader, and a Defender plan |

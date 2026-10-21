@@ -515,7 +515,7 @@ dimensions:
       standing: published
       claims: [ref:defender-endpoint-vdi#never-onboard-image, ref:defender-endpoint-vdi#entry-model, ref:defender-endpoint-vdi#first-report-delay, ref:defender-endpoint-avd#single-entry-recommended, ref:defender-endpoint-avd#script-at-first-boot, ref:defender-endpoint-avd#multi-session-licensing]
       says: The onboarding script runs at first boot from the image, the image is never onboarded, one entry per host; multi-session hosts licensed through the server plan or per user. Third-party EDR products follow their vendor's VDI guide, read by the reviewer.
-    measure: intake
+    measure: none
     landingZone: []
   - id: security.endpoint-protection-tuning
     area: security

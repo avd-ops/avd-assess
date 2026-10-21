@@ -958,7 +958,9 @@
       "unit": "enum",
       "privacy": "public",
       "status": "specified",
-      "evidences": []
+      "evidences": [
+        "network"
+      ]
     },
     {
       "id": "intake.clientAgents",
