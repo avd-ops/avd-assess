@@ -2,9 +2,11 @@ id: app-attach
 title: App Attach in Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/app-attach-overview
 pin: "Learn git_commit_id 18f8ed292f3df23081d1cb2446c480105abdbaf9, updated_at 2026-08-26"
-read: 2026-10-20
+read: 2026-10-21
 license: Microsoft Learn content (link only)
-areas: [assessment]
+areas: [assessment, collection]
+pillars: [app-delivery]
+notes: The old app-attach-file-share and app-attach-faq pages that the review checklist links for B02 now redirect here (checked 2026-10-21).
 claims:
   - id: per-user-per-host-pool
     says: An attached app reaches a user only when it is assigned to the host pool and to the user, so users on one multi-session host can get different app sets.
@@ -12,3 +14,43 @@ claims:
   - id: share-same-region
     says: The app package share should be in the session hosts' region and not the share used for profile containers.
     kind: guidance
+  # Read 2026-10-21 for the app delivery pillar; kept after the others so the list grows without reordering.
+  - id: package-formats
+    says: App Attach takes MSIX and Appx packages and bundles, and App-V packages, mounted from a file share instead of installed in the image.
+    kind: published
+  - id: cimfs-for-windows-11
+    says: CimFS images mount and unmount faster and use less CPU and memory than VHDX; CimFS is recommended only for Windows 11 hosts, and VHD not at all.
+    kind: published
+  - id: on-demand-registration
+    says: On-demand registration is the default and recommended because it doesn't add to sign-in time; log-on blocking registration does.
+    kind: published
+  - id: identity-providers
+    says: App Attach supports Entra ID and AD DS identities, not Entra Domain Services.
+    kind: published
+  - id: host-read-access
+    says: Each session host's computer identity needs read access to the package share; how you grant it depends on the storage and the join type.
+    kind: published
+  - id: dedicated-storage-account
+    says: Granting the AVD ARM provider service principal access to a storage account gives the service all data in it, so the account should hold only App Attach packages, with keys rotated.
+    kind: guidance
+  - id: anf-needs-domain
+    says: Azure NetApp Files can hold packages only when session hosts are joined to AD DS or Entra Domain Services.
+    kind: published
+  - id: performance-example
+    says: An example 1 GB image needs about 1 IOPS steady, 10 at boot and sign-in, and 400 ms latency per session host; real needs come from testing.
+    kind: prior
+  - id: av-exclude-images
+    says: Exclude the read-only package images from antivirus scans.
+    kind: guidance
+  - id: handle-per-host
+    says: Disk images are mounted by the host's computer account, so Azure Files opens one handle per host per image, not per user.
+    kind: published
+  - id: dr-replicate-share
+    says: A disaster recovery plan must replicate the package share to the failover location and keep its path reachable there.
+    kind: published
+  - id: trusted-certificate-chain
+    says: Every MSIX or Appx package is signed, the whole chain must be trusted on the hosts, self-signed only for test, and packages should be timestamped to outlive the certificate.
+    kind: published
+  - id: in-place-or-side-by-side
+    says: A new app version arrives as a new image, side by side or in place; users get it at their next sign-in, and the old image stays until no one uses it.
+    kind: published

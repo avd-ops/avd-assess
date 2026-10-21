@@ -9,6 +9,12 @@ claims:
   - id: av-exclusions
     says: Configure antivirus and security tools to exclude the FSLogix container files and paths the page lists.
     kind: published
+  - id: exclusion-scope
+    says: The exclusion table covers FSLogix executables, filter drivers, program and data folders, per-user local data, Cloud Cache folders, temporary VHD files, the containers on the share, the FSLogix registry keys and the mount points.
+    kind: published
+  - id: all-layers
+    says: Apply the exclusions in every security layer (endpoint antivirus, network scanning, data loss prevention) and check them after each policy deployment.
+    kind: published
   - id: storage-latency
     says: Network latency, bandwidth and proximity to the storage provider are pivotal to the user's experience.
     kind: guidance

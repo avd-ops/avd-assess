@@ -20,25 +20,25 @@ pillars:
     status: mapped
   - id: capacity
     title: Capacity, compute and density
-    scope: Region placement, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, OS disks.
+    scope: Region placement and metadata location, number of host pools, personal assignment, service limits, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, accelerated networking, OS disks.
     method: methods/targets-benchmarks.md
     checklist: [C01, C03]
-    status: partial
+    status: mapped
   - id: images
     title: Images and host servicing
-    scope: Golden image, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.
-    checklist: [B01, E01.09, E01.10, E01.11, E01.13]
-    status: partial
+    scope: Golden image build process and contents (Office, OneDrive, languages), number of images, image store and replication, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.
+    checklist: [B01, B03.01, E01.09, E01.10, E01.11, E01.13]
+    status: mapped
   - id: app-delivery
     title: App delivery
     scope: App Attach and MSIX, RemoteApp against desktops, app compatibility on multi-session hosts, app groups.
     checklist: [B02, C01.06]
-    status: partial
+    status: mapped
   - id: profiles
     title: Profiles and storage
     scope: FSLogix containers, Cloud Cache, exclusions and size limits; Azure Files and Azure NetApp Files; capacity, performance, resilience and cross-region profiles.
     checklist: [H01, H02, H03, H04, A03]
-    status: partial
+    status: mapped
   - id: identity
     title: Identity, authentication and access
     scope: Identity scenario and join type, Kerberos for file shares, single sign-on and passwordless, multifactor and Conditional Access for sign-in, device compliance, RBAC and app group assignment, admin tiers, account and sync policies.
@@ -78,9 +78,9 @@ pillars:
     status: mapped
   - id: endpoint-protection
     title: Endpoint protection and security agents
-    scope: Antivirus and endpoint detection and response on multi-session hosts, as categories; VDI settings, image sealing, exclusions for profiles and App Attach, update sharing, measured cost; vulnerability assessment.
-    checklist: [G03.04]
-    status: partial
+    scope: Antivirus and endpoint detection and response on multi-session hosts, as categories; coexistence of several products, EDR onboarding, VDI settings, image sealing, exclusions for profiles and App Attach, update sharing, measured cost; vulnerability assessment; security service edge, zero trust and VPN clients on the hosts (their effect on the user's side is in networking-client).
+    checklist: [G02.01, G03.04, H04.02]
+    status: mapped
   - id: governance
     title: Governance, policy and compliance
     scope: Azure Policy guardrails, allowed locations and sizes, tagging and naming, audit logging and retention, benchmark control mapping, compliance frameworks as mappings, change control, tenant and subscription prerequisites. Host configuration delivery is the intune pillar.

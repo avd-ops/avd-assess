@@ -1,0 +1,15 @@
+id: anf-continuous-availability
+title: Enable Continuous Availability on existing Azure NetApp Files SMB volumes
+url: https://learn.microsoft.com/azure/azure-netapp-files/enable-continuous-availability-existing-smb
+pin: "Learn git_commit_id 43591dd58af46486c4f2e162c3f5d8253fc60e12, updated_at 2025-07-02"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [profiles, app-delivery]
+claims:
+  - id: supported-workloads
+    says: Continuous Availability is supported only for FSLogix profile and ODFC containers, App Attach containers, an app layering product's shares, and SQL Server; no other workloads.
+    kind: published
+  - id: reboot-after-enable
+    says: Turning it on for an existing volume doesn't protect existing SMB sessions until the clients reconnect after a reboot.
+    kind: published
