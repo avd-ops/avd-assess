@@ -1,0 +1,14 @@
+id: graphics-encoding
+title: Graphics encoding over the Remote Desktop Protocol
+url: https://learn.microsoft.com/azure/virtual-desktop/graphics-encoding
+pin: "Learn git_commit_id 34b4f1177eec73ab664c0f680483b2f3e295cce7, updated_at 2025-10-23"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: software-default
+    says: Without a discrete GPU, RDP encodes in software on the CPU; mixed mode (separate codecs for text, images and video) is available only with software encoding.
+    kind: published
+  - id: codecs
+    says: RDP can encode with AVC (H.264) and, on a suitable GPU host, HEVC (H.265), decoded in hardware on the client.
+    kind: published

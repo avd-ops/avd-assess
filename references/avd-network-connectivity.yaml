@@ -1,0 +1,11 @@
+id: avd-network-connectivity
+title: Understanding Azure Virtual Desktop network connectivity
+url: https://learn.microsoft.com/azure/virtual-desktop/network-connectivity
+pin: "Learn git_commit_id 0401cb20df8d4f7ad19b52c8a9da154aa5d3cbe9, updated_at 2026-05-25"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: reverse-connect
+    says: "The default transport is reverse connect: client and session host both connect outbound to the AVD gateway over TCP 443, so session hosts need no inbound port."
+    kind: published

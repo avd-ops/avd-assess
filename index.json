@@ -180,6 +180,60 @@
       ]
     },
     {
+      "id": "arch-avd-design-guide",
+      "title": "Azure Architecture Center, Azure Virtual Desktop landing zone design guide",
+      "url": "https://learn.microsoft.com/azure/architecture/landing-zones/azure-virtual-desktop/design-guide",
+      "pin": "Learn git_commit_id 1a7a778bf46ec7c3bdd403f91d5985a92ac6cc25, updated_at 2026-10-05",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "platform-connectivity",
+          "says": "The platform landing zone holds shared connectivity (private DNS zones, ExpressRoute, firewall) and AVD workload subscriptions peer to it.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "arch-hub-spoke",
+      "title": "Azure Architecture Center, hub-spoke network topology in Azure",
+      "url": "https://learn.microsoft.com/azure/architecture/networking/architecture/hub-spoke",
+      "pin": "Learn git_commit_id f97206ed179f1f5d3b43b98d864d678aff86d8ce, updated_at 2026-04-14",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "hub-shared-services",
+          "says": "A hub virtual network centralizes connectivity and shared services, and workload spokes peer to it.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "arch-private-link-hub-spoke",
+      "title": "Azure Architecture Center, Azure Private Link in a hub-and-spoke network",
+      "url": "https://learn.microsoft.com/azure/architecture/networking/guide/private-link-hub-spoke-network",
+      "pin": "Learn git_commit_id 944e50dba8a8e76286bd3dcc6a1b837d0f5ac908, updated_at 2026-05-04",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "placement-decision-tree",
+          "says": "A decision tree places private endpoints in the hub or the spoke.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "ari",
       "title": "Azure Resource Inventory (ARI)",
       "url": "https://github.com/microsoft/ARI",
@@ -199,6 +253,42 @@
           "id": "diagram-from-rows",
           "says": "Its draw.io diagram functions (Modules/Public/PublicFunctions/Diagram/) make no Azure calls and draw from the Resource Graph rows they are given, with no AVD host pool placement.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "autoscale-faq",
+      "title": "Azure Virtual Desktop autoscale FAQ",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-faq",
+      "pin": "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "disconnected-time-limit",
+          "says": "Autoscale counts disconnected sessions as active; a host policy that signs out disconnected sessions after 15 to 30 minutes lets a pool scale to zero.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-auto-reconnect",
+      "title": "Modern auto-reconnect in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/fast-reconnect",
+      "pin": "Learn git_commit_id 16483e1e2513184e799e332b3ca712e3110d4ca4, updated_at 2026-08-13",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "needs-multipath",
+          "says": "Modern auto-reconnect pauses the session during a network interruption and resumes it; it needs Multipath and Windows App for Windows 2.0 from build 1314, and is rolling out in phases.",
+          "kind": "published"
         }
       ]
     },
@@ -273,6 +363,25 @@
           "id": "multi-session-when",
           "says": "Multi-session hosts suit standard apps and lighter work, such as task workers, with customization limited and managed centrally to keep every user stable.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-azure-local",
+      "title": "Azure Virtual Desktop on Azure Local",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/azure-local-overview",
+      "pin": "Learn git_commit_id cc9c735dd826d60c173941f64ad41d130b6287a3, updated_at 2026-09-09",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Extension point only: the network pillar has no Azure Local method yet.",
+      "claims": [
+        {
+          "id": "no-mixed-pools",
+          "says": "A host pool holds session hosts on Azure or on Azure Local, never both.",
+          "kind": "published"
         }
       ]
     },
@@ -405,6 +514,39 @@
       ]
     },
     {
+      "id": "avd-fabric-ips",
+      "title": "Azure fabric communication IPs (Azure Virtual Desktop)",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/azurecommunicationips",
+      "pin": "Learn git_commit_id 9df01472230d01bf9bb36b02e508abd74e4dc029, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "two-platform-ips",
+          "says": "Session hosts need the instance metadata address and the platform (WireServer) address; losing either breaks provisioning, health reporting and connections.",
+          "kind": "published"
+        },
+        {
+          "id": "never-proxy-or-tunnel",
+          "says": "Traffic to the two platform addresses must not be proxied, inspected, or captured by a full-tunnel VPN or secure web gateway agent; split tunnel or bypass them.",
+          "kind": "published"
+        },
+        {
+          "id": "no-deny-no-route",
+          "says": "No NSG deny rule may target the AzurePlatformIMDS or AzurePlatformDNS service tags, and no route may target the two addresses.",
+          "kind": "published"
+        },
+        {
+          "id": "mostly-in-vm",
+          "says": "Most failures come from configuration inside the VM (VPN or web gateway agents, proxy and PAC settings, host firewalls, endpoint security), which network-layer checks do not see.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-fslogix-storage",
       "title": "Storage options for FSLogix profile containers in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/store-fslogix-profile",
@@ -493,6 +635,26 @@
         {
           "id": "grid-driver-only",
           "says": "Only Azure-distributed drivers are supported; on NVIDIA sizes only the GRID driver accelerates applications and the Windows user interface.",
+          "kind": "published"
+        },
+        {
+          "id": "cpu-by-default",
+          "says": "Sessions render and encode on the CPU by default even on GPU sizes; GPU rendering and hardware encoding are turned on by host policy.",
+          "kind": "published"
+        },
+        {
+          "id": "avc444-needs-hw-encoding",
+          "says": "Prioritizing AVC 444 without also enabling hardware encoding can leave full-screen video encoded on the CPU.",
+          "kind": "published"
+        },
+        {
+          "id": "hevc-prerequisites",
+          "says": "HEVC hardware encoding needs a GPU host on Windows 10 or 11, a desktop (not RemoteApp), multimedia redirection removed, and a client GPU that decodes HEVC; it falls back to 4:2:0 chroma and, when unavailable, to AVC.",
+          "kind": "published"
+        },
+        {
+          "id": "verify-by-event",
+          "says": "Host events 162 and 170 show whether AVC 444, HEVC and hardware encoding are in use.",
           "kind": "published"
         }
       ]
@@ -619,6 +781,11 @@
           "id": "input-delay-then-resources",
           "says": "When input delay is higher than expected, look at CPU, memory and disk activity in the same periods to find the cause.",
           "kind": "guidance"
+        },
+        {
+          "id": "transport-pivot",
+          "says": "The connection reliability view groups disconnections by transport, with Multipath, Relay, ShortpathPublic and ShortpathPrivate for UDP, and NotUsed or empty for TCP.",
+          "kind": "published"
         }
       ]
     },
@@ -855,6 +1022,24 @@
       ]
     },
     {
+      "id": "avd-network-connectivity",
+      "title": "Understanding Azure Virtual Desktop network connectivity",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/network-connectivity",
+      "pin": "Learn git_commit_id 0401cb20df8d4f7ad19b52c8a9da154aa5d3cbe9, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "reverse-connect",
+          "says": "The default transport is reverse connect: client and session host both connect outbound to the AVD gateway over TCP 443, so session hosts need no inbound port.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-prerequisites",
       "title": "Prerequisites for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/prerequisites",
@@ -869,6 +1054,207 @@
         {
           "id": "rtt-under-150",
           "says": "Round-trip time from the client's network to the host pool's Azure region should be under 150 ms; put session hosts in the region closest to users.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-private-link-setup",
+      "title": "Set up Private Link with Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/private-link-setup",
+      "pin": "Learn git_commit_id f9304fa76124441b037c0f7c3eb02dfbacf92287, updated_at 2026-09-15",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "re-register-provider",
+          "says": "Each subscription used with Private Link needs the Microsoft.DesktopVirtualization resource provider re-registered first.",
+          "kind": "published"
+        },
+        {
+          "id": "dns-zones",
+          "says": "Connection and feed endpoints resolve through the privatelink.wvd.microsoft.com zone and the global endpoint through privatelink-global.wvd.microsoft.com.",
+          "kind": "published"
+        },
+        {
+          "id": "client-versions",
+          "says": "Any platform's Remote Desktop app works; the Remote Desktop client for Windows needs version 1.2.4066 or later, and Windows App on macOS and iOS/iPadOS is supported.",
+          "kind": "published"
+        },
+        {
+          "id": "shortpath-with-private-link",
+          "says": "Public-network Shortpath (STUN and TURN) is not supported with Private Link; managed-network Shortpath is, with the UDP opt-in.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-private-link",
+      "title": "Azure Private Link with Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/private-link-overview",
+      "pin": "Learn git_commit_id 33922f102f6e56048302588f905c3d6a4fc92523, updated_at 2026-02-24",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "three-sub-resources",
+          "says": "Private Link for AVD has three sub-resources: connection (one per host pool), feed (one per workspace) and global (initial feed discovery, one for the whole AVD deployment).",
+          "kind": "published"
+        },
+        {
+          "id": "four-scenarios",
+          "says": "Four supported layouts run from everything private (global, feed and connection endpoints) through feed and connection only and connection only, to no Private Link at all.",
+          "kind": "published"
+        },
+        {
+          "id": "global-workspace",
+          "says": "The global endpoint belongs on a dedicated workspace with no application groups; deleting that workspace stops feed discovery for every user, and it stays reachable from public routes whatever its access setting.",
+          "kind": "published"
+        },
+        {
+          "id": "public-access-settings",
+          "says": "Workspaces take public access enabled or disabled; host pools also take enabled for clients with session hosts private, which denies a session whenever the session host uses a public route.",
+          "kind": "published"
+        },
+        {
+          "id": "address-headroom",
+          "says": "Private endpoint IP allocations can grow during capacity expansions, so the endpoint subnet needs headroom.",
+          "kind": "guidance"
+        },
+        {
+          "id": "udp-opt-in",
+          "says": "UDP over Private Link is blocked unless the host pool opts in to the direct UDP path, and the opt-in needs public-network Shortpath (STUN and TURN) turned off.",
+          "kind": "published"
+        },
+        {
+          "id": "client-dns-sequence",
+          "says": "A client resolves the global discovery name, then each workspace feed name and then the host pool gateway name; with Private Link each must answer with the private endpoint address from the client network.",
+          "kind": "published"
+        },
+        {
+          "id": "full-port-range",
+          "says": "If ports to the connection endpoint are restricted from clients or session hosts, TCP 1-65535 must be allowed, because the endpoint maps ports to the gateway chosen at orchestration.",
+          "kind": "published"
+        },
+        {
+          "id": "mixed-feed-limit",
+          "says": "The Remote Desktop client for Windows on a private network with no internet access can not reach its feed when subscribed to both public and private feeds.",
+          "kind": "published"
+        },
+        {
+          "id": "agent-restart",
+          "says": "After a host pool private endpoint or network setting changes, the agent loader service must be restarted on every session host (or the hosts restarted).",
+          "kind": "published"
+        },
+        {
+          "id": "separate-global-zone",
+          "says": "The global endpoint needs its own private DNS zone, privatelink-global.wvd.microsoft.com; sharing privatelink.wvd.microsoft.com with it is unsupported since 2023-09-01.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-proxy",
+      "title": "Proxy server guidelines for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/proxy-server-support",
+      "pin": "Learn git_commit_id 0401cb20df8d4f7ad19b52c8a9da154aa5d3cbe9, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "bypass-proxies",
+          "says": "Bypass proxies for AVD traffic: it is already encrypted, and proxies hurt stability, latency and scale.",
+          "kind": "published"
+        },
+        {
+          "id": "proxy-forces-tcp",
+          "says": "A proxy as the only path forces RDP over TCP instead of UDP.",
+          "kind": "published"
+        },
+        {
+          "id": "no-ssl-termination",
+          "says": "No SSL termination for AVD traffic; it slows sign-in and can stop the agent.",
+          "kind": "published"
+        },
+        {
+          "id": "no-auth-proxy",
+          "says": "Session host components cannot use a proxy that needs authentication.",
+          "kind": "published"
+        },
+        {
+          "id": "same-geography",
+          "says": "A proxy that is used must sit in the same geography as hosts and clients, or connections route to a farther gateway.",
+          "kind": "published"
+        },
+        {
+          "id": "teams-no-proxy",
+          "says": "Teams media optimization is not supported through a proxy.",
+          "kind": "published"
+        },
+        {
+          "id": "client-proxy-support",
+          "says": "Proxy support differs by client platform (the Android client has none).",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-required-fqdn",
+      "title": "Required FQDNs and endpoints for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/required-fqdn-endpoint",
+      "pin": "Learn git_commit_id 05df299786103f3d5886146cf73fab142cda335a, updated_at 2026-09-22",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "notes": "The lists themselves stay on Learn: cite the claim and read the page at the pin, never copy the tables.",
+      "claims": [
+        {
+          "id": "blocking-unsupported",
+          "says": "Deployments where the listed session host FQDNs and endpoints are blocked are not supported.",
+          "kind": "published"
+        },
+        {
+          "id": "host-list",
+          "says": "Session hosts need outbound access to a published list of FQDNs, one UDP range (relayed RDP on 3478) and certificate endpoints on TCP 80; no inbound port is needed.",
+          "kind": "published"
+        },
+        {
+          "id": "client-list",
+          "says": "End-user devices need outbound access to their own published list; blocking it is not supported.",
+          "kind": "published"
+        },
+        {
+          "id": "service-and-fqdn-tags",
+          "says": "AVD has a service tag and an Azure Firewall FQDN tag, both recommended; there is no AVD IP range list, so other firewalls need a dynamic list of Azure addresses.",
+          "kind": "published"
+        },
+        {
+          "id": "wildcards-required",
+          "says": "Service traffic needs the wildcard entries; agent FQDNs can be narrowed per region from the agent's event 3701.",
+          "kind": "published"
+        },
+        {
+          "id": "identity-endpoints-separate",
+          "says": "Microsoft Entra and Microsoft 365 endpoints are not in this list and may be needed on restricted networks.",
+          "kind": "published"
+        },
+        {
+          "id": "url-check-tool",
+          "says": "The AVD Agent URL Tool checks the list from a session host.",
           "kind": "published"
         }
       ]
@@ -1096,6 +1482,65 @@
       ]
     },
     {
+      "id": "avd-url-check-tool",
+      "title": "Check access to required FQDNs and endpoints for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/check-access-validate-required-fqdn-endpoint",
+      "pin": "Learn git_commit_id c0f1884420aae53e640ac0be2683cc30b519e621, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "run-on-host",
+          "says": "The Agent URL Tool ships with the agent and runs on a session host, reporting which required endpoints that host can reach.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-whats-new",
+      "title": "What's new in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/whats-new",
+      "pin": "Learn git_commit_id e1f3352792e5f5036e29c56eff58e883bb6b2b22, updated_at 2026-10-14",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "redirections-off-new-pools",
+          "says": "Since July 2025, new host pools have clipboard, drive, opaque low-level USB and printer redirection disabled by default.",
+          "kind": "published"
+        },
+        {
+          "id": "multipath-ga",
+          "says": "RDP Multipath became generally available in July 2025; redundant TCP paths began a phased GA rollout in May 2026.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "azure-files-networking",
+      "title": "Azure Files networking considerations",
+      "url": "https://learn.microsoft.com/azure/storage/files/storage-files-networking-overview",
+      "pin": "Learn git_commit_id 7d8e1c58c58a4dc0ec333cbc4ad45173c7d61e6d, updated_at 2026-10-05",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "smb-445",
+          "says": "SMB uses TCP 445, which some organizations and ISPs block outbound; private connectivity over VPN or ExpressRoute is the alternative.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "azure-files-vdi",
       "title": "Azure Files guidance for virtual desktop workloads",
       "url": "https://learn.microsoft.com/azure/storage/files/virtual-desktop-workloads",
@@ -1120,6 +1565,24 @@
           "id": "storm-sizing",
           "says": "Size for sign-in and sign-out storms separately from steady state; the worked example uses 10 IOPS per user steady and calls its values sample assumptions.",
           "kind": "prior"
+        }
+      ]
+    },
+    {
+      "id": "bastion",
+      "title": "What is Azure Bastion?",
+      "url": "https://learn.microsoft.com/azure/bastion/bastion-overview",
+      "pin": "Learn git_commit_id 55ac9d3889f2ffb813e88ef5699c4b1f670d7cf6, updated_at 2026-07-01",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "admin-path",
+          "says": "Bastion gives RDP and SSH to VMs over TLS without public IPs on the VMs; it comes in Developer, Basic, Standard and Premium SKUs.",
+          "kind": "published"
         }
       ]
     },
@@ -1285,6 +1748,59 @@
       ]
     },
     {
+      "id": "caf-avd-network",
+      "title": "Cloud Adoption Framework, Azure Virtual Desktop network topology and connectivity",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-network-topology-and-connectivity",
+      "pin": "Learn git_commit_id a8523e4b99048e51fff225a72041a48aea28c1dc, updated_at 2026-10-01",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "deprecated",
+          "says": "The page is deprecated, no longer updated, and is to be removed from Learn on 2026-10-30; it points to the Architecture Center and the product docs instead.",
+          "kind": "published"
+        },
+        {
+          "id": "vwan-for-transit",
+          "says": "Virtual WAN fits when you need managed transit between VPN and ExpressRoute.",
+          "kind": "guidance"
+        },
+        {
+          "id": "dns-like-iaas",
+          "says": "Session hosts resolve names like any IaaS workload: custom DNS or linked private DNS zones, plus zones for the PaaS private endpoints.",
+          "kind": "guidance"
+        },
+        {
+          "id": "entra-joined-no-private",
+          "says": "Entra-joined hosts reach Entra ID over its public endpoints; no private connectivity is needed for that.",
+          "kind": "guidance"
+        },
+        {
+          "id": "forced-tunnel-supported",
+          "says": "Forced tunneling and filtering are supported when the AVD requirements are met; forcing AVD traffic through on-premises routers is not recommended.",
+          "kind": "guidance"
+        },
+        {
+          "id": "nsg-on-all-subnets",
+          "says": "Network security groups on all subnets, with flow logs and traffic analytics, give monitoring even where no filtering is enforced.",
+          "kind": "guidance"
+        },
+        {
+          "id": "dr-network",
+          "says": "Recovery needs a network with the same capabilities as the source, or at least connectivity to identity and DNS.",
+          "kind": "guidance"
+        },
+        {
+          "id": "hybrid-scenarios",
+          "says": "Three reference scenarios: hub-spoke with hybrid connectivity, the same with managed-network Shortpath, and hub-spoke with public-network Shortpath.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "caf-avd-poc",
       "title": "Cloud Adoption Framework, Azure Virtual Desktop proof of concept",
       "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/proof-of-concept",
@@ -1338,6 +1854,109 @@
           "id": "right-size-first",
           "says": "Right-size first, fix existing commitments next, and only then buy new ones; discounts reduce rates, not waste.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "configure-rdp-shortpath",
+      "title": "Configure RDP Shortpath for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/configure-rdp-shortpath",
+      "pin": "Learn git_commit_id c98b985e983759944496d809ce1e7f603b9093f6, updated_at 2026-10-16",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "notes": "The page's Log Analytics example reads WVDConnections.UdpUse; the table reference lists TransportType and no UdpUse (obs:transport-column-names-disagree).",
+      "claims": [
+        {
+          "id": "four-options",
+          "says": "There are four Shortpath options: managed networks with the listener, managed networks with ICE/STUN, public networks with ICE/STUN, and public networks relayed through TURN.",
+          "kind": "published"
+        },
+        {
+          "id": "defaults-enabled",
+          "says": "All four options are enabled by default on the host pool, and Windows allows UDP and TCP by default on hosts and clients.",
+          "kind": "published"
+        },
+        {
+          "id": "listener-for-managed",
+          "says": "Only the managed-network option needs the host listener (port 3390 by default) and an inbound allow rule; the other three need neither.",
+          "kind": "published"
+        },
+        {
+          "id": "most-restrictive-wins",
+          "says": "Where the host pool and session host settings conflict, the most restrictive setting applies.",
+          "kind": "published"
+        },
+        {
+          "id": "hostpool-switches",
+          "says": "The host pool's networking settings carry one Default, Enabled or Disabled value per option (managedPrivateUDP, directUDP, publicUDP, relayUDP); Default means enabled.",
+          "kind": "published"
+        },
+        {
+          "id": "select-transport-policy",
+          "says": "A host policy (Select RDP transport protocols) set to TCP only turns UDP off for every option.",
+          "kind": "published"
+        },
+        {
+          "id": "port-range",
+          "says": "STUN and TURN use the ephemeral range 49152 to 65535 by default; hosts can be limited to a smaller range between 1024 and 49151.",
+          "kind": "published"
+        },
+        {
+          "id": "verify-transport",
+          "says": "The transport in use is shown in the client's connection information, in host event 135, and in Log Analytics; the page queries a UdpUse column with values 1, 2 and 4.",
+          "kind": "published"
+        },
+        {
+          "id": "turn-public-cloud-only",
+          "says": "STUN for public networks works in the public and Government clouds; TURN only in the public cloud.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "connection-monitor",
+      "title": "Connection monitor overview",
+      "url": "https://learn.microsoft.com/azure/network-watcher/connection-monitor-overview",
+      "pin": "Learn git_commit_id 9f0b848a5da3b238f1273bf4155e46eb84d86521, updated_at 2026-08-27",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "path-tests",
+          "says": "Connection monitor measures latency and loss with TCP, ICMP and HTTP tests from Azure or on-premises sources and shows the end-to-end path.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "connection-quality-data",
+      "title": "Collect and query connection quality data",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/connection-quality-monitoring",
+      "pin": "Learn git_commit_id 1775de02212032150bdac28deed32d92c928e8b8, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "diagnostic-tables",
+          "says": "Network data and connection graphics data reach Log Analytics only when the host pool's diagnostic settings send those categories (allLogs includes them); the graphics data is in preview.",
+          "kind": "published"
+        },
+        {
+          "id": "sample-queries-udpuse",
+          "says": "The page's sample queries derive TCP or UDP from a WVDConnections UdpUse column.",
+          "kind": "published"
         }
       ]
     },
@@ -1437,6 +2056,35 @@
           "id": "inherit-to-usage-records",
           "says": "With tag inheritance on, subscription and resource group tags apply to child resources' usage records (not to the resources), for EA, MCA and MPA billing accounts.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "default-outbound",
+      "title": "Default outbound access in Azure",
+      "url": "https://learn.microsoft.com/azure/virtual-network/ip-services/default-outbound-access",
+      "pin": "Learn git_commit_id e8c3f40845eb970c6a231bf67fbdd8132fe63e79, updated_at 2026-09-10",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "explicit-outbound",
+          "says": "Use an explicit outbound method (NAT Gateway, load balancer outbound rules, a public IP, or a route to an appliance) rather than default outbound access.",
+          "kind": "published"
+        },
+        {
+          "id": "private-subnets-default",
+          "says": "For API versions after 2026-03-31, new virtual networks default to private subnets, whose VMs need an explicit outbound method; existing networks are unchanged.",
+          "kind": "published"
+        },
+        {
+          "id": "private-subnet-removes-ip",
+          "says": "Only a private subnet (with the VMs deallocated) removes the default outbound IP; an explicit method alone leaves it assigned though unused.",
+          "kind": "published"
         }
       ]
     },
@@ -1551,6 +2199,24 @@
       ]
     },
     {
+      "id": "dns-private-resolver",
+      "title": "What is Azure DNS Private Resolver?",
+      "url": "https://learn.microsoft.com/azure/dns/dns-private-resolver-overview",
+      "pin": "Learn git_commit_id 730f100d04bf7be59b1499ebc1be22bbbc8164f8, updated_at 2026-06-23",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "hybrid-resolution",
+          "says": "DNS Private Resolver answers private DNS zones for on-premises networks and forwards Azure queries on-premises, without DNS servers to run; it needs ExpressRoute or VPN.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "finops-framework",
       "title": "FinOps Framework overview (Microsoft's guide to the FinOps Foundation framework)",
       "url": "https://learn.microsoft.com/cloud-computing/finops/framework/finops-framework",
@@ -1626,6 +2292,47 @@
           "id": "scale-down-off-peak",
           "says": "Review usage patterns to see whether resources can be scaled down or shut down off-peak, and consider cheaper alternatives.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "firewall-avd",
+      "title": "Use Azure Firewall to protect Azure Virtual Desktop deployments",
+      "url": "https://learn.microsoft.com/azure/firewall/protect-azure-virtual-desktop",
+      "pin": "Learn git_commit_id 772cf26f1a9370cf46ba8d85a3b64700d8dc6faf, updated_at 2026-03-23",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "fqdn-tag-rules",
+          "says": "Allow host pool outbound traffic with the WindowsVirtualDesktop FQDN tag plus rules for the required endpoints; DNS proxy is needed for FQDNs in network rules.",
+          "kind": "published"
+        },
+        {
+          "id": "bypass-route-for-scale-in",
+          "says": "A default route to Azure Firewall can disconnect sessions during firewall scale-in; add a route for the WindowsVirtualDesktop service tag with next hop Internet so the gateway and broker are reached directly.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "firewall-fqdn-tags",
+      "title": "Azure Firewall FQDN tags overview",
+      "url": "https://learn.microsoft.com/azure/firewall/fqdn-tags",
+      "pin": "Learn git_commit_id 8190b423118f465b0c4a17563696acbd635ba8d4, updated_at 2026-04-28",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "managed-fqdn-groups",
+          "says": "An FQDN tag is a Microsoft-maintained group of FQDNs used in application rules.",
+          "kind": "published"
         }
       ]
     },
@@ -1719,6 +2426,70 @@
           "id": "latency-first",
           "says": "Proximity (latency) to the hosts and performance against the user workload are the most important factors in choosing container storage.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "graphics-chroma-444",
+      "title": "Increase the chroma value to 4:4:4 for Azure Virtual Desktop using AVC",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/graphics-chroma-value-increase-4-4-4",
+      "pin": "Learn git_commit_id 1775de02212032150bdac28deed32d92c928e8b8, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "only-support-verifies",
+          "says": "Whether a session runs at 4:4:4 can only be confirmed by Microsoft Support from telemetry.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "graphics-encoding",
+      "title": "Graphics encoding over the Remote Desktop Protocol",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/graphics-encoding",
+      "pin": "Learn git_commit_id 34b4f1177eec73ab664c0f680483b2f3e295cce7, updated_at 2025-10-23",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "software-default",
+          "says": "Without a discrete GPU, RDP encodes in software on the CPU; mixed mode (separate codecs for text, images and video) is available only with software encoding.",
+          "kind": "published"
+        },
+        {
+          "id": "codecs",
+          "says": "RDP can encode with AVC (H.264) and, on a suitable GPU host, HEVC (H.265), decoded in hardware on the client.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "hostpool-api-changelog",
+      "title": "API version change log for Microsoft.DesktopVirtualization/hostPools",
+      "url": "https://learn.microsoft.com/azure/templates/microsoft.desktopvirtualization/change-log/hostpools",
+      "pin": "Learn git_commit_id e25edbce7381401d96892e5e31f1ed4130be233c, updated_at 2026-06-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "udp-switches-preview-only",
+          "says": "The host pool UDP switches (managedPrivateUDP, directUDP, publicUDP, relayUDP) appear in preview API versions and were removed again in the GA versions 2024-04-03 and 2025-10-10.",
+          "kind": "published"
+        },
+        {
+          "id": "private-link-udp-preview-only",
+          "says": "The Private Link UDP flag (allowRDPShortPathWithPrivateLink) was added in a 2025 preview API version and is absent from GA 2025-10-10.",
+          "kind": "published"
         }
       ]
     },
@@ -1860,6 +2631,24 @@
       ]
     },
     {
+      "id": "nat-gateway",
+      "title": "What is Azure NAT Gateway?",
+      "url": "https://learn.microsoft.com/azure/nat-gateway/nat-overview",
+      "pin": "Learn git_commit_id 340c2b0beaf485b403a2e3e2af1a068ec8981e27, updated_at 2026-09-29",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "subnet-egress",
+          "says": "A NAT Gateway gives a subnet outbound internet connectivity from static public IPs and allows no unsolicited inbound traffic.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "perfmon-troubleshooting",
       "title": "Troubleshoot issues using Performance Monitor (Windows Server)",
       "url": "https://learn.microsoft.com/troubleshoot/windows-server/support-tools/troubleshoot-issues-performance-monitor",
@@ -1885,6 +2674,25 @@
           "id": "patterns-over-days",
           "says": "Log counters over one or two working days, then look for patterns by day and hour rather than reacting to one reading.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "private-endpoint-dns",
+      "title": "Azure private endpoint DNS configuration",
+      "url": "https://learn.microsoft.com/azure/private-link/private-endpoint-dns",
+      "pin": "Learn git_commit_id 3e5a15284eb79de0cba78c4dc29ece41a2db44d2, updated_at 2026-08-11",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "zone-per-service",
+          "says": "Each service has its own privatelink zone name, and clients must resolve the public name to the private address through it, by a zone linked to the network or by forwarding.",
+          "kind": "published"
         }
       ]
     },
@@ -1930,6 +2738,50 @@
           "id": "per-scenario-estimates",
           "says": "The page gives per-user bandwidth estimates by activity for one 1080p monitor, from idle to full-screen video.",
           "kind": "prior"
+        },
+        {
+          "id": "throttle-managed-only",
+          "says": "A throttle rate in a QoS policy can cap RDP's outbound traffic per session, but only on Shortpath for managed networks; most estates should not limit bandwidth.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "rdp-multipath",
+      "title": "Use RDP Multipath to improve connection reliability to Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-multipath",
+      "pin": "Learn git_commit_id 41dcc5bdc9210cae5b9151f9851568b917ad77db, updated_at 2026-09-15",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "automatic",
+          "says": "Multipath needs no configuration beyond a working Shortpath; it keeps backup UDP and TCP paths and switches when the active one degrades.",
+          "kind": "published"
+        },
+        {
+          "id": "client-floors",
+          "says": "Windows App for Windows 2.0 from build 559 gives multiple UDP paths, from build 1069 adds redundant TCP paths; other platforms are in beta or unsupported.",
+          "kind": "published"
+        },
+        {
+          "id": "ports-per-session",
+          "says": "Each session can open up to three UDP and two TCP outbound paths; plan firewall, NAT capacity and port limits for that per user.",
+          "kind": "published"
+        },
+        {
+          "id": "shortpath-first",
+          "says": "Microsoft recommends RDP Shortpath as the primary transport for the best Multipath experience.",
+          "kind": "guidance"
+        },
+        {
+          "id": "verify-in-insights",
+          "says": "Multipath use shows in the client's connection bar and in Insights' connection reliability view.",
+          "kind": "published"
         }
       ]
     },
@@ -1954,11 +2806,63 @@
       ]
     },
     {
+      "id": "rdp-qos",
+      "title": "Implement Quality of Service (QoS) for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-quality-of-service-qos",
+      "pin": "Learn git_commit_id f2b8fc269ef10993c35918c2b14890ecb52de9c0, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "managed-udp-only",
+          "says": "QoS policies apply only to Shortpath for managed networks, never to the TCP reverse connect transport.",
+          "kind": "published"
+        },
+        {
+          "id": "dscp-46",
+          "says": "Mark RDP packets on the hosts with DSCP 46 (Expedited Forwarding), and apply the same markings end to end.",
+          "kind": "guidance"
+        },
+        {
+          "id": "qos-before-bandwidth",
+          "says": "To fix jitter, loss and delay, apply QoS first and add bandwidth only where needed.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "rdp-redirection",
+      "title": "Peripheral and resource redirection over the Remote Desktop Protocol",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/redirection-remote-desktop-protocol",
+      "pin": "Learn git_commit_id 6034b613281b515c846d7d046b8462dc4cdd7c77, updated_at 2026-09-17",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "P10 (endpoints and clients) cites this reference for peripherals.",
+      "claims": [
+        {
+          "id": "high-level-first",
+          "says": "Prefer high-level redirection; opaque low-level USB redirection is a fallback with no guarantee of performance or features.",
+          "kind": "guidance"
+        },
+        {
+          "id": "most-restrictive-wins",
+          "says": "Redirection is set on the host side (policy or RDP properties) and can be restricted further on the client; the more restrictive setting wins.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "rdp-shortpath",
       "title": "RDP Shortpath for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-shortpath",
       "pin": "Learn git_commit_id 41dcc5bdc9210cae5b9151f9851568b917ad77db, updated_at 2026-09-15",
-      "read": "2026-10-20",
+      "read": "2026-10-21",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -1967,6 +2871,46 @@
         {
           "id": "udp-transport",
           "says": "RDP Shortpath sets up a UDP transport between client and host, with more reliable connections and more consistent latency; TCP reverse connect stays the fallback.",
+          "kind": "published"
+        },
+        {
+          "id": "tcp-first-then-udp",
+          "says": "Every connection starts on TCP reverse connect through the gateway, then tries UDP in parallel; if UDP succeeds the TCP connection is dropped, otherwise TCP stays.",
+          "kind": "published"
+        },
+        {
+          "id": "stun-before-turn",
+          "says": "On public networks a direct STUN connection is tried first and a TURN relay second; ICE coordinates them and the fastest working path is kept.",
+          "kind": "published"
+        },
+        {
+          "id": "first-found-wins",
+          "says": "When both managed and public options can connect, whichever is established first is used for the session.",
+          "kind": "published"
+        },
+        {
+          "id": "turn-range",
+          "says": "TURN relays use one dedicated Microsoft address range, listed on the page, on UDP 3478 in the public cloud, chosen by the client's location; a client far from a relay may fall back to TCP.",
+          "kind": "published"
+        },
+        {
+          "id": "symmetric-nat-means-turn",
+          "says": "Azure Firewall and Azure NAT Gateway egress give symmetric NAT, so public-network Shortpath from such hosts uses a TURN relay.",
+          "kind": "published"
+        },
+        {
+          "id": "public-network-advice",
+          "says": "For public-network Shortpath avoid forced tunneling, double or carrier-grade NAT, cloud packet inspection and TCP-based VPNs, and allow outbound UDP from the hosts.",
+          "kind": "guidance"
+        },
+        {
+          "id": "managed-qos-and-throttle",
+          "says": "Only Shortpath for managed networks supports QoS marking (DSCP) and a per-session throttle rate.",
+          "kind": "published"
+        },
+        {
+          "id": "turn-maintenance-drops",
+          "says": "TURN connections can drop during relay updates; the client reconnects within seconds.",
           "kind": "published"
         }
       ]
@@ -2299,6 +3243,42 @@
         {
           "id": "H04.02",
           "says": "Configure the recommended antivirus exclusions for FSLogix (Security, medium)."
+        },
+        {
+          "id": "C02.05",
+          "says": "Assess and document the RDP settings for every user group (Security, low)."
+        },
+        {
+          "id": "F01.01",
+          "says": "Decide whether host pools need hybrid connectivity to on-premises (Reliability, medium)."
+        },
+        {
+          "id": "F01.02",
+          "says": "Decide which virtual network each host pool goes in (Performance, medium)."
+        },
+        {
+          "id": "F01.03",
+          "says": "List the on-premises resources host pools need to reach (Reliability, medium)."
+        },
+        {
+          "id": "F01.05",
+          "says": "Make sure session hosts can reach the AVD control plane endpoints (Reliability, high)."
+        },
+        {
+          "id": "F01.06",
+          "says": "Decide whether to control internet outbound traffic only for users on the hosts (Security, medium)."
+        },
+        {
+          "id": "F01.07",
+          "says": "Review custom routes and NSGs on host pool subnets (Security, low)."
+        },
+        {
+          "id": "F01.08",
+          "says": "No proxy, SSL termination or deep packet inspection for AVD control plane traffic (Reliability, high)."
+        },
+        {
+          "id": "C02.04",
+          "says": "Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high)."
         }
       ]
     },
@@ -2346,6 +3326,24 @@
           "id": "host-policy",
           "says": "Screen capture protection is turned on per session host by Intune device configuration or Group Policy, and its reach depends on the client platform.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "service-tags",
+      "title": "Azure service tags overview",
+      "url": "https://learn.microsoft.com/azure/virtual-network/service-tags-overview",
+      "pin": "Learn git_commit_id 38dd8bbc352564387976d8096d3b1badcbab5e3e, updated_at 2026-09-17",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "managed-prefixes",
+          "says": "A service tag is a Microsoft-maintained group of address prefixes usable in NSG rules, Azure Firewall rules and routes.",
+          "kind": "published"
         }
       ]
     },
@@ -2443,6 +3441,24 @@
       ]
     },
     {
+      "id": "session-lock-behavior",
+      "title": "Configure the session lock behavior for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/configure-session-lock-behavior",
+      "pin": "Learn git_commit_id 03257492ddb1b15cbf3020f363795b9fd954faf9, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "disconnect-on-lock-sso",
+          "says": "With Entra single sign-on the default on lock is to disconnect the session, so Conditional Access is evaluated again on reconnect; legacy authentication shows the remote lock screen instead.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "start-vm-on-connect-faq",
       "title": "Azure Virtual Desktop Start VM on Connect FAQ",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect-faq",
@@ -2507,6 +3523,49 @@
       ]
     },
     {
+      "id": "thin-clients",
+      "title": "Thin client support (Azure Virtual Desktop)",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/thin-clients",
+      "pin": "Learn git_commit_id 8cd3e2378055def35bcc309fd4d8e644294d7cbe, updated_at 2026-10-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "reproduce-on-windows-app",
+          "says": "A thin-client issue is first reproduced on Windows App; if it does not reproduce, the thin-client provider supports it.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "troubleshoot-rdp-shortpath",
+      "title": "Troubleshoot RDP Shortpath for public networks",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/troubleshoot-rdp-shortpath",
+      "pin": "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "notes": "The test tool is a closed binary download: linked as an operator step, never required.",
+      "claims": [
+        {
+          "id": "nat-type-test",
+          "says": "A Microsoft test tool run on a host or client checks STUN and TURN reachability and reports the NAT type.",
+          "kind": "published"
+        },
+        {
+          "id": "udp-error-codes",
+          "says": "Shortpath failures appear in Log Analytics with their own error codes, such as network drop and reliability threshold failures.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "vdi-optimization-guide",
       "title": "Optimizing Windows configuration for VDI desktops",
       "url": "https://learn.microsoft.com/windows-server/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration",
@@ -2526,6 +3585,43 @@
           "id": "sysprep-store-apps",
           "says": "Removing or updating built-in Store apps can make sysprep fail; the guide links the support article.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "virtual-wan",
+      "title": "What is Azure Virtual WAN?",
+      "url": "https://learn.microsoft.com/azure/virtual-wan/virtual-wan-about",
+      "pin": "Learn git_commit_id 8a916a7601334517d863bc72d2059b2e76e2612f, updated_at 2026-09-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "managed-transit",
+          "says": "Virtual WAN is a Microsoft-managed hub-and-spoke with transitive routing between branches, user VPN, ExpressRoute and virtual networks.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "vnet-flow-logs",
+      "title": "Virtual network flow logs",
+      "url": "https://learn.microsoft.com/azure/network-watcher/vnet-flow-logs-overview",
+      "pin": "Learn git_commit_id 4ae52c3fa350e340059210b16c2a32d36fc65d15, updated_at 2026-10-06",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "flow-logging",
+          "says": "Virtual network flow logs record IP flows for a network, subnet or NIC and feed traffic analytics, which is charged per GB processed.",
+          "kind": "published"
         }
       ]
     },
@@ -2878,6 +3974,31 @@
       ]
     },
     {
+      "id": "windows-app-platforms",
+      "title": "Compare Windows App features across platforms and devices",
+      "url": "https://learn.microsoft.com/windows-app/compare-platforms-features",
+      "pin": "Learn git_commit_id 4d3ffbf8caade302209f2c408b818484b73cf312, updated_at 2026-10-15",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "collection"
+      ],
+      "notes": "P10 (endpoints and clients) cites this reference for client features beyond transport.",
+      "claims": [
+        {
+          "id": "shortpath-by-platform",
+          "says": "Shortpath for managed networks works on Windows, macOS, iOS, Android and Meta Quest clients; public-network STUN and TURN on Windows, Android and Meta Quest, and macOS in beta; the web browser client supports neither.",
+          "kind": "published"
+        },
+        {
+          "id": "multipath-by-platform",
+          "says": "Multipath with UDP is on Windows (macOS in beta); Multipath with UDP and TCP is on Windows only.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "windows-security-baselines",
       "title": "Windows security baselines guide",
       "url": "https://learn.microsoft.com/windows/security/operating-system-security/device-management/windows-security-configuration-framework/windows-security-baselines",
@@ -2893,6 +4014,80 @@
           "id": "baselines-published",
           "says": "Microsoft publishes recommended security configuration baselines for each Windows release, for Group Policy and tooling to compare against.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "wireserver-ip",
+      "title": "Azure platform address WireServer, explained",
+      "url": "https://learn.microsoft.com/azure/virtual-network/what-is-ip-address-168-63-129-16",
+      "pin": "Learn git_commit_id 4fd2222b00bd277111ce9f635255aefa0b7b396c, updated_at 2026-03-12",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "platform-address",
+          "says": "The address is the platform's virtual public IP for the VM agent, DHCP and Azure-provided DNS.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "wvdconnectiongraphicsdata-table",
+      "title": "WVDConnectionGraphicsDataPreview table reference",
+      "url": "https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdconnectiongraphicsdatapreview",
+      "pin": "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "frame-drops-by-cause",
+          "says": "Graphics data reports end-to-end frame delay and the share of frames dropped because of the network, the client or the server, for the worst frame of each interval.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "wvdconnectionnetworkdata-table",
+      "title": "WVDConnectionNetworkData table reference",
+      "url": "https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdconnectionnetworkdata",
+      "pin": "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "rtt-and-bandwidth-only",
+          "says": "Network data holds average estimated round-trip time and available bandwidth per interval; it has no jitter or packet loss column.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "wvdconnections-table",
+      "title": "WVDConnections table reference",
+      "url": "https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdconnections",
+      "pin": "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "transport-type",
+          "says": "The table records the transport of each connection in TransportType, with the values Shortpath, TURN and Websocket.",
+          "kind": "published"
         }
       ]
     },
@@ -2939,6 +4134,16 @@
       "date": "2026-10-20"
     },
     {
+      "id": "endpoint-probe-off-host",
+      "claim": "ref:avd-url-check-tool#run-on-host",
+      "verdict": "extends",
+      "observed": "avd-current-state's validator probes a fixed list of AVD endpoints from wherever it runs, usually Cloud Shell, and says so; that proves nothing about the session host subnet. Its list also predates the current required list (newer service domains, the relay UDP range, certificate endpoints on TCP 80, the platform addresses). An authoritative result needs the Agent URL Tool's output from a host, and a probe off the host should count as unknown, not pass.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-current-state/blob/aedec88aeb535579dcf11a84aa19e870b8cab0b2/avd_deployment_validator.ps1"
+      ],
+      "date": "2026-10-21"
+    },
+    {
       "id": "estimate-before-deploy",
       "claim": "ref:waf-cost-optimization-checklist#CO:02",
       "verdict": "agrees",
@@ -2948,6 +4153,16 @@
         "https://github.com/avd-ops/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
       ],
       "date": "2026-10-20"
+    },
+    {
+      "id": "hub-route-without-avd-bypass",
+      "claim": "ref:firewall-avd#bypass-route-for-scale-in",
+      "verdict": "not-yet-tested",
+      "observed": "In hub-peered mode the landing zone routes 0.0.0.0/0 from the host subnet to the hub firewall and adds no route for the WindowsVirtualDesktop service tag to the internet, the bypass the source gives against disconnections during firewall scale-in. With AVD Private Link on, the session host's gateway connection goes through the private endpoint, which may cover the main path; other service traffic still crosses the firewall. Not yet run against a hub firewall.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/network.bicep"
+      ],
+      "date": "2026-10-21"
     },
     {
       "id": "landing-zone-one-persona",
@@ -2969,6 +4184,27 @@
         "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
+    },
+    {
+      "id": "private-endpoint-nsg-narrower-than-avd-needs",
+      "claim": "ref:avd-private-link#full-port-range",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone enforces an NSG on its private endpoint subnet that allows TCP 445 from the hosts and TCP 443 from the network and denies the rest, while the source says the connection endpoint needs TCP 1-65535 whenever ports to it are restricted. Recorded sandbox runs connected sessions through landing zones built this way (to confirm from their run records), so either the session host side only needs 443 or the gap shows up under conditions not yet run (private client connections, other gateways). To test in a run that already deploys the landing zone, then record agrees or disagrees.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/network.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
+      "id": "private-link-session-hosts-only",
+      "claim": "ref:avd-private-link#four-scenarios",
+      "verdict": "agrees",
+      "observed": "The landing zone uses the connection-only layout: one connection endpoint per host pool, host pool public access enabled for clients with session hosts private, the workspace feed public and no global endpoint. Users connect from any network while hosts reach the service privately, which is a layout the source supports; users who must also connect privately need the feed and global endpoints and client-side DNS, which the landing zone doesn't build.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/controlPlane.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/docs/design-decisions.md"
+      ],
+      "date": "2026-10-21"
     },
     {
       "id": "redirection-kept-for-usability",
@@ -3042,6 +4278,28 @@
         "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/storage.bicep"
       ],
       "date": "2026-10-20"
+    },
+    {
+      "id": "symmetric-nat-egress-means-turn",
+      "claim": "ref:rdp-shortpath#symmetric-nat-means-turn",
+      "verdict": "not-yet-tested",
+      "observed": "Both landing zone network modes give hosts symmetric NAT egress, a NAT Gateway when standalone and the hub firewall when hub-peered, so by Microsoft's claim public-network Shortpath should relay through TURN, never connect directly. TURN itself needs outbound UDP 3478 to the relay range; where the egress firewall doesn't allow it, sessions fall back to TCP instead. How much round-trip time the relay adds is unmeasured.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/network.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
+      "id": "transport-column-names-disagree",
+      "claim": "ref:configure-rdp-shortpath#verify-transport",
+      "verdict": "not-yet-tested",
+      "observed": "Two Learn pages query a WVDConnections UdpUse column, while the table reference lists TransportType (Shortpath, TURN, Websocket) and no UdpUse, and Insights uses a third set of values. The family's connection query reads TransportType but hasn't run against a real workspace yet; one sandbox connection settles which column exists. Until then the method maps all three (gap:transport-classification).",
+      "evidence": [
+        "https://github.com/avd-ops/avd-second-brain/blob/81a76a9e6fc51ce0e33c89b10f5166b0732d9f2b/docs/knowledge/agents/README.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/f466762f69a3c850dca3b6eed82ee2330af543ae/scripts/ops/kql/user-connection.kql"
+      ],
+      "date": "2026-10-21"
     },
     {
       "id": "trusted-launch-by-default",
@@ -3118,6 +4376,10 @@
       "title": "mapping facts to review checklist items"
     },
     {
+      "id": "client-network",
+      "title": "assessing the networks users connect from"
+    },
+    {
       "id": "collection-map",
       "title": "where each fact comes from"
     },
@@ -3166,8 +4428,16 @@
       "title": "a logon time target"
     },
     {
+      "id": "network-scope",
+      "title": "what a network assessment covers, what it can measure, and which repo does what"
+    },
+    {
       "id": "remediation-plan",
       "title": "the remediation plan"
+    },
+    {
+      "id": "remote-protocols-scope",
+      "title": "what a remote protocol and session assessment can judge, and from where"
     },
     {
       "id": "sample-check",
@@ -3180,6 +4450,10 @@
     {
       "id": "security-scope",
       "title": "what a security assessment covers, and which repo does what"
+    },
+    {
+      "id": "transport-classification",
+      "title": "one name for the transport a connection used"
     },
     {
       "id": "tune-loop",

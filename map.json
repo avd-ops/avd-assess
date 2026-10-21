@@ -1,0 +1,3482 @@
+{
+  "schema": "avd-assess-map/v1",
+  "pillars": [
+    {
+      "id": "use-cases",
+      "title": "Use cases and personas",
+      "scope": "Who uses the estate for what, the persona library, and what moves a persona.",
+      "method": "methods/use-cases.md",
+      "checklist": [
+        "C02.01",
+        "C02.04"
+      ],
+      "status": "mapped"
+    },
+    {
+      "id": "capacity",
+      "title": "Capacity, compute and density",
+      "scope": "Region placement, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, OS disks.",
+      "method": "methods/targets-benchmarks.md",
+      "checklist": [
+        "C01",
+        "C03"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "images",
+      "title": "Images and host servicing",
+      "scope": "Golden image, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.",
+      "checklist": [
+        "B01",
+        "E01.09",
+        "E01.10",
+        "E01.11",
+        "E01.13"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "app-delivery",
+      "title": "App delivery",
+      "scope": "App Attach and MSIX, RemoteApp against desktops, app compatibility on multi-session hosts, app groups.",
+      "checklist": [
+        "B02",
+        "C01.06"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "profiles",
+      "title": "Profiles and storage",
+      "scope": "FSLogix containers, Cloud Cache, exclusions and size limits; Azure Files and Azure NetApp Files; capacity, performance, resilience and cross-region profiles.",
+      "checklist": [
+        "H01",
+        "H02",
+        "H03",
+        "H04",
+        "A03"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "identity",
+      "title": "Identity, authentication and access",
+      "scope": "Identity scenario and join type, Kerberos for file shares, single sign-on and passwordless, multifactor and Conditional Access for sign-in, device compliance, RBAC and app group assignment, admin tiers, account and sync policies.",
+      "checklist": [
+        "D01",
+        "D02",
+        "D03",
+        "G01.01",
+        "G04.01"
+      ],
+      "status": "missing"
+    },
+    {
+      "id": "networking-azure",
+      "title": "Networking: Azure side",
+      "scope": "Virtual networks and subnets, DNS and private zones, egress, firewall and NVA, Private Link, service tags, required endpoints, admin access paths, connectivity options, preflight connectivity checks.",
+      "checklist": [
+        "F01"
+      ],
+      "status": "mapped"
+    },
+    {
+      "id": "networking-client",
+      "title": "Networking: client side",
+      "scope": "The user's network and what the client must reach, Private Link from the client, bandwidth, and the SSE, ZTNA and VPN client categories (what must bypass, split tunneling, inspection, effect on the UDP transport).",
+      "checklist": [
+        "C02.01",
+        "F01.11"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "protocol",
+      "title": "Remote protocol and session",
+      "scope": "RDP transport and Shortpath, RDP properties, redirection, graphics modes and codecs, bandwidth per activity, Teams and multimedia redirection, session limits and timeouts.",
+      "checklist": [
+        "C02.05",
+        "B01.10",
+        "B03.02",
+        "F01.11"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "endpoints",
+      "title": "Endpoints and clients",
+      "scope": "Client apps per OS, client OS versions, thin clients and kiosks, managed against unmanaged devices (the management itself is the intune pillar), peripherals, printing, multi-monitor and resolution.",
+      "checklist": [
+        "C02.03",
+        "C02.05",
+        "G02.06"
+      ],
+      "status": "missing"
+    },
+    {
+      "id": "ux-measurement",
+      "title": "End-user experience measurement",
+      "scope": "Round trip, input delay, time to connect, logon and app load; the sample check, baseline profiles and the tuning loop; Insights as the measure.",
+      "method": "methods/sample-check.md",
+      "checklist": [
+        "C02.04",
+        "E02"
+      ],
+      "status": "mapped"
+    },
+    {
+      "id": "security-posture",
+      "title": "Security: posture and hosts",
+      "scope": "Shared responsibility and trust boundary, Trusted launch and confidential VMs, encryption, OS hardening, app control, screen capture and watermarking, the host baseline profile, Defender for Cloud plans, logging.",
+      "method": "methods/security.md",
+      "checklist": [
+        "G02",
+        "G03",
+        "G05.01"
+      ],
+      "status": "mapped"
+    },
+    {
+      "id": "endpoint-protection",
+      "title": "Endpoint protection and security agents",
+      "scope": "Antivirus and endpoint detection and response on multi-session hosts, as categories; VDI settings, image sealing, exclusions for profiles and App Attach, update sharing, measured cost; vulnerability assessment.",
+      "checklist": [
+        "G03.04"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "governance",
+      "title": "Governance, policy and compliance",
+      "scope": "Azure Policy guardrails, allowed locations and sizes, tagging and naming, audit logging and retention, benchmark control mapping, compliance frameworks as mappings, change control, tenant and subscription prerequisites. Host configuration delivery is the intune pillar.",
+      "checklist": [
+        "E01.01",
+        "E01.02",
+        "G03.05",
+        "G03.06",
+        "C03",
+        "D03.01"
+      ],
+      "status": "missing"
+    },
+    {
+      "id": "monitoring",
+      "title": "Monitoring and operations",
+      "scope": "Insights wiring, alerts, workbooks, log retention, agent and token health, day-2 runbooks, capacity reviews and cadence.",
+      "checklist": [
+        "E01",
+        "E02"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "scaling",
+      "title": "Scaling and power",
+      "scope": "Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing, personal pool deallocation.",
+      "checklist": [
+        "E01.04",
+        "E01.05"
+      ],
+      "status": "mapped"
+    },
+    {
+      "id": "finops",
+      "title": "FinOps",
+      "scope": "Licensing, hours before rates, commitments, allocation, budgets, pricing and unit cost.",
+      "method": "methods/finops.md",
+      "checklist": [
+        "E01.06",
+        "E01.07"
+      ],
+      "status": "mapped"
+    },
+    {
+      "id": "reliability",
+      "title": "Reliability, disaster recovery and continuity",
+      "scope": "Zones, a recovery model per pool, the workload's own recovery targets, profiles across regions, images in both regions, dependencies, backup, failover tests.",
+      "checklist": [
+        "A01",
+        "A02",
+        "A03"
+      ],
+      "status": "partial"
+    },
+    {
+      "id": "review-plan",
+      "title": "Review, remediation and plan",
+      "scope": "Dispositions of findings, accepted risk, plan order, which change fixes which finding.",
+      "method": "methods/remediation.md",
+      "checklist": [],
+      "status": "mapped"
+    },
+    {
+      "id": "hybrid",
+      "title": "Hybrid and Azure Local",
+      "scope": "AVD on Azure Local and the hybrid identity and network overlaps; an extension point only.",
+      "checklist": [],
+      "status": "extension"
+    },
+    {
+      "id": "diagnostics",
+      "title": "Troubleshooting and diagnostics",
+      "scope": "Triage flows per symptom; the data sources (Insights, the diagnostic tables, agent health and logs, event, profile and client logs, Resource Graph); tools as categories; error-code maps; the diagnostic facts the collector reads.",
+      "checklist": [],
+      "status": "missing"
+    },
+    {
+      "id": "intune",
+      "title": "Intune and host management",
+      "scope": "Microsoft Intune for session hosts and client devices as the owner asked (2026-10-21), against Group Policy where an estate keeps it; enrollment of multi-session and Entra-joined hosts, configuration profiles and the settings catalog, security baselines for session hosts, compliance policies for hosts and for the client devices Conditional Access checks, app deployment to hosts, update rings and Autopatch against image-based servicing, remote actions and reporting.",
+      "checklist": [
+        "E01.03"
+      ],
+      "status": "partial"
+    }
+  ],
+  "landingZone": {
+    "commit": "ae5c2877d53d9af8e1efbf47b85cfdef06c51364",
+    "source": "https://github.com/avd-ops/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep",
+    "parameters": [
+      "namePrefix",
+      "environmentName",
+      "location",
+      "tags",
+      "avdUsersGroupObjectId",
+      "avdAdminsGroupObjectId",
+      "avdServicePrincipalObjectId",
+      "enrollInIntune",
+      "connectivityMode",
+      "spokeAddressPrefix",
+      "sessionHostSubnetPrefix",
+      "privateEndpointSubnetPrefix",
+      "deployImageBuildSubnets",
+      "imageBuildSubnetPrefix",
+      "imageBuildAciSubnetPrefix",
+      "hubVnetResourceId",
+      "createHubToSpokePeering",
+      "hubFirewallPrivateIp",
+      "dnsServers",
+      "centralPrivateDnsZoneResourceIds",
+      "enableAvdPrivateLink",
+      "sessionHostCount",
+      "sessionHostVmSize",
+      "sessionHostNamePrefix",
+      "availabilityZones",
+      "sessionHostImage",
+      "maxSessionLimit",
+      "encryptionAtHost",
+      "localAdminUsername",
+      "localAdminPassword",
+      "rdpProperties",
+      "validationEnvironment",
+      "profileStorageSku",
+      "profileShareQuotaGiB",
+      "fslogixProfileSizeMiB",
+      "enableProfileBackup",
+      "profileBackupRetentionDays",
+      "profileBackupTier",
+      "startVmOnConnect",
+      "scalingTimeZone",
+      "logRetentionDays",
+      "alertEmailAddresses",
+      "monthlyBudgetAmount",
+      "budgetStartDate",
+      "enableAutoShutdown",
+      "autoShutdownTime",
+      "autoShutdownDays",
+      "autoShutdownTimeZone",
+      "autoShutdownScheduleAction",
+      "autoShutdownBudgetAction",
+      "autoShutdownBudgetPercent",
+      "autoShutdownRunbookUri",
+      "enableDefenderForCloud",
+      "deploySubscriptionSettings",
+      "enablePolicyGuardrails",
+      "recoveryLocation",
+      "allowedLocations"
+    ],
+    "notDimensions": {
+      "namePrefix": "Naming only.",
+      "environmentName": "A label; its one effect (validation pool default) is under updates.validation-pool.",
+      "sessionHostNamePrefix": "Naming only.",
+      "avdUsersGroupObjectId": "Wiring to the operator's own group, not a design choice with a baseline.",
+      "avdAdminsGroupObjectId": "Wiring to the operator's own group, not a design choice with a baseline.",
+      "avdServicePrincipalObjectId": "The service's own identity in the tenant; fixed, not chosen.",
+      "localAdminUsername": "Break-glass account name; the security method covers local admin rights.",
+      "localAdminPassword": "A secret, recreated on every rebuild and never carried.",
+      "alertEmailAddresses": "Contact data, kept out of shared facts; monitoring itself is ops.monitoring."
+    }
+  },
+  "dimensions": [
+    {
+      "id": "compute.vm-size",
+      "area": "compute",
+      "pillar": "capacity",
+      "title": "Session host VM size and family",
+      "decides": "The vCPU, memory and family of each host pool's VMs.",
+      "home": {
+        "decision": "hostPool.vmSize",
+        "facts": [
+          "c11.hostPool.vmSizes",
+          "c12.group.perHost.p95CpuPercent",
+          "c12.group.perHost.p95MemoryPercent"
+        ]
+      },
+      "baseline": {
+        "standing": "prior",
+        "claims": [
+          "ref:session-host-sizing#multisession-minimums",
+          "ref:session-host-sizing#multisession-vcpu-range",
+          "ref:session-host-sizing#single-session-minimums",
+          "ref:review-checklists-avd#C01.05",
+          "ref:review-checklists-avd#C01.10"
+        ],
+        "says": "Multi-session hosts of 8 vCPU and 16 GB or more, between 6 and 24 vCPU and never over 32 cores; single-session from 2 vCPU and 8 GB. Estimates to replace with a workload test."
+      },
+      "observations": [
+        "obs:sizing-floor-not-measured"
+      ],
+      "measure": "fact",
+      "landingZone": [
+        "sessionHostVmSize"
+      ]
+    },
+    {
+      "id": "compute.memory-per-user",
+      "area": "compute",
+      "pillar": "capacity",
+      "title": "Memory per user",
+      "decides": "Whether memory or CPU limits a host, and so the family (general purpose or memory-optimized).",
+      "home": {
+        "decision": "hostPool.vmSize",
+        "facts": [
+          "c12.group.perUser.p95MemoryMiB",
+          "c12.group.perUser.p50MemoryMiB"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:session-host-sizing#memory-limits-density",
+          "gap:deployment-dimensions",
+          "gap:sample-check"
+        ],
+        "says": "The source says memory can limit density but gives no memory per user; the estate's own measurement sets it."
+      },
+      "measure": "measured",
+      "landingZone": [
+        "sessionHostVmSize"
+      ]
+    },
+    {
+      "id": "compute.host-count",
+      "area": "compute",
+      "pillar": "capacity",
+      "title": "Host count and headroom",
+      "decides": "How many hosts each pool has, including headroom for sign-in storms and a spare.",
+      "home": {
+        "decision": "hostPool.hosts",
+        "facts": [
+          "c11.hostPool.sessionHosts.total",
+          "c12.group.concurrency.peak",
+          "c12.group.concurrency.byHour"
+        ],
+        "checks": [
+          "asm-pooled-host-redundancy"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:waf-reliability-checklist#RE:05",
+          "ref:session-host-sizing#logon-storm-headroom",
+          "ref:session-host-sizing#more-smaller-vms"
+        ],
+        "says": "At least two hosts per pooled pool, headroom for concurrent sign-ins, and more smaller hosts over fewer large ones; no headroom number is published."
+      },
+      "measure": "fact",
+      "landingZone": [
+        "sessionHostCount"
+      ]
+    },
+    {
+      "id": "density.sessions-per-host",
+      "area": "density",
+      "pillar": "capacity",
+      "title": "User to host density",
+      "decides": "The maximum sessions per host.",
+      "home": {
+        "decision": "hostPool.maxSessions",
+        "facts": [
+          "c11.hostPool.maxSessionLimit",
+          "c11.hostPool.sessionHosts.sessions",
+          "c12.group.perHost.peakSessionsPerHost",
+          "c12.group.perUser.p95CpuPercentOfCore"
+        ]
+      },
+      "baseline": {
+        "standing": "prior",
+        "claims": [
+          "ref:session-host-sizing#multisession-users-per-vcpu",
+          "ref:session-host-sizing#estimates-only",
+          "ref:avd-host-pool-types#limit-can-be-exceeded"
+        ],
+        "says": "Users per vCPU: light 6, medium 4, heavy 2, power 1, as estimates; the limit can be exceeded under a connection storm."
+      },
+      "observations": [
+        "obs:users-per-vcpu-adopted"
+      ],
+      "measure": "fact",
+      "landingZone": [
+        "maxSessionLimit"
+      ]
+    },
+    {
+      "id": "density.load-balancing",
+      "area": "density",
+      "pillar": "capacity",
+      "title": "Load balancing algorithm",
+      "decides": "Breadth-first (performance) or depth-first (cost) placement of new sessions.",
+      "home": {
+        "decision": "proposed:hostPool.loadBalancing",
+        "facts": [
+          "proposed:c11.hostPool.loadBalancerType"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:avd-load-balancing#breadth-first-performance",
+          "ref:avd-load-balancing#depth-first-cost",
+          "ref:avd-load-balancing#set-limit-from-insights",
+          "ref:review-checklists-avd#C01.04"
+        ],
+        "says": "Breadth-first favors session performance, depth-first favors cost and needs a measured session limit."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "The landing zone fixes breadth-first in its control plane module; there is no parameter."
+    },
+    {
+      "id": "compute.workload-benchmark",
+      "area": "performance",
+      "pillar": "capacity",
+      "title": "Workload benchmark before sizing",
+      "decides": "How the size and density above are proven for this estate's workload.",
+      "home": {
+        "decision": "hostPool.vmSize",
+        "facts": [
+          "c12.group.perUser.p95CpuPercentOfCore",
+          "c12.group.logonSeconds.p95"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:review-checklists-avd#C01.10",
+          "ref:session-host-sizing#capacity-approaches",
+          "gap:deployment-dimensions"
+        ],
+        "says": "Run a pilot or a simulated load test before fixing size and density; no open, published workload or pass threshold exists, so the method is ours."
+      },
+      "measure": "measured",
+      "landingZone": []
+    },
+    {
+      "id": "graphics.gpu-need",
+      "area": "graphics",
+      "pillar": "capacity",
+      "title": "Whether hosts need a GPU",
+      "decides": "GPU or CPU-only hosts for each workload.",
+      "home": {
+        "decision": "proposed:hostPool.gpu",
+        "facts": [
+          "c11.hostPool.vmSizes"
+        ],
+        "intake": [
+          "proposed:intake.graphicsWorkloads"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#C01.12",
+          "ref:session-host-sizing#gpu-for-graphics"
+        ],
+        "says": "Use GPU hosts for graphics-heavy apps and high resolutions; CPU-only hosts show artifacts above 3840 x 2160 total resolution."
+      },
+      "measure": "intake",
+      "landingZone": [
+        "sessionHostVmSize"
+      ]
+    },
+    {
+      "id": "graphics.gpu-size",
+      "area": "graphics",
+      "pillar": "capacity",
+      "title": "GPU size and driver",
+      "decides": "Which GPU series and fraction, and which driver.",
+      "home": {
+        "decision": "proposed:hostPool.gpu",
+        "facts": [
+          "c11.hostPool.vmSizes"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-gpu-acceleration#supported-sizes",
+          "ref:avd-gpu-acceleration#no-compute-gpus",
+          "ref:avd-gpu-acceleration#grid-driver-only"
+        ],
+        "says": "Only the NV-family sizes the page lists, never NC or ND compute sizes, with Azure-distributed drivers (GRID on NVIDIA)."
+      },
+      "measure": "fact",
+      "landingZone": [
+        "sessionHostVmSize"
+      ],
+      "note": "The source's size table lists series that retired on 2026-09-30 (see the reference's notes)."
+    },
+    {
+      "id": "graphics.users-per-gpu",
+      "area": "graphics",
+      "pillar": "capacity",
+      "title": "Users per GPU",
+      "decides": "How many sessions share one GPU or GPU fraction.",
+      "home": {
+        "decision": "hostPool.maxSessions",
+        "facts": [
+          "c12.group.perHost.peakSessionsPerHost"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:avd-gpu-acceleration#density-tradeoff",
+          "ref:avd-gpu-acceleration#grid-license-25",
+          "gap:deployment-dimensions"
+        ],
+        "says": "No published users-per-GPU number; the GRID license caps a VM at 25 concurrent users, and the estate's measurement sets the rest."
+      },
+      "measure": "measured",
+      "landingZone": [
+        "maxSessionLimit"
+      ]
+    },
+    {
+      "id": "disk.os-disk-type",
+      "area": "disks",
+      "pillar": "capacity",
+      "title": "OS disk type",
+      "decides": "Premium SSD, Standard SSD or an ephemeral OS disk for session hosts.",
+      "home": {
+        "decision": "proposed:hostPool.osDisk",
+        "facts": [
+          "proposed:c11.sessionHost.osDiskType"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-deploy-host-pool#premium-ssd-os-disk",
+          "ref:review-checklists-avd#H03.01",
+          "ref:session-host-sizing#ssd-storage"
+        ],
+        "says": "Premium SSD for production hosts."
+      },
+      "observations": [
+        "obs:premium-ssd-os-disk-default"
+      ],
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "The landing zone fixes Premium SSD in its session host module; there is no parameter."
+    },
+    {
+      "id": "disk.ephemeral-os",
+      "area": "disks",
+      "pillar": "capacity",
+      "title": "Ephemeral OS disks for stateless pools",
+      "decides": "Whether a pooled, stateless pool uses ephemeral OS disks.",
+      "home": {
+        "decision": "proposed:hostPool.osDisk",
+        "facts": [
+          "proposed:c11.sessionHost.osDiskType"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-ephemeral-os-disks#stateless-only",
+          "ref:avd-ephemeral-os-disks#pooled-with-configuration",
+          "ref:avd-ephemeral-os-disks#unsupported-features",
+          "ref:avd-ephemeral-os-disks#size-must-fit-image",
+          "ref:avd-ephemeral-os-disks#autoscale-full-active"
+        ],
+        "says": "Only for pooled pools with a session host configuration, on a size whose temp disk or cache fits the image, with autoscale creating and deleting hosts instead of deallocating them."
+      },
+      "measure": "rebuild",
+      "landingZone": []
+    },
+    {
+      "id": "disk.latency",
+      "area": "disks",
+      "pillar": "capacity",
+      "title": "Disk latency on hosts",
+      "decides": "Whether host disks are fast enough for the workload.",
+      "home": {
+        "decision": "hostPool.vmSize",
+        "facts": [
+          "c12.group.perUser.p95DiskIops"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "gap:sample-check",
+          "gap:deployment-dimensions"
+        ],
+        "says": "No published latency number for session hosts; the estate's own baseline sets it (gold-standards.yaml, disk-latency)."
+      },
+      "measure": "measured",
+      "landingZone": []
+    },
+    {
+      "id": "profile.storage-backend",
+      "area": "storage",
+      "pillar": "profiles",
+      "title": "Profile storage service and tier",
+      "decides": "Azure Files standard or premium, or Azure NetApp Files, in the hosts' region.",
+      "home": {
+        "decision": "proposed:profile.storage",
+        "facts": [
+          "c11.storage.kind",
+          "c11.storage.sku"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-fslogix-storage#azure-files-default",
+          "ref:avd-fslogix-storage#tier-by-workload",
+          "ref:review-checklists-avd#H03.02",
+          "ref:review-checklists-avd#H03.05",
+          "ref:fslogix-prerequisites#storage-latency"
+        ],
+        "says": "Azure Files for most estates; premium for anything above light workloads under 200 users; always in the hosts' region."
+      },
+      "measure": "fact",
+      "landingZone": [
+        "profileStorageSku"
+      ]
+    },
+    {
+      "id": "profile.storage-performance",
+      "area": "storage",
+      "pillar": "profiles",
+      "title": "Profile storage IOPS and scale",
+      "decides": "Provisioned IOPS, share count and handle headroom for sign-in storms.",
+      "home": {
+        "decision": "hostPool.profileQuotaGiB",
+        "facts": [
+          "c12.group.profile.logonIopsPerUser",
+          "c12.group.users"
+        ]
+      },
+      "baseline": {
+        "standing": "prior",
+        "claims": [
+          "ref:fslogix-storage-options#iops-per-user",
+          "ref:azure-files-vdi#storm-sizing",
+          "ref:azure-files-vdi#users-per-share",
+          "ref:azure-files-vdi#handle-limits",
+          "ref:review-checklists-avd#H01.02",
+          "ref:review-checklists-avd#H03.04",
+          "ref:review-checklists-avd#E02.03"
+        ],
+        "says": "About 10 IOPS per user steady and 50 at sign-in, as an example; share count by concurrent users; SMB multichannel on premium; alert on throttling."
+      },
+      "measure": "measured",
+      "landingZone": [
+        "profileShareQuotaGiB"
+      ]
+    },
+    {
+      "id": "profile.capacity",
+      "area": "storage",
+      "pillar": "profiles",
+      "title": "Profile size and share capacity",
+      "decides": "The per-user container limit and the share quota.",
+      "home": {
+        "decision": "hostPool.profileQuotaGiB",
+        "facts": [
+          "c12.group.profile.p95SizeGiB",
+          "c11.storage.count"
+        ]
+      },
+      "baseline": {
+        "standing": "prior",
+        "claims": [
+          "ref:session-host-sizing#profile-storage-minimum",
+          "ref:review-checklists-avd#H04.03"
+        ],
+        "says": "Plan at least 30 GB per user and confirm the configured maximum profile size."
+      },
+      "measure": "rebuild",
+      "landingZone": [
+        "profileShareQuotaGiB",
+        "fslogixProfileSizeMiB"
+      ]
+    },
+    {
+      "id": "profile.resilience",
+      "area": "reliability",
+      "pillar": "profiles",
+      "title": "Profile redundancy and backup",
+      "decides": "Storage redundancy and backup of profile containers.",
+      "home": {
+        "decision": "proposed:profile.storage",
+        "facts": [
+          "c11.storage.sku"
+        ],
+        "checks": [
+          "asm-files-zone-redundant"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#A03.05",
+          "ref:review-checklists-avd#A03.02"
+        ],
+        "says": "Zone-redundant storage for Azure Files, and a backup strategy for profile containers."
+      },
+      "measure": "rebuild",
+      "landingZone": [
+        "profileStorageSku",
+        "enableProfileBackup",
+        "profileBackupRetentionDays",
+        "profileBackupTier"
+      ]
+    },
+    {
+      "id": "perf.image-optimization",
+      "area": "performance",
+      "pillar": "images",
+      "title": "Image optimization",
+      "decides": "Which OS optimizations the image applies, from a reviewed profile.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": [
+          "c11.hostPool.images"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:wdot#categories",
+          "ref:wdot#optimization-state",
+          "ref:wdot#test-first",
+          "ref:vdi-optimization-guide#test-cleanup-first",
+          "ref:review-checklists-avd#B01.08"
+        ],
+        "says": "Apply a reviewed optimization profile, tested before production; the templates are a start, not a verdict."
+      },
+      "observations": [
+        "obs:wdot-appx-removal-left-off",
+        "obs:wdot-disk-cleanup-deletes-evidence",
+        "obs:wdot-pin-on-image-version"
+      ],
+      "measure": "fact",
+      "landingZone": [],
+      "note": "Set in the landing zone's image build, not a template parameter."
+    },
+    {
+      "id": "perf.transport",
+      "area": "performance",
+      "pillar": "protocol",
+      "title": "RDP transport",
+      "decides": "Whether sessions use the UDP transport (RDP Shortpath) on managed and public networks, judged against the networks the operator says users connect from.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "c12.group.rttMsP95",
+          "proposed:c12.group.transport.udpShare",
+          "proposed:c12.group.transport.relayShare"
+        ],
+        "intake": [
+          "proposed:intake.userNetworks"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:rdp-shortpath#udp-transport",
+          "ref:rdp-shortpath#tcp-first-then-udp",
+          "ref:rdp-shortpath#stun-before-turn",
+          "ref:review-checklists-avd#F01.11",
+          "gap:transport-classification",
+          "gap:remote-protocols-scope"
+        ],
+        "says": "UDP where the network allows it, direct before relayed, with TCP reverse connect as the fallback; each connection is judged against the operator's stated networks through the family transport map. No share target is published."
+      },
+      "observations": [
+        "obs:transport-column-names-disagree",
+        "obs:symmetric-nat-egress-means-turn"
+      ],
+      "measure": "measured",
+      "landingZone": [],
+      "note": "Needs the host pool's network data and connection categories in Log Analytics (ops.monitoring)."
+    },
+    {
+      "id": "perf.media",
+      "area": "performance",
+      "pillar": "protocol",
+      "title": "Teams and browser media",
+      "decides": "Media optimization for Teams and multimedia redirection for browser video.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": [
+          "c11.hostPool.images"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:teams-on-avd#media-optimization",
+          "ref:teams-on-avd#classic-teams-end",
+          "ref:review-checklists-avd#B01.10",
+          "ref:review-checklists-avd#B03.02"
+        ],
+        "says": "Teams calls and meetings redirected to the local device; classic Teams for VDI is past end of support."
+      },
+      "measure": "none",
+      "landingZone": []
+    },
+    {
+      "id": "protocol.shortpath-managed",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "RDP Shortpath for managed networks",
+      "decides": "Whether users on ExpressRoute or VPN get a direct UDP path, through the host listener and an inbound port or through ICE/STUN.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "proposed:c11.hostPool.udp.managedPrivate",
+          "proposed:c11.hostPool.udp.direct"
+        ],
+        "intake": [
+          "proposed:intake.userNetworks"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:configure-rdp-shortpath#four-options",
+          "ref:configure-rdp-shortpath#listener-for-managed",
+          "ref:configure-rdp-shortpath#most-restrictive-wins",
+          "ref:rdp-shortpath#first-found-wins",
+          "ref:review-checklists-avd#F01.11"
+        ],
+        "says": "Evaluate Shortpath for clients on managed networks; the listener (port 3390 by default) and an inbound allow rule are needed only for the listener option, and the most restrictive of host pool and host settings wins."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "The host listener is host policy, outside the landing zone's parameters; the host pool switches are readable only through a preview API version (protocol.shortpath-public)."
+    },
+    {
+      "id": "protocol.shortpath-public",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "RDP Shortpath for public networks (STUN and TURN)",
+      "decides": "Whether users on the internet get a direct UDP path through STUN or a relayed one through TURN (expected behind symmetric NAT egress), and whether either is turned off.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "proposed:c11.hostPool.udp.public",
+          "proposed:c11.hostPool.udp.relay",
+          "proposed:c12.group.transport.relayShare"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:configure-rdp-shortpath#defaults-enabled",
+          "ref:configure-rdp-shortpath#hostpool-switches",
+          "ref:configure-rdp-shortpath#select-transport-policy",
+          "ref:configure-rdp-shortpath#turn-public-cloud-only",
+          "ref:rdp-shortpath#stun-before-turn",
+          "ref:rdp-shortpath#turn-range",
+          "ref:rdp-shortpath#symmetric-nat-means-turn",
+          "ref:rdp-shortpath#public-network-advice",
+          "ref:rdp-shortpath#turn-maintenance-drops",
+          "ref:hostpool-api-changelog#udp-switches-preview-only",
+          "ref:troubleshoot-rdp-shortpath#nat-type-test"
+        ],
+        "says": "Both options are on by default and work with no configuration when outbound UDP is allowed; hosts behind Azure Firewall or NAT Gateway relay through TURN. Turning an option off needs a reason."
+      },
+      "observations": [
+        "obs:symmetric-nat-egress-means-turn"
+      ],
+      "measure": "measured",
+      "landingZone": [],
+      "note": "The landing zone leaves the host pool switches at Default; the networking pillars own the egress rules that decide STUN or TURN."
+    },
+    {
+      "id": "protocol.port-range",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "UDP port range for STUN and TURN",
+      "decides": "Whether hosts use the default ephemeral range or a smaller, predictable one that firewalls can name.",
+      "home": {
+        "decision": "network",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:configure-rdp-shortpath#port-range",
+          "ref:rdp-multipath#ports-per-session"
+        ],
+        "says": "The default range works; narrow it only when a firewall must name ports, and size it for up to three UDP paths per session."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "Host policy, outside the landing zone's parameters."
+    },
+    {
+      "id": "protocol.multipath",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "RDP Multipath and modern auto-reconnect",
+      "decides": "Whether sessions keep backup paths and survive short network drops, which depends on the client app and version.",
+      "home": {
+        "decision": "network",
+        "facts": [],
+        "intake": [
+          "proposed:intake.clientApps"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:rdp-multipath#automatic",
+          "ref:rdp-multipath#client-floors",
+          "ref:rdp-multipath#shortpath-first",
+          "ref:avd-auto-reconnect#needs-multipath",
+          "ref:windows-app-platforms#multipath-by-platform",
+          "ref:avd-whats-new#multipath-ga"
+        ],
+        "says": "Automatic once Shortpath works, on current Windows App for Windows; other platforms are in beta or unsupported."
+      },
+      "measure": "measured",
+      "landingZone": []
+    },
+    {
+      "id": "protocol.private-link-udp",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "UDP over Private Link",
+      "decides": "Whether sessions that use Private Link can still use UDP.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "proposed:c11.hostPool.udp.privateLink",
+          "c11.network.privateEndpoints"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:hostpool-api-changelog#private-link-udp-preview-only",
+          "ref:configure-rdp-shortpath#hostpool-switches"
+        ],
+        "says": "UDP over Private Link is a separate host pool opt-in, off unless set and readable only through a preview API version; its conditions are claims in the networking pillar's Private Link reference."
+      },
+      "measure": "rebuild",
+      "landingZone": [
+        "enableAvdPrivateLink"
+      ]
+    },
+    {
+      "id": "protocol.qos",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "QoS marking and throttle rate",
+      "decides": "Whether RDP traffic on managed networks is marked for priority (DSCP) or capped per session.",
+      "home": {
+        "decision": "network",
+        "facts": [],
+        "intake": [
+          "proposed:intake.userNetworks"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:rdp-qos#managed-udp-only",
+          "ref:rdp-qos#dscp-46",
+          "ref:rdp-qos#qos-before-bandwidth",
+          "ref:rdp-shortpath#managed-qos-and-throttle",
+          "ref:rdp-bandwidth#throttle-managed-only"
+        ],
+        "says": "Only on managed-network Shortpath; DSCP 46 applied end to end, QoS before more bandwidth, and no throttle unless the network is constrained or metered."
+      },
+      "measure": "none",
+      "landingZone": []
+    },
+    {
+      "id": "protocol.graphics-encoding",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "Graphics encoding and codecs",
+      "decides": "Software or hardware encoding, AVC 444, HEVC and chroma, set by host policy against the host's GPU and the client's decoder.",
+      "home": {
+        "decision": "hostPool.vmSize",
+        "facts": [
+          "c11.hostPool.vmSizes"
+        ],
+        "intake": [
+          "proposed:intake.graphicsWorkloads"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:graphics-encoding#software-default",
+          "ref:graphics-encoding#codecs",
+          "ref:avd-gpu-acceleration#cpu-by-default",
+          "ref:avd-gpu-acceleration#avc444-needs-hw-encoding",
+          "ref:avd-gpu-acceleration#hevc-prerequisites",
+          "ref:avd-gpu-acceleration#verify-by-event",
+          "ref:graphics-chroma-444#only-support-verifies"
+        ],
+        "says": "CPU encoding by default; AVC 444 only with hardware encoding on, HEVC only on GPU desktops without multimedia redirection; verify with host events, not assumption."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "Host policy; graphics.gpu-need and graphics.gpu-size decide the hardware."
+    },
+    {
+      "id": "protocol.session-limits",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "Session time limits and lock behavior",
+      "decides": "When disconnected sessions are signed out and whether a lock disconnects the session or shows the remote lock screen.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:autoscale-faq#disconnected-time-limit",
+          "ref:session-lock-behavior#disconnect-on-lock-sso"
+        ],
+        "says": "Sign out disconnected sessions after 15 to 30 minutes where pools scale to zero; with Entra single sign-on, disconnect on lock so Conditional Access is evaluated again."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "Host policy, outside the landing zone's parameters."
+    },
+    {
+      "id": "perf.accelerated-networking",
+      "area": "performance",
+      "pillar": "capacity",
+      "title": "Accelerated networking",
+      "decides": "Whether host NICs use accelerated networking.",
+      "home": {
+        "decision": "hostPool.vmSize",
+        "facts": [
+          "proposed:c11.sessionHost.acceleratedNetworking"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#C01.13"
+        ],
+        "says": "Choose sizes that support accelerated networking."
+      },
+      "measure": "rebuild",
+      "landingZone": []
+    },
+    {
+      "id": "perf.experience-targets",
+      "area": "performance",
+      "pillar": "ux-measurement",
+      "title": "User experience targets",
+      "decides": "The round-trip, input delay and logon targets a deployment is judged against.",
+      "home": {
+        "decision": "region",
+        "facts": [
+          "c12.group.rttMsP95",
+          "c12.group.logonSeconds.p95",
+          "c12.group.uxScoreMedian"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-prerequisites#rtt-under-150",
+          "ref:avd-insights-glossary#input-delay-bands",
+          "gap:logon-target"
+        ],
+        "says": "Round trip under 150 ms, input delay bands as published, logon against the estate's own baseline (gold-standards.yaml)."
+      },
+      "observations": [
+        "obs:region-latency-from-the-user"
+      ],
+      "measure": "measured",
+      "landingZone": []
+    },
+    {
+      "id": "network.bandwidth",
+      "area": "network",
+      "pillar": "networking-client",
+      "title": "Bandwidth per user",
+      "decides": "Whether user networks and host sizes carry the expected RDP traffic.",
+      "home": {
+        "decision": "network",
+        "facts": [],
+        "intake": [
+          "proposed:intake.userNetworks"
+        ]
+      },
+      "baseline": {
+        "standing": "prior",
+        "claims": [
+          "ref:rdp-bandwidth#per-scenario-estimates",
+          "ref:rdp-bandwidth#monitor-real-users",
+          "ref:review-checklists-avd#F01.09"
+        ],
+        "says": "Per-activity estimates for one 1080p monitor as a start, replaced by measuring real users."
+      },
+      "measure": "measured",
+      "landingZone": []
+    },
+    {
+      "id": "network.client",
+      "area": "network",
+      "pillar": "networking-client",
+      "title": "User networks and client reachability",
+      "decides": "What each user network (office, branch, home, guest Wi-Fi) must allow, and whether it reaches the region within the round-trip target.",
+      "home": {
+        "decision": "region",
+        "facts": [
+          "c12.group.rttMsP95"
+        ],
+        "intake": [
+          "proposed:intake.userNetworks"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-required-fqdn#client-list",
+          "ref:avd-prerequisites#rtt-under-150",
+          "ref:avd-proxy#client-proxy-support",
+          "ref:avd-proxy#same-geography",
+          "ref:thin-clients#reproduce-on-windows-app",
+          "ref:review-checklists-avd#C02.04"
+        ],
+        "says": "The published client endpoints allowed from every user network, proxies bypassed or close to the region, round trip under 150 ms."
+      },
+      "observations": [
+        "obs:region-latency-from-the-user"
+      ],
+      "measure": "intake",
+      "landingZone": []
+    },
+    {
+      "id": "network.client-private-link",
+      "area": "network",
+      "pillar": "networking-client",
+      "title": "AVD Private Link from the client",
+      "decides": "Whether users reach feed and gateway privately, and how their networks resolve the private names.",
+      "home": {
+        "decision": "network",
+        "facts": [],
+        "intake": [
+          "proposed:intake.userNetworks"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-private-link#client-dns-sequence",
+          "ref:avd-private-link#mixed-feed-limit",
+          "ref:avd-private-link#global-workspace",
+          "ref:avd-private-link-setup#client-versions",
+          "ref:dns-private-resolver#hybrid-resolution",
+          "gap:client-network"
+        ],
+        "says": "Each private name resolves to the endpoint from the user network over VPN or ExpressRoute; global discovery stays public; no mixed public and private feed on a network without internet."
+      },
+      "measure": "intake",
+      "landingZone": []
+    },
+    {
+      "id": "network.client-agents",
+      "area": "network",
+      "pillar": "networking-client",
+      "title": "Security agents and VPN clients on the user device (extension)",
+      "decides": "How SSE, ZTNA and VPN client categories treat AVD traffic - bypass, split tunneling, inspection, UDP.",
+      "home": {
+        "decision": "network",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "gap:client-network"
+        ],
+        "says": "Extension row, filled by the map plan's agent-category work; categories only, no product names."
+      },
+      "measure": "intake",
+      "landingZone": []
+    },
+    {
+      "id": "network.azure-local",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "AVD on Azure Local (extension)",
+      "decides": "The network design for host pools on Azure Local.",
+      "home": {
+        "decision": "network",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:avd-azure-local#no-mixed-pools",
+          "gap:network-scope"
+        ],
+        "says": "Extension point only; no method yet."
+      },
+      "measure": "none",
+      "landingZone": []
+    },
+    {
+      "id": "security.endpoint-protection-tuning",
+      "area": "security",
+      "pillar": "endpoint-protection",
+      "title": "Antivirus and EDR tuned for multi-session",
+      "decides": "How antivirus and EDR are configured on shared and non-persistent hosts.",
+      "home": {
+        "decision": "proposed:hostPool.security",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:defender-av-vdi#vdi-settings",
+          "ref:defender-av-vdi#cache-maintenance-before-seal",
+          "ref:defender-av-vdi#shared-updates",
+          "ref:defender-endpoint-vdi#never-onboard-image",
+          "ref:defender-endpoint-vdi#entry-model",
+          "ref:fslogix-prerequisites#av-exclusions"
+        ],
+        "says": "The published VDI antivirus settings, cache maintenance before sealing the image, no onboarded image, and the FSLogix exclusions. No source gives the per-user CPU cost."
+      },
+      "measure": "none",
+      "landingZone": [
+        "enableDefenderForCloud"
+      ]
+    },
+    {
+      "id": "security.posture",
+      "area": "security",
+      "pillar": "security-posture",
+      "title": "Security posture and guardrails",
+      "decides": "Defender plans, policy guardrails and the rest of the security baseline.",
+      "home": {
+        "decision": "proposed:hostPool.security",
+        "facts": [
+          "c11.policy.assignments"
+        ]
+      },
+      "baseline": {
+        "standing": "owned",
+        "claims": [],
+        "says": "Owned by the security method."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md",
+      "measure": "fact",
+      "landingZone": [
+        "enablePolicyGuardrails"
+      ]
+    },
+    {
+      "id": "security.host-type",
+      "area": "security",
+      "pillar": "security-posture",
+      "title": "Trusted launch and VM generation",
+      "decides": "Gen2 with Trusted launch, or confidential VMs.",
+      "home": {
+        "decision": "proposed:hostPool.security",
+        "facts": [
+          "proposed:c11.sessionHost.securityType"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-deploy-host-pool#trusted-launch-default",
+          "ref:review-checklists-avd#B03.01"
+        ],
+        "says": "Gen2 with Trusted launch, the default for new hosts; the security method holds the rest."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md",
+      "measure": "rebuild",
+      "landingZone": []
+    },
+    {
+      "id": "security.redirection",
+      "area": "security",
+      "pillar": "protocol",
+      "title": "Device redirection and RDP properties",
+      "decides": "Which devices, drives and clipboard a session can redirect.",
+      "home": {
+        "decision": "proposed:hostPool.security",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "owned",
+        "claims": [],
+        "says": "Owned by the security method."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md",
+      "measure": "rebuild",
+      "landingZone": [
+        "rdpProperties"
+      ]
+    },
+    {
+      "id": "encryption.disks",
+      "area": "encryption",
+      "pillar": "security-posture",
+      "title": "Disk encryption",
+      "decides": "Server-side encryption only, encryption at host, or confidential disk encryption.",
+      "home": {
+        "decision": "proposed:hostPool.encryption",
+        "facts": [
+          "proposed:c11.sessionHost.encryptionAtHost"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:disk-encryption-options#encryption-at-host",
+          "ref:disk-encryption-options#sse-always-on",
+          "ref:disk-encryption-options#ade-retirement"
+        ],
+        "says": "Encryption at host for new VMs (temp disks and caches too); no new Azure Disk Encryption, which retires on 2028-09-15."
+      },
+      "observations": [
+        "obs:encryption-at-host-by-default"
+      ],
+      "measure": "rebuild",
+      "landingZone": [
+        "encryptionAtHost"
+      ]
+    },
+    {
+      "id": "encryption.keys",
+      "area": "encryption",
+      "pillar": "security-posture",
+      "title": "Key ownership",
+      "decides": "Platform-managed or customer-managed keys.",
+      "home": {
+        "decision": "proposed:hostPool.encryption",
+        "facts": [],
+        "intake": [
+          "proposed:intake.keyRequirements"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:disk-encryption-options#customer-keys"
+        ],
+        "says": "Customer-managed keys through a disk encryption set when a requirement asks for them; no source says they're needed by default."
+      },
+      "measure": "intake",
+      "landingZone": []
+    },
+    {
+      "id": "encryption.profile-transit",
+      "area": "encryption",
+      "pillar": "security-posture",
+      "title": "Profile traffic encryption",
+      "decides": "SMB channel encryption and Kerberos settings on the profile share.",
+      "home": {
+        "decision": "proposed:profile.storage",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "owned",
+        "claims": [],
+        "says": "Owned by the security method."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md",
+      "measure": "rebuild",
+      "landingZone": []
+    },
+    {
+      "id": "updates.os-servicing",
+      "area": "updates",
+      "pillar": "images",
+      "title": "OS servicing method",
+      "decides": "Patch in place or replace from an updated image, by OS and pool type.",
+      "home": {
+        "decision": "proposed:hostPool.updates",
+        "facts": [
+          "c11.hostPool.type",
+          "c11.hostPool.images"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-update-methods#method-by-os",
+          "ref:avd-update-methods#multisession-image-based",
+          "ref:avd-update-methods#server-update-manager",
+          "ref:avd-update-methods#pooled-image-servicing",
+          "ref:avd-host-pool-types#pooled-updated-by-redeploy",
+          "ref:avd-session-host-update#initial-then-batches",
+          "ref:review-checklists-avd#E01.09"
+        ],
+        "says": "Multi-session and pooled hosts are replaced from an updated image (session host update or a new gallery version), not patched in place; plan for emergency patches."
+      },
+      "measure": "fact",
+      "landingZone": []
+    },
+    {
+      "id": "updates.image-currency",
+      "area": "updates",
+      "pillar": "images",
+      "title": "Image source and currency",
+      "decides": "Which OS image the hosts run and how current it is.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": [
+          "c11.hostPool.images"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#B01.03",
+          "ref:review-checklists-avd#B01.07",
+          "ref:avd-update-methods#hotpatch",
+          "gap:deployment-dimensions"
+        ],
+        "says": "A chosen OS image kept current, FSLogix included in each image update; the security guide's monthly rebuild is owned by the security method, and no source sets a maximum image age."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md",
+      "observations": [
+        "obs:wdot-pin-on-image-version"
+      ],
+      "measure": "fact",
+      "landingZone": [
+        "sessionHostImage"
+      ]
+    },
+    {
+      "id": "updates.image-rollout",
+      "area": "updates",
+      "pillar": "images",
+      "title": "Image rollout to hosts",
+      "decides": "How a new image version reaches a pool - canary first, how many hosts at a time, how users move off old hosts, and what to roll back to.",
+      "home": {
+        "decision": "proposed:hostPool.updates",
+        "facts": [
+          "c11.hostPool.images"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:avd-session-host-update#initial-then-batches",
+          "ref:avd-session-host-update#test-on-aligned-pool",
+          "ref:avd-session-host-update#autoscale-off-during-update",
+          "ref:review-checklists-avd#E01.09",
+          "ref:review-checklists-avd#E01.11"
+        ],
+        "says": "Test on a pool aligned to production first; replace one host before the rest, in batches or alongside the old ones; drain and notify before removing; keep the previous version to roll back to. With the native session host update, autoscale is off for the update."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "Set by the landing zone's image pipeline and rotation script (spec section 6), not a template parameter."
+    },
+    {
+      "id": "updates.agent",
+      "area": "updates",
+      "pillar": "images",
+      "title": "AVD agent updates and token refresh",
+      "decides": "The agent update window and keeping idle hosts registered.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": [
+          "c11.hostPool.startVmOnConnect"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#E01.10",
+          "ref:review-checklists-avd#E01.13"
+        ],
+        "says": "Schedule agent updates, and turn every host on at least every 90 days."
+      },
+      "measure": "rebuild",
+      "landingZone": []
+    },
+    {
+      "id": "updates.validation-pool",
+      "area": "updates",
+      "pillar": "images",
+      "title": "Validation pool",
+      "decides": "Whether a canary pool takes service updates first.",
+      "home": {
+        "decision": "proposed:hostPool.updates",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#E01.11"
+        ],
+        "says": "Keep a validation host pool."
+      },
+      "measure": "rebuild",
+      "landingZone": [
+        "validationEnvironment"
+      ]
+    },
+    {
+      "id": "region",
+      "area": "network",
+      "pillar": "capacity",
+      "title": "Region",
+      "decides": "Which region hosts each pool.",
+      "home": {
+        "decision": "region",
+        "facts": [
+          "c11.subscription.regions",
+          "c11.hostPool.region",
+          "c11.policy.assignments"
+        ],
+        "intake": [
+          "intake.residency",
+          "intake.preferredRegions"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-prerequisites#rtt-under-150",
+          "ref:review-checklists-avd#C03.03"
+        ],
+        "says": "The region with round trip under 150 ms from the users, with quota for the chosen sizes."
+      },
+      "observations": [
+        "obs:region-latency-from-the-user"
+      ],
+      "measure": "fact",
+      "landingZone": [
+        "location",
+        "allowedLocations"
+      ]
+    },
+    {
+      "id": "reliability.zones",
+      "area": "reliability",
+      "pillar": "reliability",
+      "title": "Availability zones",
+      "decides": "Whether hosts spread across zones.",
+      "home": {
+        "decision": "proposed:hostPool.zones",
+        "facts": [
+          "proposed:c11.sessionHost.zone"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#A01.04"
+        ],
+        "says": "Choose the resiliency option per host pool; zones where the region has them."
+      },
+      "measure": "rebuild",
+      "landingZone": [
+        "availabilityZones"
+      ]
+    },
+    {
+      "id": "reliability.dr-model",
+      "area": "reliability",
+      "pillar": "reliability",
+      "title": "Disaster recovery model",
+      "decides": "Per pool, how it comes back after a region loss - rebuild, restore, warm standby (active-passive) or active-active - and where.",
+      "home": {
+        "decision": "region",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#A01.06",
+          "ref:avd-multiregion-bcdr#active-active-vs-passive",
+          "ref:avd-multiregion-bcdr#estimates-to-test",
+          "ref:avd-multiregion-bcdr#capacity-not-guaranteed",
+          "ref:avd-multiregion-bcdr#image-in-both-regions",
+          "ref:avd-multiregion-bcdr#selective-failover-test"
+        ],
+        "says": "A recovery model per pool type with targets treated as estimates until tested; the same image in both regions; recovery-region capacity is not guaranteed; test with a subset of users first."
+      },
+      "measure": "none",
+      "landingZone": [
+        "recoveryLocation"
+      ]
+    },
+    {
+      "id": "profile.cross-region",
+      "area": "reliability",
+      "pillar": "reliability",
+      "title": "Profiles across regions",
+      "decides": "How profile containers reach a second region and how failover avoids profile conflicts.",
+      "home": {
+        "decision": "proposed:profile.storage",
+        "facts": [
+          "c11.storage.sku"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-multiregion-bcdr#cloud-cache-over-storage-replication",
+          "ref:avd-multiregion-bcdr#one-pool-at-a-time",
+          "ref:avd-multiregion-bcdr#cache-disk-sizing",
+          "ref:fslogix-bcdr#options",
+          "ref:fslogix-bcdr#events-rarely-graceful"
+        ],
+        "says": "FSLogix Cloud Cache, not storage replication (Premium Files has no GRS); users in one pool at a time; a local cache disk at least as large as the largest profile; critical data in OneDrive or SharePoint."
+      },
+      "measure": "none",
+      "landingZone": []
+    },
+    {
+      "id": "network.mode",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Topology and connectivity mode",
+      "decides": "Standalone spoke, peered to a hub, or attached to a Virtual WAN hub.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "c11.network.virtualNetworks"
+        ],
+        "intake": [
+          "intake.existingHub"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:arch-hub-spoke#hub-shared-services",
+          "ref:virtual-wan#managed-transit",
+          "ref:caf-avd-network#vwan-for-transit",
+          "ref:arch-avd-design-guide#platform-connectivity",
+          "ref:review-checklists-avd#F01.02"
+        ],
+        "says": "A spoke per workload peered to a shared hub, or Virtual WAN when managed transit between VPN and ExpressRoute is needed."
+      },
+      "measure": "fact",
+      "landingZone": [
+        "connectivityMode",
+        "hubVnetResourceId",
+        "createHubToSpokePeering"
+      ]
+    },
+    {
+      "id": "network.addressing",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Address space and subnet sizing",
+      "decides": "Spoke and subnet prefixes, and the headroom left for hosts and private endpoints.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "c11.network.virtualNetworks",
+          "proposed:c11.network.hostSubnets.freeAddresses"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:avd-private-link#address-headroom",
+          "ref:arch-private-link-hub-spoke#placement-decision-tree",
+          "gap:network-scope"
+        ],
+        "says": "Leave headroom for private endpoints and growth; no source gives a hosts-to-prefix rule (gap:network-scope)."
+      },
+      "measure": "fact",
+      "landingZone": [
+        "spokeAddressPrefix",
+        "sessionHostSubnetPrefix",
+        "privateEndpointSubnetPrefix",
+        "deployImageBuildSubnets",
+        "imageBuildSubnetPrefix",
+        "imageBuildAciSubnetPrefix"
+      ]
+    },
+    {
+      "id": "network.dns",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Name resolution and private DNS zones",
+      "decides": "Azure-provided or custom DNS, private DNS zones local or central, and how on-premises and the hub resolve them.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "c11.network.customDnsVirtualNetworks",
+          "proposed:c11.network.privateDnsZoneLinks"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:private-endpoint-dns#zone-per-service",
+          "ref:dns-private-resolver#hybrid-resolution",
+          "ref:caf-avd-network#dns-like-iaas",
+          "ref:avd-private-link-setup#dns-zones"
+        ],
+        "says": "Every private endpoint name resolves to its private address from the host network through a linked zone or forwarding."
+      },
+      "measure": "fact",
+      "landingZone": [
+        "dnsServers",
+        "centralPrivateDnsZoneResourceIds"
+      ]
+    },
+    {
+      "id": "network.egress",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Outbound connectivity",
+      "decides": "NAT Gateway, a route to a firewall or appliance, or load balancer outbound rules; default outbound access off.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "c11.network.defaultRoutes",
+          "proposed:c11.network.hostSubnets.explicitEgress",
+          "proposed:c11.network.hostSubnets.defaultOutboundAccess"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:default-outbound#explicit-outbound",
+          "ref:default-outbound#private-subnets-default",
+          "ref:nat-gateway#subnet-egress",
+          "ref:review-checklists-avd#F01.04",
+          "ref:review-checklists-avd#F01.06"
+        ],
+        "says": "An explicit outbound method on every host subnet; default outbound access is not a design."
+      },
+      "measure": "fact",
+      "landingZone": [
+        "hubFirewallPrivateIp"
+      ]
+    },
+    {
+      "id": "network.required-endpoints",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Required endpoints, ports and service tags",
+      "decides": "How hosts reach the published AVD endpoints, the platform addresses and the identity endpoints through NSGs, routes and firewalls.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "proposed:c11.network.hostSubnets.avdOutboundDenied",
+          "proposed:c11.network.hostSubnets.fabricDenyRules"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-required-fqdn#host-list",
+          "ref:avd-required-fqdn#blocking-unsupported",
+          "ref:avd-required-fqdn#service-and-fqdn-tags",
+          "ref:avd-fabric-ips#no-deny-no-route",
+          "ref:firewall-avd#fqdn-tag-rules",
+          "ref:review-checklists-avd#F01.05",
+          "ref:review-checklists-avd#F01.07"
+        ],
+        "says": "The published endpoints reachable from every host, by service and FQDN tags; no rule or route aimed at the platform addresses."
+      },
+      "measure": "host-side",
+      "landingZone": []
+    },
+    {
+      "id": "network.inspection",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Inspection, proxies and forced tunneling",
+      "decides": "Which traffic a firewall, proxy or tunnel may carry or inspect, and what bypasses it.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "c11.network.defaultRoutes"
+        ],
+        "intake": [
+          "proposed:intake.inspection"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-proxy#bypass-proxies",
+          "ref:avd-proxy#no-ssl-termination",
+          "ref:avd-proxy#no-auth-proxy",
+          "ref:avd-fabric-ips#never-proxy-or-tunnel",
+          "ref:firewall-avd#bypass-route-for-scale-in",
+          "ref:caf-avd-network#forced-tunnel-supported",
+          "ref:review-checklists-avd#F01.08"
+        ],
+        "says": "Forced tunneling is allowed when the requirements hold; no SSL termination or authenticating proxy for AVD, the platform addresses never tunneled, a direct route for the AVD service tag past a firewall."
+      },
+      "observations": [
+        "obs:hub-route-without-avd-bypass"
+      ],
+      "measure": "host-side",
+      "landingZone": []
+    },
+    {
+      "id": "network.private-access",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Private endpoints and AVD Private Link (Azure side)",
+      "decides": "Which AVD Private Link layout (connection, feed, global) and public access settings, and private endpoints for profile storage and Key Vault.",
+      "home": {
+        "decision": "network",
+        "facts": [
+          "c11.network.privateEndpoints",
+          "c11.storage.privateEndpoint",
+          "proposed:c11.hostPool.publicNetworkAccess",
+          "proposed:c11.workspace.publicNetworkAccess",
+          "proposed:c11.network.privateEndpoints.groupId"
+        ],
+        "checks": [
+          "asm-files-private-endpoint"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-private-link#three-sub-resources",
+          "ref:avd-private-link#four-scenarios",
+          "ref:avd-private-link#public-access-settings",
+          "ref:avd-private-link#global-workspace",
+          "ref:avd-private-link#udp-opt-in",
+          "ref:avd-private-link#full-port-range",
+          "ref:avd-private-link-setup#re-register-provider",
+          "ref:review-checklists-avd#F01.10"
+        ],
+        "says": "One of the four published layouts, chosen on purpose; the connection endpoint's full TCP range open where ports are restricted; UDP only with the opt-in."
+      },
+      "observations": [
+        "obs:private-link-session-hosts-only",
+        "obs:private-endpoint-nsg-narrower-than-avd-needs"
+      ],
+      "measure": "fact",
+      "landingZone": [
+        "enableAvdPrivateLink"
+      ]
+    },
+    {
+      "id": "network.admin-access",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Administrative access path",
+      "decides": "How operators reach hosts and private endpoints (Bastion SKU or a jumpbox), separate from the user path through AVD.",
+      "home": {
+        "decision": "proposed:network.adminAccess",
+        "facts": [
+          "proposed:c11.network.bastionHosts",
+          "proposed:c11.network.hostPublicRdp"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:bastion#admin-path",
+          "gap:network-scope"
+        ],
+        "says": "Users come in through AVD; operators through Bastion or a jumpbox, never a public RDP port. The landing zone's opt-in jumpbox (its decision 0019) is after its pinned commit."
+      },
+      "measure": "fact",
+      "landingZone": []
+    },
+    {
+      "id": "network.hybrid",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Hybrid connectivity",
+      "decides": "Whether hosts need on-premises resources, and over VPN, ExpressRoute or Virtual WAN.",
+      "home": {
+        "decision": "network",
+        "facts": [],
+        "intake": [
+          "intake.existingHub"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:caf-avd-network#hybrid-scenarios",
+          "ref:caf-avd-network#entra-joined-no-private",
+          "ref:review-checklists-avd#F01.01",
+          "ref:review-checklists-avd#F01.03"
+        ],
+        "says": "Hybrid only when hosts need on-premises resources; Entra-joined hosts need none for identity."
+      },
+      "measure": "intake",
+      "landingZone": []
+    },
+    {
+      "id": "network.monitoring",
+      "area": "network",
+      "pillar": "networking-azure",
+      "title": "Network monitoring",
+      "decides": "Flow logs with traffic analytics and path tests for the host network.",
+      "home": {
+        "decision": "proposed:network.monitoring",
+        "facts": [
+          "proposed:c11.network.flowLogs"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:vnet-flow-logs#flow-logging",
+          "ref:connection-monitor#path-tests",
+          "ref:caf-avd-network#nsg-on-all-subnets"
+        ],
+        "says": "NSGs on every subnet with flow logs and traffic analytics, and a path test where hosts depend on a hub or on-premises."
+      },
+      "measure": "fact",
+      "landingZone": []
+    },
+    {
+      "id": "hostpool.type",
+      "area": "hostpool",
+      "pillar": "use-cases",
+      "title": "Host pool type",
+      "decides": "Pooled or personal, per user group.",
+      "home": {
+        "decision": "hostPool.type",
+        "facts": [
+          "c11.hostPool.type",
+          "c11.hostPool.count"
+        ]
+      },
+      "baseline": {
+        "standing": "owned",
+        "claims": [],
+        "says": "Owned by the use case method (personas to pool type)."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/33b7ca036b5338a0031c441150244e5be7316e4e/methods/use-cases.md",
+      "measure": "fact",
+      "landingZone": []
+    },
+    {
+      "id": "hostpool.app-group",
+      "area": "hostpool",
+      "pillar": "app-delivery",
+      "title": "Desktop or RemoteApp",
+      "decides": "The application group type each user group gets.",
+      "home": {
+        "decision": "hostPool.appGroup",
+        "facts": [
+          "c11.hostPool.preferredAppGroupType",
+          "c11.hostPool.appGroups"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#C01.06"
+        ],
+        "says": "Never offer both full desktops and RemoteApps to the same users from one pool."
+      },
+      "measure": "fact",
+      "landingZone": []
+    },
+    {
+      "id": "ops.monitoring",
+      "area": "operations",
+      "pillar": "monitoring",
+      "title": "Monitoring, Insights and alerts",
+      "decides": "Insights wiring (diagnostics per AVD object, agent and data collection rule per host), log retention and alerts.",
+      "home": {
+        "decision": "proposed:operations.monitoring",
+        "facts": [
+          "proposed:c11.monitoring.diagnostics",
+          "proposed:c11.hostPool.sessionHosts.monitoringAgent",
+          "proposed:c11.hostPool.sessionHosts.insightsDcr",
+          "proposed:c11.monitoring.workspace.retentionDays",
+          "proposed:c11.monitoring.alerts"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-insights#hostpool-diagnostics",
+          "ref:avd-insights#workspace-diagnostics",
+          "ref:avd-insights#host-data-ama-dcr",
+          "ref:avd-insights#designated-workspace",
+          "ref:avd-insights-costs#counter-set",
+          "ref:avd-insights-whats-new#latest-version",
+          "ref:amba-avd#host-resources",
+          "gap:insights-facts",
+          "ref:review-checklists-avd#E02.01",
+          "ref:review-checklists-avd#E02.02",
+          "gap:deployment-dimensions"
+        ],
+        "says": "Insights' required diagnostics, agent and data collection rule as published for workbook 4.3.1, alerts against the AMBA pattern; no source sets a retention number, so retention stays a gap."
+      },
+      "measure": "rebuild",
+      "landingZone": [
+        "logRetentionDays",
+        "deploySubscriptionSettings"
+      ],
+      "note": "Alerts are fixed in the landing zone's monitoring module. Alert facts carry counts and state only, never receivers."
+    },
+    {
+      "id": "ops.config-management",
+      "area": "operations",
+      "pillar": "intune",
+      "title": "Host configuration management",
+      "decides": "How host settings are delivered (Intune or Group Policy).",
+      "home": {
+        "decision": "proposed:operations.configuration",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#E01.03"
+        ],
+        "says": "Evaluate Intune for session host management."
+      },
+      "measure": "rebuild",
+      "landingZone": [
+        "enrollInIntune"
+      ]
+    },
+    {
+      "id": "cost.power",
+      "area": "cost",
+      "pillar": "scaling",
+      "title": "Power management",
+      "decides": "Autoscale, Start VM on Connect and shutdown schedules.",
+      "home": {
+        "decision": "hostPool.power",
+        "facts": [
+          "c11.hostPool.startVmOnConnect",
+          "intake.workingHours"
+        ],
+        "checks": [
+          "asm-personal-start-vm-on-connect"
+        ]
+      },
+      "baseline": {
+        "standing": "owned",
+        "claims": [
+          "ref:review-checklists-avd#E01.05"
+        ],
+        "says": "Owned by the FinOps method; Start VM on Connect for personal pools is the one check today."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/5bc5da8f17de4cca7e51d62a4210bd7da893fa40/methods/finops.md",
+      "measure": "fact",
+      "landingZone": [
+        "startVmOnConnect",
+        "scalingTimeZone",
+        "enableAutoShutdown",
+        "autoShutdownTime",
+        "autoShutdownDays",
+        "autoShutdownTimeZone",
+        "autoShutdownScheduleAction",
+        "autoShutdownRunbookUri"
+      ]
+    },
+    {
+      "id": "cost.budget",
+      "area": "cost",
+      "pillar": "finops",
+      "title": "Budgets, tags and cost guardrails",
+      "decides": "Budgets, budget actions and cost allocation tags.",
+      "home": {
+        "decision": "proposed:cost.budget",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "owned",
+        "claims": [],
+        "says": "Owned by the FinOps method."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/5bc5da8f17de4cca7e51d62a4210bd7da893fa40/methods/finops.md",
+      "measure": "rebuild",
+      "landingZone": [
+        "monthlyBudgetAmount",
+        "budgetStartDate",
+        "autoShutdownBudgetAction",
+        "autoShutdownBudgetPercent",
+        "tags"
+      ]
+    }
+  ],
+  "baselines": {
+    "window": [
+      {
+        "id": "days",
+        "rule": "At least 7 days that include the estate's busiest working days; longer when use has a monthly peak.",
+        "claims": [
+          "ref:advisor-vm-rightsize#lookback",
+          "gap:baseline-profile"
+        ],
+        "standing": "published"
+      },
+      {
+        "id": "hours",
+        "rule": "Judge utilization in the ramp-up and peak hours from intake only; hours a scaling plan has hosts off or idle by design are not evidence of waste.",
+        "claims": [
+          "gap:baseline-profile",
+          "gap:intake",
+          "ref:advisor-vm-rightsize#not-always-applicable"
+        ],
+        "standing": "guidance"
+      },
+      {
+        "id": "statistic",
+        "rule": "Percentiles, not averages; P95 for CPU, network, delay and time, P99 for memory, P50 kept beside them.",
+        "claims": [
+          "ref:waf-performance-targets#percentiles",
+          "ref:advisor-vm-rightsize#user-facing-targets"
+        ],
+        "standing": "published"
+      },
+      {
+        "id": "counting",
+        "rule": "A host is over a threshold when at least 5% of its sampled hours are, as in the sample check.",
+        "claims": [
+          "gap:sample-check"
+        ],
+        "standing": "guidance"
+      }
+    ],
+    "experience": [
+      {
+        "metric": "rtt-to-region",
+        "target": "P95 under 150 ms; under 100 ms ideal; over 200 ms poor",
+        "claims": [
+          "ref:avd-prerequisites#rtt-under-150",
+          "ref:avd-insights-use-cases#rtt-ideal-100-poor-200"
+        ],
+        "standing": "published"
+      },
+      {
+        "metric": "input-delay-session",
+        "target": "P95 under 150 ms good, up to 500 ms acceptable, over that poor; users expect under 200 ms",
+        "claims": [
+          "ref:avd-insights-glossary#input-delay-bands",
+          "ref:session-host-sizing#input-delay-expectation"
+        ],
+        "standing": "published"
+      },
+      {
+        "metric": "input-delay-host",
+        "target": "Each host's P95 ideally under 100 ms",
+        "claims": [
+          "ref:avd-insights-use-cases#input-delay-host-100"
+        ],
+        "standing": "published"
+      },
+      {
+        "metric": "logon-time",
+        "target": "The estate's own first median and P95; later runs judge change against it",
+        "claims": [
+          "gap:logon-target"
+        ],
+        "standing": "baseline"
+      },
+      {
+        "metric": "app-load-time",
+        "target": "The estate's own first median and P95",
+        "claims": [
+          "gap:sample-check"
+        ],
+        "standing": "baseline"
+      }
+    ],
+    "utilization": [
+      {
+        "metric": "cpu",
+        "bands": [
+          {
+            "band": "under",
+            "rule": "The next smaller size would still keep peak P95 CPU at 40% or less",
+            "claims": [
+              "ref:advisor-vm-rightsize#user-facing-targets"
+            ],
+            "standing": "published"
+          },
+          {
+            "band": "good",
+            "rule": "Peak P95 CPU under 50%",
+            "claims": [
+              "ref:perfmon-troubleshooting#cpu-bands"
+            ],
+            "standing": "published"
+          },
+          {
+            "band": "watch",
+            "rule": "Peak P95 CPU from 50% to 80%",
+            "claims": [
+              "ref:perfmon-troubleshooting#cpu-bands",
+              "gap:baseline-profile"
+            ],
+            "standing": "guidance"
+          },
+          {
+            "band": "over",
+            "rule": "Peak P95 CPU over 80%, or a processor queue of two or more per core while CPU is high",
+            "claims": [
+              "ref:perfmon-troubleshooting#cpu-bands",
+              "ref:perfmon-troubleshooting#pql-per-processor"
+            ],
+            "standing": "published"
+          }
+        ]
+      },
+      {
+        "metric": "memory",
+        "bands": [
+          {
+            "band": "under",
+            "rule": "The next smaller size would still keep peak P99 memory at 60% or less",
+            "claims": [
+              "ref:advisor-vm-rightsize#user-facing-targets"
+            ],
+            "standing": "published"
+          },
+          {
+            "band": "good",
+            "rule": "Peak P99 memory at 60% or less",
+            "claims": [
+              "ref:advisor-vm-rightsize#user-facing-targets"
+            ],
+            "standing": "published"
+          },
+          {
+            "band": "over",
+            "rule": "Above 60%, judged against the estate's own first P99 and its paging; no source gives a session host a ceiling",
+            "claims": [
+              "gap:sample-check",
+              "gap:baseline-profile"
+            ],
+            "standing": "baseline"
+          }
+        ]
+      },
+      {
+        "metric": "idle",
+        "bands": [
+          {
+            "band": "idle",
+            "rule": "P95 of maximum CPU under 3% over the window; for personal hosts a shutdown candidate, for pooled hosts a scaling plan question",
+            "claims": [
+              "ref:advisor-vm-rightsize#shutdown-criteria",
+              "ref:avd-insights-use-cases#utilization-for-scaling"
+            ],
+            "standing": "published"
+          }
+        ]
+      },
+      {
+        "metric": "disk-latency",
+        "bands": [
+          {
+            "band": "over",
+            "rule": "Worse than the estate's own first P95; no source gives a session host a number",
+            "claims": [
+              "gap:sample-check"
+            ],
+            "standing": "baseline"
+          }
+        ]
+      }
+    ],
+    "host": [
+      {
+        "rule": "Multi-session hosts between 6 and 24 vCPU, never under 4",
+        "claims": [
+          "ref:session-host-sizing#multisession-vcpu-range"
+        ],
+        "standing": "published"
+      },
+      {
+        "rule": "More smaller hosts rather than fewer large ones; capacity grows by about 1.5 to 1.9 times per doubling of cores",
+        "claims": [
+          "ref:session-host-sizing#more-smaller-vms",
+          "ref:session-host-sizing#cpu-scaling-factor"
+        ],
+        "standing": "published"
+      },
+      {
+        "rule": "At least two hosts per pooled host pool, plus headroom for sign-in storms at the start of a shift",
+        "claims": [
+          "ref:waf-reliability-checklist#RE:05",
+          "ref:session-host-sizing#logon-storm-headroom"
+        ],
+        "standing": "guidance"
+      },
+      {
+        "rule": "Measured density is the most sessions per host at which every experience target holds at peak and CPU stays out of the over band",
+        "claims": [
+          "gap:baseline-profile",
+          "ref:session-host-sizing#capacity-approaches"
+        ],
+        "standing": "guidance"
+      }
+    ],
+    "classes": [
+      {
+        "id": "light",
+        "multiSession": {
+          "usersPerVcpuMax": 6,
+          "minVcpu": 8,
+          "minMemoryGiB": 16,
+          "osDiskGiB": 32
+        },
+        "singleSession": {
+          "minVcpu": 2,
+          "minMemoryGiB": 8,
+          "osDiskGiB": 32
+        },
+        "profileGiB": 30,
+        "claims": [
+          "ref:session-host-sizing#multisession-users-per-vcpu",
+          "ref:session-host-sizing#multisession-minimums",
+          "ref:session-host-sizing#single-session-minimums",
+          "ref:session-host-sizing#profile-storage-minimum",
+          "ref:session-host-sizing#estimates-only"
+        ],
+        "standing": "prior"
+      },
+      {
+        "id": "medium",
+        "multiSession": {
+          "usersPerVcpuMax": 4,
+          "minVcpu": 8,
+          "minMemoryGiB": 16,
+          "osDiskGiB": 32
+        },
+        "singleSession": {
+          "minVcpu": 4,
+          "minMemoryGiB": 16,
+          "osDiskGiB": 32
+        },
+        "profileGiB": 30,
+        "claims": [
+          "ref:session-host-sizing#multisession-users-per-vcpu",
+          "ref:session-host-sizing#multisession-minimums",
+          "ref:session-host-sizing#single-session-minimums",
+          "ref:session-host-sizing#profile-storage-minimum",
+          "ref:session-host-sizing#estimates-only"
+        ],
+        "standing": "prior"
+      },
+      {
+        "id": "heavy",
+        "multiSession": {
+          "usersPerVcpuMax": 2,
+          "minVcpu": 8,
+          "minMemoryGiB": 16,
+          "osDiskGiB": 32
+        },
+        "singleSession": {
+          "minVcpu": 8,
+          "minMemoryGiB": 32,
+          "osDiskGiB": 32
+        },
+        "profileGiB": 30,
+        "claims": [
+          "ref:session-host-sizing#multisession-users-per-vcpu",
+          "ref:session-host-sizing#multisession-minimums",
+          "ref:session-host-sizing#single-session-minimums",
+          "ref:session-host-sizing#profile-storage-minimum",
+          "ref:session-host-sizing#estimates-only"
+        ],
+        "standing": "prior"
+      },
+      {
+        "id": "power",
+        "multiSession": {
+          "usersPerVcpuMax": 1,
+          "minVcpu": 6,
+          "minMemoryGiB": 56,
+          "osDiskGiB": 340
+        },
+        "profileGiB": 30,
+        "gpu": "Consider GPU hosts for graphics-heavy apps or more than 3840 x 2160 total resolution; users per GPU has no published number",
+        "claims": [
+          "ref:session-host-sizing#multisession-users-per-vcpu",
+          "ref:session-host-sizing#multisession-minimums",
+          "ref:session-host-sizing#gpu-for-graphics",
+          "ref:session-host-sizing#profile-storage-minimum",
+          "ref:session-host-sizing#estimates-only",
+          "gap:deployment-dimensions"
+        ],
+        "standing": "prior"
+      }
+    ]
+  },
+  "useCases": [
+    {
+      "id": "task-worker",
+      "kind": "persona",
+      "title": "Task worker",
+      "summary": "Structured, repetitive work in a few line-of-business apps or forms, often in shifts; the densest pooled hosts.",
+      "starts": {
+        "function": "task",
+        "workload": "light",
+        "gpu": "none",
+        "desktop": "pooled",
+        "delivery": "desktop",
+        "apps.multiSession": "yes",
+        "trustBoundary": "one-org-standard",
+        "criticality": "standard"
+      },
+      "pattern": {
+        "hours": "shifts",
+        "media": "none",
+        "endpoints": "any"
+      },
+      "profile": "light",
+      "why": [
+        {
+          "sets": [
+            "function",
+            "workload"
+          ],
+          "claims": [
+            "ref:session-host-sizing#workload-types",
+            "ref:session-host-sizing#estimates-only"
+          ],
+          "standing": "prior"
+        },
+        {
+          "sets": [
+            "desktop",
+            "apps.multiSession",
+            "trustBoundary"
+          ],
+          "claims": [
+            "ref:avd-azure-local-workload#multi-session-when",
+            "ref:avd-security-guide#trust-boundary",
+            "ref:caf-avd-poc#assumptions"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Everyone signs in at the start of the shift; hosts and profile storage need headroom for the storm, not only for steady state.",
+          "claims": [
+            "ref:session-host-sizing#logon-storm-headroom",
+            "ref:azure-files-vdi#storm-sizing"
+          ]
+        },
+        {
+          "risk": "A scaling plan or Start VM on Connect that ramps up late makes the first users of a shift wait for hosts to power on.",
+          "claims": [
+            "ref:avd-autoscale#capacity-threshold",
+            "ref:start-vm-on-connect#slower-first-connection"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "An app in the persona's set isn't multi-session compatible.",
+          "to": "legacy-app",
+          "claims": [
+            "ref:caf-avd-assess#application-questions"
+          ]
+        },
+        {
+          "if": "Measured per-user demand sits a class above light at peak.",
+          "to": "knowledge-worker",
+          "claims": [
+            "obs:users-per-vcpu-adopted",
+            "gap:use-cases"
+          ]
+        }
+      ],
+      "decisions": [
+        "hostPool.maxSessions",
+        "hostPool.hosts",
+        "hostPool.power"
+      ],
+      "dimensions": [
+        "density.sessions-per-host",
+        "compute.host-count",
+        "cost.power",
+        "profile.storage-performance"
+      ]
+    },
+    {
+      "id": "knowledge-worker",
+      "kind": "persona",
+      "title": "Knowledge worker",
+      "summary": "Office and web apps, mail, documents and meetings most of the day; the common default for a general pooled desktop.",
+      "starts": {
+        "function": "knowledge",
+        "workload": "medium",
+        "gpu": "none",
+        "desktop": "pooled",
+        "delivery": "desktop",
+        "apps.m365": "yes",
+        "apps.multiSession": "yes",
+        "trustBoundary": "one-org-standard",
+        "criticality": "standard"
+      },
+      "pattern": {
+        "hours": "office",
+        "media": "teams",
+        "endpoints": "managed"
+      },
+      "profile": "medium",
+      "why": [
+        {
+          "sets": [
+            "function",
+            "workload"
+          ],
+          "claims": [
+            "ref:session-host-sizing#workload-types",
+            "ref:session-host-sizing#multisession-users-per-vcpu",
+            "ref:session-host-sizing#estimates-only"
+          ],
+          "standing": "prior"
+        },
+        {
+          "sets": [
+            "apps.m365"
+          ],
+          "claims": [
+            "ref:caf-avd-assess#application-questions",
+            "ref:review-checklists-avd#B01.10"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Teams without media optimization runs calls and video on the host, which costs density and call quality.",
+          "claims": [
+            "ref:teams-on-avd#media-optimization",
+            "ref:teams-on-avd#classic-teams-end"
+          ]
+        },
+        {
+          "risk": "Video in the browser is rendered on the host unless multimedia redirection covers the site.",
+          "claims": [
+            "ref:multimedia-redirection#video-playback",
+            "ref:multimedia-redirection#supported-sites",
+            "ref:review-checklists-avd#B03.02"
+          ]
+        },
+        {
+          "risk": "Profiles grow with mail and documents; the profile size cap and storage tier need review as they do.",
+          "claims": [
+            "ref:session-host-sizing#profile-storage-minimum",
+            "ref:review-checklists-avd#H04.03",
+            "ref:avd-fslogix-storage#tier-by-workload"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "Users need local administrator rights or install their own tools.",
+          "to": "developer",
+          "claims": [
+            "ref:avd-security-guide#trust-boundary"
+          ]
+        },
+        {
+          "if": "Users need a GPU for their apps or high total resolution.",
+          "to": "graphics-power",
+          "claims": [
+            "ref:session-host-sizing#gpu-for-graphics"
+          ]
+        }
+      ],
+      "decisions": [
+        "hostPool.vmSize",
+        "hostPool.maxSessions",
+        "hostPool.profileQuotaGiB"
+      ],
+      "dimensions": [
+        "compute.vm-size",
+        "density.sessions-per-host",
+        "perf.media",
+        "profile.capacity"
+      ]
+    },
+    {
+      "id": "developer",
+      "kind": "persona",
+      "title": "Developer or engineer with admin needs",
+      "summary": "Builds, debugs and installs tools; heavy CPU and memory bursts, and often local administrator rights, which rules out sharing a host.",
+      "starts": {
+        "function": "developer",
+        "workload": "heavy",
+        "gpu": "none",
+        "desktop": "personal",
+        "dedicatedBecause": [
+          "admin-rights"
+        ],
+        "delivery": "desktop",
+        "trustBoundary": "needs-admin",
+        "criticality": "standard"
+      },
+      "pattern": {
+        "hours": "office",
+        "media": "teams",
+        "endpoints": "managed"
+      },
+      "profile": "heavy",
+      "why": [
+        {
+          "sets": [
+            "function",
+            "workload"
+          ],
+          "claims": [
+            "ref:session-host-sizing#workload-types",
+            "ref:session-host-sizing#single-session-minimums"
+          ],
+          "standing": "prior"
+        },
+        {
+          "sets": [
+            "desktop",
+            "dedicatedBecause",
+            "trustBoundary"
+          ],
+          "claims": [
+            "ref:avd-security-guide#trust-boundary",
+            "ref:avd-security-guide#tiered-admin",
+            "ref:review-checklists-avd#G03.03",
+            "ref:avd-azure-local-workload#single-session-when"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Personal hosts left running between working days cost the most for the least use; power them on at connect and off when idle.",
+          "claims": [
+            "ref:review-checklists-avd#E01.05",
+            "ref:review-checklists-avd#E01.06",
+            "ref:avd-autoscale#hibernate-personal",
+            "ref:advisor-vm-rightsize#shutdown-criteria"
+          ]
+        },
+        {
+          "risk": "Local administrator rights let a user undo host controls, so personal hosts with admin rights need their own security review.",
+          "claims": [
+            "ref:avd-security-guide#tiered-admin",
+            "ref:review-checklists-avd#G03.07"
+          ]
+        },
+        {
+          "risk": "Personal hosts hold state, so they need a recovery plan pooled hosts don't.",
+          "claims": [
+            "ref:review-checklists-avd#A01.06"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "The toolchain is standard and nobody needs admin rights.",
+          "then": "desktop: pooled at the heavy class",
+          "claims": [
+            "ref:avd-security-guide#trust-boundary",
+            "ref:session-host-sizing#multisession-users-per-vcpu"
+          ]
+        }
+      ],
+      "decisions": [
+        "hostPool.type",
+        "hostPool.vmSize",
+        "hostPool.power"
+      ],
+      "dimensions": [
+        "hostpool.type",
+        "compute.vm-size",
+        "cost.power",
+        "security.host-type"
+      ]
+    },
+    {
+      "id": "graphics-power",
+      "kind": "persona",
+      "title": "Graphics, design and engineering",
+      "summary": "CAD, GIS, 3D, video editing or other graphics-heavy apps; GPU hosts, low density, and app vendors' own sizing tiers.",
+      "starts": {
+        "function": "engineering",
+        "workload": "power",
+        "gpu": "required",
+        "desktop": "either",
+        "delivery": "desktop",
+        "criticality": "standard"
+      },
+      "pattern": {
+        "hours": "office",
+        "media": "video",
+        "endpoints": "managed"
+      },
+      "profile": "power",
+      "why": [
+        {
+          "sets": [
+            "workload",
+            "gpu"
+          ],
+          "claims": [
+            "ref:session-host-sizing#workload-types",
+            "ref:session-host-sizing#gpu-for-graphics",
+            "ref:review-checklists-avd#C01.12"
+          ],
+          "standing": "prior"
+        },
+        {
+          "sets": [
+            "function",
+            "workload"
+          ],
+          "claims": [
+            "ref:avd-gis-workload-example#app-specific-tiers",
+            "ref:avd-gis-workload-example#monitor-then-resize"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "No source publishes users per GPU; density has to come from a pilot on the persona's own apps.",
+          "claims": [
+            "ref:avd-gpu-acceleration#density-tradeoff",
+            "ref:avd-gis-workload-example#limit-users-per-vm",
+            "gap:deployment-dimensions"
+          ]
+        },
+        {
+          "risk": "Compute GPUs and retired series look like valid choices; read the supported size list against the current size pages.",
+          "claims": [
+            "ref:avd-gpu-acceleration#supported-sizes",
+            "ref:avd-gpu-acceleration#no-compute-gpus"
+          ]
+        },
+        {
+          "risk": "GPU sizes are scarce in some regions; check quota and availability before the region is chosen.",
+          "claims": [
+            "ref:review-checklists-avd#C03.03"
+          ]
+        },
+        {
+          "risk": "Only Azure-distributed GPU drivers are supported, and the bundled graphics license covers a fixed number of concurrent users.",
+          "claims": [
+            "ref:avd-gpu-acceleration#grid-driver-only",
+            "ref:avd-gpu-acceleration#grid-license-25"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "The app publishes its own light, medium and heavy tiers.",
+          "then": "Use the app's tiers to split the persona, and keep workload: power only for the GPU tier",
+          "claims": [
+            "ref:avd-gis-workload-example#app-specific-tiers"
+          ]
+        }
+      ],
+      "decisions": [
+        "hostPool.vmSize",
+        "hostPool.maxSessions",
+        "region"
+      ],
+      "dimensions": [
+        "graphics.gpu-need",
+        "graphics.gpu-size",
+        "graphics.users-per-gpu",
+        "compute.workload-benchmark"
+      ]
+    },
+    {
+      "id": "contact-center",
+      "kind": "persona",
+      "title": "Contact center agent",
+      "summary": "Customer calls in a browser or softphone with a CRM beside it, in shifts; light on the host but intolerant of dropped sessions and poor audio.",
+      "starts": {
+        "function": "frontline",
+        "workload": "light",
+        "gpu": "none",
+        "desktop": "pooled",
+        "delivery": "desktop",
+        "apps.multiSession": "yes",
+        "trustBoundary": "one-org-standard",
+        "dataControls": [
+          "clipboard-restricted",
+          "drives-off"
+        ],
+        "criticality": "business-critical"
+      },
+      "pattern": {
+        "hours": "follow-the-sun",
+        "media": "web-calls",
+        "endpoints": "any"
+      },
+      "profile": "light",
+      "why": [
+        {
+          "sets": [
+            "workload"
+          ],
+          "claims": [
+            "ref:session-host-sizing#workload-types",
+            "ref:session-host-sizing#estimates-only"
+          ],
+          "standing": "prior"
+        },
+        {
+          "sets": [
+            "function"
+          ],
+          "claims": [
+            "ref:avd-surface-scenarios#business-conversations",
+            "ref:contact-center-voice-avd#reconnect-window"
+          ],
+          "standing": "guidance"
+        },
+        {
+          "sets": [
+            "criticality"
+          ],
+          "claims": [
+            "ref:contact-center-voice-avd#reconnect-window",
+            "ref:waf-reliability-checklist#RE:04"
+          ],
+          "standing": "guidance"
+        },
+        {
+          "sets": [
+            "dataControls"
+          ],
+          "claims": [
+            "ref:avd-security-guide#device-redirection",
+            "ref:review-checklists-avd#G02.06",
+            "obs:redirection-kept-for-usability"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "tighten": [
+        {
+          "rule": "Count session drops as experience failures; a drop longer than the platform's reconnect window costs a live call.",
+          "claims": [
+            "ref:contact-center-voice-avd#reconnect-window",
+            "ref:avd-connection-quality#rtt-bands"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Browser-based calls run on the host unless multimedia redirection covers the calling site, and the host side of it doesn't update itself.",
+          "claims": [
+            "ref:multimedia-redirection#call-redirection",
+            "ref:multimedia-redirection#supported-sites",
+            "ref:multimedia-redirection#service-manual-update",
+            "ref:contact-center-voice-avd#needs-multimedia-redirection"
+          ]
+        },
+        {
+          "risk": "Call redirection needs capable local devices; thin or old endpoints may not qualify.",
+          "claims": [
+            "ref:multimedia-redirection#local-device-requirements"
+          ]
+        },
+        {
+          "risk": "Multimedia redirection isn't available in the US Government cloud.",
+          "claims": [
+            "ref:multimedia-redirection#not-in-government"
+          ]
+        },
+        {
+          "risk": "Round trip and transport decide call and screen quality; measure from the agents' locations.",
+          "claims": [
+            "ref:rdp-shortpath#udp-transport",
+            "ref:avd-prerequisites#rtt-under-150",
+            "obs:region-latency-from-the-user"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "Calls use Teams rather than a browser-based platform.",
+          "then": "pattern.media: teams; follow the knowledge worker's Teams risks",
+          "claims": [
+            "ref:teams-on-avd#media-optimization"
+          ]
+        }
+      ],
+      "decisions": [
+        "hostPool.hosts",
+        "hostPool.power",
+        "region"
+      ],
+      "dimensions": [
+        "perf.media",
+        "perf.transport",
+        "perf.experience-targets",
+        "security.redirection",
+        "compute.host-count"
+      ]
+    },
+    {
+      "id": "external-contractor",
+      "kind": "persona",
+      "title": "Contractor or partner staff",
+      "summary": "People from another company working for the organization, often on their own devices; a governed desktop instead of a shipped laptop.",
+      "starts": {
+        "function": "external",
+        "workload": "medium",
+        "gpu": "none",
+        "desktop": "pooled",
+        "delivery": "desktop",
+        "trustBoundary": "one-org-standard",
+        "dataControls": [
+          "clipboard-restricted",
+          "drives-off",
+          "screen-capture-protection",
+          "watermarking"
+        ],
+        "criticality": "standard"
+      },
+      "pattern": {
+        "hours": "office",
+        "media": "teams",
+        "endpoints": "unmanaged"
+      },
+      "profile": "medium",
+      "why": [
+        {
+          "sets": [
+            "function"
+          ],
+          "claims": [
+            "ref:avd-surface-scenarios#business-conversations",
+            "ref:caf-avd-innovate#temporary-workers"
+          ],
+          "standing": "guidance"
+        },
+        {
+          "sets": [
+            "workload"
+          ],
+          "claims": [
+            "ref:session-host-sizing#workload-types",
+            "ref:session-host-sizing#estimates-only"
+          ],
+          "standing": "prior"
+        },
+        {
+          "sets": [
+            "dataControls"
+          ],
+          "claims": [
+            "ref:caf-avd-innovate#secure-environments",
+            "ref:screen-capture-protection#host-policy",
+            "ref:watermarking#needs-capture-protection",
+            "ref:avd-security-guide#device-redirection"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Contractors are internal users for licensing; each needs an eligible license in the organization's tenant, not per-user access pricing.",
+          "claims": [
+            "ref:avd-licensing#contractors-are-internal",
+            "ref:avd-licensing#per-user-access-external-only"
+          ]
+        },
+        {
+          "risk": "Unmanaged devices put the session's controls, sign-in policy and MFA, in place of device trust.",
+          "claims": [
+            "ref:avd-security-guide#mfa-conditional-access",
+            "ref:avd-internal-external#external-identities",
+            "ref:review-checklists-avd#G04.01"
+          ]
+        },
+        {
+          "risk": "Strict data controls cost usability; record each control kept off and why.",
+          "claims": [
+            "obs:redirection-kept-for-usability"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "Contractor firms must not share hosts with each other or with staff.",
+          "then": "trustBoundary: multi-org, a host pool per firm or a separate deployment",
+          "claims": [
+            "ref:avd-security-guide#trust-boundary"
+          ]
+        }
+      ],
+      "decisions": [
+        "hostPool.type",
+        "identity"
+      ],
+      "dimensions": [
+        "security.redirection",
+        "security.host-type",
+        "hostpool.type"
+      ]
+    },
+    {
+      "id": "external-customer",
+      "kind": "persona",
+      "title": "Customers using a hosted app",
+      "summary": "People outside the organization using an app it sells or provides as a service, delivered as RemoteApp.",
+      "starts": {
+        "function": "external",
+        "workload": "light",
+        "gpu": "none",
+        "desktop": "pooled",
+        "delivery": "remoteapp",
+        "trustBoundary": "multi-org"
+      },
+      "pattern": {
+        "hours": "follow-the-sun",
+        "media": "none",
+        "endpoints": "unmanaged"
+      },
+      "profile": "light",
+      "why": [
+        {
+          "sets": [
+            "function",
+            "trustBoundary"
+          ],
+          "claims": [
+            "ref:avd-internal-external#tenant-per-customer",
+            "ref:avd-security-guide#trust-boundary"
+          ],
+          "standing": "guidance"
+        },
+        {
+          "sets": [
+            "workload"
+          ],
+          "claims": [
+            "ref:session-host-sizing#workload-types",
+            "ref:session-host-sizing#estimates-only"
+          ],
+          "standing": "prior"
+        },
+        {
+          "sets": [
+            "delivery"
+          ],
+          "claims": [
+            "ref:avd-internal-external#internal-minimum"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "External commercial use needs per-user access pricing in its own subscription, because licensed users connecting there are charged too.",
+          "claims": [
+            "ref:avd-licensing#per-user-access-external-only",
+            "ref:avd-licensing#separate-subscription-for-licensed-users"
+          ]
+        },
+        {
+          "risk": "A deployment per customer multiplies everything else in this library; the landing zone builds one.",
+          "claims": [
+            "ref:avd-internal-external#tenant-per-customer",
+            "obs:landing-zone-one-persona"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "The users are staff or contractors of the organization.",
+          "to": "external-contractor",
+          "claims": [
+            "ref:avd-licensing#contractors-are-internal"
+          ]
+        }
+      ],
+      "decisions": [
+        "identity",
+        "hostPool.appGroup",
+        "network"
+      ],
+      "dimensions": [
+        "hostpool.app-group",
+        "network.mode"
+      ]
+    },
+    {
+      "id": "legacy-app",
+      "kind": "overlay",
+      "title": "App that can't share a host",
+      "summary": "An app that isn't multi-session compatible, needs an old OS or runtime, or must be published alone.",
+      "starts": {
+        "apps.multiSession": "no",
+        "desktop": "personal",
+        "dedicatedBecause": [
+          "app-compatibility"
+        ],
+        "delivery": "remoteapp"
+      },
+      "why": [
+        {
+          "sets": [
+            "apps.multiSession",
+            "desktop",
+            "dedicatedBecause"
+          ],
+          "claims": [
+            "ref:caf-avd-assess#application-questions",
+            "ref:caf-avd-deploy#legacy-apps-personal"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "An app that can't be remediated can hold its whole persona back until it is.",
+          "claims": [
+            "ref:caf-avd-deploy#app-remediation-blocks"
+          ]
+        },
+        {
+          "risk": "Publishing a RemoteApp and a full desktop to the same users from one host pool is advised against.",
+          "claims": [
+            "ref:review-checklists-avd#C01.06"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "The app works multi-session after remediation or packaging.",
+          "then": "apps.multiSession: yes; deliver it by assignment instead of a separate pool",
+          "claims": [
+            "ref:app-attach#per-user-per-host-pool"
+          ]
+        }
+      ],
+      "decisions": [
+        "hostPool.type",
+        "hostPool.appGroup"
+      ],
+      "dimensions": [
+        "hostpool.type",
+        "hostpool.app-group"
+      ]
+    },
+    {
+      "id": "app-near-data",
+      "kind": "overlay",
+      "title": "App that needs its back end close",
+      "summary": "A client-server app that is slow over distance; the host goes next to the back end, and the user's round trip to the host still has to hold.",
+      "starts": {
+        "apps.backend": "on-premises"
+      },
+      "why": [
+        {
+          "sets": [
+            "apps.backend"
+          ],
+          "claims": [
+            "ref:caf-avd-innovate#latency-sensitive-apps",
+            "ref:caf-avd-assess#application-questions"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Placing hosts by the back end can put them far from users; check both legs, measured from the users' side.",
+          "claims": [
+            "ref:caf-avd-assess#region-test-from-users",
+            "ref:avd-prerequisites#rtt-under-150",
+            "obs:region-latency-from-the-user"
+          ]
+        },
+        {
+          "risk": "An on-premises back end makes the network design hybrid and part of the persona's experience.",
+          "claims": [
+            "ref:caf-avd-assess#application-questions"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "The back end is SaaS or moves to Azure.",
+          "then": "apps.backend: saas or azure; choose the region by the users",
+          "claims": [
+            "ref:caf-avd-assess#region-test-from-users"
+          ]
+        }
+      ],
+      "decisions": [
+        "region",
+        "network"
+      ],
+      "dimensions": [
+        "region",
+        "network.mode",
+        "perf.experience-targets"
+      ]
+    },
+    {
+      "id": "regulated-data",
+      "kind": "overlay",
+      "title": "Regulated or sensitive data",
+      "summary": "Work whose data must not reach the endpoint, with every data control the session can enforce.",
+      "starts": {
+        "dataControls": [
+          "clipboard-restricted",
+          "drives-off",
+          "printing-restricted",
+          "screen-capture-protection",
+          "watermarking"
+        ]
+      },
+      "why": [
+        {
+          "sets": [
+            "dataControls"
+          ],
+          "claims": [
+            "ref:caf-avd-innovate#secure-environments",
+            "ref:avd-security-guide#device-redirection",
+            "ref:screen-capture-protection#host-policy",
+            "ref:watermarking#needs-capture-protection",
+            "ref:review-checklists-avd#G02.05"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Each control taken away from users costs usability; record the ones kept and the reason, and expect review.",
+          "claims": [
+            "obs:redirection-kept-for-usability",
+            "ref:rdp-properties#redirection-properties"
+          ]
+        },
+        {
+          "risk": "Data controls need the rest of the security baseline under them to mean anything.",
+          "claims": [
+            "ref:zero-trust-avd#seven-steps",
+            "ref:avd-security-guide#mfa-conditional-access",
+            "ref:avd-security-guide#audit-logs"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "Users from more than one organization share the data.",
+          "then": "trustBoundary: multi-org",
+          "claims": [
+            "ref:avd-security-guide#trust-boundary"
+          ]
+        }
+      ],
+      "decisions": [
+        "hostPool.type",
+        "identity"
+      ],
+      "dimensions": [
+        "security.redirection",
+        "security.posture",
+        "encryption.disks"
+      ]
+    },
+    {
+      "id": "temporary-workforce",
+      "kind": "overlay",
+      "title": "Seasonal or temporary workforce",
+      "summary": "Users who arrive and leave in waves (seasonal peaks, projects, mergers), so capacity follows a calendar, not only a clock.",
+      "pattern": {
+        "hours": "seasonal"
+      },
+      "why": [
+        {
+          "sets": [
+            "pattern.hours"
+          ],
+          "claims": [
+            "ref:caf-avd-innovate#temporary-workers",
+            "ref:avd-surface-scenarios#business-conversations"
+          ],
+          "standing": "guidance"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Capacity for a peak isn't guaranteed in a region unless reserved; check quota and availability early.",
+          "claims": [
+            "ref:avd-multiregion-bcdr#capacity-not-guaranteed",
+            "ref:review-checklists-avd#C03.03"
+          ]
+        },
+        {
+          "risk": "Committing compute for a seasonal peak pays for it all year.",
+          "claims": [
+            "gap:commitment-floor"
+          ]
+        },
+        {
+          "risk": "Every user still needs an eligible license while they have access.",
+          "claims": [
+            "ref:avd-licensing#eligible-license-per-user"
+          ]
+        }
+      ],
+      "breaks": [
+        {
+          "if": "The peak is a daily one, not a seasonal one.",
+          "then": "pattern.hours: shifts or office; a scaling plan covers it",
+          "claims": [
+            "ref:avd-autoscale#scales-to-save-cost"
+          ]
+        }
+      ],
+      "decisions": [
+        "hostPool.hosts",
+        "hostPool.power"
+      ],
+      "dimensions": [
+        "compute.host-count",
+        "cost.power"
+      ]
+    }
+  ],
+  "goldStandards": [
+    {
+      "metric": "rtt-to-region",
+      "claim": "ref:avd-prerequisites#rtt-under-150",
+      "standing": "gold",
+      "since": "2026-10-20",
+      "why": "Our run measured latency from the user and confirmed the region choice depends on it (obs:region-latency-from-the-user)."
+    },
+    {
+      "metric": "input-delay-session",
+      "claim": "ref:avd-insights-glossary#input-delay-bands",
+      "standing": "candidate",
+      "since": "2026-10-20",
+      "why": "Published bands; not yet checked against users we measured."
+    },
+    {
+      "metric": "input-delay-host",
+      "claim": "ref:avd-insights-use-cases#input-delay-host-100",
+      "standing": "candidate",
+      "since": "2026-10-20",
+      "why": "Published per-host figure; measures hosts, not sessions, so it sits beside input-delay-session."
+    },
+    {
+      "metric": "cpu-utilization",
+      "claim": "ref:perfmon-troubleshooting#cpu-bands",
+      "standing": "candidate",
+      "since": "2026-10-20",
+      "why": "General Windows guidance; not AVD-specific and not yet checked against a multi-session host."
+    },
+    {
+      "metric": "cpu-queue-per-core",
+      "claim": "ref:perfmon-troubleshooting#pql-per-processor",
+      "standing": "candidate",
+      "since": "2026-10-20",
+      "why": "General Windows guidance, read together with CPU utilization."
+    },
+    {
+      "metric": "users-per-vcpu",
+      "claim": "ref:session-host-sizing#multisession-users-per-vcpu",
+      "standing": "candidate",
+      "since": "2026-10-20",
+      "why": "Microsoft calls these estimates; no measured users yet (obs:users-per-vcpu-adopted)."
+    },
+    {
+      "metric": "logon-time",
+      "claim": "gap:logon-target",
+      "standing": "baseline",
+      "since": "2026-10-20",
+      "why": "No published target; the estate's own median and 95th percentile set it."
+    },
+    {
+      "metric": "memory-utilization",
+      "claim": "gap:sample-check",
+      "standing": "baseline",
+      "since": "2026-10-20",
+      "why": "No pinned AVD or Windows source with a number found yet."
+    },
+    {
+      "metric": "disk-latency",
+      "claim": "gap:sample-check",
+      "standing": "baseline",
+      "since": "2026-10-20",
+      "why": "Learn gives numbers only inside product-specific guides (databases, monitoring servers); none for session hosts."
+    },
+    {
+      "metric": "app-load-time",
+      "claim": "gap:sample-check",
+      "standing": "baseline",
+      "since": "2026-10-20",
+      "why": "No published number found."
+    },
+    {
+      "metric": "cpu-headroom-after-resize",
+      "claim": "ref:advisor-vm-rightsize#user-facing-targets",
+      "standing": "candidate",
+      "since": "2026-10-20",
+      "why": "Advisor's published target for a smaller size on a user-facing workload (P95 CPU 40% or less); used as the floor of the good band in the baseline profile. Not AVD-specific and not yet checked against a multi-session host."
+    },
+    {
+      "metric": "memory-headroom-after-resize",
+      "claim": "ref:advisor-vm-rightsize#user-facing-targets",
+      "standing": "candidate",
+      "since": "2026-10-20",
+      "why": "Advisor's published target for a smaller size on a user-facing workload (P99 memory 60% or less). It bounds memory utilization, not memory per user, which stays a gap (gap:baseline-profile)."
+    },
+    {
+      "metric": "input-delay-user-expectation",
+      "claim": "ref:session-host-sizing#input-delay-expectation",
+      "standing": "candidate",
+      "since": "2026-10-20",
+      "why": "The sizing guide's outer bound (users expect under 200 ms); the Insights bands stay the reference for grading a session."
+    }
+  ]
+}

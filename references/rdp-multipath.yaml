@@ -1,0 +1,23 @@
+id: rdp-multipath
+title: Use RDP Multipath to improve connection reliability to Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/rdp-multipath
+pin: "Learn git_commit_id 41dcc5bdc9210cae5b9151f9851568b917ad77db, updated_at 2026-09-15"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: automatic
+    says: Multipath needs no configuration beyond a working Shortpath; it keeps backup UDP and TCP paths and switches when the active one degrades.
+    kind: published
+  - id: client-floors
+    says: Windows App for Windows 2.0 from build 559 gives multiple UDP paths, from build 1069 adds redundant TCP paths; other platforms are in beta or unsupported.
+    kind: published
+  - id: ports-per-session
+    says: Each session can open up to three UDP and two TCP outbound paths; plan firewall, NAT capacity and port limits for that per user.
+    kind: published
+  - id: shortpath-first
+    says: Microsoft recommends RDP Shortpath as the primary transport for the best Multipath experience.
+    kind: guidance
+  - id: verify-in-insights
+    says: Multipath use shows in the client's connection bar and in Insights' connection reliability view.
+    kind: published

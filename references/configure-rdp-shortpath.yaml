@@ -1,0 +1,36 @@
+id: configure-rdp-shortpath
+title: Configure RDP Shortpath for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/configure-rdp-shortpath
+pin: "Learn git_commit_id c98b985e983759944496d809ce1e7f603b9093f6, updated_at 2026-10-16"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+notes: The page's Log Analytics example reads WVDConnections.UdpUse; the table reference lists TransportType and no UdpUse (obs:transport-column-names-disagree).
+claims:
+  - id: four-options
+    says: "There are four Shortpath options: managed networks with the listener, managed networks with ICE/STUN, public networks with ICE/STUN, and public networks relayed through TURN."
+    kind: published
+  - id: defaults-enabled
+    says: All four options are enabled by default on the host pool, and Windows allows UDP and TCP by default on hosts and clients.
+    kind: published
+  - id: listener-for-managed
+    says: Only the managed-network option needs the host listener (port 3390 by default) and an inbound allow rule; the other three need neither.
+    kind: published
+  - id: most-restrictive-wins
+    says: Where the host pool and session host settings conflict, the most restrictive setting applies.
+    kind: published
+  - id: hostpool-switches
+    says: The host pool's networking settings carry one Default, Enabled or Disabled value per option (managedPrivateUDP, directUDP, publicUDP, relayUDP); Default means enabled.
+    kind: published
+  - id: select-transport-policy
+    says: A host policy (Select RDP transport protocols) set to TCP only turns UDP off for every option.
+    kind: published
+  - id: port-range
+    says: STUN and TURN use the ephemeral range 49152 to 65535 by default; hosts can be limited to a smaller range between 1024 and 49151.
+    kind: published
+  - id: verify-transport
+    says: The transport in use is shown in the client's connection information, in host event 135, and in Log Analytics; the page queries a UdpUse column with values 1, 2 and 4.
+    kind: published
+  - id: turn-public-cloud-only
+    says: STUN for public networks works in the public and Government clouds; TURN only in the public cloud.
+    kind: published

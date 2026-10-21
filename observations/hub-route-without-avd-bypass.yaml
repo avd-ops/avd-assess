@@ -1,0 +1,7 @@
+id: hub-route-without-avd-bypass
+claim: ref:firewall-avd#bypass-route-for-scale-in
+verdict: not-yet-tested
+observed: "In hub-peered mode the landing zone routes 0.0.0.0/0 from the host subnet to the hub firewall and adds no route for the WindowsVirtualDesktop service tag to the internet, the bypass the source gives against disconnections during firewall scale-in. With AVD Private Link on, the session host's gateway connection goes through the private endpoint, which may cover the main path; other service traffic still crosses the firewall. Not yet run against a hub firewall."
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/network.bicep
+date: 2026-10-21

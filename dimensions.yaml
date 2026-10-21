@@ -8,8 +8,11 @@
 # baseline.standing: published (a source states it) | prior (a source states it but calls it an estimate)
 #   | guidance (a source gives direction, no number) | gap (no source; our method in the gap page)
 #   | owned (another method in this repo owns the baseline; see seeAlso).
+# pillar: the map pillar that owns the row, an id in pillars.yaml (one per row, required). Not a
+#   Well-Architected pillar; those stay on checks. tests/check_dimensions.py checks it against pillars.yaml.
 # measure: fact (a built C11 fact) | rebuild (in avd-current-state's private rebuild package, not a C11
-#   fact) | measured (needs performance or in-guest data) | intake (only the operator knows) | none.
+#   fact) | measured (needs performance or in-guest data) | intake (only the operator knows) | host-side (only
+#   a read on a session host sees it) | directory (needs a directory read) | none.
 # landingZone: parameter names in avd-landing-zone bicep/main.bicep at the commit below. Every one of the
 #   57 is either set by a dimension or listed in notDimensions with a reason (tests/check_dimensions.py).
 schema: avd-assess-dimensions/v1
@@ -43,6 +46,7 @@ dimensions:
   # Compute and density
   - id: compute.vm-size
     area: compute
+    pillar: capacity
     title: Session host VM size and family
     decides: The vCPU, memory and family of each host pool's VMs.
     home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes, c12.group.perHost.p95CpuPercent, c12.group.perHost.p95MemoryPercent]}
@@ -55,6 +59,7 @@ dimensions:
     landingZone: [sessionHostVmSize]
   - id: compute.memory-per-user
     area: compute
+    pillar: capacity
     title: Memory per user
     decides: Whether memory or CPU limits a host, and so the family (general purpose or memory-optimized).
     home: {decision: hostPool.vmSize, facts: [c12.group.perUser.p95MemoryMiB, c12.group.perUser.p50MemoryMiB]}
@@ -66,6 +71,7 @@ dimensions:
     landingZone: [sessionHostVmSize]
   - id: compute.host-count
     area: compute
+    pillar: capacity
     title: Host count and headroom
     decides: How many hosts each pool has, including headroom for sign-in storms and a spare.
     home: {decision: hostPool.hosts, facts: [c11.hostPool.sessionHosts.total, c12.group.concurrency.peak, c12.group.concurrency.byHour], checks: [asm-pooled-host-redundancy]}
@@ -77,6 +83,7 @@ dimensions:
     landingZone: [sessionHostCount]
   - id: density.sessions-per-host
     area: density
+    pillar: capacity
     title: User to host density
     decides: The maximum sessions per host.
     home: {decision: hostPool.maxSessions, facts: [c11.hostPool.maxSessionLimit, c11.hostPool.sessionHosts.sessions, c12.group.perHost.peakSessionsPerHost, c12.group.perUser.p95CpuPercentOfCore]}
@@ -89,6 +96,7 @@ dimensions:
     landingZone: [maxSessionLimit]
   - id: density.load-balancing
     area: density
+    pillar: capacity
     title: Load balancing algorithm
     decides: Breadth-first (performance) or depth-first (cost) placement of new sessions.
     home: {decision: proposed:hostPool.loadBalancing, facts: [proposed:c11.hostPool.loadBalancerType]}
@@ -101,6 +109,7 @@ dimensions:
     note: The landing zone fixes breadth-first in its control plane module; there is no parameter.
   - id: compute.workload-benchmark
     area: performance
+    pillar: capacity
     title: Workload benchmark before sizing
     decides: How the size and density above are proven for this estate's workload.
     home: {decision: hostPool.vmSize, facts: [c12.group.perUser.p95CpuPercentOfCore, c12.group.logonSeconds.p95]}
@@ -114,6 +123,7 @@ dimensions:
   # Graphics
   - id: graphics.gpu-need
     area: graphics
+    pillar: capacity
     title: Whether hosts need a GPU
     decides: GPU or CPU-only hosts for each workload.
     home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes], intake: [proposed:intake.graphicsWorkloads]}
@@ -125,6 +135,7 @@ dimensions:
     landingZone: [sessionHostVmSize]
   - id: graphics.gpu-size
     area: graphics
+    pillar: capacity
     title: GPU size and driver
     decides: Which GPU series and fraction, and which driver.
     home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes]}
@@ -137,6 +148,7 @@ dimensions:
     note: The source's size table lists series that retired on 2026-09-30 (see the reference's notes).
   - id: graphics.users-per-gpu
     area: graphics
+    pillar: capacity
     title: Users per GPU
     decides: How many sessions share one GPU or GPU fraction.
     home: {decision: hostPool.maxSessions, facts: [c12.group.perHost.peakSessionsPerHost]}
@@ -150,6 +162,7 @@ dimensions:
   # Disks
   - id: disk.os-disk-type
     area: disks
+    pillar: capacity
     title: OS disk type
     decides: Premium SSD, Standard SSD or an ephemeral OS disk for session hosts.
     home: {decision: proposed:hostPool.osDisk, facts: [proposed:c11.sessionHost.osDiskType]}
@@ -163,6 +176,7 @@ dimensions:
     note: The landing zone fixes Premium SSD in its session host module; there is no parameter.
   - id: disk.ephemeral-os
     area: disks
+    pillar: capacity
     title: Ephemeral OS disks for stateless pools
     decides: Whether a pooled, stateless pool uses ephemeral OS disks.
     home: {decision: proposed:hostPool.osDisk, facts: [proposed:c11.sessionHost.osDiskType]}
@@ -174,6 +188,7 @@ dimensions:
     landingZone: []
   - id: disk.latency
     area: disks
+    pillar: capacity
     title: Disk latency on hosts
     decides: Whether host disks are fast enough for the workload.
     home: {decision: hostPool.vmSize, facts: [c12.group.perUser.p95DiskIops]}
@@ -187,6 +202,7 @@ dimensions:
   # Profiles
   - id: profile.storage-backend
     area: storage
+    pillar: profiles
     title: Profile storage service and tier
     decides: Azure Files standard or premium, or Azure NetApp Files, in the hosts' region.
     home: {decision: proposed:profile.storage, facts: [c11.storage.kind, c11.storage.sku]}
@@ -198,6 +214,7 @@ dimensions:
     landingZone: [profileStorageSku]
   - id: profile.storage-performance
     area: storage
+    pillar: profiles
     title: Profile storage IOPS and scale
     decides: Provisioned IOPS, share count and handle headroom for sign-in storms.
     home: {decision: hostPool.profileQuotaGiB, facts: [c12.group.profile.logonIopsPerUser, c12.group.users]}
@@ -209,6 +226,7 @@ dimensions:
     landingZone: [profileShareQuotaGiB]
   - id: profile.capacity
     area: storage
+    pillar: profiles
     title: Profile size and share capacity
     decides: The per-user container limit and the share quota.
     home: {decision: hostPool.profileQuotaGiB, facts: [c12.group.profile.p95SizeGiB, c11.storage.count]}
@@ -220,6 +238,7 @@ dimensions:
     landingZone: [profileShareQuotaGiB, fslogixProfileSizeMiB]
   - id: profile.resilience
     area: reliability
+    pillar: profiles
     title: Profile redundancy and backup
     decides: Storage redundancy and backup of profile containers.
     home: {decision: proposed:profile.storage, facts: [c11.storage.sku], checks: [asm-files-zone-redundant]}
@@ -233,6 +252,7 @@ dimensions:
   # Performance optimizations
   - id: perf.image-optimization
     area: performance
+    pillar: images
     title: Image optimization
     decides: Which OS optimizations the image applies, from a reviewed profile.
     home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images]}
@@ -246,17 +266,21 @@ dimensions:
     note: Set in the landing zone's image build, not a template parameter.
   - id: perf.transport
     area: performance
+    pillar: protocol
     title: RDP transport
-    decides: Whether sessions use the UDP transport (RDP Shortpath) on managed and public networks.
-    home: {decision: network, facts: [c12.group.rttMsP95]}
+    decides: Whether sessions use the UDP transport (RDP Shortpath) on managed and public networks, judged against the networks the operator says users connect from.
+    home: {decision: network, facts: [c12.group.rttMsP95, proposed:c12.group.transport.udpShare, proposed:c12.group.transport.relayShare], intake: [proposed:intake.userNetworks]}
     baseline:
       standing: published
-      claims: [ref:rdp-shortpath#udp-transport, ref:review-checklists-avd#F01.11]
-      says: UDP transport where the network allows it, with TCP reverse connect as the fallback.
+      claims: [ref:rdp-shortpath#udp-transport, ref:rdp-shortpath#tcp-first-then-udp, ref:rdp-shortpath#stun-before-turn, ref:review-checklists-avd#F01.11, gap:transport-classification, gap:remote-protocols-scope]
+      says: UDP where the network allows it, direct before relayed, with TCP reverse connect as the fallback; each connection is judged against the operator's stated networks through the family transport map. No share target is published.
+    observations: [obs:transport-column-names-disagree, obs:symmetric-nat-egress-means-turn]
     measure: measured
     landingZone: []
+    note: Needs the host pool's network data and connection categories in Log Analytics (ops.monitoring).
   - id: perf.media
     area: performance
+    pillar: protocol
     title: Teams and browser media
     decides: Media optimization for Teams and multimedia redirection for browser video.
     home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images]}
@@ -266,8 +290,112 @@ dimensions:
       says: Teams calls and meetings redirected to the local device; classic Teams for VDI is past end of support.
     measure: none
     landingZone: []
+  # Remote protocol and session (pillar protocol, methods/remote-protocols.md)
+  - id: protocol.shortpath-managed
+    area: protocol
+    pillar: protocol
+    title: RDP Shortpath for managed networks
+    decides: Whether users on ExpressRoute or VPN get a direct UDP path, through the host listener and an inbound port or through ICE/STUN.
+    home: {decision: network, facts: [proposed:c11.hostPool.udp.managedPrivate, proposed:c11.hostPool.udp.direct], intake: [proposed:intake.userNetworks]}
+    baseline:
+      standing: published
+      claims: [ref:configure-rdp-shortpath#four-options, ref:configure-rdp-shortpath#listener-for-managed, ref:configure-rdp-shortpath#most-restrictive-wins, ref:rdp-shortpath#first-found-wins, ref:review-checklists-avd#F01.11]
+      says: Evaluate Shortpath for clients on managed networks; the listener (port 3390 by default) and an inbound allow rule are needed only for the listener option, and the most restrictive of host pool and host settings wins.
+    measure: rebuild
+    landingZone: []
+    note: The host listener is host policy, outside the landing zone's parameters; the host pool switches are readable only through a preview API version (protocol.shortpath-public).
+  - id: protocol.shortpath-public
+    area: protocol
+    pillar: protocol
+    title: RDP Shortpath for public networks (STUN and TURN)
+    decides: Whether users on the internet get a direct UDP path through STUN or a relayed one through TURN (expected behind symmetric NAT egress), and whether either is turned off.
+    home: {decision: network, facts: [proposed:c11.hostPool.udp.public, proposed:c11.hostPool.udp.relay, proposed:c12.group.transport.relayShare]}
+    baseline:
+      standing: published
+      claims: [ref:configure-rdp-shortpath#defaults-enabled, ref:configure-rdp-shortpath#hostpool-switches, ref:configure-rdp-shortpath#select-transport-policy, ref:configure-rdp-shortpath#turn-public-cloud-only, ref:rdp-shortpath#stun-before-turn, ref:rdp-shortpath#turn-range, ref:rdp-shortpath#symmetric-nat-means-turn, ref:rdp-shortpath#public-network-advice, ref:rdp-shortpath#turn-maintenance-drops, ref:hostpool-api-changelog#udp-switches-preview-only, ref:troubleshoot-rdp-shortpath#nat-type-test]
+      says: Both options are on by default and work with no configuration when outbound UDP is allowed; hosts behind Azure Firewall or NAT Gateway relay through TURN. Turning an option off needs a reason.
+    observations: [obs:symmetric-nat-egress-means-turn]
+    measure: measured
+    landingZone: []
+    note: The landing zone leaves the host pool switches at Default; the networking pillars own the egress rules that decide STUN or TURN.
+  - id: protocol.port-range
+    area: protocol
+    pillar: protocol
+    title: UDP port range for STUN and TURN
+    decides: Whether hosts use the default ephemeral range or a smaller, predictable one that firewalls can name.
+    home: {decision: network, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:configure-rdp-shortpath#port-range, ref:rdp-multipath#ports-per-session]
+      says: The default range works; narrow it only when a firewall must name ports, and size it for up to three UDP paths per session.
+    measure: rebuild
+    landingZone: []
+    note: Host policy, outside the landing zone's parameters.
+  - id: protocol.multipath
+    area: protocol
+    pillar: protocol
+    title: RDP Multipath and modern auto-reconnect
+    decides: Whether sessions keep backup paths and survive short network drops, which depends on the client app and version.
+    home: {decision: network, facts: [], intake: [proposed:intake.clientApps]}
+    baseline:
+      standing: published
+      claims: [ref:rdp-multipath#automatic, ref:rdp-multipath#client-floors, ref:rdp-multipath#shortpath-first, ref:avd-auto-reconnect#needs-multipath, ref:windows-app-platforms#multipath-by-platform, ref:avd-whats-new#multipath-ga]
+      says: Automatic once Shortpath works, on current Windows App for Windows; other platforms are in beta or unsupported.
+    measure: measured
+    landingZone: []
+  - id: protocol.private-link-udp
+    area: protocol
+    pillar: protocol
+    title: UDP over Private Link
+    decides: Whether sessions that use Private Link can still use UDP.
+    home: {decision: network, facts: [proposed:c11.hostPool.udp.privateLink, c11.network.privateEndpoints]}
+    baseline:
+      standing: published
+      claims: [ref:hostpool-api-changelog#private-link-udp-preview-only, ref:configure-rdp-shortpath#hostpool-switches]
+      says: UDP over Private Link is a separate host pool opt-in, off unless set and readable only through a preview API version; its conditions are claims in the networking pillar's Private Link reference.
+    measure: rebuild
+    landingZone: [enableAvdPrivateLink]
+  - id: protocol.qos
+    area: protocol
+    pillar: protocol
+    title: QoS marking and throttle rate
+    decides: Whether RDP traffic on managed networks is marked for priority (DSCP) or capped per session.
+    home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
+    baseline:
+      standing: guidance
+      claims: [ref:rdp-qos#managed-udp-only, ref:rdp-qos#dscp-46, ref:rdp-qos#qos-before-bandwidth, ref:rdp-shortpath#managed-qos-and-throttle, ref:rdp-bandwidth#throttle-managed-only]
+      says: Only on managed-network Shortpath; DSCP 46 applied end to end, QoS before more bandwidth, and no throttle unless the network is constrained or metered.
+    measure: none
+    landingZone: []
+  - id: protocol.graphics-encoding
+    area: protocol
+    pillar: protocol
+    title: Graphics encoding and codecs
+    decides: Software or hardware encoding, AVC 444, HEVC and chroma, set by host policy against the host's GPU and the client's decoder.
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes], intake: [proposed:intake.graphicsWorkloads]}
+    baseline:
+      standing: published
+      claims: [ref:graphics-encoding#software-default, ref:graphics-encoding#codecs, ref:avd-gpu-acceleration#cpu-by-default, ref:avd-gpu-acceleration#avc444-needs-hw-encoding, ref:avd-gpu-acceleration#hevc-prerequisites, ref:avd-gpu-acceleration#verify-by-event, ref:graphics-chroma-444#only-support-verifies]
+      says: CPU encoding by default; AVC 444 only with hardware encoding on, HEVC only on GPU desktops without multimedia redirection; verify with host events, not assumption.
+    measure: rebuild
+    landingZone: []
+    note: Host policy; graphics.gpu-need and graphics.gpu-size decide the hardware.
+  - id: protocol.session-limits
+    area: protocol
+    pillar: protocol
+    title: Session time limits and lock behavior
+    decides: When disconnected sessions are signed out and whether a lock disconnects the session or shows the remote lock screen.
+    home: {decision: hostPool.power, facts: []}
+    baseline:
+      standing: guidance
+      claims: [ref:autoscale-faq#disconnected-time-limit, ref:session-lock-behavior#disconnect-on-lock-sso]
+      says: Sign out disconnected sessions after 15 to 30 minutes where pools scale to zero; with Entra single sign-on, disconnect on lock so Conditional Access is evaluated again.
+    measure: rebuild
+    landingZone: []
+    note: Host policy, outside the landing zone's parameters.
   - id: perf.accelerated-networking
     area: performance
+    pillar: capacity
     title: Accelerated networking
     decides: Whether host NICs use accelerated networking.
     home: {decision: hostPool.vmSize, facts: [proposed:c11.sessionHost.acceleratedNetworking]}
@@ -279,6 +407,7 @@ dimensions:
     landingZone: []
   - id: perf.experience-targets
     area: performance
+    pillar: ux-measurement
     title: User experience targets
     decides: The round-trip, input delay and logon targets a deployment is judged against.
     home: {decision: region, facts: [c12.group.rttMsP95, c12.group.logonSeconds.p95, c12.group.uxScoreMedian]}
@@ -291,6 +420,7 @@ dimensions:
     landingZone: []
   - id: network.bandwidth
     area: network
+    pillar: networking-client
     title: Bandwidth per user
     decides: Whether user networks and host sizes carry the expected RDP traffic.
     home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
@@ -300,10 +430,60 @@ dimensions:
       says: Per-activity estimates for one 1080p monitor as a start, replaced by measuring real users.
     measure: measured
     landingZone: []
+  - id: network.client
+    area: network
+    pillar: networking-client
+    title: User networks and client reachability
+    decides: What each user network (office, branch, home, guest Wi-Fi) must allow, and whether it reaches the region within the round-trip target.
+    home: {decision: region, facts: [c12.group.rttMsP95], intake: [proposed:intake.userNetworks]}
+    baseline:
+      standing: published
+      claims: [ref:avd-required-fqdn#client-list, ref:avd-prerequisites#rtt-under-150, ref:avd-proxy#client-proxy-support, ref:avd-proxy#same-geography, ref:thin-clients#reproduce-on-windows-app, ref:review-checklists-avd#C02.04]
+      says: The published client endpoints allowed from every user network, proxies bypassed or close to the region, round trip under 150 ms.
+    observations: [obs:region-latency-from-the-user]
+    measure: intake
+    landingZone: []
+  - id: network.client-private-link
+    area: network
+    pillar: networking-client
+    title: AVD Private Link from the client
+    decides: Whether users reach feed and gateway privately, and how their networks resolve the private names.
+    home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
+    baseline:
+      standing: published
+      claims: [ref:avd-private-link#client-dns-sequence, ref:avd-private-link#mixed-feed-limit, ref:avd-private-link#global-workspace, ref:avd-private-link-setup#client-versions, ref:dns-private-resolver#hybrid-resolution, gap:client-network]
+      says: Each private name resolves to the endpoint from the user network over VPN or ExpressRoute; global discovery stays public; no mixed public and private feed on a network without internet.
+    measure: intake
+    landingZone: []
+  - id: network.client-agents
+    area: network
+    pillar: networking-client
+    title: Security agents and VPN clients on the user device (extension)
+    decides: How SSE, ZTNA and VPN client categories treat AVD traffic - bypass, split tunneling, inspection, UDP.
+    home: {decision: network, facts: []}
+    baseline:
+      standing: gap
+      claims: [gap:client-network]
+      says: Extension row, filled by the map plan's agent-category work; categories only, no product names.
+    measure: intake
+    landingZone: []
+  - id: network.azure-local
+    area: network
+    pillar: networking-azure
+    title: AVD on Azure Local (extension)
+    decides: The network design for host pools on Azure Local.
+    home: {decision: network, facts: []}
+    baseline:
+      standing: gap
+      claims: [ref:avd-azure-local#no-mixed-pools, gap:network-scope]
+      says: Extension point only; no method yet.
+    measure: none
+    landingZone: []
 
   # Security tooling
   - id: security.endpoint-protection-tuning
     area: security
+    pillar: endpoint-protection
     title: Antivirus and EDR tuned for multi-session
     decides: How antivirus and EDR are configured on shared and non-persistent hosts.
     home: {decision: proposed:hostPool.security, facts: []}
@@ -315,6 +495,7 @@ dimensions:
     landingZone: [enableDefenderForCloud]
   - id: security.posture
     area: security
+    pillar: security-posture
     title: Security posture and guardrails
     decides: Defender plans, policy guardrails and the rest of the security baseline.
     home: {decision: proposed:hostPool.security, facts: [c11.policy.assignments]}
@@ -322,11 +503,12 @@ dimensions:
       standing: owned
       claims: []
       says: Owned by the security method.
-    seeAlso: https://github.com/avd-ops/avd-assess/pull/6
+    seeAlso: https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md
     measure: fact
     landingZone: [enablePolicyGuardrails]
   - id: security.host-type
     area: security
+    pillar: security-posture
     title: Trusted launch and VM generation
     decides: Gen2 with Trusted launch, or confidential VMs.
     home: {decision: proposed:hostPool.security, facts: [proposed:c11.sessionHost.securityType]}
@@ -334,11 +516,12 @@ dimensions:
       standing: published
       claims: [ref:avd-deploy-host-pool#trusted-launch-default, ref:review-checklists-avd#B03.01]
       says: Gen2 with Trusted launch, the default for new hosts; the security method holds the rest.
-    seeAlso: https://github.com/avd-ops/avd-assess/pull/6
+    seeAlso: https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md
     measure: rebuild
     landingZone: []
   - id: security.redirection
     area: security
+    pillar: protocol
     title: Device redirection and RDP properties
     decides: Which devices, drives and clipboard a session can redirect.
     home: {decision: proposed:hostPool.security, facts: []}
@@ -346,13 +529,14 @@ dimensions:
       standing: owned
       claims: []
       says: Owned by the security method.
-    seeAlso: https://github.com/avd-ops/avd-assess/pull/6
+    seeAlso: https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md
     measure: rebuild
     landingZone: [rdpProperties]
 
   # Encryption
   - id: encryption.disks
     area: encryption
+    pillar: security-posture
     title: Disk encryption
     decides: Server-side encryption only, encryption at host, or confidential disk encryption.
     home: {decision: proposed:hostPool.encryption, facts: [proposed:c11.sessionHost.encryptionAtHost]}
@@ -365,6 +549,7 @@ dimensions:
     landingZone: [encryptionAtHost]
   - id: encryption.keys
     area: encryption
+    pillar: security-posture
     title: Key ownership
     decides: Platform-managed or customer-managed keys.
     home: {decision: proposed:hostPool.encryption, facts: [], intake: [proposed:intake.keyRequirements]}
@@ -376,6 +561,7 @@ dimensions:
     landingZone: []
   - id: encryption.profile-transit
     area: encryption
+    pillar: security-posture
     title: Profile traffic encryption
     decides: SMB channel encryption and Kerberos settings on the profile share.
     home: {decision: proposed:profile.storage, facts: []}
@@ -383,13 +569,14 @@ dimensions:
       standing: owned
       claims: []
       says: Owned by the security method.
-    seeAlso: https://github.com/avd-ops/avd-assess/pull/6
+    seeAlso: https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md
     measure: rebuild
     landingZone: []
 
   # Updates
   - id: updates.os-servicing
     area: updates
+    pillar: images
     title: OS servicing method
     decides: Patch in place or replace from an updated image, by OS and pool type.
     home: {decision: proposed:hostPool.updates, facts: [c11.hostPool.type, c11.hostPool.images]}
@@ -401,6 +588,7 @@ dimensions:
     landingZone: []
   - id: updates.image-currency
     area: updates
+    pillar: images
     title: Image source and currency
     decides: Which OS image the hosts run and how current it is.
     home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images]}
@@ -408,12 +596,13 @@ dimensions:
       standing: guidance
       claims: [ref:review-checklists-avd#B01.03, ref:review-checklists-avd#B01.07, ref:avd-update-methods#hotpatch, gap:deployment-dimensions]
       says: A chosen OS image kept current, FSLogix included in each image update; the security guide's monthly rebuild is owned by the security method, and no source sets a maximum image age.
-    seeAlso: https://github.com/avd-ops/avd-assess/pull/6
+    seeAlso: https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md
     observations: [obs:wdot-pin-on-image-version]
     measure: fact
     landingZone: [sessionHostImage]
   - id: updates.image-rollout
     area: updates
+    pillar: images
     title: Image rollout to hosts
     decides: How a new image version reaches a pool - canary first, how many hosts at a time, how users move off old hosts, and what to roll back to.
     home: {decision: proposed:hostPool.updates, facts: [c11.hostPool.images]}
@@ -426,6 +615,7 @@ dimensions:
     note: Set by the landing zone's image pipeline and rotation script (spec section 6), not a template parameter.
   - id: updates.agent
     area: updates
+    pillar: images
     title: AVD agent updates and token refresh
     decides: The agent update window and keeping idle hosts registered.
     home: {decision: hostPool.power, facts: [c11.hostPool.startVmOnConnect]}
@@ -437,6 +627,7 @@ dimensions:
     landingZone: []
   - id: updates.validation-pool
     area: updates
+    pillar: images
     title: Validation pool
     decides: Whether a canary pool takes service updates first.
     home: {decision: proposed:hostPool.updates, facts: []}
@@ -450,6 +641,7 @@ dimensions:
   # Reliability, region and network
   - id: region
     area: network
+    pillar: capacity
     title: Region
     decides: Which region hosts each pool.
     home: {decision: region, facts: [c11.subscription.regions, c11.hostPool.region, c11.policy.assignments], intake: [intake.residency, intake.preferredRegions]}
@@ -462,6 +654,7 @@ dimensions:
     landingZone: [location, allowedLocations]
   - id: reliability.zones
     area: reliability
+    pillar: reliability
     title: Availability zones
     decides: Whether hosts spread across zones.
     home: {decision: proposed:hostPool.zones, facts: [proposed:c11.sessionHost.zone]}
@@ -473,6 +666,7 @@ dimensions:
     landingZone: [availabilityZones]
   - id: reliability.dr-model
     area: reliability
+    pillar: reliability
     title: Disaster recovery model
     decides: Per pool, how it comes back after a region loss - rebuild, restore, warm standby (active-passive) or active-active - and where.
     home: {decision: region, facts: []}
@@ -484,6 +678,7 @@ dimensions:
     landingZone: [recoveryLocation]
   - id: profile.cross-region
     area: reliability
+    pillar: reliability
     title: Profiles across regions
     decides: How profile containers reach a second region and how failover avoids profile conflicts.
     home: {decision: proposed:profile.storage, facts: [c11.storage.sku]}
@@ -493,33 +688,135 @@ dimensions:
       says: FSLogix Cloud Cache, not storage replication (Premium Files has no GRS); users in one pool at a time; a local cache disk at least as large as the largest profile; critical data in OneDrive or SharePoint.
     measure: none
     landingZone: []
+  # Networking (methods/network.md): Azure side, then client side. pillar is the map field the
+  # map plan adds; host-side marks what only a read on a session host can see.
   - id: network.mode
     area: network
-    title: Network mode and addressing
-    decides: Standalone or hub-peered, address space, DNS and egress.
-    home: {decision: network, facts: [c11.network.virtualNetworks, c11.network.customDnsVirtualNetworks, c11.network.defaultRoutes], intake: [intake.existingHub]}
+    pillar: networking-azure
+    title: Topology and connectivity mode
+    decides: Standalone spoke, peered to a hub, or attached to a Virtual WAN hub.
+    home: {decision: network, facts: [c11.network.virtualNetworks], intake: [intake.existingHub]}
     baseline:
-      standing: gap
-      claims: [gap:decision-readiness, gap:intake]
-      says: Decided from the estate and the operator's answers; the published network design guidance isn't pinned here yet.
+      standing: published
+      claims: [ref:arch-hub-spoke#hub-shared-services, ref:virtual-wan#managed-transit, ref:caf-avd-network#vwan-for-transit, ref:arch-avd-design-guide#platform-connectivity, ref:review-checklists-avd#F01.02]
+      says: A spoke per workload peered to a shared hub, or Virtual WAN when managed transit between VPN and ExpressRoute is needed.
     measure: fact
-    landingZone: [connectivityMode, spokeAddressPrefix, sessionHostSubnetPrefix, privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix, hubVnetResourceId, createHubToSpokePeering, hubFirewallPrivateIp, dnsServers, centralPrivateDnsZoneResourceIds]
-  - id: network.private-access
+    landingZone: [connectivityMode, hubVnetResourceId, createHubToSpokePeering]
+  - id: network.addressing
     area: network
-    title: Private endpoints
-    decides: Private Link for AVD and private endpoints for profile storage.
-    home: {decision: network, facts: [c11.network.privateEndpoints, c11.storage.privateEndpoint], checks: [asm-files-private-endpoint]}
+    pillar: networking-azure
+    title: Address space and subnet sizing
+    decides: Spoke and subnet prefixes, and the headroom left for hosts and private endpoints.
+    home: {decision: network, facts: [c11.network.virtualNetworks, proposed:c11.network.hostSubnets.freeAddresses]}
     baseline:
       standing: guidance
-      claims: [ref:review-checklists-avd#F01.10]
-      says: Evaluate a private endpoint for the profile share; the security method covers Private Link for AVD itself.
-    seeAlso: https://github.com/avd-ops/avd-assess/pull/6
+      claims: [ref:avd-private-link#address-headroom, ref:arch-private-link-hub-spoke#placement-decision-tree, gap:network-scope]
+      says: Leave headroom for private endpoints and growth; no source gives a hosts-to-prefix rule (gap:network-scope).
+    measure: fact
+    landingZone: [spokeAddressPrefix, sessionHostSubnetPrefix, privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix]
+  - id: network.dns
+    area: network
+    pillar: networking-azure
+    title: Name resolution and private DNS zones
+    decides: Azure-provided or custom DNS, private DNS zones local or central, and how on-premises and the hub resolve them.
+    home: {decision: network, facts: [c11.network.customDnsVirtualNetworks, proposed:c11.network.privateDnsZoneLinks]}
+    baseline:
+      standing: published
+      claims: [ref:private-endpoint-dns#zone-per-service, ref:dns-private-resolver#hybrid-resolution, ref:caf-avd-network#dns-like-iaas, ref:avd-private-link-setup#dns-zones]
+      says: Every private endpoint name resolves to its private address from the host network through a linked zone or forwarding.
+    measure: fact
+    landingZone: [dnsServers, centralPrivateDnsZoneResourceIds]
+  - id: network.egress
+    area: network
+    pillar: networking-azure
+    title: Outbound connectivity
+    decides: NAT Gateway, a route to a firewall or appliance, or load balancer outbound rules; default outbound access off.
+    home: {decision: network, facts: [c11.network.defaultRoutes, proposed:c11.network.hostSubnets.explicitEgress, proposed:c11.network.hostSubnets.defaultOutboundAccess]}
+    baseline:
+      standing: published
+      claims: [ref:default-outbound#explicit-outbound, ref:default-outbound#private-subnets-default, ref:nat-gateway#subnet-egress, ref:review-checklists-avd#F01.04, ref:review-checklists-avd#F01.06]
+      says: An explicit outbound method on every host subnet; default outbound access is not a design.
+    measure: fact
+    landingZone: [hubFirewallPrivateIp]
+  - id: network.required-endpoints
+    area: network
+    pillar: networking-azure
+    title: Required endpoints, ports and service tags
+    decides: How hosts reach the published AVD endpoints, the platform addresses and the identity endpoints through NSGs, routes and firewalls.
+    home: {decision: network, facts: [proposed:c11.network.hostSubnets.avdOutboundDenied, proposed:c11.network.hostSubnets.fabricDenyRules]}
+    baseline:
+      standing: published
+      claims: [ref:avd-required-fqdn#host-list, ref:avd-required-fqdn#blocking-unsupported, ref:avd-required-fqdn#service-and-fqdn-tags, ref:avd-fabric-ips#no-deny-no-route, ref:firewall-avd#fqdn-tag-rules, ref:review-checklists-avd#F01.05, ref:review-checklists-avd#F01.07]
+      says: The published endpoints reachable from every host, by service and FQDN tags; no rule or route aimed at the platform addresses.
+    measure: host-side
+    landingZone: []
+  - id: network.inspection
+    area: network
+    pillar: networking-azure
+    title: Inspection, proxies and forced tunneling
+    decides: Which traffic a firewall, proxy or tunnel may carry or inspect, and what bypasses it.
+    home: {decision: network, facts: [c11.network.defaultRoutes], intake: [proposed:intake.inspection]}
+    baseline:
+      standing: published
+      claims: [ref:avd-proxy#bypass-proxies, ref:avd-proxy#no-ssl-termination, ref:avd-proxy#no-auth-proxy, ref:avd-fabric-ips#never-proxy-or-tunnel, ref:firewall-avd#bypass-route-for-scale-in, ref:caf-avd-network#forced-tunnel-supported, ref:review-checklists-avd#F01.08]
+      says: Forced tunneling is allowed when the requirements hold; no SSL termination or authenticating proxy for AVD, the platform addresses never tunneled, a direct route for the AVD service tag past a firewall.
+    observations: [obs:hub-route-without-avd-bypass]
+    measure: host-side
+    landingZone: []
+  - id: network.private-access
+    area: network
+    pillar: networking-azure
+    title: Private endpoints and AVD Private Link (Azure side)
+    decides: Which AVD Private Link layout (connection, feed, global) and public access settings, and private endpoints for profile storage and Key Vault.
+    home: {decision: network, facts: [c11.network.privateEndpoints, c11.storage.privateEndpoint, proposed:c11.hostPool.publicNetworkAccess, proposed:c11.workspace.publicNetworkAccess, proposed:c11.network.privateEndpoints.groupId], checks: [asm-files-private-endpoint]}
+    baseline:
+      standing: published
+      claims: [ref:avd-private-link#three-sub-resources, ref:avd-private-link#four-scenarios, ref:avd-private-link#public-access-settings, ref:avd-private-link#global-workspace, ref:avd-private-link#udp-opt-in, ref:avd-private-link#full-port-range, ref:avd-private-link-setup#re-register-provider, ref:review-checklists-avd#F01.10]
+      says: One of the four published layouts, chosen on purpose; the connection endpoint's full TCP range open where ports are restricted; UDP only with the opt-in.
+    observations: [obs:private-link-session-hosts-only, obs:private-endpoint-nsg-narrower-than-avd-needs]
     measure: fact
     landingZone: [enableAvdPrivateLink]
+  - id: network.admin-access
+    area: network
+    pillar: networking-azure
+    title: Administrative access path
+    decides: How operators reach hosts and private endpoints (Bastion SKU or a jumpbox), separate from the user path through AVD.
+    home: {decision: proposed:network.adminAccess, facts: [proposed:c11.network.bastionHosts, proposed:c11.network.hostPublicRdp]}
+    baseline:
+      standing: guidance
+      claims: [ref:bastion#admin-path, gap:network-scope]
+      says: Users come in through AVD; operators through Bastion or a jumpbox, never a public RDP port. The landing zone's opt-in jumpbox (its decision 0019) is after its pinned commit.
+    measure: fact
+    landingZone: []
+  - id: network.hybrid
+    area: network
+    pillar: networking-azure
+    title: Hybrid connectivity
+    decides: Whether hosts need on-premises resources, and over VPN, ExpressRoute or Virtual WAN.
+    home: {decision: network, facts: [], intake: [intake.existingHub]}
+    baseline:
+      standing: published
+      claims: [ref:caf-avd-network#hybrid-scenarios, ref:caf-avd-network#entra-joined-no-private, ref:review-checklists-avd#F01.01, ref:review-checklists-avd#F01.03]
+      says: Hybrid only when hosts need on-premises resources; Entra-joined hosts need none for identity.
+    measure: intake
+    landingZone: []
+  - id: network.monitoring
+    area: network
+    pillar: networking-azure
+    title: Network monitoring
+    decides: Flow logs with traffic analytics and path tests for the host network.
+    home: {decision: proposed:network.monitoring, facts: [proposed:c11.network.flowLogs]}
+    baseline:
+      standing: guidance
+      claims: [ref:vnet-flow-logs#flow-logging, ref:connection-monitor#path-tests, ref:caf-avd-network#nsg-on-all-subnets]
+      says: NSGs on every subnet with flow logs and traffic analytics, and a path test where hosts depend on a hub or on-premises.
+    measure: fact
+    landingZone: []
 
   # Host pool shape, operations and cost
   - id: hostpool.type
     area: hostpool
+    pillar: use-cases
     title: Host pool type
     decides: Pooled or personal, per user group.
     home: {decision: hostPool.type, facts: [c11.hostPool.type, c11.hostPool.count]}
@@ -527,11 +824,12 @@ dimensions:
       standing: owned
       claims: []
       says: Owned by the use case method (personas to pool type).
-    seeAlso: https://github.com/avd-ops/avd-assess/pull/10
+    seeAlso: https://github.com/avd-ops/avd-assess/blob/33b7ca036b5338a0031c441150244e5be7316e4e/methods/use-cases.md
     measure: fact
     landingZone: []
   - id: hostpool.app-group
     area: hostpool
+    pillar: app-delivery
     title: Desktop or RemoteApp
     decides: The application group type each user group gets.
     home: {decision: hostPool.appGroup, facts: [c11.hostPool.preferredAppGroupType, c11.hostPool.appGroups]}
@@ -543,6 +841,7 @@ dimensions:
     landingZone: []
   - id: ops.monitoring
     area: operations
+    pillar: monitoring
     title: Monitoring, Insights and alerts
     decides: Insights wiring (diagnostics per AVD object, agent and data collection rule per host), log retention and alerts.
     home: {decision: proposed:operations.monitoring, facts: [proposed:c11.monitoring.diagnostics, proposed:c11.hostPool.sessionHosts.monitoringAgent, proposed:c11.hostPool.sessionHosts.insightsDcr, proposed:c11.monitoring.workspace.retentionDays, proposed:c11.monitoring.alerts]}
@@ -555,6 +854,7 @@ dimensions:
     note: Alerts are fixed in the landing zone's monitoring module. Alert facts carry counts and state only, never receivers.
   - id: ops.config-management
     area: operations
+    pillar: intune
     title: Host configuration management
     decides: How host settings are delivered (Intune or Group Policy).
     home: {decision: proposed:operations.configuration, facts: []}
@@ -566,6 +866,7 @@ dimensions:
     landingZone: [enrollInIntune]
   - id: cost.power
     area: cost
+    pillar: scaling
     title: Power management
     decides: Autoscale, Start VM on Connect and shutdown schedules.
     home: {decision: hostPool.power, facts: [c11.hostPool.startVmOnConnect, intake.workingHours], checks: [asm-personal-start-vm-on-connect]}
@@ -573,11 +874,12 @@ dimensions:
       standing: owned
       claims: [ref:review-checklists-avd#E01.05]
       says: Owned by the FinOps method; Start VM on Connect for personal pools is the one check today.
-    seeAlso: https://github.com/avd-ops/avd-assess/pull/8
+    seeAlso: https://github.com/avd-ops/avd-assess/blob/5bc5da8f17de4cca7e51d62a4210bd7da893fa40/methods/finops.md
     measure: fact
     landingZone: [startVmOnConnect, scalingTimeZone, enableAutoShutdown, autoShutdownTime, autoShutdownDays, autoShutdownTimeZone, autoShutdownScheduleAction, autoShutdownRunbookUri]
   - id: cost.budget
     area: cost
+    pillar: finops
     title: Budgets, tags and cost guardrails
     decides: Budgets, budget actions and cost allocation tags.
     home: {decision: proposed:cost.budget, facts: []}
@@ -585,6 +887,6 @@ dimensions:
       standing: owned
       claims: []
       says: Owned by the FinOps method.
-    seeAlso: https://github.com/avd-ops/avd-assess/pull/8
+    seeAlso: https://github.com/avd-ops/avd-assess/blob/5bc5da8f17de4cca7e51d62a4210bd7da893fa40/methods/finops.md
     measure: rebuild
     landingZone: [monthlyBudgetAmount, budgetStartDate, autoShutdownBudgetAction, autoShutdownBudgetPercent, tags]

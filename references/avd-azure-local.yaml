@@ -1,0 +1,12 @@
+id: avd-azure-local
+title: Azure Virtual Desktop on Azure Local
+url: https://learn.microsoft.com/azure/virtual-desktop/azure-local-overview
+pin: "Learn git_commit_id cc9c735dd826d60c173941f64ad41d130b6287a3, updated_at 2026-09-09"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: "Extension point only: the network pillar has no Azure Local method yet."
+claims:
+  - id: no-mixed-pools
+    says: A host pool holds session hosts on Azure or on Azure Local, never both.
+    kind: published

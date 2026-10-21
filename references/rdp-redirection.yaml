@@ -1,0 +1,15 @@
+id: rdp-redirection
+title: Peripheral and resource redirection over the Remote Desktop Protocol
+url: https://learn.microsoft.com/azure/virtual-desktop/redirection-remote-desktop-protocol
+pin: "Learn git_commit_id 6034b613281b515c846d7d046b8462dc4cdd7c77, updated_at 2026-09-17"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: P10 (endpoints and clients) cites this reference for peripherals.
+claims:
+  - id: high-level-first
+    says: Prefer high-level redirection; opaque low-level USB redirection is a fallback with no guarantee of performance or features.
+    kind: guidance
+  - id: most-restrictive-wins
+    says: Redirection is set on the host side (policy or RDP properties) and can be restricted further on the client; the more restrictive setting wins.
+    kind: published

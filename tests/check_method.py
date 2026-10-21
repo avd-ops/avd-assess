@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 VERDICTS = {"agrees", "disagrees", "extends", "not-yet-tested"}
 KINDS = {"published", "prior", "guidance"}
 AREAS = {"collection", "assessment", "benchmarks", "scoring"}
-METHODS = ["collection", "assessment", "remediation", "targets-benchmarks", "scoring", "sample-check", "baseline-profile", "tune-rightsize", "use-cases", "finops", "security"]
+METHODS = ["collection", "assessment", "remediation", "targets-benchmarks", "scoring", "sample-check", "baseline-profile", "tune-rightsize", "use-cases", "finops", "security", "remote-protocols"]
 STANDINGS = {"candidate", "gold", "baseline", "demoted"}
 CITE = re.compile(r"`((?:ref|obs|gap):[A-Za-z0-9._:#-]+)`")
 GUID = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b")
@@ -39,6 +39,8 @@ def load(path):
         return {}
 
 
+pillars = {p.get("id") for p in (load(ROOT / "pillars.yaml").get("pillars") or [])}
+
 claims = set()
 for path in sorted((ROOT / "references").glob("*.yaml")):
     ref = load(path)
@@ -53,6 +55,11 @@ for path in sorted((ROOT / "references").glob("*.yaml")):
     for area in ref.get("areas") or []:
         if area not in AREAS:
             err(path, f"unknown area {area!r}")
+    for pillar in ref.get("pillars") or []:
+        if pillar not in pillars:
+            err(path, f"unknown pillar {pillar!r} (see pillars.yaml)")
+    if "archive" in ref and not re.match(r"^https://(web\.archive\.org/web/\d{14}/|archive\.ph/)", str(ref["archive"])):
+        err(path, "archive must be a web.archive.org snapshot with a 14-digit timestamp, or an archive.ph link")
     claims.add(f"ref:{rid}")
     for c in ref.get("claims") or []:
         if not c.get("id") or not c.get("says"):
@@ -126,6 +133,7 @@ def validate(doc_path, schema_name):
 
 
 validate(ROOT / "index.json", "assess-index.schema.json")
+validate(ROOT / "map.json", "assess-map.schema.json")
 method = validate(ROOT / "method.json", "assess-method.schema.json")
 register = json.loads((contracts / "fact-register.json").read_text(encoding="utf-8"))
 facts = {f["id"]: f for f in register["facts"]}

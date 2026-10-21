@@ -1,0 +1,11 @@
+id: vnet-flow-logs
+title: Virtual network flow logs
+url: https://learn.microsoft.com/azure/network-watcher/vnet-flow-logs-overview
+pin: "Learn git_commit_id 4ae52c3fa350e340059210b16c2a32d36fc65d15, updated_at 2026-10-06"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+claims:
+  - id: flow-logging
+    says: Virtual network flow logs record IP flows for a network, subnet or NIC and feed traffic analytics, which is charged per GB processed.
+    kind: published

@@ -1,0 +1,7 @@
+id: private-endpoint-nsg-narrower-than-avd-needs
+claim: ref:avd-private-link#full-port-range
+verdict: not-yet-tested
+observed: "The landing zone enforces an NSG on its private endpoint subnet that allows TCP 445 from the hosts and TCP 443 from the network and denies the rest, while the source says the connection endpoint needs TCP 1-65535 whenever ports to it are restricted. Recorded sandbox runs connected sessions through landing zones built this way (to confirm from their run records), so either the session host side only needs 443 or the gap shows up under conditions not yet run (private client connections, other gateways). To test in a run that already deploys the landing zone, then record agrees or disagrees."
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/network.bicep
+date: 2026-10-21

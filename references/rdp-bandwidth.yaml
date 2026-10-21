@@ -12,3 +12,6 @@ claims:
   - id: per-scenario-estimates
     says: The page gives per-user bandwidth estimates by activity for one 1080p monitor, from idle to full-screen video.
     kind: prior
+  - id: throttle-managed-only
+    says: A throttle rate in a QoS policy can cap RDP's outbound traffic per session, but only on Shortpath for managed networks; most estates should not limit bandwidth.
+    kind: guidance

@@ -1,0 +1,7 @@
+id: endpoint-probe-off-host
+claim: ref:avd-url-check-tool#run-on-host
+verdict: extends
+observed: "avd-current-state's validator probes a fixed list of AVD endpoints from wherever it runs, usually Cloud Shell, and says so; that proves nothing about the session host subnet. Its list also predates the current required list (newer service domains, the relay UDP range, certificate endpoints on TCP 80, the platform addresses). An authoritative result needs the Agent URL Tool's output from a host, and a probe off the host should count as unknown, not pass."
+evidence:
+  - https://github.com/avd-ops/avd-current-state/blob/aedec88aeb535579dcf11a84aa19e870b8cab0b2/avd_deployment_validator.ps1
+date: 2026-10-21

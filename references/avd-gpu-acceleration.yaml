@@ -22,3 +22,15 @@ claims:
   - id: grid-driver-only
     says: Only Azure-distributed drivers are supported; on NVIDIA sizes only the GRID driver accelerates applications and the Windows user interface.
     kind: published
+  - id: cpu-by-default
+    says: Sessions render and encode on the CPU by default even on GPU sizes; GPU rendering and hardware encoding are turned on by host policy.
+    kind: published
+  - id: avc444-needs-hw-encoding
+    says: Prioritizing AVC 444 without also enabling hardware encoding can leave full-screen video encoded on the CPU.
+    kind: published
+  - id: hevc-prerequisites
+    says: HEVC hardware encoding needs a GPU host on Windows 10 or 11, a desktop (not RemoteApp), multimedia redirection removed, and a client GPU that decodes HEVC; it falls back to 4:2:0 chroma and, when unavailable, to AVC.
+    kind: published
+  - id: verify-by-event
+    says: Host events 162 and 170 show whether AVC 444, HEVC and hardware encoding are in use.
+    kind: published
