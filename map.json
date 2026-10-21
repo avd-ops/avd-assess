@@ -222,8 +222,9 @@
       "id": "diagnostics",
       "title": "Troubleshooting and diagnostics",
       "scope": "Triage flows per symptom; the data sources (Insights, the diagnostic tables, agent health and logs, event, profile and client logs, Resource Graph); tools as categories; error-code maps; the diagnostic facts the collector reads.",
+      "method": "methods/diagnostics.md",
       "checklist": [],
-      "status": "missing"
+      "status": "mapped"
     },
     {
       "id": "intune",
@@ -2441,6 +2442,293 @@
         "autoShutdownBudgetPercent",
         "tags"
       ]
+    },
+    {
+      "id": "diag.service-diagnostics",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "AVD service diagnostics (the WVD tables)",
+      "decides": "Whether the service's own record of connections, errors, checkpoints, feed, host registration and agent health exists to triage from, and for which objects.",
+      "home": {
+        "facts": [
+          "c11.monitoring.diagnostics"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:diagnostics-log-analytics#categories",
+          "ref:diagnostics-log-analytics#per-object",
+          "ref:diagnostics-log-analytics#unreached-not-logged",
+          "ref:troubleshoot-overview#insights-or-kql",
+          "ref:troubleshoot-insights#read-access-needed",
+          "ref:troubleshoot-insights#ingestion-delay",
+          "gap:diagnostics-scope"
+        ],
+        "says": "Diagnostics on every host pool, application group and workspace, read through Insights or queries with Reader on the resources and the workspace; a connection that never reached the service isn't in them."
+      },
+      "observations": [
+        "obs:landing-zone-alerts-read-the-wvd-tables"
+      ],
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "Turning diagnostics on is ops.monitoring; this row is what a triage can read once they are on. The landing zone sends all categories of its host pool, application group and workspace."
+    },
+    {
+      "id": "diag.host-health",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "Session host status and health checks",
+      "decides": "Whether every host is Available, which health checks fail, and whether the agent still reports a heartbeat.",
+      "home": {
+        "facts": [
+          "c11.hostPool.sessionHosts.status",
+          "c11.hostPool.sessionHosts.staleHeartbeat",
+          "c11.hostPool.sessionHosts.failedHealthChecks"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:session-host-health-checks#available-is-healthy",
+          "ref:session-host-health-checks#status-load-balancing",
+          "ref:session-host-health-checks#fatal-checks",
+          "ref:session-host-health-checks#needs-assistance-nonfatal",
+          "ref:session-host-health-checks#shutdown-vs-unavailable",
+          "ref:avd-sessionhost-get-api#health-check-results",
+          "ref:avd-sessionhost-get-api#health-check-names",
+          "ref:avd-sessionhost-get-api#fatal-by-name",
+          "ref:wvdagenthealthstatus-table#health-history",
+          "gap:triage-host-unhealthy"
+        ],
+        "says": "Every running host Available and passing its checks; a fatal check makes a host Unavailable, a non-fatal one Needs Assistance, and Shutdown or Unavailable on a stopped VM is not a fault."
+      },
+      "measure": "fact",
+      "landingZone": [],
+      "note": "The API read is point in time and needs only Reader; the agent health table keeps the history. The collector's stale heartbeat threshold (30 minutes) is a family choice with no source (gap:diagnostics-scope). Agent and stack versions and update state are the images pillar's facts."
+    },
+    {
+      "id": "diag.connection-errors",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "Connection, feed and registration errors by code",
+      "decides": "Which errors users and hosts hit over a window, by code, and which of them an admin can fix.",
+      "home": {
+        "facts": [
+          "c11.hostPool.diagnostics.windowDays",
+          "c11.hostPool.diagnostics.errorsByCode",
+          "c11.hostPool.diagnostics.serviceErrors",
+          "c11.subscription.diagnostics.workspaceErrorsByCode"
+        ],
+        "intake": [
+          "intake.reportedSymptoms"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:wvderrors-table#code-columns",
+          "ref:wvderrors-table#resource-types",
+          "ref:diagnostics-log-analytics#service-error-split",
+          "ref:diagnostics-log-analytics#errors-scope",
+          "ref:troubleshoot-insights#errors-not-all-documented",
+          "gap:error-code-map",
+          "gap:diagnostics-scope"
+        ],
+        "says": "Admin-fixable errors (ServiceError false) are the estate's to fix and service errors go to Microsoft with their correlation ID; no source lists every code or says how many errors are normal, so codes go through the family's error-code map."
+      },
+      "observations": [
+        "obs:landing-zone-alerts-read-the-wvd-tables"
+      ],
+      "measure": "measured",
+      "landingZone": [],
+      "note": "A Log Analytics read for the collector, specified in the fact register; counts by code only, never user names or messages."
+    },
+    {
+      "id": "diag.connection-outcomes",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "Connection outcomes and time to connect",
+      "decides": "What share of connections reach the host, and where time to connect goes when it is slow.",
+      "home": {
+        "facts": [
+          "c11.hostPool.diagnostics.connections",
+          "c11.hostPool.diagnostics.connectionsFailed",
+          "c11.hostPool.diagnostics.timeToConnectSecondsP95",
+          "c12.group.logonSeconds.p95"
+        ],
+        "intake": [
+          "intake.reportedSymptoms"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:diagnostics-log-analytics#connection-states",
+          "ref:avd-insights-glossary#time-to-connect-checkpoints",
+          "ref:avd-insights-glossary#time-to-connect-stages",
+          "ref:avd-insights-glossary#credential-time-subtracted",
+          "ref:troubleshoot-insights#time-to-connect-includes-credentials",
+          "ref:troubleshoot-insights#missing-completion",
+          "ref:wvdcheckpoints-table#named-steps",
+          "gap:diagnostics-scope",
+          "gap:triage-cannot-connect",
+          "gap:triage-slow-logon"
+        ],
+        "says": "A connection that completes without ever connecting is a failure; time to connect runs from the Started row to the shell-ready checkpoint and splits into route, stack, logon and shell stages. No source sets a failure rate or a time; the logon target is ux-measurement's."
+      },
+      "measure": "measured",
+      "landingZone": [],
+      "note": "Two Learn pages disagree on whether time to connect includes credential entry (gap:diagnostics-scope), so a high reading is checked against the stages before it is judged."
+    },
+    {
+      "id": "diag.host-logs",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "Session host event logs",
+      "decides": "Whether the agent, Remote Desktop Services and FSLogix events a triage needs are collected centrally or have to be read on the host.",
+      "home": {
+        "facts": [
+          "c11.hostPool.sessionHosts.insightsDcr"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-insights-glossary#required-event-logs",
+          "ref:troubleshoot-agent#app-event-sources",
+          "ref:avd-insights#host-data-ama-dcr",
+          "gap:error-code-map"
+        ],
+        "says": "The Application, System, Remote Desktop Services and FSLogix logs Insights lists, sent through the data collection rule; agent faults show under the WVD-Agent, updater, boot loader and installer sources."
+      },
+      "measure": "host-side",
+      "landingZone": []
+    },
+    {
+      "id": "diag.profile-logs",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "FSLogix logs",
+      "decides": "Where a profile failure is read, from the FSLogix event logs centrally or the text and trace logs on the host.",
+      "home": {
+        "facts": []
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:fslogix-logs#three-log-types",
+          "ref:fslogix-logs#event-log-location",
+          "ref:fslogix-logs#profile-log-first",
+          "ref:fslogix-logs#kerberos-rc4-change",
+          "gap:triage-profile-failed"
+        ],
+        "says": "The FSLogix event logs travel with the host event logs; the daily profile log on the host is the first place to look, and every warning and error in it carries a code."
+      },
+      "observations": [
+        "obs:landing-zone-alerts-read-the-wvd-tables"
+      ],
+      "measure": "host-side",
+      "landingZone": [],
+      "note": "Profile configuration belongs to the profiles pillar; this row is only where the evidence is."
+    },
+    {
+      "id": "diag.sign-in-logs",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "Entra sign-in logs for AVD",
+      "decides": "Whether a sign-in failure can be read by its AADSTS code and Conditional Access result.",
+      "home": {
+        "facts": []
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:troubleshoot-sso-conditional-access#sign-in-logs-first",
+          "ref:troubleshoot-sso-conditional-access#aadsts-codes",
+          "ref:troubleshoot-sso-conditional-access#frequency-mismatch",
+          "ref:troubleshoot-sso-conditional-access#compliance-on-client",
+          "ref:troubleshoot-entra-joined#vm-user-login-role",
+          "ref:troubleshoot-entra-joined#per-user-mfa-unsupported",
+          "ref:troubleshoot-service-connection#conditional-access-blocks",
+          "gap:triage-cannot-connect"
+        ],
+        "says": "Read the user's sign-in entries for the AVD and Windows Cloud Login apps; the AADSTS code and the Conditional Access tab say which policy or registration failed."
+      },
+      "measure": "directory",
+      "landingZone": [],
+      "note": "The identity pillar owns the policies; this row is how a failure is read. A directory read waits on the owner's collector decision."
+    },
+    {
+      "id": "diag.client-logs",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "Client logs and first checks",
+      "decides": "What the user or operator collects from the client when the service shows nothing.",
+      "home": {
+        "facts": []
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:windows-app-logs#per-platform",
+          "ref:windows-app-basic#first-steps",
+          "ref:windows-app-basic#no-resources-message",
+          "ref:diagnostics-log-analytics#client-info-gaps",
+          "ref:troubleshoot-overview#network-is-local"
+        ],
+        "says": "Latest Windows App, the same resource tried in a browser, then the app's own logs for the platform; problems on the user's network go to that network's administrators."
+      },
+      "measure": "intake",
+      "landingZone": []
+    },
+    {
+      "id": "diag.network-path",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "Path checks from the host and the client",
+      "decides": "Whether the host reaches the service's required endpoints and the client reaches the gateway, tested rather than assumed.",
+      "home": {
+        "facts": []
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:avd-url-check-tool#run-on-host",
+          "ref:troubleshoot-agent#event-3277-invalid-form",
+          "ref:troubleshoot-agent#event-3703-gateway",
+          "ref:troubleshoot-agent#event-3019-websocket",
+          "ref:troubleshoot-session-host-vm#no-heartbeat",
+          "ref:connection-monitor#path-tests",
+          "ref:troubleshoot-rdp-shortpath#nat-type-test"
+        ],
+        "says": "The required URL check on the host first, then path tests where a route or firewall is in doubt; agent events 3277, 3703 and 3019 name which endpoint failed."
+      },
+      "measure": "host-side",
+      "landingZone": [],
+      "note": "The networking pillars own the endpoint list and the rules; this row is the test a triage runs."
+    },
+    {
+      "id": "diag.service-health",
+      "area": "diagnostics",
+      "pillar": "diagnostics",
+      "title": "Service Health and escalation",
+      "decides": "Whether a platform incident is ruled out first, and which problems go to Microsoft.",
+      "home": {
+        "facts": []
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:troubleshoot-overview#service-health-first",
+          "ref:troubleshoot-overview#escalation-tracks",
+          "ref:service-alerts#service-issue-and-advisory",
+          "ref:diagnostics-log-analytics#service-error-split"
+        ],
+        "says": "Service Health first, with alerts for AVD service issues and advisories; service errors and anything past the troubleshooting pages go to support with the correlation ID."
+      },
+      "measure": "none",
+      "landingZone": []
     }
   ],
   "baselines": {

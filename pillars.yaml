@@ -122,8 +122,9 @@ pillars:
   - id: diagnostics
     title: Troubleshooting and diagnostics
     scope: Triage flows per symptom; the data sources (Insights, the diagnostic tables, agent health and logs, event, profile and client logs, Resource Graph); tools as categories; error-code maps; the diagnostic facts the collector reads.
+    method: methods/diagnostics.md
     checklist: []
-    status: missing
+    status: mapped
   - id: intune
     title: Intune and host management
     scope: Microsoft Intune for session hosts and client devices as the owner asked (2026-10-21), against Group Policy where an estate keeps it; enrollment of multi-session and Entra-joined hosts, configuration profiles and the settings catalog, security baselines for session hosts, compliance policies for hosts and for the client devices Conditional Access checks, app deployment to hosts, update rings and Autopatch against image-based servicing, remote actions and reporting.

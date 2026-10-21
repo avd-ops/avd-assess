@@ -340,6 +340,116 @@
       "evidences": []
     },
     {
+      "id": "c11.hostPool.sessionHosts.status",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/status",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.staleHeartbeat",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/staleHeartbeat",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.failedHealthChecks",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/failedHealthChecks",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.windowDays",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/windowDays",
+      "grain": "hostPool",
+      "unit": "days",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.connections",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/connections",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.connectionsFailed",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/connectionsFailed",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.errorsByCode",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/errorsByCode",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.serviceErrors",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/serviceErrors",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics.timeToConnectSecondsP95",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics/timeToConnectSecondsP95",
+      "grain": "hostPool",
+      "unit": "seconds",
+      "privacy": "measure",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.subscription.diagnostics.workspaceErrorsByCode",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/diagnostics/workspaceErrorsByCode",
+      "grain": "subscription",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c11.hostPool.vmSizes",
       "tier": "azure",
       "contract": "C11",
@@ -1395,6 +1505,17 @@
         "network",
         "region"
       ]
+    },
+    {
+      "id": "intake.reportedSymptoms",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/reportedSymptoms",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
     },
     {
       "id": "intake.recoveryTime",
