@@ -441,7 +441,7 @@
       "home": {
         "decision": "proposed:hostPool.loadBalancing",
         "facts": [
-          "proposed:c11.hostPool.loadBalancerType"
+          "c11.hostPool.loadBalancer"
         ]
       },
       "baseline": {
@@ -495,7 +495,7 @@
           "c11.hostPool.vmSizes"
         ],
         "intake": [
-          "proposed:intake.graphicsWorkloads"
+          "intake.graphicsWorkloads"
         ]
       },
       "baseline": {
@@ -573,7 +573,7 @@
       "home": {
         "decision": "proposed:hostPool.osDisk",
         "facts": [
-          "proposed:c11.sessionHost.osDiskType"
+          "c11.hostPool.sessionHosts.osDiskTypes"
         ]
       },
       "baseline": {
@@ -601,7 +601,7 @@
       "home": {
         "decision": "proposed:hostPool.osDisk",
         "facts": [
-          "proposed:c11.sessionHost.osDiskType"
+          "c11.hostPool.sessionHosts.osDiskTypes"
         ]
       },
       "baseline": {
@@ -805,7 +805,7 @@
           "proposed:c12.group.transport.relayShare"
         ],
         "intake": [
-          "proposed:intake.userNetworks"
+          "intake.userNetworks"
         ]
       },
       "baseline": {
@@ -862,11 +862,11 @@
       "home": {
         "decision": "network",
         "facts": [
-          "proposed:c11.hostPool.udp.managedPrivate",
-          "proposed:c11.hostPool.udp.direct"
+          "c11.hostPool.udp.managedPrivate",
+          "c11.hostPool.udp.direct"
         ],
         "intake": [
-          "proposed:intake.userNetworks"
+          "intake.userNetworks"
         ]
       },
       "baseline": {
@@ -893,8 +893,8 @@
       "home": {
         "decision": "network",
         "facts": [
-          "proposed:c11.hostPool.udp.public",
-          "proposed:c11.hostPool.udp.relay",
+          "c11.hostPool.udp.public",
+          "c11.hostPool.udp.relay",
           "proposed:c12.group.transport.relayShare"
         ]
       },
@@ -954,7 +954,7 @@
         "decision": "network",
         "facts": [],
         "intake": [
-          "proposed:intake.clientApps"
+          "intake.clientApps"
         ]
       },
       "baseline": {
@@ -981,7 +981,7 @@
       "home": {
         "decision": "network",
         "facts": [
-          "proposed:c11.hostPool.udp.privateLink",
+          "c11.hostPool.udp.privateLink",
           "c11.network.privateEndpoints"
         ]
       },
@@ -1008,7 +1008,7 @@
         "decision": "network",
         "facts": [],
         "intake": [
-          "proposed:intake.userNetworks"
+          "intake.userNetworks"
         ]
       },
       "baseline": {
@@ -1037,7 +1037,7 @@
           "c11.hostPool.vmSizes"
         ],
         "intake": [
-          "proposed:intake.graphicsWorkloads"
+          "intake.graphicsWorkloads"
         ]
       },
       "baseline": {
@@ -1088,7 +1088,7 @@
       "home": {
         "decision": "hostPool.vmSize",
         "facts": [
-          "proposed:c11.sessionHost.acceleratedNetworking"
+          "c11.hostPool.sessionHosts.acceleratedNetworking"
         ]
       },
       "baseline": {
@@ -1140,7 +1140,7 @@
         "decision": "network",
         "facts": [],
         "intake": [
-          "proposed:intake.userNetworks"
+          "intake.userNetworks"
         ]
       },
       "baseline": {
@@ -1167,7 +1167,7 @@
           "c12.group.rttMsP95"
         ],
         "intake": [
-          "proposed:intake.userNetworks"
+          "intake.userNetworks"
         ]
       },
       "baseline": {
@@ -1198,7 +1198,7 @@
         "decision": "network",
         "facts": [],
         "intake": [
-          "proposed:intake.userNetworks"
+          "intake.userNetworks"
         ]
       },
       "baseline": {
@@ -1792,7 +1792,8 @@
       "home": {
         "decision": "proposed:hostPool.security",
         "facts": [
-          "proposed:c11.sessionHost.securityType"
+          "c11.hostPool.sessionHosts.trustedLaunch",
+          "c11.hostPool.sessionHosts.notTrustedLaunch"
         ]
       },
       "baseline": {
@@ -1837,7 +1838,7 @@
       "home": {
         "decision": "proposed:hostPool.encryption",
         "facts": [
-          "proposed:c11.sessionHost.encryptionAtHost"
+          "c11.hostPool.sessionHosts.encryptionAtHost"
         ]
       },
       "baseline": {
@@ -1867,7 +1868,7 @@
         "decision": "proposed:hostPool.encryption",
         "facts": [],
         "intake": [
-          "proposed:intake.keyRequirements"
+          "intake.keyRequirements"
         ]
       },
       "baseline": {
@@ -2075,7 +2076,7 @@
       "home": {
         "decision": "proposed:hostPool.zones",
         "facts": [
-          "proposed:c11.sessionHost.zone"
+          "c11.hostPool.sessionHosts.zones"
         ]
       },
       "baseline": {
@@ -2186,7 +2187,7 @@
         "decision": "network",
         "facts": [
           "c11.network.virtualNetworks",
-          "proposed:c11.network.hostSubnets.freeAddresses"
+          "c11.network.hostSubnets.freeAddresses"
         ]
       },
       "baseline": {
@@ -2218,7 +2219,7 @@
         "decision": "network",
         "facts": [
           "c11.network.customDnsVirtualNetworks",
-          "proposed:c11.network.privateDnsZoneLinks"
+          "c11.network.privateDnsZoneLinks"
         ]
       },
       "baseline": {
@@ -2247,8 +2248,8 @@
         "decision": "network",
         "facts": [
           "c11.network.defaultRoutes",
-          "proposed:c11.network.hostSubnets.explicitEgress",
-          "proposed:c11.network.hostSubnets.defaultOutboundAccess"
+          "c11.network.hostSubnets.explicitEgress",
+          "c11.network.hostSubnets.defaultOutboundAccess"
         ]
       },
       "baseline": {
@@ -2276,8 +2277,8 @@
       "home": {
         "decision": "network",
         "facts": [
-          "proposed:c11.network.hostSubnets.avdOutboundDenied",
-          "proposed:c11.network.hostSubnets.fabricDenyRules"
+          "c11.network.hostSubnets.avdOutboundDenied",
+          "c11.network.hostSubnets.fabricDenyRules"
         ]
       },
       "baseline": {
@@ -2308,7 +2309,7 @@
           "c11.network.defaultRoutes"
         ],
         "intake": [
-          "proposed:intake.inspection"
+          "intake.inspection"
         ]
       },
       "baseline": {
@@ -2341,9 +2342,8 @@
         "facts": [
           "c11.network.privateEndpoints",
           "c11.storage.privateEndpoint",
-          "proposed:c11.hostPool.publicNetworkAccess",
-          "proposed:c11.workspace.publicNetworkAccess",
-          "proposed:c11.network.privateEndpoints.groupId"
+          "c11.hostPool.publicNetworkAccess",
+          "c11.workspace.publicNetworkAccess"
         ],
         "checks": [
           "asm-files-private-endpoint"
@@ -2381,8 +2381,8 @@
       "home": {
         "decision": "proposed:network.adminAccess",
         "facts": [
-          "proposed:c11.network.bastionHosts",
-          "proposed:c11.network.hostPublicRdp"
+          "c11.network.bastionHosts",
+          "c11.network.hostPublicRdp"
         ]
       },
       "baseline": {
@@ -2431,7 +2431,7 @@
       "home": {
         "decision": "proposed:network.monitoring",
         "facts": [
-          "proposed:c11.network.flowLogs"
+          "c11.network.flowLogs"
         ]
       },
       "baseline": {
@@ -2500,11 +2500,11 @@
       "home": {
         "decision": "proposed:operations.monitoring",
         "facts": [
-          "proposed:c11.monitoring.diagnostics",
-          "proposed:c11.hostPool.sessionHosts.monitoringAgent",
-          "proposed:c11.hostPool.sessionHosts.insightsDcr",
-          "proposed:c11.monitoring.workspace.retentionDays",
-          "proposed:c11.monitoring.alerts"
+          "c11.monitoring.diagnostics",
+          "c11.hostPool.sessionHosts.monitoringAgent",
+          "c11.hostPool.sessionHosts.insightsDcr",
+          "c11.logAnalytics.retentionDays",
+          "c11.monitoring.alerts"
         ]
       },
       "baseline": {
