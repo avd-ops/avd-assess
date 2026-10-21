@@ -1,0 +1,19 @@
+id: avd-custom-image-templates
+title: Use custom image templates to create custom images in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/create-custom-image-templates
+pin: "Learn git_commit_id e068c70dd336a6d917cc4649ebe53f9a85ba4c37, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [images]
+notes: The checklist's link for B01.05. The landing zone's own image build uses Azure Image Builder directly with the family's optimization tool (ref:wdot), not the portal's templates.
+claims:
+  - id: built-on-image-builder
+    says: Custom image templates are built on Azure Image Builder and tailored for AVD, so a host pool's image configuration is standardized and repeatable.
+    kind: guidance
+  - id: dedicated-identity
+    says: The build runs as a user-assigned managed identity, ideally one made for the purpose, with a custom role scoped to the image resource group.
+    kind: guidance
+  - id: generation-must-match
+    says: A gallery image definition names generation 1 or 2, and the source image's generation must match it.
+    kind: published

@@ -20,15 +20,15 @@ pillars:
     status: mapped
   - id: capacity
     title: Capacity, compute and density
-    scope: Region placement, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, OS disks.
+    scope: Region placement and metadata location, number of host pools, personal assignment, service limits, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, accelerated networking, OS disks.
     method: methods/targets-benchmarks.md
     checklist: [C01, C03]
-    status: partial
+    status: mapped
   - id: images
     title: Images and host servicing
-    scope: Golden image, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.
-    checklist: [B01, E01.09, E01.10, E01.11, E01.13]
-    status: partial
+    scope: Golden image build process and contents (Office, OneDrive, languages), number of images, image store and replication, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.
+    checklist: [B01, B03.01, E01.09, E01.10, E01.11, E01.13]
+    status: mapped
   - id: app-delivery
     title: App delivery
     scope: App Attach and MSIX, RemoteApp against desktops, app compatibility on multi-session hosts, app groups.

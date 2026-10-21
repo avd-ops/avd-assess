@@ -13,6 +13,13 @@
 | `intake.workingHours` | When do people work (start, end, time zone)? | Power settings and scaling (`ref:avd-insights-use-cases#utilization-for-scaling`) |
 | `intake.hostSharing` (optional) | Who shares a session host (`one-org-standard`, `needs-admin`, `multi-org`, `undecided`)? | The security guide's trust boundary decides between pooled, personal and a separate tenant (`ref:avd-security-guide#trust-boundary`) |
 | `intake.avdMfa` (optional) | Does sign-in to AVD require MFA (`required`, `not-required`, `unknown`)? | Stands in for a directory read until one exists (`ref:review-checklists-avd#G04.01`, `gap:security-scope`) |
+
+**Proposed questions (2026-10-21, the capacity and images pillars).** How apps reach the hosts (`intake.appDelivery`) is the app delivery pillar's question, above. Each one below is in the fact register as `specified`: the question and its enum are settled, and it joins `intake.schema.json` as an optional field when a producer asks it. Until then the dimension rows that cite them stay `measure: intake` with no answer.
+
+| Fact | Question | Answers | Why it matters |
+|---|---|---|---|
+| `intake.graphicsWorkloads` | What is the heaviest graphics work any user group does? | `none`, `media`, `design-2d`, `visualization-3d`, `unknown` | Whether a pool needs GPU hosts (`ref:session-host-sizing#gpu-for-graphics`, `ref:review-checklists-avd#C01.12`) |
+| `intake.languages` | How many display languages do users of shared hosts need? | `one`, `few` (2 to 5), `many` (6 or more), `unknown` | Languages in a pooled image or one pool per language (`ref:avd-language-packs#pool-per-language-or-shared`, `ref:review-checklists-avd#B01.11`) |
 | `intake.appDelivery` (optional) | Every way apps reach the hosts (`image`, `app-attach`, `host-deployment`, `app-layering`, `user-installed`, `undecided`)? | Which app delivery rows apply; an app layering product is a category (`gap:app-delivery-scope`) |
 | `intake.appCompatibility` (optional) | Are the apps known to run on multi-session (`all-tested`, `some-untested`, `known-blockers`, `unknown`)? | Pooled against personal, and what to test first (`ref:windows-multisession-faq#reports-as-server`) |
 | `intake.profileSolution` (optional) | What carries the profile (`fslogix`, `other-profile-product`, `local-only`, `undecided`)? | Which profile rows apply (`ref:fslogix-azure-files#files-or-anf`) |

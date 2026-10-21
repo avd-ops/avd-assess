@@ -15,26 +15,27 @@
     {
       "id": "capacity",
       "title": "Capacity, compute and density",
-      "scope": "Region placement, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, OS disks.",
+      "scope": "Region placement and metadata location, number of host pools, personal assignment, service limits, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, accelerated networking, OS disks.",
       "method": "methods/targets-benchmarks.md",
       "checklist": [
         "C01",
         "C03"
       ],
-      "status": "partial"
+      "status": "mapped"
     },
     {
       "id": "images",
       "title": "Images and host servicing",
-      "scope": "Golden image, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.",
+      "scope": "Golden image build process and contents (Office, OneDrive, languages), number of images, image store and replication, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.",
       "checklist": [
         "B01",
+        "B03.01",
         "E01.09",
         "E01.10",
         "E01.11",
         "E01.13"
       ],
-      "status": "partial"
+      "status": "mapped"
     },
     {
       "id": "app-delivery",
@@ -455,7 +456,7 @@
         ],
         "says": "Breadth-first favors session performance, depth-first favors cost and needs a measured session limit."
       },
-      "measure": "rebuild",
+      "measure": "fact",
       "landingZone": [],
       "note": "The landing zone fixes breadth-first in its control plane module; there is no parameter."
     },
@@ -477,12 +478,104 @@
         "claims": [
           "ref:review-checklists-avd#C01.10",
           "ref:session-host-sizing#capacity-approaches",
+          "gap:workload-benchmark",
           "gap:deployment-dimensions"
         ],
-        "says": "Run a pilot or a simulated load test before fixing size and density; no open, published workload or pass threshold exists, so the method is ours."
+        "says": "Run a pilot or a simulated load test before fixing size and density; no open, published workload or pass threshold exists, so the method is ours (gap:workload-benchmark)."
       },
       "measure": "measured",
       "landingZone": []
+    },
+    {
+      "id": "hostpool.count",
+      "area": "hostpool",
+      "pillar": "capacity",
+      "title": "Number of host pools and what splits them",
+      "decides": "How many host pools the estate needs and which differences (pool type, OS, image, language, app set, region) earn a pool of their own.",
+      "home": {
+        "decision": "proposed:estate.hostPools",
+        "facts": [
+          "c11.hostPool.count",
+          "c11.hostPool.type",
+          "c11.hostPool.region",
+          "c11.hostPool.images"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#C01.02",
+          "ref:avd-terminology#same-image-per-pool",
+          "ref:avd-terminology#pooled-vs-personal",
+          "ref:avd-language-packs#pool-per-language-or-shared",
+          "ref:avd-service-limits#host-pools-per-workspace"
+        ],
+        "says": "A pool per pool type and per image, since all hosts in a pool should share one image; languages can share a pool through one multi-language image. No source gives a number; the personas decide it."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/33b7ca036b5338a0031c441150244e5be7316e4e/methods/use-cases.md",
+      "measure": "fact",
+      "landingZone": [],
+      "note": "The landing zone deploys one pooled host pool per environment; a second pool is a second deployment."
+    },
+    {
+      "id": "hostpool.personal-assignment",
+      "area": "hostpool",
+      "pillar": "capacity",
+      "title": "Personal desktop assignment",
+      "decides": "Automatic or direct assignment of users to personal desktops, and how a desktop is reassigned.",
+      "home": {
+        "decision": "hostPool.type",
+        "facts": [
+          "c11.hostPool.type",
+          "c11.hostPool.personalAssignmentType"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#C01.03",
+          "ref:avd-personal-assignment#one-to-one",
+          "ref:avd-personal-assignment#automatic-default",
+          "ref:avd-personal-assignment#reassign"
+        ],
+        "says": "Automatic assignment is the default and gives each user a free desktop at first sign-in; direct assignment names the host first. Either way one user, one desktop; reassigning goes through the portal or the REST API."
+      },
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "The landing zone deploys pooled host pools only, so it sets no assignment type."
+    },
+    {
+      "id": "capacity.service-limits",
+      "area": "hostpool",
+      "pillar": "capacity",
+      "title": "AVD service limits",
+      "decides": "Whether the planned workspaces, host pools, application groups, apps and hosts fit inside the service's limits.",
+      "home": {
+        "decision": "proposed:estate.hostPools",
+        "facts": [
+          "c11.hostPool.count",
+          "c11.hostPool.appGroups",
+          "c11.hostPool.sessionHosts.total"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#C01.11",
+          "ref:review-checklists-avd#C01.07",
+          "ref:review-checklists-avd#C01.08",
+          "ref:avd-service-limits#workspaces-per-tenant",
+          "ref:avd-service-limits#host-pools-per-workspace",
+          "ref:avd-service-limits#app-groups-per-tenant",
+          "ref:avd-service-limits#remoteapps-per-group",
+          "ref:avd-service-limits#role-assignments",
+          "ref:avd-service-limits#hosts-per-pool"
+        ],
+        "says": "Per tenant at most 1,300 workspaces and 1,000 application groups; per workspace 400 host pools; per application group 500 RemoteApps; per host pool 10,000 hosts; 200 role assignments per object. VM, storage and network limits apply on top."
+      },
+      "measure": "intake",
+      "landingZone": [],
+      "note": "The checklist asks for estimates, so the operator's plan is the measure. The facts cover host pools and hosts only, and only in the subscriptions read; workspaces, application groups, RemoteApps and role assignments are tenant-wide and have no fact."
     },
     {
       "id": "graphics.gpu-need",
@@ -617,7 +710,8 @@
         "says": "Only for pooled pools with a session host configuration, on a size whose temp disk or cache fits the image, with autoscale creating and deleting hosts instead of deallocating them."
       },
       "measure": "rebuild",
-      "landingZone": []
+      "landingZone": [],
+      "note": "The prerequisites page still lists ephemeral OS disks as unsupported for session hosts (ref:avd-prerequisites#unsupported-hosts); the two pages disagree, and the method reads the dedicated page as the newer statement until a run or Microsoft settles it."
     },
     {
       "id": "disk.latency",
@@ -1258,6 +1352,33 @@
       "landingZone": []
     },
     {
+      "id": "profile.personal-pools",
+      "area": "profiles",
+      "pillar": "profiles",
+      "title": "Profiles on personal host pools",
+      "decides": "Whether personal desktops keep the user profile on the host or in an FSLogix container, so a reassigned or replaced desktop keeps it.",
+      "home": {
+        "decision": "proposed:profile.storage",
+        "facts": [
+          "c11.hostPool.type",
+          "c11.storage.count"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#C01.09",
+          "ref:avd-personal-assignment#reassign",
+          "ref:avd-personal-assignment#fslogix-multiple-connections",
+          "ref:avd-session-host-update#replaces-vms"
+        ],
+        "says": "Evaluate FSLogix for personal pools so a profile survives reassigning or replacing the desktop; with one container location for the pool, allow multiple connections. No source says when it is required."
+      },
+      "measure": "host-side",
+      "landingZone": [],
+      "note": "Pinned by the capacity pillar (the checklist files it under capacity planning); the profiles pillar owns the row."
+    },
+    {
       "id": "perf.image-optimization",
       "area": "performance",
       "pillar": "images",
@@ -1266,7 +1387,8 @@
       "home": {
         "decision": "proposed:hostPool.image",
         "facts": [
-          "c11.hostPool.images"
+          "c11.hostPool.images",
+          "c11.hostPool.imageVersions.optimizationTagged"
         ]
       },
       "baseline": {
@@ -1590,14 +1712,19 @@
         ]
       },
       "baseline": {
-        "standing": "guidance",
+        "standing": "published",
         "claims": [
-          "ref:review-checklists-avd#C01.13"
+          "ref:review-checklists-avd#C01.13",
+          "ref:accelerated-networking#lower-latency-jitter-cpu",
+          "ref:accelerated-networking#supported-sizes",
+          "ref:accelerated-networking#not-nc-nv",
+          "ref:accelerated-networking#deallocated-to-enable"
         ],
-        "says": "Choose sizes that support accelerated networking."
+        "says": "Choose sizes that support accelerated networking (most sizes with two or more vCPUs, four with hyperthreading) and turn it on; it lowers latency, jitter and CPU use on the host."
       },
       "measure": "rebuild",
-      "landingZone": []
+      "landingZone": [],
+      "note": "The landing zone turns it on in its session host module; there is no parameter. The overview says NC and NV sizes don't support it, but some current GPU size pages list it as supported (NVadsA10 v5, read 2026-10-21), so a GPU size is judged by its own size page."
     },
     {
       "id": "perf.experience-targets",
@@ -1923,6 +2050,187 @@
       "landingZone": []
     },
     {
+      "id": "image.build-process",
+      "area": "updates",
+      "pillar": "images",
+      "title": "Image build process",
+      "decides": "How the golden image is built (an automated, repeatable build or a manual capture), what goes into it, and the rules every build keeps.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": [
+          "c11.hostPool.images"
+        ],
+        "intake": [
+          "intake.appDelivery"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#B01.01",
+          "ref:review-checklists-avd#B01.05",
+          "ref:review-checklists-avd#B01.06",
+          "ref:avd-golden-image#approaches",
+          "ref:avd-custom-image-templates#built-on-image-builder",
+          "ref:avd-custom-image-templates#dedicated-identity",
+          "ref:avd-golden-image#no-agent-in-image",
+          "ref:avd-golden-image#uwf-unsupported",
+          "ref:avd-golden-image#updates-and-cleanup",
+          "ref:avd-golden-image#fresh-source-vm"
+        ],
+        "says": "A repeatable build from a fresh source, never a captured pool host; no AVD agent or host pool registration and no write filter in the image; updates and cleanup before sealing. Whether apps go in the image, are attached or are delivered by Intune is the estate's choice."
+      },
+      "measure": "intake",
+      "landingZone": [],
+      "note": "The landing zone's image pipeline builds with Azure Image Builder and the family's optimization tool (ref:wdot); only its subnets are main template parameters (network.addressing)."
+    },
+    {
+      "id": "image.count",
+      "area": "updates",
+      "pillar": "images",
+      "title": "Number of golden images",
+      "decides": "How many images the estate maintains.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": [
+          "c11.hostPool.images",
+          "c11.hostPool.imageVersions.distinct"
+        ],
+        "intake": [
+          "intake.languages",
+          "intake.appDelivery"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#B01.02",
+          "ref:avd-terminology#same-image-per-pool",
+          "ref:avd-language-packs#pool-per-language-or-shared",
+          "ref:avd-golden-image#approaches"
+        ],
+        "says": "As few images as the OS, language and app needs allow; every host in a pool from the same image, so more than one image version in a pool is a rollout in progress or drift."
+      },
+      "measure": "fact",
+      "landingZone": []
+    },
+    {
+      "id": "image.store",
+      "area": "updates",
+      "pillar": "images",
+      "title": "Image store and replication",
+      "decides": "Gallery or managed image, which regions each version replicates to, how many replicas, and LRS or ZRS.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": [
+          "c11.hostPool.imageSources"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#B01.04",
+          "ref:avd-golden-image#gallery-for-production",
+          "ref:avd-prerequisites#image-sources",
+          "ref:compute-gallery#versioning-and-replication",
+          "ref:compute-gallery#replica-per-20-vms",
+          "ref:compute-gallery#zrs-in-zone-regions",
+          "ref:compute-gallery#replicate-latest-only",
+          "ref:compute-gallery#replication-takes-time",
+          "ref:compute-gallery#not-global",
+          "ref:compute-gallery#limits"
+        ],
+        "says": "An Azure Compute Gallery for production; one replica per 20 hosts created at once; ZRS where the region has zones; the latest version in every region the pools run in, a second gallery in another region for recovery."
+      },
+      "measure": "rebuild",
+      "landingZone": [
+        "sessionHostImage"
+      ],
+      "note": "Replica count and storage type are set by the landing zone's image build parameters (replicaRegions), not the main template; their default is one Standard LRS replica."
+    },
+    {
+      "id": "image.vm-generation",
+      "area": "updates",
+      "pillar": "images",
+      "title": "VM generation of the image",
+      "decides": "Generation 1 or 2 for the image definition and the hosts built from it.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": [
+          "c11.hostPool.sessionHosts.hyperVGenerations",
+          "c11.hostPool.sessionHosts.trustedLaunch"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#B03.01",
+          "ref:vm-generation-2#gen2-features",
+          "ref:avd-golden-image#gen1-or-gen2",
+          "ref:avd-custom-image-templates#generation-must-match",
+          "ref:vm-generation-2#upgrade-to-trusted-launch"
+        ],
+        "says": "Generation 2, which Trusted launch needs; the gallery definition and the source image must name the same generation, and generation 1 hosts can be upgraded."
+      },
+      "seeAlso": "https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md",
+      "measure": "rebuild",
+      "landingZone": [
+        "sessionHostImage"
+      ],
+      "note": "A Trusted launch host is generation 2, but a host without it can be either, so generation needs its own fact (specified); Trusted launch itself is judged by the security method (security.host-type)."
+    },
+    {
+      "id": "image.office-onedrive",
+      "area": "updates",
+      "pillar": "images",
+      "title": "Office and OneDrive in the image",
+      "decides": "Whether Microsoft 365 Apps and OneDrive are in the image, and installed for shared hosts.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#B01.09",
+          "ref:avd-office-image#shared-computer-activation",
+          "ref:avd-office-image#onedrive-per-machine",
+          "ref:avd-office-image#line-of-business-after"
+        ],
+        "says": "Microsoft 365 Apps with shared computer activation and OneDrive installed per machine; line-of-business apps after them. Teams is the remote protocol pillar's row (perf.media)."
+      },
+      "measure": "host-side",
+      "landingZone": []
+    },
+    {
+      "id": "image.languages",
+      "area": "updates",
+      "pillar": "images",
+      "title": "Languages in the image",
+      "decides": "Which display languages a pooled image carries, or whether languages get pools of their own.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": [
+          "c11.hostPool.images"
+        ],
+        "intake": [
+          "intake.languages"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:review-checklists-avd#B01.11",
+          "ref:avd-language-packs#pooled-preinstall",
+          "ref:avd-language-packs#personal-self-service",
+          "ref:avd-language-packs#pool-per-language-or-shared"
+        ],
+        "says": "Preinstall the languages pooled users need in the image; personal desktops on Windows 11 let users add their own. One multi-language image costs less than one pool per language."
+      },
+      "measure": "intake",
+      "landingZone": []
+    },
+    {
       "id": "updates.os-servicing",
       "area": "updates",
       "pillar": "images",
@@ -1932,7 +2240,8 @@
         "decision": "proposed:hostPool.updates",
         "facts": [
           "c11.hostPool.type",
-          "c11.hostPool.images"
+          "c11.hostPool.images",
+          "c11.hostPool.sessionHosts.osVersions"
         ]
       },
       "baseline": {
@@ -1960,18 +2269,22 @@
       "home": {
         "decision": "proposed:hostPool.image",
         "facts": [
-          "c11.hostPool.images"
+          "c11.hostPool.images",
+          "c11.hostPool.sessionHosts.osVersions",
+          "c11.hostPool.imageVersions.oldestAgeDays"
         ]
       },
       "baseline": {
         "standing": "guidance",
         "claims": [
           "ref:review-checklists-avd#B01.03",
+          "ref:avd-prerequisites#supported-os",
+          "ref:avd-prerequisites#unsupported-hosts",
           "ref:review-checklists-avd#B01.07",
           "ref:avd-update-methods#hotpatch",
           "gap:deployment-dimensions"
         ],
-        "says": "A chosen OS image kept current, FSLogix included in each image update; the security guide's monthly rebuild is owned by the security method, and no source sets a maximum image age."
+        "says": "A supported 64-bit Enterprise or Server OS (no LTSC, N or Arm64), kept current, FSLogix included in each image update; the security guide's monthly rebuild is owned by the security method, and no source sets a maximum image age."
       },
       "seeAlso": "https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md",
       "observations": [
@@ -2018,19 +2331,34 @@
       "home": {
         "decision": "hostPool.power",
         "facts": [
+          "c11.hostPool.sessionHosts.agentVersions",
+          "c11.hostPool.sessionHosts.sxsStackVersions",
+          "c11.hostPool.sessionHosts.updateStates",
+          "c11.hostPool.agentUpdate.scheduled",
           "c11.hostPool.startVmOnConnect"
         ]
       },
       "baseline": {
-        "standing": "guidance",
+        "standing": "published",
         "claims": [
           "ref:review-checklists-avd#E01.10",
-          "ref:review-checklists-avd#E01.13"
+          "ref:avd-scheduled-agent-updates#off-by-default",
+          "ref:avd-scheduled-agent-updates#two-hour-windows",
+          "ref:avd-scheduled-agent-updates#hosts-on-during-window",
+          "ref:avd-agent-overview#latest-stable",
+          "ref:avd-agent-overview#flights",
+          "ref:avd-agent-overview#keeps-three-versions",
+          "ref:review-checklists-avd#E01.13",
+          "ref:avd-faq#token-90-days"
         ],
-        "says": "Schedule agent updates, and turn every host on at least every 90 days."
+        "says": "Schedule agent updates in one or two two-hour windows when every host is on; expect versions to differ inside a pool for a few days during a flight; turn every host on for 20 minutes at least every 90 days."
       },
+      "observations": [
+        "obs:agent-update-window-while-hosts-off"
+      ],
       "measure": "rebuild",
-      "landingZone": []
+      "landingZone": [],
+      "note": "The landing zone fixes the schedule (one window, Saturday 02:00 host time) in its control plane module; there is no parameter."
     },
     {
       "id": "updates.validation-pool",
@@ -2040,16 +2368,21 @@
       "decides": "Whether a canary pool takes service updates first.",
       "home": {
         "decision": "proposed:hostPool.updates",
-        "facts": []
+        "facts": [
+          "c11.hostPool.validationEnvironment"
+        ]
       },
       "baseline": {
         "standing": "guidance",
         "claims": [
-          "ref:review-checklists-avd#E01.11"
+          "ref:review-checklists-avd#E01.11",
+          "ref:avd-validation-pool#service-updates-first",
+          "ref:avd-validation-pool#like-production",
+          "ref:avd-validation-pool#test-only"
         ],
-        "says": "Keep a validation host pool."
+        "says": "Keep a validation host pool that takes service updates first, as close to production as possible and used as often, and only for testing."
       },
-      "measure": "rebuild",
+      "measure": "fact",
       "landingZone": [
         "validationEnvironment"
       ]
@@ -2075,6 +2408,7 @@
       "baseline": {
         "standing": "published",
         "claims": [
+          "ref:review-checklists-avd#C03.01",
           "ref:avd-prerequisites#rtt-under-150",
           "ref:review-checklists-avd#C03.03"
         ],
@@ -2088,6 +2422,38 @@
         "location",
         "allowedLocations"
       ]
+    },
+    {
+      "id": "region.metadata-location",
+      "area": "network",
+      "pillar": "capacity",
+      "title": "Where the service keeps its metadata",
+      "decides": "Whether host pool metadata stays in the geography of its region (the default) or in the one region, where a regional deployment scope is offered.",
+      "home": {
+        "decision": "region",
+        "facts": [
+          "c11.hostPool.region"
+        ],
+        "intake": [
+          "intake.residency"
+        ]
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:review-checklists-avd#C03.02",
+          "ref:avd-data-locations#geographical-default",
+          "ref:avd-data-locations#regional-scope",
+          "ref:avd-data-locations#arm-paths-outside",
+          "ref:avd-data-locations#no-user-data"
+        ],
+        "says": "Metadata (object names, VM names, user principal names) stays in the geography of the host pool's region by default, or in that region with a regional scope where offered; Resource Manager paths are stored outside either. User data isn't stored by the service."
+      },
+      "measure": "intake",
+      "landingZone": [
+        "location"
+      ],
+      "note": "The deployment scope isn't in the C11 facts; whether residency needs the regional scope is the operator's answer (intake.residency)."
     },
     {
       "id": "reliability.zones",
@@ -2483,7 +2849,10 @@
       },
       "baseline": {
         "standing": "owned",
-        "claims": [],
+        "claims": [
+          "ref:review-checklists-avd#C01.01",
+          "ref:avd-terminology#pooled-vs-personal"
+        ],
         "says": "Owned by the use case method (personas to pool type)."
       },
       "seeAlso": "https://github.com/avd-ops/avd-assess/blob/33b7ca036b5338a0031c441150244e5be7316e4e/methods/use-cases.md",

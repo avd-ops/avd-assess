@@ -1,0 +1,22 @@
+id: avd-personal-assignment
+title: Configure personal desktop assignment
+url: https://learn.microsoft.com/azure/virtual-desktop/configure-host-pool-personal-desktop-assignment-type
+pin: "Learn git_commit_id 5b2dc7cd3aaebacccff1fc1ccd5145f8fa89dbe7, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [capacity, profiles]
+notes: The checklist's link for C01.03 and C01.09.
+claims:
+  - id: one-to-one
+    says: A personal desktop maps to one user, and every sign-in goes to that user's host.
+    kind: published
+  - id: automatic-default
+    says: Automatic assignment, the default for new personal pools, gives a user any free desktop at first connection; direct assignment names the host before the user connects.
+    kind: published
+  - id: reassign
+    says: A personal desktop can be reassigned to another user through the portal or the REST API, not the CLI.
+    kind: published
+  - id: fslogix-multiple-connections
+    says: With FSLogix and one profile container location for a personal pool, allow multiple connections to the container to avoid errors.
+    kind: published
