@@ -37,3 +37,13 @@
 **Proposed for the reliability pillar (2026-10-21).** Five more optional answers, `specified` in the register and not yet in the schema: `intake.recoveryTime`, `intake.recoveryPoint`, `intake.regionRecovery`, `intake.recoveryDependencies` and `intake.profileData`. Their questions and enums are in `gap:reliability-scope`; they join the schema as optional fields, so an intake file written today stays valid.
 
 **Proposed, not yet in the schema:** `intake.alertResponse`, `intake.logRetention`, `intake.coldStartTolerance` and `intake.deploymentMethod`, with their values and reasons in `gap:monitoring-scope`; the FinOps license and commitment questions in `gap:finops-scope`.
+**Specified for the identity pillar (2026-10-21), not yet in the C19 schema.** The fact register lists these as `specified` with their paths, so the intake form and avd-current-state's reader can add them together in one contract change; every answer is an enum, with no names, domains or IDs (`gap:identity-scope`).
+
+| Fact | Question | Answers | Why it matters |
+|---|---|---|---|
+| `intake.joinType` | How will session hosts join? | `entra-joined`, `hybrid-joined`, `ad-ds-joined`, `entra-ds-joined`, `undecided` | Single sign-on, Entra Kerberos and external users all depend on it (`ref:avd-sso#join-types`, `ref:files-entra-kerberos#clients-entra-joined`) |
+| `intake.userIdentitySource` | Where do user accounts live? | `cloud-only`, `hybrid-synced`, `mixed`, `undecided` | Profile share authentication and the cloud the estate can use (`ref:files-entra-kerberos#cloud-only-and-hybrid`, `obs:fslogix-cloud-only-users-work`) |
+| `intake.sso` | How do users sign in to Windows on the host? | `entra`, `adfs`, `none`, `undecided` | Credential prompts, the Windows Cloud Login policy and lock behavior (`ref:avd-authentication#sso-recommended`) |
+| `intake.mfaScope` | When does AVD sign-in require MFA? | `every-sign-in`, `conditional`, `none`, `unknown` | Refines `intake.avdMfa` until a directory read exists (`ref:avd-mfa-conditional-access#two-aligned-policies`) |
+| `intake.signInMethods` | Which credentials do users sign in with (any of)? | `password`, `passwordless`, `smartcard`, `federated` | Smart cards and Windows Hello for Business need a domain controller line of sight or a KDC proxy (`ref:avd-authentication#smartcard-needs-kdc`) |
+| `intake.externalUsers` | Do invited users from outside the tenant use the estate? | `none`, `invited`, `undecided` | External identities need Entra joined hosts, recent builds, single sign-on and Windows App (`ref:avd-authentication#external-identity-requirements`) |

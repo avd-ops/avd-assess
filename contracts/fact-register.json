@@ -1480,6 +1480,69 @@
       "evidences": []
     },
     {
+      "id": "c11.hostPool.sessionHosts.entraJoined",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/entraJoined",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": [
+        "identity"
+      ]
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.domainJoined",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/domainJoined",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": [
+        "identity"
+      ]
+    },
+    {
+      "id": "c11.hostPool.entraSso",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/entraSso",
+      "grain": "hostPool",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [
+        "identity"
+      ]
+    },
+    {
+      "id": "c11.hostPool.directUserAssignments",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/directUserAssignments",
+      "grain": "hostPool",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": [
+        "hostPool.appGroup"
+      ]
+    },
+    {
+      "id": "c11.subscription.privilegedAssignments",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/privilegedAssignments",
+      "grain": "subscription",
+      "unit": "count",
+      "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
       "id": "c12.window.days",
       "tier": "forensic",
       "contract": "C12",
@@ -2187,6 +2250,81 @@
       "privacy": "public",
       "status": "specified",
       "evidences": []
+    },
+    {
+      "id": "intake.joinType",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/joinType",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [
+        "identity"
+      ]
+    },
+    {
+      "id": "intake.userIdentitySource",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/userIdentitySource",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [
+        "identity"
+      ]
+    },
+    {
+      "id": "intake.sso",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/sso",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [
+        "identity"
+      ]
+    },
+    {
+      "id": "intake.mfaScope",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/mfaScope",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.signInMethods",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/signInMethods",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [],
+      "aggregate": "distinct"
+    },
+    {
+      "id": "intake.externalUsers",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/externalUsers",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": [
+        "identity"
+      ]
     }
   ]
 }

@@ -1,0 +1,16 @@
+id: adds-in-azure
+title: Deploy AD DS in an Azure virtual network (Azure Architecture Center)
+url: https://learn.microsoft.com/azure/architecture/example-scenario/identity/adds-extend-domain
+pin: "Learn git_commit_id 317c21f64e5270088105ad6d42b59ad26e40241c, updated_at 2026-06-17"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [identity]
+notes: The review checklist's D01.01 links to an older address of this page.
+claims:
+  - id: two-dcs-across-zones
+    says: Run at least two domain controllers in Azure, in different availability zones or an availability set where zones aren't available.
+    kind: published
+  - id: persistent-os-disk
+    says: Domain controllers use persistent managed OS disks, never ephemeral ones.
+    kind: published

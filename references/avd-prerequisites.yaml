@@ -19,3 +19,19 @@ claims:
   - id: image-sources
     says: Hosts can use Marketplace images or custom images kept in an Azure Compute Gallery or as managed images.
     kind: published
+  # Identity claims read for the identity pillar (2026-10-21) at the same pin; kept after the others.
+  - id: identity-scenarios
+    says: Six identity scenarios are supported, from Entra-only users on Entra joined hosts to synced users on hosts joined to AD DS or Entra Domain Services; Entra ID always authenticates the user.
+    kind: published
+  - id: hybrid-sync
+    says: With AD DS, users must be synced to Entra ID with Entra Connect; with Entra Domain Services the sync from Entra ID is one way and automatic; personal Microsoft accounts aren't supported.
+    kind: published
+  - id: fslogix-entra-joined-hybrid
+    says: FSLogix profiles on Entra joined hosts need Azure Files or Azure NetApp Files and hybrid user accounts created in AD DS.
+    kind: published
+  - id: join-account
+    says: Joining hosts needs an account that can join devices to the tenant or computers to the domain (for Entra Domain Services, a member of its DC administrators group), and that account can't have MFA.
+    kind: published
+  - id: ou-at-deploy
+    says: Hosts can be placed in an OU at deployment time with an optional parameter.
+    kind: published

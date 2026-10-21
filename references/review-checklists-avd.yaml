@@ -237,3 +237,32 @@ claims:
     says: Review the domain GPOs applied to the session hosts' OU for settings that affect host functions (Operations, medium).
   - id: D01.04
     says: Configure FSLogix settings with the provided ADMX template (Operations, medium).
+  # Identity items read for the identity pillar (dimensions.yaml, pillar identity, 2026-10-21); kept here, after the others.
+  - id: D01.01
+    says: Run at least two domain controllers in the Azure virtual network close to the host pools (Reliability, medium).
+  - id: D01.02
+    says: Give each host pool its own OU in Active Directory (Operations, medium).
+  - id: D01.03
+    says: Review the domain GPOs that reach the host pools' OUs and affect session host features (Operations, medium).
+  - id: D01.04
+    says: Configure FSLogix with its Group Policy ADMX template (Operations, medium).
+  - id: D01.05
+    says: Use a dedicated account that may only join VMs to the domain (Security, medium).
+  - id: D01.06
+    says: Create a domain user group per set of users granted each host pool's application group (Security, medium).
+  - id: D01.07
+    says: Check the password expiration policy for the accounts Azure Files AD integration uses (Security, high).
+  - id: D01.08
+    says: The Active Directory forest or domain must sync with Entra ID (Reliability, high).
+  - id: D03.01
+    says: An Entra tenant with at least one linked subscription must exist (Reliability, high).
+  - id: D03.02
+    says: Review and document the identity scenario (Security, high).
+  - id: D03.03
+    says: Assess the user account types and their requirements (Security, medium).
+  - id: D03.04
+    says: If single sign-on is required, review the supported scenarios and prerequisites (Reliability, medium).
+  - id: D03.05
+    says: Choose the right session host join type (Security, high).
+  - id: D03.06
+    says: Review the limits of Entra Domain Services before using it for AVD (Reliability, low).
