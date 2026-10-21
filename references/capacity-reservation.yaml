@@ -1,0 +1,13 @@
+id: capacity-reservation
+title: On-demand capacity reservation in Azure
+url: https://learn.microsoft.com/azure/virtual-machines/capacity-reservation-overview
+pin: "Learn git_commit_id df3374f199244806e2eb8f52b25fcd3afd9c3f8c, updated_at 2026-09-22"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [reliability, capacity]
+notes: The multiregion guide's capacity claims (ref:avd-multiregion-bcdr#capacity-not-guaranteed) point here.
+claims:
+  - id: reserves-capacity
+    says: An on-demand capacity reservation holds compute capacity for a VM size in a region or zone, billed whether or not VMs use it.
+    kind: published

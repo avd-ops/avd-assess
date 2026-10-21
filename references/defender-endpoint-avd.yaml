@@ -1,0 +1,22 @@
+id: defender-endpoint-avd
+title: Onboard Windows devices in Azure Virtual Desktop (Microsoft Defender for Endpoint)
+url: https://learn.microsoft.com/defender-endpoint/onboard-windows-multi-session-device
+pin: "Learn git_commit_id 1921f1568b8048d2412095738e2d5043c926f7ca, updated_at 2026-05-22"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [endpoint-protection]
+notes: The AVD-specific companion to ref:defender-endpoint-vdi. Microsoft's EDR, named as Microsoft names it; a third-party EDR has no equivalent page on Learn.
+claims:
+  - id: single-entry-recommended
+    says: Onboard AVD hosts as a single entry per virtual desktop, especially where hosts are deleted and redeployed often, so an investigation sees one device per machine name.
+    kind: published
+  - id: script-at-first-boot
+    says: Put the onboarding script in the golden image as a startup script that runs as early as possible at first boot, without onboarding the image itself.
+    kind: published
+  - id: multi-session-licensing
+    says: Multi-session hosts are licensed through Defender for Servers, or by licensing every AVD user with one of the per-user plans the page lists.
+    kind: published
+  - id: wmi-asr-rule
+    says: Where Configuration Manager manages the hosts, don't use the attack surface reduction rule that blocks process creation from PsExec and WMI.
+    kind: guidance

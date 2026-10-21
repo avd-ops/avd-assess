@@ -20,15 +20,15 @@ pillars:
     status: mapped
   - id: capacity
     title: Capacity, compute and density
-    scope: Region placement, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, OS disks.
+    scope: Region placement and metadata location, number of host pools, personal assignment, service limits, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, accelerated networking, OS disks.
     method: methods/targets-benchmarks.md
     checklist: [C01, C03]
-    status: partial
+    status: mapped
   - id: images
     title: Images and host servicing
-    scope: Golden image, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.
-    checklist: [B01, E01.09, E01.10, E01.11, E01.13]
-    status: partial
+    scope: Golden image build process and contents (Office, OneDrive, languages), number of images, image store and replication, the reviewed optimization profile, VM generation, OS servicing, image rollout, agent updates, validation pool.
+    checklist: [B01, B03.01, E01.09, E01.10, E01.11, E01.13]
+    status: mapped
   - id: app-delivery
     title: App delivery
     scope: App Attach and MSIX, RemoteApp against desktops, app compatibility on multi-session hosts, app groups.
@@ -78,9 +78,9 @@ pillars:
     status: mapped
   - id: endpoint-protection
     title: Endpoint protection and security agents
-    scope: Antivirus and endpoint detection and response on multi-session hosts, as categories; VDI settings, image sealing, exclusions for profiles and App Attach, update sharing, measured cost; vulnerability assessment.
-    checklist: [G03.04]
-    status: partial
+    scope: Antivirus and endpoint detection and response on multi-session hosts, as categories; coexistence of several products, EDR onboarding, VDI settings, image sealing, exclusions for profiles and App Attach, update sharing, measured cost; vulnerability assessment; security service edge, zero trust and VPN clients on the hosts (their effect on the user's side is in networking-client).
+    checklist: [G02.01, G03.04, H04.02]
+    status: mapped
   - id: governance
     title: Governance, policy and compliance
     scope: Azure Policy guardrails, allowed locations and sizes, tagging and naming, audit logging and retention, benchmark control mapping, compliance frameworks as mappings, change control, tenant and subscription prerequisites. Host configuration delivery is the intune pillar.
@@ -88,12 +88,12 @@ pillars:
     status: missing
   - id: monitoring
     title: Monitoring and operations
-    scope: Insights wiring, alerts, workbooks, log retention, agent and token health, day-2 runbooks, capacity reviews and cadence.
-    checklist: [E01, E02]
-    status: partial
+    scope: Insights wiring, alerts and who receives them, Service Health, workbooks, log retention, the monitoring cost signal, Advisor reviews, the deployment strategy, agent and token health, day-2 runbooks, capacity reviews and cadence.
+    checklist: [E01.08, E01.12, E02]
+    status: mapped
   - id: scaling
     title: Scaling and power
-    scope: Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing, personal pool deallocation.
+    scope: Autoscale plans, Start VM on Connect, auto shutdown, hibernation, capacity thresholds, ramp-up timing and the first-connection wait, ramp-down and disconnected sessions, personal pool deallocation, autoscale logs.
     checklist: [E01.04, E01.05]
     status: mapped
   - id: finops
@@ -105,8 +105,9 @@ pillars:
   - id: reliability
     title: Reliability, disaster recovery and continuity
     scope: Zones, a recovery model per pool, the workload's own recovery targets, profiles across regions, images in both regions, dependencies, backup, failover tests.
+    method: methods/reliability.md
     checklist: [A01, A02, A03]
-    status: partial
+    status: mapped
   - id: review-plan
     title: Review, remediation and plan
     scope: Dispositions of findings, accepted risk, plan order, which change fixes which finding.
@@ -127,5 +128,6 @@ pillars:
   - id: intune
     title: Intune and host management
     scope: Microsoft Intune for session hosts and client devices as the owner asked (2026-10-21), against Group Policy where an estate keeps it; enrollment of multi-session and Entra-joined hosts, configuration profiles and the settings catalog, security baselines for session hosts, compliance policies for hosts and for the client devices Conditional Access checks, app deployment to hosts, update rings and Autopatch against image-based servicing, remote actions and reporting.
-    checklist: [E01.03]
-    status: partial
+    method: methods/intune.md
+    checklist: [E01.03, E01.09, D01.03, D01.04]
+    status: mapped

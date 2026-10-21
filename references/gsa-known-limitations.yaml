@@ -1,0 +1,22 @@
+id: gsa-known-limitations
+title: Known limitations for Global Secure Access
+url: https://learn.microsoft.com/entra/global-secure-access/reference-current-known-limitations
+pin: "Learn git_commit_id 1ca14c78a8a89186343ee999044f5db598b1e555, updated_at 2026-09-30"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [endpoint-protection, networking-client]
+notes: Microsoft's own security service edge client, named as Microsoft names it, and the only one whose AVD support Learn documents; other products in the category are judged by intake. AVD's security page suggests it on hosts with no multi-session caveat (ref:avd-security-guide#gsa-on-hosts); this page is the narrower word.
+claims:
+  - id: no-multi-session
+    says: The Windows client doesn't support concurrent sessions on one machine, so it isn't supported on multi-session AVD hosts; Azure VMs and single-session AVD are supported.
+    kind: published
+  - id: no-udp-internet-access
+    says: Internet Access doesn't tunnel UDP yet (QUIC included); that traffic goes direct or is blocked by the forwarding profile's fallback rule.
+    kind: published
+  - id: connection-fallback
+    says: When the client can't reach the service, traffic either goes direct or is blocked, depending on the hardening setting of the matching rule.
+    kind: published
+  - id: proxy-pac-exclusions
+    says: Where a proxy is also configured, a PAC file must exclude what the client tunnels, so the two don't fight over the same traffic.
+    kind: published

@@ -1,0 +1,19 @@
+id: log-retention
+title: Manage data retention in a Log Analytics workspace
+url: https://learn.microsoft.com/azure/azure-monitor/logs/data-retention-configure
+pin: "Learn git_commit_id dda53ebc0c46430cded570bdc06e9ff266fa5ef3, updated_at 2026-09-29"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+pillars: [monitoring]
+notes: The mechanics and the price boundary of retention. It sets no retention number for any workload, which is why AVD retention stays a gap (gap:insights-facts).
+claims:
+  - id: default-30
+    says: Analytics tables keep data for 30 days by default, except some log tables that default to 90.
+    kind: published
+  - id: first-31-included
+    says: The first 31 days of analytics retention are included in the ingestion price, so retention below 31 days saves nothing.
+    kind: published
+  - id: analytics-two-years
+    says: Analytics retention can be extended to two years, and total retention, with low-cost long-term storage, to twelve years.
+    kind: published

@@ -1,0 +1,19 @@
+id: avd-language-packs
+title: Add languages to a Windows 11 Enterprise image
+url: https://learn.microsoft.com/azure/virtual-desktop/windows-11-language-packs
+pin: "Learn git_commit_id c1cff1160f21c7796f1396c26bdda0c0e5edcc4e, updated_at 2026-10-01"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [images]
+notes: The checklist's link for B01.11.
+claims:
+  - id: personal-self-service
+    says: From Windows 11, users without admin rights can add a display language and its features, so personal pools don't need languages preinstalled.
+    kind: published
+  - id: pooled-preinstall
+    says: For pooled host pools, add the languages users need to the custom image.
+    kind: guidance
+  - id: pool-per-language-or-shared
+    says: Either one host pool with its own image per language, or one multi-language image shared by all; the shared image costs less but takes more build steps.
+    kind: guidance
