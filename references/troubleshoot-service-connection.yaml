@@ -1,0 +1,18 @@
+id: troubleshoot-service-connection
+title: Troubleshoot Azure Virtual Desktop service connections
+url: https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-service-connection
+pin: "Learn git_commit_id 3df8ba2985751e0b9511625e658ab7739ccfb102, updated_at 2026-10-19"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [diagnostics, identity]
+claims:
+  - id: no-feed-assignment
+    says: A user who signs in but sees no resources is usually not assigned to an application group, or is in a distribution group, which AVD doesn't support.
+    kind: published
+  - id: feed-lost-after-tenant-move
+    says: Moving a subscription to another tenant loses user assignments; reassign the users, and re-register the resource provider for a subscription a partner created.
+    kind: published
+  - id: conditional-access-blocks
+    says: Windows App on the web needs Conditional Access to allow both the AVD and Windows 365 apps, and single sign-on needs the Windows Cloud Login app allowed too.
+    kind: published
