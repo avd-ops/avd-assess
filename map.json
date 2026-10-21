@@ -441,7 +441,7 @@
       "home": {
         "decision": "proposed:hostPool.loadBalancing",
         "facts": [
-          "c11.hostPool.loadBalancerType"
+          "c11.hostPool.loadBalancer"
         ]
       },
       "baseline": {
@@ -573,7 +573,7 @@
       "home": {
         "decision": "proposed:hostPool.osDisk",
         "facts": [
-          "c11.sessionHost.osDiskType"
+          "c11.hostPool.sessionHosts.osDiskTypes"
         ]
       },
       "baseline": {
@@ -601,7 +601,7 @@
       "home": {
         "decision": "proposed:hostPool.osDisk",
         "facts": [
-          "c11.sessionHost.osDiskType"
+          "c11.hostPool.sessionHosts.osDiskTypes"
         ]
       },
       "baseline": {
@@ -1088,7 +1088,7 @@
       "home": {
         "decision": "hostPool.vmSize",
         "facts": [
-          "c11.sessionHost.acceleratedNetworking"
+          "c11.hostPool.sessionHosts.acceleratedNetworking"
         ]
       },
       "baseline": {
@@ -1316,7 +1316,8 @@
       "home": {
         "decision": "proposed:hostPool.security",
         "facts": [
-          "c11.sessionHost.securityType"
+          "c11.hostPool.sessionHosts.trustedLaunch",
+          "c11.hostPool.sessionHosts.notTrustedLaunch"
         ]
       },
       "baseline": {
@@ -1361,7 +1362,7 @@
       "home": {
         "decision": "proposed:hostPool.encryption",
         "facts": [
-          "c11.sessionHost.encryptionAtHost"
+          "c11.hostPool.sessionHosts.encryptionAtHost"
         ]
       },
       "baseline": {
@@ -1599,7 +1600,7 @@
       "home": {
         "decision": "proposed:hostPool.zones",
         "facts": [
-          "c11.sessionHost.zone"
+          "c11.hostPool.sessionHosts.zones"
         ]
       },
       "baseline": {
@@ -2026,7 +2027,7 @@
           "c11.monitoring.diagnostics",
           "c11.hostPool.sessionHosts.monitoringAgent",
           "c11.hostPool.sessionHosts.insightsDcr",
-          "c11.monitoring.workspace.retentionDays",
+          "c11.logAnalytics.retentionDays",
           "c11.monitoring.alerts"
         ]
       },
