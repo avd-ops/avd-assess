@@ -1,0 +1,21 @@
+id: fslogix-configuration-examples
+title: FSLogix configuration examples
+url: https://learn.microsoft.com/fslogix/concepts-configuration-examples
+pin: "Learn git_commit_id d91140933b18b132be63ef5f8b2f17568aa0885a, updated_at 2026-09-01"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [profiles]
+claims:
+  - id: simplest-config
+    says: Pick the simplest configuration that meets the need; the Standard example is what most estates should consider.
+    kind: guidance
+  - id: standard-items
+    says: "Standard is one VHD location, a single container with no ODFC, no concurrent connections and no custom redirections, with VHDX and the recommended retry and local-profile cleanup values."
+    kind: published
+  - id: cloud-cache-for-availability
+    says: Cloud Cache across storage providers is the high availability example, and its behavior depends on each provider's performance.
+    kind: published
+  - id: dr-without-profile-recovery
+    says: A disaster recovery example accepts new, empty profiles in the second region instead of recovering them.
+    kind: published

@@ -1,0 +1,12 @@
+id: avd-faq
+title: Azure Virtual Desktop FAQ
+url: https://learn.microsoft.com/azure/virtual-desktop/faq
+pin: "Learn git_commit_id ec03f3009f339ca1c57ac22bf993f6c90a7965ff, updated_at 2025-12-04"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [profiles]
+claims:
+  - id: backup-by-storage
+    says: Profile backup follows the storage, Azure Backup for Azure Files shares, snapshots or Azure NetApp Files backup for ANF; VM backup is recommended only for personal pools.
+    kind: published

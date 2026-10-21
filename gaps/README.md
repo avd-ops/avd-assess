@@ -35,5 +35,6 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [triage-profile-failed](triage-profile-failed.md) | Triage when a user profile fails to load |
 | [network-scope](network-scope.md) | What a network assessment can judge, from which evidence, the draft network checks, and which repo does what |
 | [client-network](client-network.md) | Judging the networks users connect from, AVD Private Link from the client included |
+| [app-delivery-scope](app-delivery-scope.md) | What an app delivery and profile assessment can judge from where, the ways apps reach a host, and the joins the facts can't make yet |
 
 The parts of these gaps that a tool runs (the collection map, checks, readiness and scoring) are in [method.json](../method.json), avd-second-brain contract C20 (`avd-assess-method/v1`). avd-current-state runs a pinned copy.
