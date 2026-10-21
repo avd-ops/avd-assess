@@ -1,0 +1,15 @@
+id: troubleshoot-rdp-shortpath
+title: Troubleshoot RDP Shortpath for public networks
+url: https://learn.microsoft.com/azure/virtual-desktop/troubleshoot-rdp-shortpath
+pin: "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+notes: "The test tool is a closed binary download: linked as an operator step, never required."
+claims:
+  - id: nat-type-test
+    says: A Microsoft test tool run on a host or client checks STUN and TURN reachability and reports the NAT type.
+    kind: published
+  - id: udp-error-codes
+    says: Shortpath failures appear in Log Analytics with their own error codes, such as network drop and reliability threshold failures.
+    kind: published

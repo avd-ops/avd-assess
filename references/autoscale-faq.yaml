@@ -1,0 +1,11 @@
+id: autoscale-faq
+title: Azure Virtual Desktop autoscale FAQ
+url: https://learn.microsoft.com/azure/virtual-desktop/autoscale-faq
+pin: "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: disconnected-time-limit
+    says: Autoscale counts disconnected sessions as active; a host policy that signs out disconnected sessions after 15 to 30 minutes lets a pool scale to zero.
+    kind: guidance

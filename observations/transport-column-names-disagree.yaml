@@ -1,0 +1,8 @@
+id: transport-column-names-disagree
+claim: ref:configure-rdp-shortpath#verify-transport
+verdict: not-yet-tested
+observed: Two Learn pages query a WVDConnections UdpUse column, while the table reference lists TransportType (Shortpath, TURN, Websocket) and no UdpUse, and Insights uses a third set of values. The family's connection query reads TransportType but hasn't run against a real workspace yet; one sandbox connection settles which column exists. Until then the method maps all three (gap:transport-classification).
+evidence:
+  - https://github.com/avd-ops/avd-second-brain/blob/81a76a9e6fc51ce0e33c89b10f5166b0732d9f2b/docs/knowledge/agents/README.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/f466762f69a3c850dca3b6eed82ee2330af543ae/scripts/ops/kql/user-connection.kql
+date: 2026-10-21

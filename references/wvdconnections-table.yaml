@@ -1,0 +1,11 @@
+id: wvdconnections-table
+title: WVDConnections table reference
+url: https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdconnections
+pin: "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection]
+claims:
+  - id: transport-type
+    says: The table records the transport of each connection in TransportType, with the values Shortpath, TURN and Websocket.
+    kind: published

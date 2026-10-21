@@ -24,5 +24,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [commitment-floor](commitment-floor.md) | How much compute to commit for host pools a scaling plan turns off |
 | [security-scope](security-scope.md) | What a security assessment can judge, from which evidence, and which repo does what |
 | [host-baseline-profile](host-baseline-profile.md) | Judging a multi-session host against Microsoft's OS baseline through a reviewed profile |
+| [remote-protocols-scope](remote-protocols-scope.md) | What a remote protocol and session assessment can judge from where, intent before outcome, and the split with the networking pillars |
+| [transport-classification](transport-classification.md) | One family name for the transport a connection used, mapped to the three vocabularies Microsoft uses |
 
 The parts of these gaps that a tool runs (the collection map, checks, readiness and scoring) are in [method.json](../method.json), avd-second-brain contract C20 (`avd-assess-method/v1`). avd-current-state runs a pinned copy.

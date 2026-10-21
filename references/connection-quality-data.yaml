@@ -1,0 +1,14 @@
+id: connection-quality-data
+title: Collect and query connection quality data
+url: https://learn.microsoft.com/azure/virtual-desktop/connection-quality-monitoring
+pin: "Learn git_commit_id 1775de02212032150bdac28deed32d92c928e8b8, updated_at 2025-06-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, benchmarks]
+claims:
+  - id: diagnostic-tables
+    says: Network data and connection graphics data reach Log Analytics only when the host pool's diagnostic settings send those categories (allLogs includes them); the graphics data is in preview.
+    kind: published
+  - id: sample-queries-udpuse
+    says: The page's sample queries derive TCP or UDP from a WVDConnections UdpUse column.
+    kind: published

@@ -29,6 +29,7 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 | [Use cases](methods/use-cases.md) | Who uses the estate for what (personas, apps, performance, security and compliance needs), and what that says it should be |
 | [FinOps](methods/finops.md) | How to judge what an estate costs against Microsoft's and the FinOps Framework's guidance, and which repo holds which part |
 | [Security](methods/security.md) | How to judge an estate's security against Microsoft's AVD guidance, and which repo holds which part |
+| [Remote protocol and session](methods/remote-protocols.md) | How sessions reach their hosts: RDP transport, Shortpath and Multipath, judged against the networks users connect from, plus the session settings that ride on it |
 
 Every step on those pages cites one of three things:
 

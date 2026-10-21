@@ -1,0 +1,14 @@
+id: hostpool-api-changelog
+title: API version change log for Microsoft.DesktopVirtualization/hostPools
+url: https://learn.microsoft.com/azure/templates/microsoft.desktopvirtualization/change-log/hostpools
+pin: "Learn git_commit_id e25edbce7381401d96892e5e31f1ed4130be233c, updated_at 2026-06-29"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection]
+claims:
+  - id: udp-switches-preview-only
+    says: The host pool UDP switches (managedPrivateUDP, directUDP, publicUDP, relayUDP) appear in preview API versions and were removed again in the GA versions 2024-04-03 and 2025-10-10.
+    kind: published
+  - id: private-link-udp-preview-only
+    says: The Private Link UDP flag (allowRDPShortPathWithPrivateLink) was added in a 2025 preview API version and is absent from GA 2025-10-10.
+    kind: published
