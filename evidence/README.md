@@ -7,4 +7,4 @@ Measured results that check the baselines: one file per submission, in the forma
 3. Check it: `pip install pyyaml jsonschema` then `python3 scripts/check_evidence.py <your file>`.
 4. Open a pull request that adds it here, or paste it into the "Baseline evidence" issue form.
 
-A real estate's results need its owner's consent and at least 5 hosts and 20 users. Keep the raw data with the owner.
+Any size of estate can submit, from one user up. A real estate's results need its owner's consent and give host and user counts as bands (`hostsBand`, `usersBand`), never exact. Keep the raw data with the owner.

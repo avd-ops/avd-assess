@@ -31,7 +31,7 @@ body:
           required: true
         - label: It holds aggregates only, with no names, IDs, regions, domains or IP addresses.
           required: true
-        - label: For an estate, its owner agreed to share these aggregates, and it covers at least 5 hosts and 20 users.
+        - label: For an estate, its owner agreed to share these aggregates, and its size is given as bands, not exact counts.
           required: true
         - label: I agree my submission is licensed under the repo's MIT License.
           required: true

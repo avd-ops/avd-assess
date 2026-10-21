@@ -21,11 +21,6 @@ ROOT = Path(__file__).resolve().parent.parent
 EVIDENCE = ROOT / "evidence"
 SCHEMA = json.loads((EVIDENCE / "schema.json").read_text(encoding="utf-8"))
 
-# A real estate's aggregates must cover enough hosts and users that they can't point back at it
-# (gap:evidence-intake). Sandboxes and labs have no one to identify.
-MIN_ESTATE_HOSTS = 5
-MIN_ESTATE_USERS = 20
-
 # Metrics the baselines measure that have no registry entry yet; each says where its baseline lives.
 EXTRA_METRICS = {
     "memory-per-user": "gap:baseline-profile",
@@ -86,10 +81,14 @@ def check(path, known=None, metrics=None):
     if doc["source"] == "estate":
         if doc.get("consent") is not True:
             problems.append("an estate submission needs consent: true (the owner agreed to share these aggregates)")
-        if scope["hosts"] < MIN_ESTATE_HOSTS:
-            problems.append(f"an estate submission needs at least {MIN_ESTATE_HOSTS} hosts")
-        if scope.get("users", 0) < MIN_ESTATE_USERS:
-            problems.append(f"an estate submission needs users, at least {MIN_ESTATE_USERS}")
+        # Any size may submit; a real estate gives its size as bands, never exact counts (gap:evidence-intake).
+        for exact, band in (("hosts", "hostsBand"), ("users", "usersBand")):
+            if exact in scope:
+                problems.append(f"an estate submission gives {band}, not the exact {exact}")
+            if band not in scope:
+                problems.append(f"an estate submission needs {band}")
+    elif "hosts" not in scope:
+        problems.append("a sandbox or lab submission needs hosts")
     for m in doc["metrics"]:
         name = m["metric"]
         if name not in metrics:
