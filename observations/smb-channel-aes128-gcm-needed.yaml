@@ -3,6 +3,6 @@ claim: ref:mcsb-avd-baseline#DP-3
 verdict: extends
 observed: Hardening the profile share to AES-256-GCM as the only SMB channel encryption denied every Entra Kerberos session; allowing AES-128-GCM as well, with CCM still off, let users in. Encryption in transit stays on, but the strictest setting isn't usable with Entra Kerberos, so the method treats AES-128-GCM plus AES-256-GCM as passing.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0028-smb-channel-encryption-entra-kerberos.md
-  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/storage.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0028-smb-channel-encryption-entra-kerberos.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/storage.bicep
 date: 2026-10-20
