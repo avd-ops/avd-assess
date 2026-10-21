@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Builds index.json (contract C20, avd-assess-index/v1) from references/, observations/ and gaps/, and
+"""Builds index.json (contract C20, avd-assess-index/v1) from references/, observations/ and gaps/,
 map.json (avd-assess-map/v1) from pillars.yaml, dimensions.yaml, baselines.yaml, use-cases.yaml and
-gold-standards.yaml, so readers need no YAML parser. --check fails when either file is stale.
+gold-standards.yaml, and endpoints.json (avd-assess-endpoints/v1) from endpoints.yaml, so readers need no
+YAML parser. --check fails when any of them is stale.
 
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
@@ -16,6 +17,9 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "index.json"
 MAP = ROOT / "map.json"
+ENDPOINTS = ROOT / "endpoints.json"
+# Where a probe can run, and the lists each vantage judges, in the order views are written.
+VANTAGES = {"browser": ["client"], "device": ["client"], "host": ["host", "platform"]}
 REF_KEYS = ["id", "title", "url", "pin", "archive", "read", "license", "areas", "pillars", "notes", "deprecated", "claims"]
 CLAIM_KEYS = ["id", "says", "kind", "deprecated"]
 OBS_KEYS = ["id", "claim", "verdict", "observed", "evidence", "date", "deprecated"]
@@ -68,14 +72,50 @@ def build_map():
     return json.dumps(doc, indent=2, ensure_ascii=True, default=str) + "\n"
 
 
+def build_endpoints():
+    """The endpoint map with each row's source URL and pin filled in from its reference, plus a view per
+    vantage (the lists it judges, the rows it may probe, the rest of those lists as not tested), so a
+    reader such as avd-linecheck's pack builder filters nothing itself."""
+    doc = yaml.safe_load((ROOT / "endpoints.yaml").read_text(encoding="utf-8")) or {}
+    refs = {}
+    for path in (ROOT / "references").glob("*.yaml"):
+        ref = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        refs[ref.get("id")] = ref
+    lists = {lst["id"]: lst for lst in doc.get("lists", [])}
+
+    def source(claim):
+        ref = refs.get(claim.removeprefix("ref:").split("#")[0], {})
+        return {"claim": claim, "url": ref.get("url"), "pin": ref.get("pin")}
+
+    rows = []
+    for e in doc.get("endpoints", []):
+        row = dict(e)
+        row["source"] = source(lists.get(e.get("list"), {}).get("claim", ""))
+        rows.append(row)
+    out = {
+        "schema": doc.get("schema"),
+        "version": doc.get("version"),
+        "cloud": doc.get("cloud"),
+        "readAt": doc.get("readAt", {}),
+        "lists": [dict(lst, source=source(lst.get("claim", ""))) for lst in doc.get("lists", [])],
+        "endpoints": rows,
+        "views": {v: {"lists": judged,
+                      "probe": [r["id"] for r in rows if r.get("list") in judged and v in (r.get("probeFrom") or [])],
+                      "notTested": [r["id"] for r in rows
+                                    if r.get("list") in judged and v not in (r.get("probeFrom") or [])]}
+                  for v, judged in VANTAGES.items()},
+    }
+    return json.dumps(out, indent=2, ensure_ascii=True, default=str) + "\n"
+
+
 def main():
-    wanted = {OUT: build(), MAP: build_map()}
+    wanted = {OUT: build(), MAP: build_map(), ENDPOINTS: build_endpoints()}
     if "--check" in sys.argv:
         stale = [p.name for p, text in wanted.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
         if stale:
             print(f"RESULT FAIL {', '.join(stale)} stale; run python3 scripts/build_index.py")
             return 1
-        print("RESULT PASS index.json and map.json are current")
+        print("RESULT PASS index.json, map.json and endpoints.json are current")
         return 0
     for p, text in wanted.items():
         p.write_text(text, encoding="utf-8")

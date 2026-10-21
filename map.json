@@ -1777,7 +1777,8 @@
           "ref:avd-proxy#client-proxy-support",
           "ref:avd-proxy#same-geography",
           "ref:thin-clients#reproduce-on-windows-app",
-          "ref:review-checklists-avd#C02.04"
+          "ref:review-checklists-avd#C02.04",
+          "gap:endpoint-map"
         ],
         "says": "The published client endpoints allowed from every user network, proxies bypassed or close to the region, round trip under 150 ms."
       },
@@ -3658,8 +3659,10 @@
           "ref:avd-required-fqdn#service-and-fqdn-tags",
           "ref:avd-fabric-ips#no-deny-no-route",
           "ref:firewall-avd#fqdn-tag-rules",
+          "ref:avd-url-check-tool#wildcards-not-checked",
           "ref:review-checklists-avd#F01.05",
-          "ref:review-checklists-avd#F01.07"
+          "ref:review-checklists-avd#F01.07",
+          "gap:endpoint-map"
         ],
         "says": "The published endpoints reachable from every host, by service and FQDN tags; no rule or route aimed at the platform addresses."
       },
