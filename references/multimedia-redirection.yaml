@@ -1,0 +1,27 @@
+id: multimedia-redirection
+title: Multimedia redirection for video playback and calls in a remote session
+url: https://learn.microsoft.com/azure/virtual-desktop/multimedia-redirection-video-playback-calls
+pin: "Learn git_commit_id a5a6107238e1f12e2f22cbfb5d0dd011696b5540, updated_at 2026-10-20"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+notes: The page lists the calling and video sites known to work by default, among them several contact center platforms; we keep only the fact that such a list exists, not the names.
+claims:
+  - id: video-playback
+    says: Video playback redirection sends the video bitstream of supported web pages to the local device to decode and render; protected content isn't supported.
+    kind: published
+  - id: call-redirection
+    says: Call redirection offloads WebRTC-based calls in the browser from the remote session to the local device; once connected, call quality depends on the calling provider.
+    kind: published
+  - id: supported-sites
+    says: Redirection works by default only on a published list of sites; others are added to an allow list, which enables redirection but doesn't guarantee it works.
+    kind: published
+  - id: service-manual-update
+    says: The multimedia redirection service on the host doesn't update itself; the browser extension does.
+    kind: published
+  - id: local-device-requirements
+    says: The local Windows device must run a supported Windows client and meet the same hardware requirements as Teams on a Windows PC.
+    kind: published
+  - id: not-in-government
+    says: Multimedia redirection isn't supported on AVD for Azure US Government.
+    kind: published

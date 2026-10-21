@@ -16,3 +16,7 @@ claims:
   - id: separate-subscription-for-licensed-users
     says: Users who already hold eligible licenses are still charged in a subscription enrolled in per-user access pricing, so serve them from a separate subscription.
     kind: guidance
+  # Claims read for the use case library (2026-10-21), same pin.
+  - id: contractors-are-internal
+    says: Contractors and vendors serving the organization are internal users; each needs an eligible license, assigned to their identity in the organization's own tenant, and per-user access pricing doesn't apply.
+    kind: published

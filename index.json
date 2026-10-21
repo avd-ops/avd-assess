@@ -247,6 +247,36 @@
       ]
     },
     {
+      "id": "avd-azure-local-workload",
+      "title": "Azure Architecture Center, Azure Virtual Desktop for Azure Local",
+      "url": "https://learn.microsoft.com/azure/architecture/hybrid/azure-local-workload-virtual-desktop",
+      "pin": "Learn git_commit_id 8f71fd371da3cdf6d81669d029e7636f0253242d, updated_at 2026-03-06",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "notes": "Written for AVD on Azure Local, but its comparison of single-session and multi-session hosts holds for Azure-hosted session hosts too; we cite only that comparison.",
+      "claims": [
+        {
+          "id": "workload-types-examples",
+          "says": "The light, medium, heavy and power workload types are examples only; test a deployment with load simulation and real-life usage.",
+          "kind": "guidance"
+        },
+        {
+          "id": "single-session-when",
+          "says": "Single-session hosts suit work that needs consistent performance, heavy apps, or per-user customization and installs, at a higher cost per user.",
+          "kind": "guidance"
+        },
+        {
+          "id": "multi-session-when",
+          "says": "Multi-session hosts suit standard apps and lighter work, such as task workers, with customization limited and managed centrally to keep every user stable.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "avd-connection-quality",
       "title": "Troubleshoot connection quality in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-connection-quality",
@@ -395,6 +425,35 @@
           "id": "tier-by-workload",
           "says": "Standard file shares for light workloads under 200 users; premium for light over 200 users (or several standard shares), and for medium, heavy and power workloads.",
           "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-gis-workload-example",
+      "title": "Azure Architecture Center, a GIS desktop app on Azure Virtual Desktop (example scenario)",
+      "url": "https://learn.microsoft.com/azure/architecture/example-scenario/data/esri-arcgis-azure-virtual-desktop",
+      "pin": "Learn git_commit_id 069a83fe2cc8d78c25f4123a93ba3b9819821147, updated_at 2026-06-03",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks"
+      ],
+      "notes": "Read as an example of an app-specific workload scale for a graphics app, not for its numbers.",
+      "claims": [
+        {
+          "id": "app-specific-tiers",
+          "says": "The scenario defines its own light, medium and heavy tiers by what users do in one app (viewing, editing, visualizing in 2D and 3D) rather than the generic workload types.",
+          "kind": "guidance"
+        },
+        {
+          "id": "limit-users-per-vm",
+          "says": "Give each user enough GPU, CPU and memory, and limit simultaneous users per VM so a host isn't oversaturated.",
+          "kind": "guidance"
+        },
+        {
+          "id": "monitor-then-resize",
+          "says": "Its sizes are initial estimates; monitor actual use after deployment and resize up or down.",
+          "kind": "guidance"
         }
       ]
     },
@@ -647,6 +706,39 @@
       ]
     },
     {
+      "id": "avd-internal-external",
+      "title": "Recommendations for deploying Azure Virtual Desktop for internal or external commercial purposes",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/organization-internal-external-commercial-purposes-recommendations",
+      "pin": "Learn git_commit_id 46e84e5b054723a7a4392fec7e7dc222ce61f04c, updated_at 2025-12-04",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "claims": [
+        {
+          "id": "internal-minimum",
+          "says": "Internal use needs at least one host pool, one subscription and one tenant; more host pools can offer different apps to different groups of users.",
+          "kind": "guidance"
+        },
+        {
+          "id": "subscription-per-suborganization",
+          "says": "Some organizations put each deployment in its own subscription, or use billing scopes, to separate costs by the part of the organization served.",
+          "kind": "guidance"
+        },
+        {
+          "id": "tenant-per-customer",
+          "says": "For users outside the organization, Microsoft strongly recommends a separate Entra tenant, subscription and directory per customer, so no customer's VMs can reach another's resources.",
+          "kind": "guidance"
+        },
+        {
+          "id": "external-identities",
+          "says": "AVD supports external identities, users invited into the organization who sign in with their existing credentials.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "avd-licensing",
       "title": "Licensing Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/licensing",
@@ -672,6 +764,11 @@
           "id": "separate-subscription-for-licensed-users",
           "says": "Users who already hold eligible licenses are still charged in a subscription enrolled in per-user access pricing, so serve them from a separate subscription.",
           "kind": "guidance"
+        },
+        {
+          "id": "contractors-are-internal",
+          "says": "Contractors and vendors serving the organization are internal users; each needs an eligible license, assigned to their identity in the organization's own tenant, and per-user access pricing doesn't apply.",
+          "kind": "published"
         }
       ]
     },
@@ -913,6 +1010,25 @@
       ]
     },
     {
+      "id": "avd-surface-scenarios",
+      "title": "Azure Virtual Desktop on Surface",
+      "url": "https://learn.microsoft.com/surface/windows-virtual-desktop-surface",
+      "pin": "Learn git_commit_id 01243f6e152d7f7d6254e85459fbb60f17e48a32, updated_at 2026-07-15",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "A device page, read only for its table of the business conversations AVD serves; the closest thing Microsoft publishes to a list of AVD use cases.",
+      "claims": [
+        {
+          "id": "business-conversations",
+          "says": "It groups AVD use into five business conversations: security and regulation, an elastic workforce (contractors, short-term staff, mergers), work roles (customer service, branch, mobile and BYOD), special workloads (design and engineering, legacy apps, dev and test) and business continuity.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "avd-tagging",
       "title": "Tag Azure Virtual Desktop resources to manage costs",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/tag-virtual-desktop-resources",
@@ -1101,6 +1217,40 @@
       ]
     },
     {
+      "id": "caf-avd-innovate",
+      "title": "Cloud Adoption Framework, innovation and the Azure Virtual Desktop environment",
+      "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/innovate",
+      "pin": "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27",
+      "read": "2026-10-21",
+      "license": "CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "Deprecated with the rest of the Framework's AVD scenario and removed from Learn on 2026-10-30, so the pin is the Learn commit. One of the few Microsoft pages that names AVD scenarios by who uses them.",
+      "claims": [
+        {
+          "id": "deprecated",
+          "says": "The page is deprecated, no longer updated, and is to be removed from Learn on 2026-10-30.",
+          "kind": "published"
+        },
+        {
+          "id": "temporary-workers",
+          "says": "AVD can give temporary workers a standard way into corporate apps and data, deployed and shut down quickly, without shipping or managing devices.",
+          "kind": "guidance"
+        },
+        {
+          "id": "latency-sensitive-apps",
+          "says": "For apps that need short round trips between client and server, hosting the desktop in Azure next to the app's server gives a lower-latency path than a VPN over a public network.",
+          "kind": "guidance"
+        },
+        {
+          "id": "secure-environments",
+          "says": "Where corporate data must not be stored on physical devices, AVD keeps the desktop, apps and data inside the corporate environment, so a lost device carries none of them.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "caf-avd-management",
       "title": "Cloud Adoption Framework, Azure Virtual Desktop management baseline",
       "url": "https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/eslz-management-and-monitoring",
@@ -1188,6 +1338,31 @@
           "id": "right-size-first",
           "says": "Right-size first, fix existing commitments next, and only then buy new ones; discounts reduce rates, not waste.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "contact-center-voice-avd",
+      "title": "Dynamics 365 Contact Center, use Azure Virtual Desktop to access the voice channel",
+      "url": "https://learn.microsoft.com/dynamics365/contact-center/administer/configure-voice-avd",
+      "pin": "Learn git_commit_id da8a5d941ae9bd45b4d2a22e77d12268ce64b59e, updated_at 2026-07-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "notes": "One product's page, read as the only Microsoft page found that states what a session drop costs a contact center agent in seconds. Other contact center platforms will differ.",
+      "claims": [
+        {
+          "id": "needs-multimedia-redirection",
+          "says": "Agents taking calls in the browser inside AVD need the multimedia redirection extension, kept at its latest version, or calls show errors.",
+          "kind": "published"
+        },
+        {
+          "id": "reconnect-window",
+          "says": "An agent who reconnects within 30 seconds keeps the live call; after 30 seconds the call is rerouted to another agent.",
+          "kind": "published"
         }
       ]
     },
@@ -1636,6 +1811,51 @@
           "id": "ES-2",
           "says": "Use modern anti-malware on session hosts.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "multimedia-redirection",
+      "title": "Multimedia redirection for video playback and calls in a remote session",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/multimedia-redirection-video-playback-calls",
+      "pin": "Learn git_commit_id a5a6107238e1f12e2f22cbfb5d0dd011696b5540, updated_at 2026-10-20",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment",
+        "benchmarks"
+      ],
+      "notes": "The page lists the calling and video sites known to work by default, among them several contact center platforms; we keep only the fact that such a list exists, not the names.",
+      "claims": [
+        {
+          "id": "video-playback",
+          "says": "Video playback redirection sends the video bitstream of supported web pages to the local device to decode and render; protected content isn't supported.",
+          "kind": "published"
+        },
+        {
+          "id": "call-redirection",
+          "says": "Call redirection offloads WebRTC-based calls in the browser from the remote session to the local device; once connected, call quality depends on the calling provider.",
+          "kind": "published"
+        },
+        {
+          "id": "supported-sites",
+          "says": "Redirection works by default only on a published list of sites; others are added to an allow list, which enables redirection but doesn't guarantee it works.",
+          "kind": "published"
+        },
+        {
+          "id": "service-manual-update",
+          "says": "The multimedia redirection service on the host doesn't update itself; the browser extension does.",
+          "kind": "published"
+        },
+        {
+          "id": "local-device-requirements",
+          "says": "The local Windows device must run a supported Windows client and meet the same hardware requirements as Teams on a Windows PC.",
+          "kind": "published"
+        },
+        {
+          "id": "not-in-government",
+          "says": "Multimedia redirection isn't supported on AVD for Azure US Government.",
+          "kind": "published"
         }
       ]
     },
@@ -2948,6 +3168,10 @@
     {
       "id": "tune-loop",
       "title": "a repeatable tune and rightsize loop for AVD"
+    },
+    {
+      "id": "use-case-library",
+      "title": "use case library"
     },
     {
       "id": "use-cases",

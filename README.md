@@ -35,6 +35,8 @@ Every step on those pages cites one of three things:
 - **`obs:`** what our own runs showed about a claim, in [observations/](observations/): agrees, disagrees, extends, or not yet tested, with links to the evidence.
 - **`gap:`** method we wrote because no source covers it, in [gaps/](gaps/). Each gap says what was searched and not found, and is retired when a source appears.
 
+The [use case library](use-cases.yaml) holds common AVD use cases (task worker, knowledge worker, developer, graphics, contact center, contractor, external customer, plus overlays such as regulated data or an app that can't share a host) as cited starting points for the [use case method](methods/use-cases.md): each says what it usually needs, what usually goes wrong, and what would move a persona elsewhere. How it is built is in [gaps/use-case-library.md](gaps/use-case-library.md).
+
 The [gold-standard registry](gold-standards.yaml) names, for each metric, the claim the methods treat as the reference and its standing (candidate, gold, baseline or demoted). How an entry is promoted or demoted is in [gaps/gold-standards.md](gaps/gold-standards.md).
 
 ## What this repo is not
@@ -57,6 +59,7 @@ python3 scripts/build_index.py --check
 python3 tests/check_method.py
 python3 tests/check_contracts.py
 python3 tests/check_baselines.py
+python3 tests/check_use_cases.py
 python3 scripts/check_evidence.py
 ```
 
@@ -68,7 +71,7 @@ The check verifies that every reference has a pin, a read date and claims; every
 
 Contributions and forks are welcome and encouraged. Fork it and make it your own, or send back what you learn: open an issue or a pull request with a new source, a better pin, or an observation from a real run that agrees or disagrees with a source. Measured results go through the [evidence intake](evidence/README.md): one checked file per submission, aggregates only. We use the same path for our own runs. Small pull requests are easiest to review.
 
-Before you open one, run `python3 scripts/build_index.py`, `python3 tests/check_method.py`, `python3 tests/check_contracts.py`, `python3 tests/check_dimensions.py` and `python3 tests/check_baselines.py` as the [check workflow](.github/workflows/check.yml) does. Keep tenant data, IDs and secrets out of the repo, issues and pull requests. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
+Before you open one, run `python3 scripts/build_index.py`, `python3 tests/check_method.py`, `python3 tests/check_contracts.py`, `python3 tests/check_dimensions.py`, `python3 tests/check_baselines.py` and `python3 tests/check_use_cases.py` as the [check workflow](.github/workflows/check.yml) does. Keep tenant data, IDs and secrets out of the repo, issues and pull requests. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
 
 ## License
 

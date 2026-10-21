@@ -1,0 +1,12 @@
+id: avd-surface-scenarios
+title: Azure Virtual Desktop on Surface
+url: https://learn.microsoft.com/surface/windows-virtual-desktop-surface
+pin: "Learn git_commit_id 01243f6e152d7f7d6254e85459fbb60f17e48a32, updated_at 2026-07-15"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+notes: A device page, read only for its table of the business conversations AVD serves; the closest thing Microsoft publishes to a list of AVD use cases.
+claims:
+  - id: business-conversations
+    says: "It groups AVD use into five business conversations: security and regulation, an elastic workforce (contractors, short-term staff, mergers), work roles (customer service, branch, mobile and BYOD), special workloads (design and engineering, legacy apps, dev and test) and business continuity."
+    kind: guidance

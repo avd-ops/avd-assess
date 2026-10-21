@@ -1,0 +1,21 @@
+id: caf-avd-innovate
+title: Cloud Adoption Framework, innovation and the Azure Virtual Desktop environment
+url: https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/innovate
+pin: "Learn git_commit_id 9e9db6f427b04cccdc3040b31aaf3440eaf5b994, updated_at 2026-08-27"
+read: 2026-10-21
+license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
+areas: [assessment]
+notes: Deprecated with the rest of the Framework's AVD scenario and removed from Learn on 2026-10-30, so the pin is the Learn commit. One of the few Microsoft pages that names AVD scenarios by who uses them.
+claims:
+  - id: deprecated
+    says: The page is deprecated, no longer updated, and is to be removed from Learn on 2026-10-30.
+    kind: published
+  - id: temporary-workers
+    says: AVD can give temporary workers a standard way into corporate apps and data, deployed and shut down quickly, without shipping or managing devices.
+    kind: guidance
+  - id: latency-sensitive-apps
+    says: For apps that need short round trips between client and server, hosting the desktop in Azure next to the app's server gives a lower-latency path than a VPN over a public network.
+    kind: guidance
+  - id: secure-environments
+    says: Where corporate data must not be stored on physical devices, AVD keeps the desktop, apps and data inside the corporate environment, so a lost device carries none of them.
+    kind: guidance

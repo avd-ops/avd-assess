@@ -1,0 +1,15 @@
+id: contact-center-voice-avd
+title: Dynamics 365 Contact Center, use Azure Virtual Desktop to access the voice channel
+url: https://learn.microsoft.com/dynamics365/contact-center/administer/configure-voice-avd
+pin: "Learn git_commit_id da8a5d941ae9bd45b4d2a22e77d12268ce64b59e, updated_at 2026-07-21"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+notes: One product's page, read as the only Microsoft page found that states what a session drop costs a contact center agent in seconds. Other contact center platforms will differ.
+claims:
+  - id: needs-multimedia-redirection
+    says: Agents taking calls in the browser inside AVD need the multimedia redirection extension, kept at its latest version, or calls show errors.
+    kind: published
+  - id: reconnect-window
+    says: An agent who reconnects within 30 seconds keeps the live call; after 30 seconds the call is rerouted to another agent.
+    kind: published

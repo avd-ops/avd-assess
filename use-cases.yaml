@@ -1,0 +1,326 @@
+# The use case library (gap:use-case-library): common AVD use cases as starting points for a use case
+# assessment (methods/use-cases.md). A persona in an estate starts from one base entry and any overlays, then
+# discovery and measurement replace what doesn't fit. Nothing here describes a real estate, team or person.
+# Changed only by a pull request a person merges.
+#
+# kind: persona (a base: sets function and workload) | overlay (adds needs to any persona; sets neither).
+# starts: values for the use case record's fields (gap:use-cases), using the record's own enums. A value no `why`
+#   line covers is a default to confirm in discovery, never evidence; a field an entry doesn't list stays at
+#   the record's default or is asked in discovery.
+# pattern: library-only signals that aren't record fields yet: hours (office | shifts | follow-the-sun |
+#   seasonal), media (none | teams | web-calls | video), endpoints (managed | unmanaged | any).
+# profile: the baselines.yaml class a persona is judged against; it must match starts.workload.
+# why / tighten / risks / breaks: each line cites what it rests on; why and tighten carry a standing as in
+#   baselines.yaml: published | prior | guidance | baseline.
+# decisions: fact register decision IDs (contracts/fact-register.json) the entry moves most.
+# dimensions: dimensions.yaml rows the entry leans on most.
+# breaks: what discovery or measurement finds that moves a persona off this entry, and where to (`to`, an
+#   entry ID, or a field change in `then`).
+schema: avd-assess-use-cases/v1
+
+entries:
+  # Base personas
+  - id: task-worker
+    kind: persona
+    title: Task worker
+    summary: Structured, repetitive work in a few line-of-business apps or forms, often in shifts; the densest pooled hosts.
+    starts: {function: task, workload: light, gpu: none, desktop: pooled, delivery: desktop, apps.multiSession: "yes", trustBoundary: one-org-standard, criticality: standard}
+    pattern: {hours: shifts, media: none, endpoints: any}
+    profile: light
+    why:
+      - sets: [function, workload]
+        claims: [ref:session-host-sizing#workload-types, ref:session-host-sizing#estimates-only]
+        standing: prior
+      - sets: [desktop, apps.multiSession, trustBoundary]
+        claims: [ref:avd-azure-local-workload#multi-session-when, ref:avd-security-guide#trust-boundary, ref:caf-avd-poc#assumptions]
+        standing: guidance
+    risks:
+      - risk: Everyone signs in at the start of the shift; hosts and profile storage need headroom for the storm, not only for steady state.
+        claims: [ref:session-host-sizing#logon-storm-headroom, ref:azure-files-vdi#storm-sizing]
+      - risk: A scaling plan or Start VM on Connect that ramps up late makes the first users of a shift wait for hosts to power on.
+        claims: [ref:avd-autoscale#capacity-threshold, ref:start-vm-on-connect#slower-first-connection]
+    breaks:
+      - if: An app in the persona's set isn't multi-session compatible.
+        to: legacy-app
+        claims: [ref:caf-avd-assess#application-questions]
+      - if: Measured per-user demand sits a class above light at peak.
+        to: knowledge-worker
+        claims: [obs:users-per-vcpu-adopted, gap:use-cases]
+    decisions: [hostPool.maxSessions, hostPool.hosts, hostPool.power]
+    dimensions: [density.sessions-per-host, compute.host-count, cost.power, profile.storage-performance]
+
+  - id: knowledge-worker
+    kind: persona
+    title: Knowledge worker
+    summary: Office and web apps, mail, documents and meetings most of the day; the common default for a general pooled desktop.
+    starts: {function: knowledge, workload: medium, gpu: none, desktop: pooled, delivery: desktop, apps.m365: "yes", apps.multiSession: "yes", trustBoundary: one-org-standard, criticality: standard}
+    pattern: {hours: office, media: teams, endpoints: managed}
+    profile: medium
+    why:
+      - sets: [function, workload]
+        claims: [ref:session-host-sizing#workload-types, ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#estimates-only]
+        standing: prior
+      - sets: [apps.m365]
+        claims: [ref:caf-avd-assess#application-questions, ref:review-checklists-avd#B01.10]
+        standing: guidance
+    risks:
+      - risk: Teams without media optimization runs calls and video on the host, which costs density and call quality.
+        claims: [ref:teams-on-avd#media-optimization, ref:teams-on-avd#classic-teams-end]
+      - risk: Video in the browser is rendered on the host unless multimedia redirection covers the site.
+        claims: [ref:multimedia-redirection#video-playback, ref:multimedia-redirection#supported-sites, ref:review-checklists-avd#B03.02]
+      - risk: Profiles grow with mail and documents; the profile size cap and storage tier need review as they do.
+        claims: [ref:session-host-sizing#profile-storage-minimum, ref:review-checklists-avd#H04.03, ref:avd-fslogix-storage#tier-by-workload]
+    breaks:
+      - if: Users need local administrator rights or install their own tools.
+        to: developer
+        claims: [ref:avd-security-guide#trust-boundary]
+      - if: Users need a GPU for their apps or high total resolution.
+        to: graphics-power
+        claims: [ref:session-host-sizing#gpu-for-graphics]
+    decisions: [hostPool.vmSize, hostPool.maxSessions, hostPool.profileQuotaGiB]
+    dimensions: [compute.vm-size, density.sessions-per-host, perf.media, profile.capacity]
+
+  - id: developer
+    kind: persona
+    title: Developer or engineer with admin needs
+    summary: Builds, debugs and installs tools; heavy CPU and memory bursts, and often local administrator rights, which rules out sharing a host.
+    starts: {function: developer, workload: heavy, gpu: none, desktop: personal, dedicatedBecause: [admin-rights], delivery: desktop, trustBoundary: needs-admin, criticality: standard}
+    pattern: {hours: office, media: teams, endpoints: managed}
+    profile: heavy
+    why:
+      - sets: [function, workload]
+        claims: [ref:session-host-sizing#workload-types, ref:session-host-sizing#single-session-minimums]
+        standing: prior
+      - sets: [desktop, dedicatedBecause, trustBoundary]
+        claims: [ref:avd-security-guide#trust-boundary, ref:avd-security-guide#tiered-admin, ref:review-checklists-avd#G03.03, ref:avd-azure-local-workload#single-session-when]
+        standing: guidance
+    risks:
+      - risk: Personal hosts left running between working days cost the most for the least use; power them on at connect and off when idle.
+        claims: [ref:review-checklists-avd#E01.05, ref:review-checklists-avd#E01.06, ref:avd-autoscale#hibernate-personal, ref:advisor-vm-rightsize#shutdown-criteria]
+      - risk: Local administrator rights let a user undo host controls, so personal hosts with admin rights need their own security review.
+        claims: [ref:avd-security-guide#tiered-admin, ref:review-checklists-avd#G03.07]
+      - risk: Personal hosts hold state, so they need a recovery plan pooled hosts don't.
+        claims: [ref:review-checklists-avd#A01.06]
+    breaks:
+      - if: The toolchain is standard and nobody needs admin rights.
+        then: "desktop: pooled at the heavy class"
+        claims: [ref:avd-security-guide#trust-boundary, ref:session-host-sizing#multisession-users-per-vcpu]
+    decisions: [hostPool.type, hostPool.vmSize, hostPool.power]
+    dimensions: [hostpool.type, compute.vm-size, cost.power, security.host-type]
+
+  - id: graphics-power
+    kind: persona
+    title: Graphics, design and engineering
+    summary: CAD, GIS, 3D, video editing or other graphics-heavy apps; GPU hosts, low density, and app vendors' own sizing tiers.
+    starts: {function: engineering, workload: power, gpu: required, desktop: either, delivery: desktop, criticality: standard}
+    pattern: {hours: office, media: video, endpoints: managed}
+    profile: power
+    why:
+      - sets: [workload, gpu]
+        claims: [ref:session-host-sizing#workload-types, ref:session-host-sizing#gpu-for-graphics, ref:review-checklists-avd#C01.12]
+        standing: prior
+      - sets: [function, workload]
+        claims: [ref:avd-gis-workload-example#app-specific-tiers, ref:avd-gis-workload-example#monitor-then-resize]
+        standing: guidance
+    risks:
+      - risk: No source publishes users per GPU; density has to come from a pilot on the persona's own apps.
+        claims: [ref:avd-gpu-acceleration#density-tradeoff, ref:avd-gis-workload-example#limit-users-per-vm, gap:deployment-dimensions]
+      - risk: Compute GPUs and retired series look like valid choices; read the supported size list against the current size pages.
+        claims: [ref:avd-gpu-acceleration#supported-sizes, ref:avd-gpu-acceleration#no-compute-gpus]
+      - risk: GPU sizes are scarce in some regions; check quota and availability before the region is chosen.
+        claims: [ref:review-checklists-avd#C03.03]
+      - risk: Only Azure-distributed GPU drivers are supported, and the bundled graphics license covers a fixed number of concurrent users.
+        claims: [ref:avd-gpu-acceleration#grid-driver-only, ref:avd-gpu-acceleration#grid-license-25]
+    breaks:
+      - if: The app publishes its own light, medium and heavy tiers.
+        then: "Use the app's tiers to split the persona, and keep workload: power only for the GPU tier"
+        claims: [ref:avd-gis-workload-example#app-specific-tiers]
+    decisions: [hostPool.vmSize, hostPool.maxSessions, region]
+    dimensions: [graphics.gpu-need, graphics.gpu-size, graphics.users-per-gpu, compute.workload-benchmark]
+
+  - id: contact-center
+    kind: persona
+    title: Contact center agent
+    summary: Customer calls in a browser or softphone with a CRM beside it, in shifts; light on the host but intolerant of dropped sessions and poor audio.
+    starts: {function: frontline, workload: light, gpu: none, desktop: pooled, delivery: desktop, apps.multiSession: "yes", trustBoundary: one-org-standard, dataControls: [clipboard-restricted, drives-off], criticality: business-critical}
+    pattern: {hours: follow-the-sun, media: web-calls, endpoints: any}
+    profile: light
+    why:
+      - sets: [workload]
+        claims: [ref:session-host-sizing#workload-types, ref:session-host-sizing#estimates-only]
+        standing: prior
+      - sets: [function]
+        claims: [ref:avd-surface-scenarios#business-conversations, ref:contact-center-voice-avd#reconnect-window]
+        standing: guidance
+      - sets: [criticality]
+        claims: [ref:contact-center-voice-avd#reconnect-window, ref:waf-reliability-checklist#RE:04]
+        standing: guidance
+      - sets: [dataControls]
+        claims: [ref:avd-security-guide#device-redirection, ref:review-checklists-avd#G02.06, obs:redirection-kept-for-usability]
+        standing: guidance
+    tighten:
+      - rule: Count session drops as experience failures; a drop longer than the platform's reconnect window costs a live call.
+        claims: [ref:contact-center-voice-avd#reconnect-window, ref:avd-connection-quality#rtt-bands]
+        standing: guidance
+    risks:
+      - risk: Browser-based calls run on the host unless multimedia redirection covers the calling site, and the host side of it doesn't update itself.
+        claims: [ref:multimedia-redirection#call-redirection, ref:multimedia-redirection#supported-sites, ref:multimedia-redirection#service-manual-update, ref:contact-center-voice-avd#needs-multimedia-redirection]
+      - risk: Call redirection needs capable local devices; thin or old endpoints may not qualify.
+        claims: [ref:multimedia-redirection#local-device-requirements]
+      - risk: Multimedia redirection isn't available in the US Government cloud.
+        claims: [ref:multimedia-redirection#not-in-government]
+      - risk: Round trip and transport decide call and screen quality; measure from the agents' locations.
+        claims: [ref:rdp-shortpath#udp-transport, ref:avd-prerequisites#rtt-under-150, obs:region-latency-from-the-user]
+    breaks:
+      - if: Calls use Teams rather than a browser-based platform.
+        then: "pattern.media: teams; follow the knowledge worker's Teams risks"
+        claims: [ref:teams-on-avd#media-optimization]
+    decisions: [hostPool.hosts, hostPool.power, region]
+    dimensions: [perf.media, perf.transport, perf.experience-targets, security.redirection, compute.host-count]
+
+  - id: external-contractor
+    kind: persona
+    title: Contractor or partner staff
+    summary: People from another company working for the organization, often on their own devices; a governed desktop instead of a shipped laptop.
+    starts: {function: external, workload: medium, gpu: none, desktop: pooled, delivery: desktop, trustBoundary: one-org-standard, dataControls: [clipboard-restricted, drives-off, screen-capture-protection, watermarking], criticality: standard}
+    pattern: {hours: office, media: teams, endpoints: unmanaged}
+    profile: medium
+    why:
+      - sets: [function]
+        claims: [ref:avd-surface-scenarios#business-conversations, ref:caf-avd-innovate#temporary-workers]
+        standing: guidance
+      - sets: [workload]
+        claims: [ref:session-host-sizing#workload-types, ref:session-host-sizing#estimates-only]
+        standing: prior
+      - sets: [dataControls]
+        claims: [ref:caf-avd-innovate#secure-environments, ref:screen-capture-protection#host-policy, ref:watermarking#needs-capture-protection, ref:avd-security-guide#device-redirection]
+        standing: guidance
+    risks:
+      - risk: Contractors are internal users for licensing; each needs an eligible license in the organization's tenant, not per-user access pricing.
+        claims: [ref:avd-licensing#contractors-are-internal, ref:avd-licensing#per-user-access-external-only]
+      - risk: Unmanaged devices put the session's controls, sign-in policy and MFA, in place of device trust.
+        claims: [ref:avd-security-guide#mfa-conditional-access, ref:avd-internal-external#external-identities, ref:review-checklists-avd#G04.01]
+      - risk: Strict data controls cost usability; record each control kept off and why.
+        claims: [obs:redirection-kept-for-usability]
+    breaks:
+      - if: Contractor firms must not share hosts with each other or with staff.
+        then: "trustBoundary: multi-org, a host pool per firm or a separate deployment"
+        claims: [ref:avd-security-guide#trust-boundary]
+    decisions: [hostPool.type, identity]
+    dimensions: [security.redirection, security.host-type, hostpool.type]
+
+  - id: external-customer
+    kind: persona
+    title: Customers using a hosted app
+    summary: People outside the organization using an app it sells or provides as a service, delivered as RemoteApp.
+    starts: {function: external, workload: light, gpu: none, desktop: pooled, delivery: remoteapp, trustBoundary: multi-org}
+    pattern: {hours: follow-the-sun, media: none, endpoints: unmanaged}
+    profile: light
+    why:
+      - sets: [function, trustBoundary]
+        claims: [ref:avd-internal-external#tenant-per-customer, ref:avd-security-guide#trust-boundary]
+        standing: guidance
+      - sets: [workload]
+        claims: [ref:session-host-sizing#workload-types, ref:session-host-sizing#estimates-only]
+        standing: prior
+      - sets: [delivery]
+        claims: [ref:avd-internal-external#internal-minimum]
+        standing: guidance
+    risks:
+      - risk: External commercial use needs per-user access pricing in its own subscription, because licensed users connecting there are charged too.
+        claims: [ref:avd-licensing#per-user-access-external-only, ref:avd-licensing#separate-subscription-for-licensed-users]
+      - risk: A deployment per customer multiplies everything else in this library; the landing zone builds one.
+        claims: [ref:avd-internal-external#tenant-per-customer, obs:landing-zone-one-persona]
+    breaks:
+      - if: The users are staff or contractors of the organization.
+        to: external-contractor
+        claims: [ref:avd-licensing#contractors-are-internal]
+    decisions: [identity, hostPool.appGroup, network]
+    dimensions: [hostpool.app-group, network.mode]
+
+  # Overlays: add to any persona
+  - id: legacy-app
+    kind: overlay
+    title: App that can't share a host
+    summary: An app that isn't multi-session compatible, needs an old OS or runtime, or must be published alone.
+    starts: {apps.multiSession: "no", desktop: personal, dedicatedBecause: [app-compatibility], delivery: remoteapp}
+    why:
+      - sets: [apps.multiSession, desktop, dedicatedBecause]
+        claims: [ref:caf-avd-assess#application-questions, ref:caf-avd-deploy#legacy-apps-personal]
+        standing: guidance
+    risks:
+      - risk: An app that can't be remediated can hold its whole persona back until it is.
+        claims: [ref:caf-avd-deploy#app-remediation-blocks]
+      - risk: Publishing a RemoteApp and a full desktop to the same users from one host pool is advised against.
+        claims: [ref:review-checklists-avd#C01.06]
+    breaks:
+      - if: The app works multi-session after remediation or packaging.
+        then: "apps.multiSession: yes; deliver it by assignment instead of a separate pool"
+        claims: [ref:app-attach#per-user-per-host-pool]
+    decisions: [hostPool.type, hostPool.appGroup]
+    dimensions: [hostpool.type, hostpool.app-group]
+
+  - id: app-near-data
+    kind: overlay
+    title: App that needs its back end close
+    summary: A client-server app that is slow over distance; the host goes next to the back end, and the user's round trip to the host still has to hold.
+    starts: {apps.backend: on-premises}
+    why:
+      - sets: [apps.backend]
+        claims: [ref:caf-avd-innovate#latency-sensitive-apps, ref:caf-avd-assess#application-questions]
+        standing: guidance
+    risks:
+      - risk: Placing hosts by the back end can put them far from users; check both legs, measured from the users' side.
+        claims: [ref:caf-avd-assess#region-test-from-users, ref:avd-prerequisites#rtt-under-150, obs:region-latency-from-the-user]
+      - risk: An on-premises back end makes the network design hybrid and part of the persona's experience.
+        claims: [ref:caf-avd-assess#application-questions]
+    breaks:
+      - if: The back end is SaaS or moves to Azure.
+        then: "apps.backend: saas or azure; choose the region by the users"
+        claims: [ref:caf-avd-assess#region-test-from-users]
+    decisions: [region, network]
+    dimensions: [region, network.mode, perf.experience-targets]
+
+  - id: regulated-data
+    kind: overlay
+    title: Regulated or sensitive data
+    summary: Work whose data must not reach the endpoint, with every data control the session can enforce.
+    starts: {dataControls: [clipboard-restricted, drives-off, printing-restricted, screen-capture-protection, watermarking]}
+    why:
+      - sets: [dataControls]
+        claims: [ref:caf-avd-innovate#secure-environments, ref:avd-security-guide#device-redirection, ref:screen-capture-protection#host-policy, ref:watermarking#needs-capture-protection, ref:review-checklists-avd#G02.05]
+        standing: guidance
+    risks:
+      - risk: Each control taken away from users costs usability; record the ones kept and the reason, and expect review.
+        claims: [obs:redirection-kept-for-usability, ref:rdp-properties#redirection-properties]
+      - risk: Data controls need the rest of the security baseline under them to mean anything.
+        claims: [ref:zero-trust-avd#seven-steps, ref:avd-security-guide#mfa-conditional-access, ref:avd-security-guide#audit-logs]
+    breaks:
+      - if: Users from more than one organization share the data.
+        then: "trustBoundary: multi-org"
+        claims: [ref:avd-security-guide#trust-boundary]
+    decisions: [hostPool.type, identity]
+    dimensions: [security.redirection, security.posture, encryption.disks]
+
+  - id: temporary-workforce
+    kind: overlay
+    title: Seasonal or temporary workforce
+    summary: Users who arrive and leave in waves (seasonal peaks, projects, mergers), so capacity follows a calendar, not only a clock.
+    pattern: {hours: seasonal}
+    why:
+      - sets: [pattern.hours]
+        claims: [ref:caf-avd-innovate#temporary-workers, ref:avd-surface-scenarios#business-conversations]
+        standing: guidance
+    risks:
+      - risk: Capacity for a peak isn't guaranteed in a region unless reserved; check quota and availability early.
+        claims: [ref:avd-multiregion-bcdr#capacity-not-guaranteed, ref:review-checklists-avd#C03.03]
+      - risk: Committing compute for a seasonal peak pays for it all year.
+        claims: [gap:commitment-floor]
+      - risk: Every user still needs an eligible license while they have access.
+        claims: [ref:avd-licensing#eligible-license-per-user]
+    breaks:
+      - if: The peak is a daily one, not a seasonal one.
+        then: "pattern.hours: shifts or office; a scaling plan covers it"
+        claims: [ref:avd-autoscale#scales-to-save-cost]
+    decisions: [hostPool.hosts, hostPool.power]
+    dimensions: [compute.host-count, cost.power]
