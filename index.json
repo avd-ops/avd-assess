@@ -3734,14 +3734,6 @@
           "says": "Review the use of FSLogix redirections (Cost, medium)."
         },
         {
-          "id": "D01.03",
-          "says": "Review the domain GPOs applied to the session hosts' OU for settings that affect host functions (Operations, medium)."
-        },
-        {
-          "id": "D01.04",
-          "says": "Configure FSLogix settings with the provided ADMX template (Operations, medium)."
-        },
-        {
           "id": "D02.01",
           "says": "Configure the Azure Files share for Entra Kerberos authentication on Entra joined hosts (Security, medium)."
         },
@@ -3844,6 +3836,14 @@
         {
           "id": "C02.04",
           "says": "Run a proof of concept to validate end-to-end user experience and the effect of network latency (Performance, high)."
+        },
+        {
+          "id": "D01.03",
+          "says": "Review the domain GPOs applied to the session hosts' OU for settings that affect host functions (Operations, medium)."
+        },
+        {
+          "id": "D01.04",
+          "says": "Configure FSLogix settings with the provided ADMX template (Operations, medium)."
         }
       ]
     },

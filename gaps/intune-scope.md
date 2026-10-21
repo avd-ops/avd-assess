@@ -16,7 +16,14 @@ Anything none of these shows is `unknown`, never guessed.
 
 ## Mapping Intune devices to host pools
 
-Intune knows devices by name and Entra device ID; AVD knows session hosts by name. The collector matches an Intune device to a session host by computer name in memory and emits counts per host pool only, never a name. A device record whose name follows a pool's host name pattern but has no session host behind it counts as an orphan (`c11.hostPool.intuneOrphans`, `ref:intune-avd-multisession#orphaned-records`). A name that matches two pools, or none, leaves that device out and lowers the pool's coverage; it is never assigned by guess.
+Intune knows devices by name and Entra device ID; AVD knows session hosts by name. The collector matches them in memory and emits counts per host pool only, never a name:
+
+1. **Normalize both names:** a session host's name is the part of its resource name after the host pool and before the first dot (the domain suffix goes), and both sides compare without case.
+2. **One record per host:** when several Intune records share a host's name, as after a host is rebuilt under the same name, the one that synced last stands for the host and the others count as orphans.
+3. **Orphans:** a record whose name follows a pool's host name pattern but has no session host behind it, or a superseded record from rule 2, counts in `c11.hostPool.intuneOrphans` (`ref:intune-avd-multisession#orphaned-records`).
+4. **No guessing:** a name that matches two pools, or none, leaves that record out and lowers the pool's coverage.
+
+So `intuneManaged` never exceeds the pool's host count.
 
 ## Facts this pillar specifies
 
@@ -24,8 +31,8 @@ All are counts or one boolean, so no device or user name leaves the collector. T
 
 | Fact | Counts | Source |
 |---|---|---|
-| `c11.hostPool.sessionHosts.intuneEnrollRequested` | Hosts whose Entra login extension asks for Intune enrollment | VM extension settings (Reader) |
-| `c11.hostPool.sessionHosts.intuneManaged` | Hosts with an Intune managed device record | Graph managed devices |
+| `c11.hostPool.sessionHosts.intuneEnrollRequested` | Entra joined hosts whose Entra login extension asks for Intune enrollment. Hybrid joined hosts enroll through Group Policy or co-management, which Azure can't see, so they never count here | VM extension settings (Reader) |
+| `c11.hostPool.sessionHosts.intuneManaged` | Hosts with an Intune managed device record, matched as above; this is enrollment, not management by policy | Graph managed devices |
 | `c11.hostPool.sessionHosts.intuneCompliant`, `intuneNoncompliant` | Hosts by compliance state; the rest (in grace, not evaluated, error) count in neither | Graph managed devices |
 | `c11.hostPool.sessionHosts.intuneSyncStale` | Hosts whose last sync is older than the tenant's own compliance check-in period | Graph managed devices and device management settings |
 | `c11.hostPool.sessionHosts.intuneConfigErrors` | Hosts with a configuration policy in error or conflict | Intune configuration reports through Graph |
@@ -35,22 +42,25 @@ All are counts or one boolean, so no device or user name leaves the collector. T
 
 Intake answers, proposed for contract C19 (`gap:intake`): `intake.hostManagement`, `intake.hostServicing`, `intake.clientDevices`.
 
+Building any of these is a contract change here first: the per-pool counts join the session host summary in the C11 schema, and the tenant setting needs a new optional top-level `intune` object, because C11 has no tenant-level section yet (`contracts/README.md`).
+
 ## Not applicable is not a gap
 
 Intune doesn't deliver some things to multi-session hosts at all: templates other than certificates and device-tunnel VPN, update rings, Autopatch, user-targeted compliance, Available apps, wipe, retire and remote lock (`ref:intune-avd-multisession#settings-catalog-only`, `ref:intune-avd-multisession#quality-updates-catalog-only`, `ref:autopatch-avd#personal-only`, `ref:intune-avd-multisession#compliance-device-targeted`, `ref:intune-avd-multisession#apps-system-required`, `ref:intune-avd-multisession#remote-actions-unsupported`). Their absence on a multi-session pool is a pass, and their presence is a warn (a policy that reports Not applicable and does nothing). On personal single-session pools the same items apply as on physical desktops (`ref:intune-avd-personal#personal-like-physical`).
 
 ## Draft checks
 
-None is in `method.json` yet: each reads a fact that isn't built. Outcomes follow `gap:scoring`.
+None is in `method.json` yet: each reads a fact that isn't built. Outcomes follow `gap:scoring`; a check whose condition doesn't hold for a pool isn't assessed there, the way `method.json` checks use `where`. "Access depends on compliance" means a Conditional Access policy requires a compliant device: until a directory read sees the policies, the operator's `intake.clientDevices` answer stands in, and with neither the outcome is `unknown`.
 
-| Check | pass | warn | gap | unknown |
-|---|---|---|---|---|
-| Hosts enrolled | Every host managed, when the operator says Intune manages hosts | | Enrollment requested but hosts not managed, or the operator says Intune and hosts aren't enrolled | No Graph read |
-| No policy means noncompliant | The tenant marks a device with no policy noncompliant | It doesn't, and no Conditional Access policy relies on compliance | It doesn't, and Conditional Access requires a compliant device (`ref:intune-compliance#set-not-compliant-with-ca`) | No Graph read |
-| Hosts compliant | No noncompliant host | Noncompliant hosts in a pool no Conditional Access policy depends on | Noncompliant hosts where access depends on compliance | No Graph read |
-| Hosts in sync | No stale host | Stale hosts | | No Graph read |
-| No orphaned records | None | Orphans present (`obs:device-records-outlive-hosts`) | | No Graph read |
-| Update path fits the pool | Multi-session pool with no update ring and image-based servicing | Update ring or Autopatch assigned to multi-session hosts | Neither image servicing nor any update path | No intake answer |
+| Check | Applies when | pass | warn | gap | unknown |
+|---|---|---|---|---|---|
+| Hosts enrolled | The operator says Intune, both or co-management manage hosts | Every host has an Intune record | | Hosts without a record | No Graph read, or no `intake.hostManagement` answer |
+| Enrolled hosts have policy | Hosts are enrolled | Every enrolled host has a baseline applied and a compliance state (compliant or noncompliant) | Some enrolled hosts lack either, so they are enrolled but run on defaults (`obs:intune-enrolled-policies-left-to-owner`) | | No Graph read |
+| No policy means noncompliant | Any host or client is enrolled | The tenant marks a device with no policy noncompliant | It doesn't, and access doesn't depend on compliance | It doesn't, and access depends on compliance (`ref:intune-compliance#set-not-compliant-with-ca`) | No Graph read, or the access answer is unknown |
+| Hosts compliant | Hosts are enrolled | Every enrolled host compliant, and the tenant marks no-policy devices noncompliant | Hosts in grace, not evaluated or in error, or compliant only because no policy reached them | Noncompliant hosts where access depends on compliance; elsewhere they are a warn | No Graph read |
+| Hosts in sync | Hosts are enrolled | No stale host | Stale hosts | | No Graph read |
+| No orphaned records | Any host is enrolled | None | Orphans present (`obs:device-records-outlive-hosts`) | | No Graph read |
+| Update path fits the pool | Always | Multi-session: image servicing, or in place with catalog quality settings and no update ring or Autopatch. Personal single-session: image servicing, update rings or Autopatch | An update ring or Autopatch assigned to multi-session hosts, which reports Not applicable and does nothing | No update path at all: neither image servicing nor in-place updates | No `intake.hostServicing` answer and no Graph read |
 
 ## Group Policy as the alternative
 
