@@ -4,8 +4,10 @@
 # it in `pillars`, the checks those rows cite, and a method page only where the pillar is a flow rather
 # than a list of settings. Changed only by a pull request a person merges.
 #
-# status: mapped (rows exist with a pin or a gap page) | partial (some rows, most of its checklist items
-#   unpinned) | missing (no rows yet) | extension (a named extension point with no content).
+# status: mapped (rows exist with a pin or a gap page, or the pillar is a method page whose steps cite pins)
+#   | partial (some rows, most of its checklist items unpinned) | missing (no rows and no method page yet)
+#   | extension (a named extension point with no content). tests/check_dimensions.py checks a status
+#   against the rows: missing and extension mean no rows; mapped and partial mean rows or a method page.
 # checklist: the AVD review checklist subcategories (ref:review-checklists-avd) whose items the pillar
 #   pins first. method: the methods/ page, if one exists.
 schema: avd-assess-pillars/v1
@@ -31,7 +33,7 @@ pillars:
     title: App delivery
     scope: App Attach and MSIX, RemoteApp against desktops, app compatibility on multi-session hosts, app groups.
     checklist: [B02, C01.06]
-    status: missing
+    status: partial
   - id: profiles
     title: Profiles and storage
     scope: FSLogix containers, Cloud Cache, exclusions and size limits; Azure Files and Azure NetApp Files; capacity, performance, resilience and cross-region profiles.

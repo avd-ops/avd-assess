@@ -22,6 +22,6 @@ python3 tests/check_wording.py           # third-party products as categories on
 - **Write method only for a gap**, and say what was searched and not found.
 - **A model never decides** a verdict or an outcome.
 - **No GUIDs, emails, IPs, tenant, customer, user or machine names**, and no secrets. Cite review checklist items by short ID (`A01.01`), never by GUID.
-- **Liquidware is the only partner named.** Other vendors appear only as prior art, never by product name in public text unless explaining how we differ.
+- **Liquidware is the only partner named.** Third-party products appear as categories (an SSE or ZTNA client, a VPN client, an endpoint detection and response product, a monitoring product) with their public documentation pinned as a reference, never by product name; `tests/check_wording.py` refuses the names in `tests/wording.json`. Prior-art comparisons that must name a product stay in the owner's private notes.
 - **Personal project, not for production, as is, not affiliated with the author's employer, Liquidware or Microsoft.** The README warning and LICENSE stay.
 - **American English.**

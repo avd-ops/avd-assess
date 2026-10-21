@@ -22,7 +22,7 @@ This spec was written before the repo existed and describes the plan of 2026-10-
 
 **Pins.** A GitHub source pins to a commit. A Learn page pins by its own `git_commit_id` and `updated_at`; because the source repository behind most Learn pages is private, that identifies the version but can't be opened, so a reference may also carry `archive:`, an archived snapshot taken on the read date. The weekly `pins` workflow reports drift (Learn commits moved, GitHub paths gone, landing zone parameters and checklist items with no row) in one issue; a pin moves only by a reviewed pull request.
 
-**Where the work stands.** The review and plan of 2026-10-21 (project files, `avd-assess/2026-10-21-fable-review-and-plan.md`) lists 21 pillars, their coverage, and the work packages: the map plumbing (this section, `pillars.yaml`, `map.json`, the pins workflow, the wording test), then phase 4 in avd-current-state, then one thread per pillar, then the first evidence from a sandbox run.
+**Where the work stands.** [pillars.yaml](../pillars.yaml) lists the 21 pillars with a status each, and `tests/check_dimensions.py` prints the pillars that have no rows yet. The order of work, from the owner's review of 2026-10-21: the map plumbing (this section, `pillars.yaml`, `map.json`, the pins workflow, the wording test), then phase 4 in avd-current-state (something that runs `method.json`), then one pull request per pillar that pins its checklist items and adds its rows, then the first evidence file from a sandbox run.
 
 ## 1. Summary
 

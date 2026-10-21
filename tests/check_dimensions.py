@@ -136,6 +136,17 @@ if errors:
     print(f"RESULT FAIL ({len(errors)} errors)")
     sys.exit(1)
 gaps = sum(1 for r in doc["dimensions"] if r["baseline"]["standing"] == "gap")
-empty = sorted(p for p in pillars if not any(r.get("pillar") == p for r in doc["dimensions"]))
+rows_by_pillar = {p: sum(1 for r in doc["dimensions"] if r.get("pillar") == p) for p in pillars}
+for pid, p in pillars.items():
+    n = rows_by_pillar[pid]
+    if p.get("status") in {"missing", "extension"} and (n or p.get("method")):
+        err(f"pillars.yaml: {pid} is {p['status']} but has {n} rows or a method page")
+    if p.get("status") in {"mapped", "partial"} and not n and not p.get("method"):
+        err(f"pillars.yaml: {pid} is {p['status']} but has no rows and no method page")
+if errors:
+    print("\n".join(errors))
+    print(f"RESULT FAIL ({len(errors)} errors)")
+    sys.exit(1)
+empty = sorted(p for p in pillars if not rows_by_pillar[p])
 print(f"RESULT PASS ({len(ids)} dimensions, {gaps} gaps, {len(params)} landing zone parameters with a home, "
       f"{len(pillars)} pillars, {len(empty)} with no rows yet: {', '.join(empty)})")
