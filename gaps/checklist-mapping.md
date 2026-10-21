@@ -37,6 +37,7 @@ Every check is a `warn`, not a `gap`. The first four items say "consider" or "ev
 | `ref:review-checklists-avd#D02.01` | `c11.storage.filesIdentity` is built, but the rule needs it beside `intake.identityConstraints` (Entra-only estates use Entra Kerberos), and the rule language has no join between a snapshot and the intake |
 | `ref:review-checklists-avd#G02.04` | Which hosts run Windows 11; C11's OS versions are build numbers per pool, so the Trusted launch check above stands in |
 | `ref:review-checklists-avd#G03.03`, `ref:review-checklists-avd#G04.01` | Local administrators on the hosts (host-side) and Conditional Access or MFA for AVD sign-in (a directory read): neither is collected (`gap:security-scope`) |
+| `ref:review-checklists-avd#B02.01`, `ref:review-checklists-avd#H03.03`, `ref:review-checklists-avd#H04.01`, `ref:review-checklists-avd#H04.04` to `ref:review-checklists-avd#H04.06` | FSLogix settings and which share a host or package uses (host-side), the share-to-pool join, and the App Attach package facts specified in the register (`gap:app-delivery-scope`) |
 
 ## The same items in PSRule for Azure
 

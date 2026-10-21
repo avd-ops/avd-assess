@@ -1,0 +1,15 @@
+id: azure-files-backup
+title: About Azure Files backup
+url: https://learn.microsoft.com/azure/backup/azure-file-share-backup-overview
+pin: "Learn git_commit_id 212480dfa1539e795b65c4bbf2588eebfe648ad1, updated_at 2026-02-17"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [profiles]
+claims:
+  - id: snapshot-and-vaulted
+    says: Azure Backup protects file shares with snapshot and vaulted tiers; vaulted backup keeps an offsite copy with cross-region recovery.
+    kind: published
+  - id: soft-delete
+    says: Azure Backup turns on share soft delete with 14 days' retention and leases its snapshots against accidental deletion.
+    kind: published

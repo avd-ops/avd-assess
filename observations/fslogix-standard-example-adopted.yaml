@@ -1,0 +1,8 @@
+id: fslogix-standard-example-adopted
+claim: ref:fslogix-configuration-examples#standard-items
+verdict: extends
+observed: The landing zone writes the Standard example on every host (one VHD location, VHDX, no ODFC, ProfileType unset, no redirections.xml, the recommended retry and local-profile values) and adds PreventLoginWithFailure and PreventLoginWithTempProfile, so a user whose container fails to attach can't sign in to a temporary profile and lose work silently. Its readiness script reads the settings back on the host, the one host-side FSLogix read in the family.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1
+  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/ops/host/Test-SessionHostReadiness.ps1
+date: 2026-10-21
