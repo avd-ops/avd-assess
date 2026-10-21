@@ -844,7 +844,7 @@ dimensions:
     pillar: monitoring
     title: Monitoring, Insights wiring
     decides: Insights wiring - diagnostics on every AVD object, and the monitoring agent and Insights data collection rule on every host.
-    home: {decision: proposed:operations.monitoring, facts: [c11.monitoring.diagnostics, c11.hostPool.sessionHosts.monitoringAgent, c11.hostPool.sessionHosts.insightsDcr]}
+    home: {decision: proposed:operations.monitoring, facts: [c11.hostPool.diagnostics, c11.monitoring.diagnostics, c11.hostPool.sessionHosts.monitoringAgent, c11.hostPool.sessionHosts.insightsDcr]}
     baseline:
       standing: published
       claims: [ref:avd-insights#hostpool-diagnostics, ref:avd-insights#workspace-diagnostics, ref:avd-insights#host-data-ama-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#latest-version, ref:avd-diagnostics#per-object, ref:avd-diagnostics#categories, ref:caf-avd-management#insights-config-workbook, ref:caf-avd-management#regional-workspace, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:insights-facts, gap:monitoring-scope]
@@ -892,7 +892,7 @@ dimensions:
       says: Service Health alerts for at least service issues and health advisories; the AMBA pattern adds planned maintenance and security.
     measure: fact
     landingZone: []
-    note: The landing zone creates a Service Health alert for incidents only when alert addresses are given (obs:alerts-silent-without-receivers).
+    note: The landing zone creates one Service Health alert, on every event type for AVD and its dependent services, only when alert addresses are given (obs:alerts-silent-without-receivers).
   - id: ops.log-retention
     area: operations
     pillar: monitoring
@@ -988,7 +988,7 @@ dimensions:
     pillar: scaling
     title: Ramp-up timing and capacity threshold
     decides: When ramp-up starts against when users arrive, the minimum hosts kept on, and the capacity threshold that starts the next host.
-    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.rampUpStart, c11.hostPool.scalingPlan.rampUpMinimumHostsPct, c11.hostPool.scalingPlan.rampUpCapacityThresholdPct, intake.workingHours, c12.group.concurrency.byHour, c12.group.scaling.occupancyP95Percent]}
+    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.rampUpStart, c11.hostPool.scalingPlan.rampUpMinimumHostsPct, c11.hostPool.scalingPlan.rampUpCapacityThresholdPct, intake.workingHours, c12.group.concurrency.byHour, c12.group.scaling.occupancyP95ByPhase]}
     baseline:
       standing: gap
       claims: [ref:avd-autoscale#capacity-threshold, ref:autoscale-plan#ramp-up-before-peak, ref:autoscale-plan#capacity-threshold-example, ref:autoscale-plan#off-peak-depth-first, ref:autoscale-insights#evaluation-table, gap:monitoring-scope]
@@ -1039,7 +1039,7 @@ dimensions:
     pillar: scaling
     title: Autoscale logs
     decides: Whether autoscale's decisions and failures are recorded where someone reads them.
-    home: {decision: hostPool.power, facts: [c11.monitoring.diagnostics, c12.group.scaling.failedEvaluations]}
+    home: {decision: hostPool.power, facts: [c11.hostPool.autoscaleLogs, c12.group.scaling.failedEvaluations]}
     baseline:
       standing: published
       claims: [ref:autoscale-insights#pooled-only, ref:autoscale-insights#hostpool-category, ref:autoscale-insights#evaluation-table, ref:autoscale-diagnostics#plan-to-storage-or-hub, ref:avd-diagnostics#categories]

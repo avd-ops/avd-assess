@@ -47,7 +47,7 @@ entries:
         to: knowledge-worker
         claims: [obs:users-per-vcpu-adopted, gap:use-cases]
     decisions: [hostPool.maxSessions, hostPool.hosts, hostPool.power]
-    dimensions: [density.sessions-per-host, compute.host-count, cost.power, profile.storage-performance]
+    dimensions: [density.sessions-per-host, compute.host-count, cost.power, scaling.schedule, scaling.cold-start, profile.storage-performance]
 
   - id: knowledge-worker
     kind: persona
@@ -106,7 +106,7 @@ entries:
         then: "desktop: pooled at the heavy class"
         claims: [ref:avd-security-guide#trust-boundary, ref:session-host-sizing#multisession-users-per-vcpu]
     decisions: [hostPool.type, hostPool.vmSize, hostPool.power]
-    dimensions: [hostpool.type, compute.vm-size, cost.power, security.host-type]
+    dimensions: [hostpool.type, compute.vm-size, cost.power, scaling.personal, security.host-type]
 
   - id: graphics-power
     kind: persona
@@ -323,4 +323,4 @@ entries:
         then: "pattern.hours: shifts or office; a scaling plan covers it"
         claims: [ref:avd-autoscale#scales-to-save-cost]
     decisions: [hostPool.hosts, hostPool.power]
-    dimensions: [compute.host-count, cost.power]
+    dimensions: [compute.host-count, cost.power, scaling.plan]

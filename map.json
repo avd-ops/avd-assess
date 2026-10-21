@@ -2025,6 +2025,7 @@
       "home": {
         "decision": "proposed:operations.monitoring",
         "facts": [
+          "c11.hostPool.diagnostics",
           "c11.monitoring.diagnostics",
           "c11.hostPool.sessionHosts.monitoringAgent",
           "c11.hostPool.sessionHosts.insightsDcr"
@@ -2144,7 +2145,7 @@
       },
       "measure": "fact",
       "landingZone": [],
-      "note": "The landing zone creates a Service Health alert for incidents only when alert addresses are given (obs:alerts-silent-without-receivers)."
+      "note": "The landing zone creates one Service Health alert, on every event type for AVD and its dependent services, only when alert addresses are given (obs:alerts-silent-without-receivers)."
     },
     {
       "id": "ops.log-retention",
@@ -2382,7 +2383,7 @@
           "c11.hostPool.scalingPlan.rampUpCapacityThresholdPct",
           "intake.workingHours",
           "c12.group.concurrency.byHour",
-          "c12.group.scaling.occupancyP95Percent"
+          "c12.group.scaling.occupancyP95ByPhase"
         ]
       },
       "baseline": {
@@ -2491,7 +2492,7 @@
       "home": {
         "decision": "hostPool.power",
         "facts": [
-          "c11.monitoring.diagnostics",
+          "c11.hostPool.autoscaleLogs",
           "c12.group.scaling.failedEvaluations"
         ]
       },
@@ -2932,6 +2933,8 @@
         "density.sessions-per-host",
         "compute.host-count",
         "cost.power",
+        "scaling.schedule",
+        "scaling.cold-start",
         "profile.storage-performance"
       ]
     },
@@ -3127,6 +3130,7 @@
         "hostpool.type",
         "compute.vm-size",
         "cost.power",
+        "scaling.personal",
         "security.host-type"
       ]
     },
@@ -3779,7 +3783,8 @@
       ],
       "dimensions": [
         "compute.host-count",
-        "cost.power"
+        "cost.power",
+        "scaling.plan"
       ]
     }
   ],

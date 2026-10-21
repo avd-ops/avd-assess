@@ -23,13 +23,15 @@ These are `specified` in `contracts/fact-register.json`: the path is fixed, avd-
 
 | Fact | Value | Read from |
 |---|---|---|
-| `c11.monitoring.diagnostics` | count map of AVD objects (host pool, app group, workspace, scaling plan) by state: `all-logs`, `required` (Insights' categories present), `partial`, `none`; plus whether the host pool sends the autoscale category | REST `diagnosticSettings` per object |
+| `c11.hostPool.diagnostics` | the host pool's own diagnostics to Log Analytics: `all-logs`, `required` (Insights' seven categories present), `partial`, `none` | REST `diagnosticSettings` on the host pool |
+| `c11.hostPool.autoscaleLogs` | true if the host pool sends the autoscale category for pooled host pools to Log Analytics | the same |
+| `c11.monitoring.diagnostics` | count map of the other AVD objects keyed `<kind>:<state>` (kinds `workspace`, `appGroup`, `scalingPlan`; states as above), so `workspace:none` counts workspaces with no diagnostics | REST `diagnosticSettings` per object |
 | `c11.hostPool.sessionHosts.monitoringAgent` | hosts with the Azure Monitor Agent provisioned | Resource Graph VM extensions |
 | `c11.hostPool.sessionHosts.insightsDcr` | hosts associated with a rule whose name starts `microsoft-avdi-` | Resource Graph `insightsresources` |
 | `c11.monitoring.workspace.retentionDays` | count map of workspaces that receive AVD data, by retention days | Resource Graph workspaces |
 | `c11.monitoring.alerts` | count map of alert rules scoped to the AVD workspace, host resource groups or host pools, by kind (`log`, `metric`, `activity`) and state (`enabled-with-receiver`, `enabled-no-receiver`, `disabled`) | Resource Graph `scheduledqueryrules`, `metricalerts`, `activitylogalerts` |
-| `c11.monitoring.serviceHealthAlerts` | enabled activity log alerts on category `ServiceHealth` with an action group | Resource Graph `activitylogalerts` |
-| `c11.storage.alerts` | enabled metric alert rules scoped to the storage account or its file service | Resource Graph `metricalerts` |
+| `c11.monitoring.serviceHealthAlerts` | count map, by event type (`incident`, `maintenance`, `advisory`, `security`), of enabled Service Health alerts with an action group that cover that type and AVD (a rule with no type or service filter covers all) | Resource Graph `activitylogalerts` |
+| `c11.storage.alerts` | count map of metric alert rules scoped to the storage account or its file service, by state as for `c11.monitoring.alerts` | Resource Graph `metricalerts` |
 | `c11.advisor.recommendations` | count map of active Advisor recommendations on the AVD resource groups, by category | REST Advisor recommendations |
 | `c11.hostPool.scalingPlan.method` | `none`, `power`, `dynamic`, or `disabled` (assigned but not enabled) | REST scaling plans, `hostPoolReferences` |
 | `c11.hostPool.scalingPlan.rampUpStart` | the earliest weekday ramp-up start, `HH:MM` in the plan's time zone | the plan's schedules |
@@ -37,7 +39,7 @@ These are `specified` in `contracts/fact-register.json`: the path is fixed, avd-
 | `c11.hostPool.scalingPlan.forceLogoff` | true if any schedule forces sign-out at ramp-down | the plan's schedules |
 | `c11.hostPool.scalingPlan.exclusionTag` | true if the plan names an exclusion tag (never the tag's value) | the plan |
 | `c11.hostPool.sessionHosts.hibernation` | hosts with hibernation enabled | Resource Graph VMs |
-| `c12.group.scaling.occupancyP95Percent` | p95 session occupancy per phase over the window | `WVDAutoscaleEvaluationPooled` (`ref:autoscale-insights#evaluation-table`) |
+| `c12.group.scaling.occupancyP95ByPhase` | map of p95 session occupancy (%) by schedule phase (`rampUp`, `peak`, `rampDown`, `offPeak`) over the window | `WVDAutoscaleEvaluationPooled` (`ref:autoscale-insights#evaluation-table`) |
 | `c12.group.scaling.failedEvaluations` | evaluations whose result isn't `Succeeded` | the same table |
 | `c12.group.scaling.coldStartConnectP95Seconds` | p95 time to connect for connections that found no host running | `WVDConnections` and `WVDCheckpoints`, Insights' time to connect |
 
@@ -49,23 +51,24 @@ They join `method.json` when their facts are `built`. All are `warn`; none needs
 
 | Check | Rule | Claims |
 |---|---|---|
-| Diagnostics on every AVD object | every host pool and workspace is `all-logs` or `required` | `ref:review-checklists-avd#E02.02`, `ref:avd-insights#hostpool-diagnostics` |
+| Diagnostics on every AVD object | every host pool's `c11.hostPool.diagnostics` is `all-logs` or `required`, and `workspace:none` and `workspace:partial` are zero | `ref:review-checklists-avd#E02.02`, `ref:avd-insights#hostpool-diagnostics` |
 | Insights on every host | `monitoringAgent` and `insightsDcr` equal the host total | `ref:review-checklists-avd#E02.01`, `ref:avd-insights#host-data-ama-dcr` |
 | Alerts reach someone | no `enabled-no-receiver` rules, and at least one enabled rule | `ref:caf-avd-management#alerting-model`, `obs:alerts-silent-without-receivers` |
-| Profile storage is alerted | every premium file storage account has at least one alert (the facts can't yet tell which account holds profiles, as `gap:checklist-mapping` notes) | `ref:review-checklists-avd#E02.03`, `ref:amba-avd#storage` |
-| Service Health is alerted | at least one Service Health alert per subscription with AVD | `ref:review-checklists-avd#E02.04`, `ref:avd-service-alerts#issue-and-advisory` |
-| Pooled pools scale | every pooled pool has a `power` or `dynamic` plan | `ref:review-checklists-avd#E01.04`, `ref:avd-autoscale#scales-to-save-cost` |
+| Profile storage is alerted | every premium file storage account has at least one `enabled-with-receiver` alert (the facts can't yet tell which account holds profiles, as `gap:checklist-mapping` notes) | `ref:review-checklists-avd#E02.03`, `ref:amba-avd#storage` |
+| Service Health is alerted | `incident` and `advisory` are each at least 1 in every subscription with AVD | `ref:review-checklists-avd#E02.04`, `ref:avd-service-alerts#issue-and-advisory` |
+| Pooled pools scale | every pooled pool has a `power` or `dynamic` plan (this page owns the E01.04 rule; `gap:finops-scope` points here) | `ref:review-checklists-avd#E01.04`, `ref:avd-autoscale#scales-to-save-cost` |
 | A scaled pool has its own session limit | a pooled pool with a plan has a session limit other than the service default | `ref:autoscale-plan#max-session-limit-required` |
 | Ramp-up leads the working day | `rampUpStart` is before `intake.workingHours` start; needs a join between the snapshot and the intake, which the rule language doesn't have yet | `ref:autoscale-plan#ramp-up-before-peak` |
+| Personal pools turn off | defined in `gap:finops-scope` (E01.06), with `c11.hostPool.scalingPlan.method` and `c11.hostPool.sessionHosts.hibernation` as its facts | `ref:review-checklists-avd#E01.06` |
 | Advisor's AVD items are clear | no active operational Advisor recommendation on AVD resources | `ref:review-checklists-avd#E01.08`, `ref:avd-advisor#validation-pool` |
 
-Retention is reported, never graded: below 31 days is a `warn` only because it saves nothing (`ref:log-retention#first-31-included`); above that, the estate's own answer decides.
+Retention is reported, never graded. The report notes that anything under 31 days saves nothing (`ref:log-retention#first-31-included`), and compares the value with `intake.logRetention` when the operator has answered it.
 
 ## Ramp-up lead time and the first-connection wait (method)
 
 No source gives either number, so both are measured and judged against the users, not against a constant.
 
-1. **Lead time.** From `c12.group.concurrency.byHour`, take the first hour whose sessions pass the minimum hosts' capacity. Ramp-up should start at least one host start and registration earlier. When `c12.group.scaling.occupancyP95Percent` in ramp-up or the first peak hour is above the capacity threshold, hosts are starting behind demand: the threshold or the minimum is too low, or ramp-up too late.
+1. **Lead time.** From `c12.group.concurrency.byHour`, take the first hour whose sessions pass the minimum hosts' capacity. Ramp-up should start at least one host start and registration earlier. When `c12.group.scaling.occupancyP95ByPhase` for `rampUp` or `peak` is above the capacity threshold, hosts are starting behind demand: the threshold or the minimum is too low, or ramp-up too late.
 2. **First-connection wait.** `c12.group.scaling.coldStartConnectP95Seconds` minus the estate's warm time to connect is what Start VM on Connect or a zero-host phase costs a user. Judge it against `intake.coldStartTolerance`: `no-wait` means keep a host on in every phase people work; `short-wait` accepts it off peak; `accept-wait` accepts it at any time.
 3. **Disconnected sessions.** Autoscale counts them as active (`ref:autoscale-faq#disconnected-time-limit`), so a pool that never reaches its off-peak minimum while `c12.group.concurrency.byHour` is near zero points at missing sign-out policy, which is a host-side setting.
 

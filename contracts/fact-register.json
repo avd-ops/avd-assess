@@ -537,7 +537,7 @@
       "contract": "C11",
       "path": "/subscriptions/*/monitoring/serviceHealthAlerts",
       "grain": "subscription",
-      "unit": "count",
+      "unit": "countMap",
       "privacy": "count",
       "status": "specified",
       "evidences": []
@@ -550,6 +550,28 @@
       "grain": "subscription",
       "unit": "countMap",
       "privacy": "count",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.diagnostics",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/diagnostics",
+      "grain": "hostPool",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.autoscaleLogs",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/autoscaleLogs",
+      "grain": "hostPool",
+      "unit": "bool",
+      "privacy": "boolean",
       "status": "specified",
       "evidences": []
     },
@@ -640,7 +662,7 @@
       "contract": "C11",
       "path": "/subscriptions/*/hostPools/*/scalingPlan/forceLogoff",
       "grain": "hostPool",
-      "unit": "bool",
+      "unit": "countMap",
       "privacy": "boolean",
       "status": "specified",
       "evidences": []
@@ -916,12 +938,12 @@
       ]
     },
     {
-      "id": "c12.group.apps.catalog",
+      "id": "c12.group.scaling.occupancyP95ByPhase",
       "tier": "forensic",
       "contract": "C12",
-      "path": "/groups/*/apps/catalog",
+      "path": "/groups/*/scaling/occupancyP95ByPhase",
       "grain": "group",
-      "unit": "app",
+      "unit": "%",
       "privacy": "group-behavior",
       "status": "specified",
       "evidences": [
@@ -950,7 +972,7 @@
       "path": "/groups/*/scaling/occupancyP95Percent",
       "grain": "group",
       "unit": "percent",
-      "privacy": "measure",
+      "privacy": "group-behavior",
       "status": "specified",
       "evidences": []
     },
