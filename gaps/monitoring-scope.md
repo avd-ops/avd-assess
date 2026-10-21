@@ -23,12 +23,12 @@ These are `specified` in `contracts/fact-register.json`: the path is fixed, avd-
 
 | Fact | Value | Read from |
 |---|---|---|
-| `c11.hostPool.diagnostics` | the host pool's own diagnostics to Log Analytics: `all-logs`, `required` (Insights' seven categories present), `partial`, `none` | REST `diagnosticSettings` on the host pool |
+| `c11.hostPool.diagnosticsSetting` | the host pool's own diagnostics to Log Analytics: `all-logs`, `required` (Insights' seven categories present), `partial`, `none` | REST `diagnosticSettings` on the host pool |
 | `c11.hostPool.autoscaleLogs` | true if the host pool sends the autoscale category for pooled host pools to Log Analytics | the same |
 | `c11.monitoring.diagnostics` | count map of the other AVD objects keyed `<kind>:<state>` (kinds `workspace`, `appGroup`, `scalingPlan`; states as above), so `workspace:none` counts workspaces with no diagnostics | REST `diagnosticSettings` per object |
 | `c11.hostPool.sessionHosts.monitoringAgent` | hosts with the Azure Monitor Agent provisioned | Resource Graph VM extensions |
 | `c11.hostPool.sessionHosts.insightsDcr` | hosts associated with a rule whose name starts `microsoft-avdi-` | Resource Graph `insightsresources` |
-| `c11.monitoring.workspace.retentionDays` | count map of workspaces that receive AVD data, by retention days | Resource Graph workspaces |
+| `c11.logAnalytics.retentionDays` (already built) | count map of workspaces that receive AVD data, by retention days | Resource Graph workspaces |
 | `c11.monitoring.alerts` | count map of alert rules scoped to the AVD workspace, host resource groups or host pools, by kind (`log`, `metric`, `activity`) and state (`enabled-with-receiver`, `enabled-no-receiver`, `disabled`) | Resource Graph `scheduledqueryrules`, `metricalerts`, `activitylogalerts` |
 | `c11.monitoring.serviceHealthAlerts` | count map, by event type (`incident`, `maintenance`, `advisory`, `security`), of enabled Service Health alerts with an action group that cover that type and AVD (a rule with no type or service filter covers all) | Resource Graph `activitylogalerts` |
 | `c11.storage.alerts` | count map of metric alert rules scoped to the storage account or its file service, by state as for `c11.monitoring.alerts` | Resource Graph `metricalerts` |
@@ -51,7 +51,7 @@ They join `method.json` when their facts are `built`. All are `warn`; none needs
 
 | Check | Rule | Claims |
 |---|---|---|
-| Diagnostics on every AVD object | every host pool's `c11.hostPool.diagnostics` is `all-logs` or `required`, and `workspace:none` and `workspace:partial` are zero | `ref:review-checklists-avd#E02.02`, `ref:avd-insights#hostpool-diagnostics` |
+| Diagnostics on every AVD object | every host pool's `c11.hostPool.diagnosticsSetting` is `all-logs` or `required`, and `workspace:none` and `workspace:partial` are zero | `ref:review-checklists-avd#E02.02`, `ref:avd-insights#hostpool-diagnostics` |
 | Insights on every host | `monitoringAgent` and `insightsDcr` equal the host total | `ref:review-checklists-avd#E02.01`, `ref:avd-insights#host-data-ama-dcr` |
 | Alerts reach someone | no `enabled-no-receiver` rules, and at least one enabled rule | `ref:caf-avd-management#alerting-model`, `obs:alerts-silent-without-receivers` |
 | Profile storage is alerted | every premium file storage account has at least one `enabled-with-receiver` alert (the facts can't yet tell which account holds profiles, as `gap:checklist-mapping` notes) | `ref:review-checklists-avd#E02.03`, `ref:amba-avd#storage` |

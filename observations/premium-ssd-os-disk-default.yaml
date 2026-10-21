@@ -3,6 +3,6 @@ claim: ref:avd-deploy-host-pool#premium-ssd-os-disk
 verdict: not-yet-tested
 observed: The landing zone's session hosts use Premium SSD OS disks, as the source recommends for production. No run has compared disk latency on Standard SSD or an ephemeral OS disk, so the choice rests on the source, not our evidence.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/modules/sessionHosts.bicep
-  - https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/modules/sessionHosts.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md
 date: 2026-10-20
