@@ -24,6 +24,7 @@ EXAMPLES = {
     "examples/assess/assessment.example.json": "assessment.schema.json",
     "examples/assess/review.example.json": "assessment-review.schema.json",
     "examples/assess/plan.example.json": "remediation-plan.schema.json",
+    "examples/checks/catalog.example.json": "check-catalog.schema.json",
     "examples/run-record/run.example.json": "run-record.schema.json",
     "examples/run-record/cost.example.json": "run-cost.schema.json",
     "examples/run-record/journal.example.jsonl": "run-journal.schema.json",
@@ -83,6 +84,29 @@ for rel, schema_name in EXAMPLES.items():
 for path in sorted((CONTRACTS / "examples").rglob("*.json*")):
     if str(path.relative_to(CONTRACTS)) not in EXAMPLES:
         err(path, "example isn't listed in tests/check_contracts.py, so nothing checks it")
+
+# C22: unique check IDs, and the shapes the schema must refuse (the oneOf and the method rule).
+catalog_schema = schemas.get("check-catalog.schema.json")
+if catalog_schema:
+    cv = Draft202012Validator(catalog_schema)
+    catalog_path = CONTRACTS / "examples/checks/catalog.example.json"
+    catalog = load(catalog_path)
+    if catalog is not None:
+        ids = [c["id"] for c in catalog.get("checks", [])]
+        if len(ids) != len(set(ids)):
+            err(catalog_path, "a check ID appears more than once")
+        base = {"id": "sample-check", "title": "A sample check", "phase": ["drift"], "gate": "advise",
+                "pillar": "operations", "severity": "low", "claims": ["gap:governance-scope"]}
+        for bad in ({"reads": ["arm"]},
+                    {"reads": ["arm"], "impl": "Get-SampleResult", "source": "method"},
+                    {"impl": "Get-SampleResult"},
+                    {"source": "method"},
+                    {"id": "asm-sample-check", "source": "method", "facts": ["c11.hostPool.count"]}):
+            doc = json.loads(json.dumps(catalog))
+            doc["checks"][0] = {**base, **bad}
+            if cv.is_valid(doc):
+                err(catalog_path, f"the C22 schema accepts a check it must refuse: {bad}")
+
 
 # C23: one decision per check, and a reason that fits its disposition (the schema's allOf).
 review_schema = schemas.get("assessment-review.schema.json")

@@ -10,6 +10,7 @@ This folder is the authority for the formats the foundation repos exchange: avd-
 | C19 `avd-intake/v1` | `schemas/intake.schema.json` | the operator's answers | avd-current-state, the brain |
 | C20 `avd-assess-index/v1`, `avd-assess-method/v1`, `avd-assess-map/v1`, `avd-assess-endpoints/v1` | `schemas/assess-index.schema.json`, `schemas/assess-method.schema.json`, `schemas/assess-map.schema.json`, `schemas/assess-endpoints.schema.json` | here (`index.json`, `method.json`, `map.json`, `endpoints.json`) | avd-current-state, the brain; the map by the standards library; the endpoint map by avd-current-state's endpoint check and avd-linecheck |
 | C21 `avd-assessment/v1` | `schemas/assessment.schema.json` | avd-current-state | the operator, the brain |
+| C22 `avd-check-catalog/v1` | `schemas/check-catalog.schema.json`, `examples/checks/` | avd-current-state (`checks/catalog.json`) | avd-current-state's validator and drift check, avd-landing-zone (vendored with the checks module) |
 | C23 `avd-assessment-review/v1` | `schemas/assessment-review.schema.json` | avd-current-state's assessment portal | the plan (C24), the brain (optional import) |
 | C24 `avd-remediation-plan/v1` | `schemas/remediation-plan.schema.json` | avd-current-state's assessment portal | the operator, the landing zone (later), the brain and avd-swarm (optional import) |
 
