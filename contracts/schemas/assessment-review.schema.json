@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-assessment-review/v1.json",
   "title": "avd-assessment-review/v1: a person's decision on each finding of one assessment (review.json)",
   "description": "Contract C23, written by avd-current-state's assessment portal. It pins the C21 report it reviews by hash and records, per check, what the reviewer decided: fix it, accept it with a reason, or defer it. Reasons are codes, never free text; a reviewer's notes stay in their private notes file. It holds no names or IDs, only the estate pseudonym and check IDs, and works without the brain or avd-swarm, which may import it (optional extensions only).",
   "type": "object",

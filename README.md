@@ -55,6 +55,10 @@ Beyond the methods, this repo holds the **map**: one row for every detail an AVD
 - **No copied guidance.** Microsoft's pages, checklists and tools stay the source of truth. When our observation disagrees with a source, we record it here and offer it back upstream.
 - **No estate data.** Observations link to public lessons, run records and knowledge base pages. No tenant, customer, user or machine data goes into this repo.
 
+## Releases
+
+The map ships as a versioned bundle: the JSON documents, their schemas, the method and gap pages, a [Data Package](https://datapackage.org/) manifest (`datapackage.json`) with a SHA-256 per file, and two small verifiers (`tools/avd_assess_bundle.py`, standard library Python; `tools/AvdAssessBundle.psm1`, Windows PowerShell 5.1 and PowerShell 7). Releases are immutable and attested; every file is byte-identical to git at the tagged commit. Check a download with `gh attestation verify <file> -R avd-ops/avd-assess`, then pin the SHA-256 of `datapackage.json`. How it works, and how versions are numbered: [docs/distribution-spec.md](docs/distribution-spec.md).
+
 ## How to cite
 
 Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observation as `avd-assess@<commit>:observations/<file>.yaml`, a gap as `avd-assess@<commit>:gaps/<file>.md`, and a check as `avd-assess@<commit>:method.json#<check id>`.

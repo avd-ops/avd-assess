@@ -2,7 +2,7 @@
 
 > Personal project. Research and learning only, not for production, provided as is. Not affiliated with, endorsed by or supported by the author's employer, Liquidware or Microsoft. Azure Virtual Desktop is a trademark of its owner.
 
-- **Status:** draft, red-teamed by Fable (section 15, 15 findings, all fixed), nothing built. No release is cut and no consumer changes until the owner says go; the owner tags releases from Cloud Shell.
+- **Status:** phase 1 built (section 17): the builder, both verifiers, the diff, the release and Pages workflow. Red-teamed by Fable (section 15). No release is cut and no consumer changes until the owner says go; the owner tags releases from Cloud Shell.
 - **Date:** 2026-10-21
 - **Owner's ask (2026-10-21):** "our avd-assess map should be portable/distributable too." Anyone, inside the family or not, should be able to take the map at a version, check it is what avd-assess published, and use it offline.
 - **Builds on:** [contracts/README.md](../contracts/README.md) (byte-identical vendoring, fail-open rules), avd-ops [decision 0008](https://github.com/avd-ops/avd-ops/blob/main/docs/knowledge/decisions/0008-code-signing.md) (immutable releases and attestations for every repo, $0), the map (section 0 of [assess-spec.md](assess-spec.md)).
@@ -125,7 +125,7 @@ Every asset gets a build provenance attestation (`actions/attest-build-provenanc
 | `https://github.com/avd-ops/avd-assess/releases/latest/download/<asset>` | yes | people only; nothing pins it |
 | `https://assess.avd-ops.dev/catalog.json` | yes | every release: version, tag, commit, date, manifest SHA-256, asset URLs, and which documents changed major |
 | `https://assess.avd-ops.dev/schemas/<schema-name>/v<major>.json` | yes, within a major | each schema's `$id`; holds the newest minor of that major, which is backward compatible by section 6 |
-| `https://assess.avd-ops.dev/v/<version>/<path>` | Pages can change | a mirror for browser tools: GitHub Pages answers cross-origin requests and release downloads may not (assumption to verify in phase 1); every reader still checks the manifest hash |
+| `https://assess.avd-ops.dev/v/<version>/<path>` | Pages can change | a mirror for browser tools: GitHub Pages answers cross-origin requests (`Access-Control-Allow-Origin: *`, checked 2026-10-21) and release downloads don't; every reader still checks the manifest hash |
 
 Pages is published by a `pages` job inside `release.yml` that runs after the publish job (a release published with the workflow's own token starts no other workflow, so a separate `release: published` trigger would never fire), and by `workflow_dispatch` to rerun it if a deploy fails after publishing. It builds from release assets only, never from a working tree. A Pages page is a convenience, never a trust anchor: section 9's pins are hashes, so a changed mirror fails the check.
 
@@ -145,7 +145,7 @@ One semantic version for the whole bundle, `MAJOR.MINOR.PATCH`, starting at `1.0
 
 **Deprecation before removal.** Removing an ID is always a major. Before it, the ID gets `deprecated: { "since": "<version>", "replacedBy": "<id or null>" }` (an optional field, added to each schema in phase 1), which is a minor. The deprecation window is a gate, not a bump modifier: the release workflow refuses a major that removes an ID unless that ID carried `deprecated` in the documents of a published release at least 30 days earlier (the dates from `gh release list`, the marks from that release's bundle). Citations keep resolving through the window.
 
-**The bump is computed where it can be, declared where it can't.** `scripts/bundle/diff_bundle.py <old release dir> <new release dir>` compares two full bundles and computes: the file set; each document's `schema` string; each schema's `required`, `type`, `enum` and `pattern` keywords (added required, removed enum value, changed type or pattern: major, which the release PR may lower to minor with a `NOT-BREAKING:` line saying why the change only widens, for the owner to accept at the gate); ID sets from each resource's `idPaths` (removed: major, added: minor); `deprecated` marks; the register's facts and `version`; `method.json`'s `version`; and, per reference claim, whether `says` changed with its pin (minor) or only the pin moved (patch). It prints the smallest allowed bump with its reasons. What a diff cannot see, a field or ID that keeps its name but changes meaning or unit, the release PR declares in a `BREAKING:` line; the workflow takes the larger of the computed and the declared bump (after any accepted `NOT-BREAKING:`) and fails a tag below it. The output becomes the release notes under "Breaking", "Method" and "Added".
+**The bump is computed where it can be, declared where it can't.** `tools/diff_bundle.py <old release dir> <new release dir>` compares two full bundles and computes: the file set; each document's `schema` string; each schema's `required`, `type`, `enum` and `pattern` keywords (added required, removed enum value, changed type or pattern: major, which the release PR may lower to minor with a `NOT-BREAKING:` line saying why the change only widens, for the owner to accept at the gate); ID sets from each resource's `idPaths` (removed: major, added: minor); `deprecated` marks; the register's facts and `version`; `method.json`'s `version`; and, per reference claim, whether `says` changed with its pin (minor) or only the pin moved (patch). It prints the smallest allowed bump with its reasons. What a diff cannot see, a field or ID that keeps its name but changes meaning or unit, the release PR declares in a `BREAKING:` line; the workflow takes the larger of the computed and the declared bump (after any accepted `NOT-BREAKING:`) and fails a tag below it. The output becomes the release notes under "Breaking", "Method" and "Added".
 
 ## 7. Release process
 
@@ -166,7 +166,7 @@ One semantic version for the whole bundle, `MAJOR.MINOR.PATCH`, starting at `1.0
 
 **When a step fails.** Before publish: the job leaves a draft release; the owner deletes the draft and the tag (an unpublished tag is still deletable), fixes, and tags again. After publish: the release is permanent; a failed Pages job is rerun with `workflow_dispatch`, and nothing a consumer needs depends on Pages.
 
-A bad release is never replaced: it is marked withdrawn in `catalog.json` (`"withdrawn": "<reason>"`), in its own release notes if GitHub still allows editing them (to verify in phase 1), and in the notes of the fixed release that follows, so a consumer without Pages still sees it. Immutable releases make the tag and assets permanent once published, which is the point.
+A bad release is never replaced: it is marked withdrawn in `catalog.json` (`"withdrawn": "<reason>"`), in its own release notes (a line `WITHDRAWN: <reason>`; GitHub keeps the title and notes of an immutable release editable, only the tag and assets are locked, checked 2026-10-21), and in the notes (a line `WITHDRAWS: v<version> <reason>`) of the fixed release that follows, so a consumer without Pages still sees it. Immutable releases make the tag and assets permanent once published, which is the point.
 
 ## 8. Reader and verifier
 
@@ -275,8 +275,8 @@ A consumer that stays on a commit pin keeps working; a release pin never invalid
 | Phase | What | Who says go |
 |---|---|---|
 | 0 | This spec | the owner merges it |
-| 1 | `scripts/bundle/build_bundle.py` (dry run in `check.yml`), `diff_bundle.py`, `tools/` verifiers with shared fixtures and tests in both languages, `contracts/schemas/assess-bundle.schema.json`, `NOTICE`, `$id` and the optional `deprecated` field on each schema (with a test that no schema uses a cross-file `$ref`, so no validator ever tries to resolve an `$id` over the network), the `.gitattributes` guard, `release.yml`, the `pages` job, the `v*` tag ruleset, the CLAUDE.md rule that sessions never tag | the owner, after the open questions |
-| 2 | Immutable releases are already on for the organization (2026-10-21); the owner creates the `release` environment with the owner as required reviewer, enables Pages from Actions, and tags `v1.0.0` | the owner, in Cloud Shell |
+| 1 | `scripts/bundle/build_bundle.py` (dry run in `check.yml`), `diff_bundle.py`, `tools/` verifiers with shared fixtures and tests in both languages, `contracts/schemas/assess-bundle.schema.json`, `NOTICE`, `$id` and the optional `deprecated` field on each schema (with a test that no schema uses a cross-file `$ref`, so no validator ever tries to resolve an `$id` over the network), the `.gitattributes` guard, `release.yml`, the `pages` job, the CLAUDE.md rule that sessions never tag | the owner said go (2026-10-21); as built: section 17 |
+| 2 | Immutable releases are already on for the organization (2026-10-21); the owner creates the `release` environment with the owner as required reviewer, adds the `v*` tag ruleset, enables Pages from Actions with the custom domain, and tags `v1.0.0` (order in section 17) | the owner, in Cloud Shell |
 | 3 | Consumers, one PR each, at their next re-pin (section 12), each with the brain and avd-swarm pair rule where it applies | the owner, per PR |
 
 ## 15. Red team
@@ -308,13 +308,31 @@ A Claude code review of the PR then found ten more (a leftover `git archive` in 
 1. **First release:** `v1.0.0`, cut after the endpoints and governance pillar (#34), the security review map (#38) and the endpoint map (#39) merge, so the planned single re-pin lands on it. **Answered (owner, 2026-10-21): yes.**
 2. **Pages address:** **answered (owner, 2026-10-21): `assess.avd-ops.dev`**, a custom domain on this repo's own Pages. Phase 2 adds a DNS `CNAME` record `assess` pointing at `avd-ops.github.io` and verifies `avd-ops.dev` for the organization in GitHub, so no other account can claim the subdomain. Section 5 uses this address; every `$id` is under it.
 3. **Immutable releases:** **answered and done (owner, 2026-10-21): turned on for the whole avd-ops organization.** No org repo had a tag, release or release workflow then, so nothing changed for existing work; every release from now on is locked once published.
-4. **Release gate:** a `release` environment with you as required reviewer, so a tag alone publishes nothing? Recommended.
-5. **Method and gap pages in the bundle** (zip only, about 1 MB in all)? Recommended yes, so the method travels with the data.
-6. **Package registries** (PyPI, npm) later? Recommended no until an outside reader asks.
-7. **SchemaStore listing** for editor completion? Recommended no until there is outside demand.
-8. **One pins format:** make consumer `PINS.json` a shared contract (`avd-pins/v1`, numbered by you), or keep the three shapes and add two fields to each? Recommended: keep them, add the fields, revisit if a fourth shape appears.
-9. **Cadence:** releases on demand (recommended), or a fixed rhythm such as monthly?
-10. **Deprecation window:** an ID must be marked deprecated in a release at least 30 days before a major removes it. Right length?
-11. **Cloud Shell's `gh` version:** if it is 2.81 or later, the re-pin block can add `gh release verify`; the spec assumes it may not be.
-12. **Tags:** only you may create `v*` tags, by a ruleset? Recommended.
-13. **Outside reproducibility of the leak scan:** ship `tests/public-ids.txt` in the bundle so anyone can rerun it? Recommended yes; it holds only Microsoft's published IDs.
+4. **Release gate:** a `release` environment with you as required reviewer, so a tag alone publishes nothing? **Answered (owner, 2026-10-21): yes.** The build job also refuses to run while the environment has no required reviewer.
+5. **Method and gap pages in the bundle** (zip only, about 1 MB in all)? **Answered (owner, 2026-10-21): yes.**
+6. **Package registries** (PyPI, npm) later? **Answered (owner, 2026-10-21): no, until an outside reader asks.**
+7. **SchemaStore listing** for editor completion? **Answered (owner, 2026-10-21): no, until there is outside demand.**
+8. **One pins format:** make consumer `PINS.json` a shared contract (`avd-pins/v1`, numbered by you), or keep the three shapes and add two fields to each? **Answered (owner, 2026-10-21): keep the three shapes, add `release` and `manifest`, revisit if a fourth shape appears.**
+9. **Cadence:** releases on demand, or a fixed rhythm such as monthly? **Answered (owner, 2026-10-21): on demand.**
+10. **Deprecation window:** an ID must be marked deprecated in a release at least 30 days before a major removes it. **Answered (owner, 2026-10-21): 30 days.**
+11. **Cloud Shell's `gh` version:** if it is 2.81 or later, the re-pin block can add `gh release verify`. **Answered (owner, 2026-10-21): assume it may be older; `gh attestation verify` stays the documented check.**
+12. **Tags:** only you may create `v*` tags, by a ruleset? **Answered (owner, 2026-10-21): yes.** You create the ruleset (phase 2); sessions never tag (CLAUDE.md).
+13. **Outside reproducibility of the leak scan:** ship `tests/public-ids.txt` in the bundle so anyone can rerun it? **Answered (owner, 2026-10-21): yes,** with the IPv4 allowlist `tests/public-ipv4.txt`.
+
+## 17. Phase 1 as built
+
+What phase 1 added, and the choices the build made where the sections above left room:
+
+| Piece | Where | Notes |
+|---|---|---|
+| Builder | `scripts/bundle/build_bundle.py` | Members from `git ls-tree`, bytes from `git cat-file`; `INCLUDE` and `DOCUMENTS` (name and `idPaths` per document) are the one list. `security-review.json` and `endpoints.json` join when PRs #38 and #39 merge, with no change here. `--check` is CI's dry run: two builds compared byte for byte (manifest, sums and zip), the profile against `assess-bundle.schema.json`, the `.gitattributes` guard (`git check-attr --source`), unique asset base names (every JSON file is also a release asset, so they must be unique), every `id` in a document under one of its `idPaths`, the leak scan, and the Python verifier |
+| Verifiers | `tools/avd_assess_bundle.py`, `tools/AvdAssessBundle.psm1` | Check IDs `manifest-read`, `manifest-pin`, `manifest-profile`, `resource-wanted`, `resource-hash`, `resource-schema-string`, `resource-schema`. With a path map, the wanted files default to the mapped ones. A schema string whose name the reader knows at another major is FAIL; a name it doesn't know at all is a new document and passes. PowerShell 7 turns ISO dates in JSON into `[datetime]`, so the module accepts either for `created` |
+| Shared fixtures | `tests/fixtures/bundle/` (`make_fixtures.py --check`), `cases.json` | Read by `tests/check_bundle.py` and `tests/AvdAssessBundle.Tests.ps1`; CI runs the Pester file on Windows PowerShell 5.1 and PowerShell 7 (Windows and Linux) |
+| Diff | `tools/diff_bundle.py` | Nested IDs are qualified by their parent (`ref#claim`), so a claim moved between references is a removal and an addition. Each finding has a key; `NOT-BREAKING: <key> <why>` lowers that one schema finding. The deprecation gate reads every earlier release (downloaded and attested by the workflow) and needs the ID marked in one published 30 or more days before the run |
+| `deprecated` | the index, map, method and register schemas | `{ "since": "<version>", "replacedBy": "<id or null>" }`; `build_index.py` passes it through for references, claims and observations, and a gap page marks itself with `<!-- deprecated: since=<version> replacedBy=<id> -->`. A test inserts the mark at every `idPaths` target and validates. The endpoint and security review schemas add it when their PRs merge |
+| `$id` | every schema | `https://assess.avd-ops.dev/schemas/<name>/v<major>.json`; the journal line schema is `avd-run-journal`, the manifest profile `avd-assess-bundle`. A test refuses any `$ref` that doesn't start with `#` |
+| Release workflow | `.github/workflows/release.yml` | Jobs `build` (tag and `main` checks, the release gate guard, every check, the dry run, the build, earlier releases attested, the diff and gates, both verifiers), `publish` (environment `release`; attestations; draft, then publish) and `pages`. Actions pinned by commit SHA |
+| Pages | `scripts/bundle/build_site.py` | From release assets only, each attested and checked by the verifier: `catalog.json` (`avd-assess-catalog/v1`, with `majorChanged` per release and `withdrawn`), `schemas/<name>/v<major>.json` from the newest release of each major, `v/<version>/` mirror, a one-page index with the notice |
+
+**Phase 2, for the owner** (in this order, so a tag can never publish without the gate): create the `release` environment with yourself as required reviewer and deployment tags limited to `v*`; add the tag ruleset (only you create `v*` tags); set Pages to deploy from GitHub Actions with the custom domain `assess.avd-ops.dev`, add the DNS `CNAME` `assess` to `avd-ops.github.io` and verify `avd-ops.dev` for the organization; then, after #38 and #39 merge, tag `v1.0.0` from Cloud Shell (section 7).
+
