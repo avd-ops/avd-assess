@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://assess.avd-ops.dev/schemas/avd-check-catalog/v1.json",
   "title": "avd-check-catalog/v1: the operational checks avd-current-state runs (checks/catalog.json)",
-  "description": "Contract C22. One entry per preflight, postflight or drift check that avd-current-state runs and avd-landing-zone vendors (avd-current-state docs/checks-spec.md). Operational checks aren't assessment method, so they live in that catalog and cite avd-assess claims where one exists, or a gap. A check is a C20-shaped rule over registered facts, the name of a coded check (a pure function, never code in the catalog), or a method check listed by its asm- ID whose rule exists once, in method.json. Every check only reads; a remediation is a hint for the plan, never a command that writes.",
+  "description": "Contract C22. One entry per preflight, postflight or drift check that avd-current-state runs and avd-landing-zone vendors (avd-current-state docs/checks-spec.md). Operational checks aren't assessment method, so they live in that catalog and cite avd-assess claims where one exists, or a gap. A check is a C20-shaped rule over registered facts, the name of a coded check (a pure function, never code in the catalog), or a method check listed by its asm- ID whose rule exists once, in method.json. Every check only reads; a remediation is a hint for the plan, never a command that writes. The shared definitions ($defs deprecated to line, and rule) are the C20 method schema's, kept equal by tests/check_contracts.py.",
   "type": "object",
   "required": [
     "schema",
@@ -258,7 +258,7 @@
     "checks": {
       "type": "array",
       "minItems": 1,
-      "description": "IDs are unique (tests/check_contracts.py)",
+      "description": "IDs are unique within a catalog; the catalog's own repo tests it (avd-current-state), and tests/check_contracts.py tests the example",
       "items": {
         "type": "object",
         "required": [
@@ -275,7 +275,7 @@
           "id": {
             "type": "string",
             "pattern": "^[a-z][a-z0-9-]{1,60}$",
-            "description": "Stable, kebab case; reuses the landing zone portal's IDs where they exist"
+            "description": "Stable, kebab case; reuses the landing zone portal's IDs where they exist; asm- is reserved for method checks, so a catalog check never shares an ID with one in method.json"
           },
           "deprecated": {
             "$ref": "#/$defs/deprecated"
@@ -386,34 +386,68 @@
             ]
           }
         ],
-        "if": {
-          "required": [
-            "source"
-          ]
-        },
-        "then": {
-          "properties": {
-            "id": {
-              "pattern": "^asm-[a-z0-9-]{3,60}$"
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "source"
+              ]
             },
-            "facts": false,
-            "reads": false
-          }
-        },
-        "else": {
-          "anyOf": [
-            {
+            "then": {
+              "properties": {
+                "id": {
+                  "pattern": "^asm-[a-z0-9-]{3,60}$"
+                },
+                "facts": false,
+                "reads": false,
+                "remediation": false,
+                "fixable": false
+              }
+            },
+            "else": {
+              "properties": {
+                "id": {
+                  "not": {
+                    "pattern": "^asm-"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "rule"
+              ]
+            },
+            "then": {
               "required": [
                 "facts"
               ]
-            },
-            {
+            }
+          },
+          {
+            "if": {
               "required": [
-                "reads"
+                "impl"
+              ]
+            },
+            "then": {
+              "anyOf": [
+                {
+                  "required": [
+                    "facts"
+                  ]
+                },
+                {
+                  "required": [
+                    "reads"
+                  ]
+                }
               ]
             }
-          ]
-        }
+          }
+        ]
       }
     }
   }

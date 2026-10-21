@@ -22,7 +22,7 @@
       "fixable": false
     },
     {
-      "id": "hostpool-start-vm-on-connect",
+      "id": "hostpool-pooled-start-vm-on-connect",
       "title": "Start VM on Connect is on for pooled host pools",
       "phase": [
         "postflight"
@@ -31,13 +31,14 @@
       "pillar": "cost",
       "severity": "low",
       "facts": [
+        "c11.hostPool.type",
         "c11.hostPool.startVmOnConnect"
       ],
       "claims": [
         "ref:start-vm-on-connect#power-on-when-needed"
       ],
       "rule": {
-        "each": "/hostPools/*",
+        "each": "/subscriptions/*/hostPools/*",
         "where": {
           "type": {
             "eq": "Pooled"
@@ -58,8 +59,8 @@
       "fixable": true
     },
     {
-      "id": "asm-sample-check",
-      "title": "A method check, run from method.json",
+      "id": "asm-personal-start-vm-on-connect",
+      "title": "Personal host pools have Start VM on Connect on",
       "phase": [
         "postflight"
       ],
@@ -67,7 +68,7 @@
       "pillar": "operations",
       "severity": "medium",
       "claims": [
-        "gap:governance-scope"
+        "ref:review-checklists-avd#E01.05"
       ],
       "source": "method"
     },
