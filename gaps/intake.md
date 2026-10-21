@@ -20,5 +20,5 @@ The map's pillars add enum questions as `specified` facts in the register, each 
 
 | Fact | Pillar | Defined in |
 |---|---|---|
-| `intake.clientPlatforms`, `intake.clientDeviceManagement`, `intake.peripheralNeeds`, `intake.printing` | endpoints | [endpoints-scope](endpoints-scope.md#proposed-intake-questions) |
+| `intake.clientApps`, `intake.clientDeviceManagement`, `intake.peripheralNeeds`, `intake.printing` | endpoints | [endpoints-scope](endpoints-scope.md#proposed-intake-questions) |
 | `intake.complianceFrameworks`, `intake.auditRetentionDays`, `intake.changeControl` | governance | [governance-scope](governance-scope.md#proposed-intake-questions) |

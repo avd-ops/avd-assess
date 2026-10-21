@@ -3,5 +3,5 @@ claim: ref:session-host-sizing#multisession-users-per-vcpu
 verdict: not-yet-tested
 observed: Adopted as the landing zone's automatic sizing input, and its preflight warns above 6 sessions per vCPU. No real users have been measured against it, so the numbers are still Microsoft's prior, not our evidence.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md
 date: 2026-10-20

@@ -1,0 +1,15 @@
+id: windows-app-basic
+title: Basic troubleshooting for Windows App
+url: https://learn.microsoft.com/windows-app/troubleshoot-basic
+pin: "Learn git_commit_id b324bbcc20ce6a38aea774b94848957c52bcc481, updated_at 2026-08-11"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [diagnostics, endpoints]
+claims:
+  - id: first-steps
+    says: First check the internet connection, update Windows App to the latest version and try the same resource in a browser.
+    kind: guidance
+  - id: no-resources-message
+    says: A message that no resources are configured means the administrator hasn't assigned any to that account.
+    kind: published

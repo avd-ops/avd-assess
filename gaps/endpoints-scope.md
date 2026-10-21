@@ -42,7 +42,7 @@ Four answers, two of them lists, registered as `specified` C19 facts; the intake
 
 | Fact | Question | Values |
 |---|---|---|
-| `intake.clientPlatforms` | Which platforms do users connect from? | a list of `windows`, `macos`, `ios`, `android`, `web`, `thin-client`, `kiosk`, `other` |
+| `intake.clientApps` | Which client apps and platforms do users connect from? Already registered (the remote protocol rows use it too); this page defines its values. | a list of `windows`, `macos`, `ios`, `android`, `web`, `thin-client`, `kiosk`, `other` |
 | `intake.clientDeviceManagement` | Are the connecting devices managed? | `managed-only`, `managed-and-personal`, `personal-only`, `unknown` |
 | `intake.peripheralNeeds` | What must reach the session? | a list of `camera`, `microphone`, `smart-card`, `usb-device`, `scanner`, `local-drive`, `multi-monitor`, or `none` alone |
 | `intake.printing` | How do users print? | `redirection`, `universal-print`, `host-printers`, `mixed`, `none`, `unknown` |

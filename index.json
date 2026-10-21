@@ -827,6 +827,21 @@
           "id": "perf-counters",
           "says": "Insights lists the recommended performance counters and their intervals for session hosts.",
           "kind": "guidance"
+        },
+        {
+          "id": "time-to-connect-checkpoints",
+          "says": "Time to connect runs from the connection's Started row to the ShellReady checkpoint for a desktop, or the first RdpShellAppExecuted checkpoint for a RemoteApp.",
+          "kind": "published"
+        },
+        {
+          "id": "credential-time-subtracted",
+          "says": "The time a user takes to enter credentials is subtracted from time to connect.",
+          "kind": "published"
+        },
+        {
+          "id": "required-event-logs",
+          "says": "Insights needs the Application and System logs (errors and warnings) plus the RemoteConnectionManager Admin, LocalSessionManager Operational and FSLogix Apps Admin and Operational logs.",
+          "kind": "published"
         }
       ]
     },
@@ -1536,6 +1551,43 @@
           "id": "test-on-aligned-pool",
           "says": "Test the update process and the new image on a test host pool aligned to the one being updated before updating production.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "avd-sessionhost-get-api",
+      "title": "Session Hosts - Get (Desktop Virtualization REST API, 2025-10-10)",
+      "url": "https://learn.microsoft.com/rest/api/desktopvirtualization/session-hosts/get",
+      "pin": "Learn git_commit_id e41049c4b677084ab48a88fd8d76c263c9df68df, updated_at 2026-03-19",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "diagnostics"
+      ],
+      "notes": "The GA API returns each host's health check results, so a Reader can count failing checks without a host or log read.",
+      "claims": [
+        {
+          "id": "health-check-results",
+          "says": "A session host returns sessionHostHealthCheckResults, one entry per check with its name and a result of Unknown, HealthCheckSucceeded, HealthCheckFailed or SessionHostShutdown.",
+          "kind": "published"
+        },
+        {
+          "id": "health-check-names",
+          "says": "The check names include DomainJoinedCheck, DomainTrustCheck, DomainReachable, SxSStackListenerCheck, FSLogixHealthCheck, UrlsAccessibleCheck, MonitoringAgentCheck, MetaDataServiceCheck, AppAttachHealthCheck, WebRTCRedirectorCheck and SupportedEncryptionCheck.",
+          "kind": "published"
+        },
+        {
+          "id": "fatal-by-name",
+          "says": "The API marks the domain, domain trust, domain reachable, stack listener, FSLogix and supported encryption checks as fatal and the monitoring agent check as non-fatal.",
+          "kind": "published"
+        },
+        {
+          "id": "webrtc-check",
+          "says": "WebRTCRedirectorCheck verifies the component Teams uses to optimize audio and video in the session.",
+          "kind": "published"
         }
       ]
     },
@@ -2427,6 +2479,59 @@
       ]
     },
     {
+      "id": "diagnostics-log-analytics",
+      "title": "Send diagnostic data to Log Analytics for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/diagnostics-log-analytics",
+      "pin": "Learn git_commit_id 4fdc1dca34d1fa7147fb1406df29d3ece36533fb, updated_at 2025-06-21",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics",
+        "monitoring"
+      ],
+      "claims": [
+        {
+          "id": "categories",
+          "says": "The service logs management activities, feed, connections, host registration, errors, checkpoints, agent health, network, connection graphics, session host management and autoscale, each a diagnostic category.",
+          "kind": "published"
+        },
+        {
+          "id": "per-object",
+          "says": "Diagnostics are turned on per AVD object (host pool, application group, workspace), and data appears only for activity after that, a few hours after first setup.",
+          "kind": "published"
+        },
+        {
+          "id": "unreached-not-logged",
+          "says": "A connection that never reaches the service leaves no diagnostic row, so a user's network failure can be invisible in these tables.",
+          "kind": "published"
+        },
+        {
+          "id": "connection-states",
+          "says": "Connection rows report Started when the user opens a resource, Connected when the session reaches the host and Completed when it ends.",
+          "kind": "published"
+        },
+        {
+          "id": "service-error-split",
+          "says": "In WVDErrors, ServiceError false marks an issue an admin can fix and true one to escalate to Microsoft with its correlation ID.",
+          "kind": "published"
+        },
+        {
+          "id": "errors-scope",
+          "says": "WVDErrors holds management, host registration and feed errors as well as connection errors.",
+          "kind": "published"
+        },
+        {
+          "id": "client-info-gaps",
+          "says": "Client details can be missing from connection and checkpoint rows even when the connection completes.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "disk-encryption-options",
       "title": "Overview of managed disk encryption options",
       "url": "https://learn.microsoft.com/azure/virtual-machines/disk-encryption-overview",
@@ -2641,6 +2746,44 @@
           "id": "events-rarely-graceful",
           "says": "Disaster events are rarely graceful; profiles may be lost or corrupted on failover, so critical data belongs in OneDrive or SharePoint.",
           "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "fslogix-logs",
+      "title": "Troubleshooting with logging and diagnostics (FSLogix)",
+      "url": "https://learn.microsoft.com/fslogix/troubleshooting-events-logs-diagnostics",
+      "pin": "Learn git_commit_id a61f79d84d87883c6088858f14e9627d6f5eddaa, updated_at 2026-03-30",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics",
+        "profiles"
+      ],
+      "claims": [
+        {
+          "id": "three-log-types",
+          "says": "FSLogix writes event logs, text log files and trace files; a support tool gathers them into one archive.",
+          "kind": "published"
+        },
+        {
+          "id": "event-log-location",
+          "says": "FSLogix event logs are under Applications and Services Logs, FSLogix, in Admin and Operational logs for Apps and for Cloud Cache.",
+          "kind": "published"
+        },
+        {
+          "id": "profile-log-first",
+          "says": "The text logs under ProgramData, FSLogix, Logs are the first place to look, the daily Profile log above all, and each warning and error carries a code.",
+          "kind": "published"
+        },
+        {
+          "id": "kerberos-rc4-change",
+          "says": "Shares not moved to AES-SHA1 Kerberos encryption may lose profile access after the April 2026 Windows Server update changes the default from RC4.",
+          "kind": "published"
         }
       ]
     },
@@ -3852,6 +3995,28 @@
       ]
     },
     {
+      "id": "service-alerts",
+      "title": "Set up service alerts for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/set-up-service-alerts",
+      "pin": "Learn git_commit_id 981e8332ce6cbcf1c8c178b7775bbe23170c1f4d, updated_at 2025-06-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "diagnostics",
+        "monitoring"
+      ],
+      "claims": [
+        {
+          "id": "service-issue-and-advisory",
+          "says": "Create Service Health alerts for AVD service issues and health advisories, which report platform problems the estate can't fix itself.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "service-tags",
       "title": "Azure service tags overview",
       "url": "https://learn.microsoft.com/azure/virtual-network/service-tags-overview",
@@ -3865,6 +4030,53 @@
         {
           "id": "managed-prefixes",
           "says": "A service tag is a Microsoft-maintained group of address prefixes usable in NSG rules, Azure Firewall rules and routes.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "session-host-health-checks",
+      "title": "Session host statuses and health checks in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/session-host-status-health-checks",
+      "pin": "Learn git_commit_id 8f1c29420d1eea32776a80c9490e90d7a05467e0, updated_at 2026-05-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics"
+      ],
+      "claims": [
+        {
+          "id": "available-is-healthy",
+          "says": "Available is the one healthy status; every other status points at something to fix, and a host at its session limit stays Available.",
+          "kind": "published"
+        },
+        {
+          "id": "status-load-balancing",
+          "says": "Needs Assistance, Upgrade Failed and Upgrading hosts still take new sessions; Shutdown and Unavailable hosts don't.",
+          "kind": "published"
+        },
+        {
+          "id": "needs-assistance-nonfatal",
+          "says": "Needs Assistance means a non-fatal check failed (monitoring agent, metadata service or URL check); users connect, but the experience may degrade and connections may carry no logging.",
+          "kind": "published"
+        },
+        {
+          "id": "fatal-checks",
+          "says": "The domain joined, domain trust and side-by-side stack listener checks are fatal; a host failing one is Unavailable and takes no connections.",
+          "kind": "published"
+        },
+        {
+          "id": "shutdown-vs-unavailable",
+          "says": "A host shut down before it reported its state shows Unavailable, so the VM's power state comes from the instance view, not from the status.",
+          "kind": "published"
+        },
+        {
+          "id": "app-attach-nonfatal",
+          "says": "A failed App Attach check isn't fatal, but some apps stop working for users.",
           "kind": "published"
         }
       ]
@@ -4068,6 +4280,194 @@
       ]
     },
     {
+      "id": "troubleshoot-agent",
+      "title": "Troubleshoot common Azure Virtual Desktop Agent issues",
+      "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-agent",
+      "pin": "Learn git_commit_id 87a86c7129d56e5e4137eb4447920bed2d5df4e6, updated_at 2025-10-17",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics"
+      ],
+      "notes": "The error-code map (gap:error-code-map) keys these claims by the code an operator sees.",
+      "claims": [
+        {
+          "id": "app-event-sources",
+          "says": "Agent and connectivity problems show in the host's Application log under the WVD-Agent, WVD-Agent-Updater, RDAgentBootLoader and MsiInstaller sources.",
+          "kind": "published"
+        },
+        {
+          "id": "bootloader-stopped",
+          "says": "A stopped Remote Desktop Agent Loader service means the agent isn't running; if it stops again after a start, registration is failing.",
+          "kind": "published"
+        },
+        {
+          "id": "event-3277-token",
+          "says": "Event 3277 with INVALID_REGISTRATION_TOKEN or EXPIRED_MACHINE_TOKEN means the registration key isn't valid and the host needs a new one.",
+          "kind": "published"
+        },
+        {
+          "id": "event-3277-invalid-form",
+          "says": "Event 3277 with INVALID_FORM means the agent can't reach the broker, usually firewall or DNS; the broker's health endpoints show whether it is reachable.",
+          "kind": "published"
+        },
+        {
+          "id": "event-3703-gateway",
+          "says": "Event 3703 means the agent can't reach the gateway URLs on the required list.",
+          "kind": "published"
+        },
+        {
+          "id": "event-3019-websocket",
+          "says": "Event 3019 means the agent can't reach the web socket transport URLs on the required list.",
+          "kind": "published"
+        },
+        {
+          "id": "install-msi-errors",
+          "says": "Event 3277 with InstallMsiException means another install is running or a policy blocks the Windows installer; DownloadMsiException means the disk has no room for the agent.",
+          "kind": "published"
+        },
+        {
+          "id": "installation-health-check-failed",
+          "says": "Event 3277 with InstallationHealthCheckFailedException means the stack listener isn't working.",
+          "kind": "published"
+        },
+        {
+          "id": "endpoint-not-found",
+          "says": "Event 3277 with ENDPOINT_NOT_FOUND means the broker found no host to connect to; the pool is empty, its hosts are off or at their session limit, or no agent is running.",
+          "kind": "published"
+        },
+        {
+          "id": "needs-assistance-checks",
+          "says": "UrlsAccessibleCheck, MetaDataServiceCheck and MonitoringAgentCheck are the checks that leave a host in Needs Assistance.",
+          "kind": "published"
+        },
+        {
+          "id": "name-already-registered",
+          "says": "NAME_ALREADY_REGISTERED means another host with the same name is already in the host pool.",
+          "kind": "published"
+        },
+        {
+          "id": "at-connection-limit",
+          "says": "The error Connection not found, RDAgent does not have an active connection to the broker, can mean the host is at its session limit.",
+          "kind": "published"
+        },
+        {
+          "id": "reinstall-last",
+          "says": "When nothing else works, uninstall the agent, boot loader and stack, remove the host from the pool and register it again with a new key.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
+      "id": "troubleshoot-entra-joined",
+      "title": "Troubleshoot connections to Microsoft Entra joined VMs",
+      "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-azure-ad-connections",
+      "pin": "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics",
+        "identity"
+      ],
+      "claims": [
+        {
+          "id": "vm-user-login-role",
+          "says": "Users of Entra joined hosts need the Virtual Machine User Login role; without it they get an account or credentials error.",
+          "kind": "published"
+        },
+        {
+          "id": "per-user-mfa-unsupported",
+          "says": "Per-user enforced MFA isn't supported for sign-in to Entra joined hosts; use Conditional Access.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "troubleshoot-insights",
+      "title": "Troubleshoot Azure Virtual Desktop Insights",
+      "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-insights",
+      "pin": "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics",
+        "monitoring"
+      ],
+      "claims": [
+        {
+          "id": "read-access-needed",
+          "says": "Reading Insights needs read access to the AVD resource groups, the session host resource groups and the Log Analytics workspaces.",
+          "kind": "published"
+        },
+        {
+          "id": "ingestion-delay",
+          "says": "Log data can take about 15 minutes to appear, so very recent activity may be missing.",
+          "kind": "published"
+        },
+        {
+          "id": "errors-not-all-documented",
+          "says": "Not every error message is documented, and some aren't phrased for people.",
+          "kind": "published"
+        },
+        {
+          "id": "missing-completion",
+          "says": "A connection's completion event can go missing, which skews some connection times.",
+          "kind": "published"
+        },
+        {
+          "id": "time-to-connect-includes-credentials",
+          "says": "Time to connect includes the time users take to enter credentials, which can show false peaks.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "troubleshoot-overview",
+      "title": "Troubleshooting overview, feedback, and support for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-set-up-overview",
+      "pin": "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics"
+      ],
+      "claims": [
+        {
+          "id": "insights-or-kql",
+          "says": "Insights is the dashboard for finding issues; Log Analytics queries over the diagnostic tables are the alternative.",
+          "kind": "guidance"
+        },
+        {
+          "id": "service-health-first",
+          "says": "Before anything else, check the Azure status page and Service Health.",
+          "kind": "guidance"
+        },
+        {
+          "id": "escalation-tracks",
+          "says": "Each problem area (network, VM creation, management, FSLogix, clients, feed, connections, apps) has its own troubleshooting page and support path.",
+          "kind": "published"
+        },
+        {
+          "id": "network-is-local",
+          "says": "Client network and feed discovery problems on the user's network go to that network's administrators.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "troubleshoot-rdp-shortpath",
       "title": "Troubleshoot RDP Shortpath for public networks",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/troubleshoot-rdp-shortpath",
@@ -4088,6 +4488,116 @@
         {
           "id": "udp-error-codes",
           "says": "Shortpath failures appear in Log Analytics with their own error codes, such as network drop and reliability threshold failures.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "troubleshoot-service-connection",
+      "title": "Troubleshoot Azure Virtual Desktop service connections",
+      "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-service-connection",
+      "pin": "Learn git_commit_id 3df8ba2985751e0b9511625e658ab7739ccfb102, updated_at 2026-10-19",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics",
+        "identity"
+      ],
+      "claims": [
+        {
+          "id": "no-feed-assignment",
+          "says": "A user who signs in but sees no resources is usually not assigned to an application group, or is in a distribution group, which AVD doesn't support.",
+          "kind": "published"
+        },
+        {
+          "id": "feed-lost-after-tenant-move",
+          "says": "Moving a subscription to another tenant loses user assignments; reassign the users, and re-register the resource provider for a subscription a partner created.",
+          "kind": "published"
+        },
+        {
+          "id": "conditional-access-blocks",
+          "says": "Windows App on the web needs Conditional Access to allow both the AVD and Windows 365 apps, and single sign-on needs the Windows Cloud Login app allowed too.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "troubleshoot-session-host-vm",
+      "title": "Troubleshoot Azure Virtual Desktop session host virtual machine configuration",
+      "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-vm-configuration",
+      "pin": "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics"
+      ],
+      "claims": [
+        {
+          "id": "domain-join-errors",
+          "says": "Hosts that didn't join the domain fail on credentials, permissions, DNS that can't resolve the domain, or blocked computer account reuse.",
+          "kind": "published"
+        },
+        {
+          "id": "install-scriptlog",
+          "says": "A missing agent and boot loader with no ScriptLog.log under the Windows temp folder means the installer never ran in the security context it was given.",
+          "kind": "published"
+        },
+        {
+          "id": "isregistered-zero",
+          "says": "An agent registry value IsRegistered of zero means the registration token expired.",
+          "kind": "published"
+        },
+        {
+          "id": "no-heartbeat",
+          "says": "A host that reports no heartbeat has a stopped boot loader service or can't reach the broker on port 443.",
+          "kind": "published"
+        },
+        {
+          "id": "reverse-connect-stack-failure",
+          "says": "O_REVERSE_CONNECT_STACK_FAILURE means the side-by-side stack isn't installed on the host.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "troubleshoot-sso-conditional-access",
+      "title": "Troubleshoot single sign-on and Conditional Access for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-sso-conditional-access",
+      "pin": "Learn git_commit_id 0dc406fd2ddf13fa4c69d6051e23c04acdedc146, updated_at 2026-06-25",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics",
+        "identity"
+      ],
+      "claims": [
+        {
+          "id": "sign-in-logs-first",
+          "says": "For any sign-in failure, read the user's Entra sign-in log entries for the AVD and Windows Cloud Login apps; each gives an AADSTS code, the Conditional Access result and the method used.",
+          "kind": "published"
+        },
+        {
+          "id": "frequency-mismatch",
+          "says": "Repeated prompts often come from different sign-in frequencies on the AVD and Windows Cloud Login apps, or from per-user MFA left on beside Conditional Access.",
+          "kind": "published"
+        },
+        {
+          "id": "aadsts-codes",
+          "says": "AADSTS50058 (no usable session), AADSTS50076 (MFA required), AADSTS530002 (device not compliant), AADSTS530032 (blocked by tenant policy) and AADSTS65001 (consent required) each have their own fix.",
+          "kind": "published"
+        },
+        {
+          "id": "compliance-on-client",
+          "says": "A compliant-device requirement on the connection-time apps applies to the client device, not the session host.",
           "kind": "published"
         }
       ]
@@ -4532,6 +5042,33 @@
       ]
     },
     {
+      "id": "windows-app-basic",
+      "title": "Basic troubleshooting for Windows App",
+      "url": "https://learn.microsoft.com/windows-app/troubleshoot-basic",
+      "pin": "Learn git_commit_id b324bbcc20ce6a38aea774b94848957c52bcc481, updated_at 2026-08-11",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "diagnostics",
+        "endpoints"
+      ],
+      "claims": [
+        {
+          "id": "first-steps",
+          "says": "First check the internet connection, update Windows App to the latest version and try the same resource in a browser.",
+          "kind": "guidance"
+        },
+        {
+          "id": "no-resources-message",
+          "says": "A message that no resources are configured means the administrator hasn't assigned any to that account.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "windows-app-device-compliance",
       "title": "Require local client device security compliance with Intune and Conditional Access (Windows App)",
       "url": "https://learn.microsoft.com/windows-app/require-device-security-compliance-intune",
@@ -4596,6 +5133,28 @@
         {
           "id": "no-personal-account",
           "says": "Users sign in with their work account for AVD; a personal Microsoft account can't sign in to Windows App for AVD.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "windows-app-logs",
+      "title": "Collect logs from Windows App",
+      "url": "https://learn.microsoft.com/windows-app/troubleshoot-collect-logs",
+      "pin": "Learn git_commit_id c09348fcde75580f3bd615935b370033eb6065c4, updated_at 2026-04-27",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "diagnostics",
+        "endpoints"
+      ],
+      "claims": [
+        {
+          "id": "per-platform",
+          "says": "Windows App keeps logs in the user's temp folder on Windows, collects them from the app's troubleshooting settings on macOS, iOS and Android, and captures them from the session toolbar in a browser.",
           "kind": "published"
         }
       ]
@@ -4705,6 +5264,53 @@
       ]
     },
     {
+      "id": "wvdagenthealthstatus-table",
+      "title": "WVDAgentHealthStatus table reference",
+      "url": "https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdagenthealthstatus",
+      "pin": "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "diagnostics"
+      ],
+      "claims": [
+        {
+          "id": "health-history",
+          "says": "Agent health rows carry each host's status, health check results, last heartbeat, agent and stack versions and upgrade state and error, so they keep the history the API's point-in-time read lacks.",
+          "kind": "published"
+        },
+        {
+          "id": "host-pool-only",
+          "says": "Agent health comes from host pools only.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "wvdcheckpoints-table",
+      "title": "WVDCheckpoints table reference",
+      "url": "https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdcheckpoints",
+      "pin": "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "diagnostics"
+      ],
+      "claims": [
+        {
+          "id": "named-steps",
+          "says": "Each checkpoint row names a step in an activity, the component that emitted it and its parameters, keyed by the activity's CorrelationId.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "wvdconnectiongraphicsdata-table",
       "title": "WVDConnectionGraphicsDataPreview table reference",
       "url": "https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdconnectiongraphicsdatapreview",
@@ -4766,6 +5372,32 @@
       ]
     },
     {
+      "id": "wvderrors-table",
+      "title": "WVDErrors table reference",
+      "url": "https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvderrors",
+      "pin": "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28",
+      "read": "2026-10-21",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection"
+      ],
+      "pillars": [
+        "diagnostics"
+      ],
+      "claims": [
+        {
+          "id": "code-columns",
+          "says": "Each error row has a numeric Code, a CodeSymbolic name when one exists, its Source, the failed Operation, ServiceError and the CorrelationId of the activity.",
+          "kind": "published"
+        },
+        {
+          "id": "resource-types",
+          "says": "Errors come from host pools, application groups and workspaces.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "zero-trust-avd",
       "title": "Apply Zero Trust principles to Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/security/zero-trust/azure-infrastructure-avd",
@@ -4792,8 +5424,8 @@
       "verdict": "extends",
       "observed": "Budgets only alert, so the landing zone wires its budget to an action group that runs a Lock runbook, and avd-swarm's spend guard enforces caps before a lab run opens instead of relying on the budget. For AVD a plain deallocate isn't enough either, because Start VM on Connect and the scaling plan start the hosts again at the next sign-in or ramp-up; Lock drains, sets the scaling plan exclusion tag and turns Start VM on Connect off. The budget-to-runbook path hasn't run against a real deployment yet.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0011-auto-shutdown.md",
-        "https://github.com/nickprignano/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0011-auto-shutdown.md",
+        "https://github.com/avd-ops/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
       ],
       "date": "2026-10-20"
     },
@@ -4803,7 +5435,7 @@
       "verdict": "not-yet-tested",
       "observed": "The landing zone turns encryption at host on by default and registers the subscription feature it needs, so it never uses Azure Disk Encryption. No run has measured whether it changes host performance, which the source says it doesn't.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep"
       ],
       "date": "2026-10-20"
     },
@@ -4823,8 +5455,8 @@
       "verdict": "agrees",
       "observed": "The landing zone prices the compiled plan from retail prices before anything is deployed, with run hours from the power settings and an upper bound where the schedule rather than use decides (168 hours a week without a scheduled stop). Lab runs in the family don't start without that written estimate, a cap and teardown evidence, and avd-swarm's spend guard refuses a run whose estimate has an unpriced line or passes a cap. Retail prices are list prices, so the estimate is an upper bound for anyone with negotiated rates or commitments.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md",
-        "https://github.com/nickprignano/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md",
+        "https://github.com/avd-ops/avd-swarm/blob/005fe3becdb3bc22a8ad3e2523dfee608f870a9d/spend/README.md"
       ],
       "date": "2026-10-20"
     },
@@ -4839,12 +5471,23 @@
       "date": "2026-10-21"
     },
     {
+      "id": "landing-zone-alerts-read-the-wvd-tables",
+      "claim": "ref:diagnostics-log-analytics#service-error-split",
+      "verdict": "extends",
+      "observed": "The landing zone sends every diagnostic category of its host pool, application group and workspace to its workspace and ships three log alerts a triage can start from - more than 10 admin-fixable errors (ServiceError false) by code in the window, a host whose latest agent health row is neither Available nor Upgrading (with no power-state filter, so a host that reported Unavailable just before it was deallocated can fire it), and any FSLogix error event. The split by ServiceError follows the source; the threshold of 10 and the Upgrading exclusion are the family's own choices, not published numbers, and no run has yet checked that the alerts fire on a broken host.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/monitoring.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/controlPlane.bicep"
+      ],
+      "date": "2026-10-21"
+    },
+    {
       "id": "landing-zone-one-persona",
       "claim": "ref:caf-avd-poc#assumptions",
       "verdict": "agrees",
       "observed": "The landing zone builds the proof of concept's shape. Its sizing keeps a list of host pools but allows one entry today, sized from one workload's users per vCPU, so every user is one persona until a use case assessment says otherwise.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/237aa80db7b4462473be390ed719eb8e6cbecb58/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/237aa80db7b4462473be390ed719eb8e6cbecb58/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -4854,8 +5497,8 @@
       "verdict": "not-yet-tested",
       "observed": "The landing zone's session hosts use Premium SSD OS disks, as the source recommends for production. No run has compared disk latency on Standard SSD or an ephemeral OS disk, so the choice rests on the source, not our evidence.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/modules/sessionHosts.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/modules/sessionHosts.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -4886,7 +5529,7 @@
       "verdict": "extends",
       "observed": "The landing zone's default RDP properties turn drive, USB and COM port redirection off but keep clipboard, printers, smart cards, WebAuthn and the camera, because users need them. Restricting redirection is a per-property trade-off, so the method reports each one kept on as a warn with its reason, not as a gap.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/main.bicep"
       ],
       "date": "2026-10-20"
     },
@@ -4896,7 +5539,7 @@
       "verdict": "extends",
       "observed": "Latency measured from Cloud Shell says nothing about users, because Cloud Shell runs in an Azure datacenter. Measure round-trip time from the user's device, against endpoints verified to be regional.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md"
       ],
       "date": "2026-10-20"
     },
@@ -4906,8 +5549,8 @@
       "verdict": "extends",
       "observed": "A real preflight run priced session hosts and OS disks as unmatched because the API returned lookalike meters with the same SKU and meter name, a CloudServices product at the Windows rate beside Virtual Machines at the base rate, and a Premium Page Blob meter beside Premium SSD Managed Disks. Private Link and NAT Gateway are listed only under the Global region. A price is matched on product, SKU and meter, and a line that matches none or several is reported with what it saw rather than guessed.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/lessons/0025-retail-price-lookalike-meters.md",
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/lessons/0025-retail-price-lookalike-meters.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -4917,7 +5560,7 @@
       "verdict": "not-yet-tested",
       "observed": "The run recorder spec keeps each run's expected and actual cost as contract C17 (avd-run-cost/v1), appends a reading until it is unchanged for 72 hours, and reports pending rather than a guess until then. For scale, an earlier one-host sandbox demo cost 0.97 USD for about eight hours. How long the actual took to appear in a pay-as-you-go sandbox hasn't been measured yet (the spec's open question U5).",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/specs/run-recorder-spec.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/specs/run-recorder-spec.md"
       ],
       "date": "2026-10-20"
     },
@@ -4927,8 +5570,8 @@
       "verdict": "not-yet-tested",
       "observed": "The landing zone deploys a power management scaling plan (depth-first ramp-down that stops hosts at zero sessions, without forcing sign-out) and Start VM on Connect on by default, and every resource group and resource carries workload and environment tags. No run has yet compared a month of running hours with the schedule, so the saving is Microsoft's claim, not our evidence. The landing zone doesn't set the cm-resource-parent tag.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/modules/controlPlane.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/modules/controlPlane.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/main.bicep"
       ],
       "date": "2026-10-20"
     },
@@ -4938,7 +5581,7 @@
       "verdict": "not-yet-tested",
       "observed": "The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -4948,8 +5591,8 @@
       "verdict": "extends",
       "observed": "Hardening the profile share to AES-256-GCM as the only SMB channel encryption denied every Entra Kerberos session; allowing AES-128-GCM as well, with CCM still off, let users in. Encryption in transit stays on, but the strictest setting isn't usable with Entra Kerberos, so the method treats AES-128-GCM plus AES-256-GCM as passing.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0028-smb-channel-encryption-entra-kerberos.md",
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/storage.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0028-smb-channel-encryption-entra-kerberos.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/storage.bicep"
       ],
       "date": "2026-10-20"
     },
@@ -4981,8 +5624,8 @@
       "verdict": "agrees",
       "observed": "The landing zone deploys every session host with Trusted launch, Secure Boot and vTPM on, from Gen2 images, and the demo host pool ran on it with no boot or image problem.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/sessionHosts.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/docs/design-decisions.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/sessionHosts.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/docs/design-decisions.md"
       ],
       "date": "2026-10-20"
     },
@@ -4992,8 +5635,8 @@
       "verdict": "extends",
       "observed": "The landing zone sets size, host count and session limit as parameters, but fixes breadth-first load balancing and the scaling plan's capacity thresholds and minimum host shares (60% and 20% at ramp-up, 90% and 10% at ramp-down) in its control plane module, and lists the schedule as set by hand. A tuning loop can change the first three through the landing zone; the scaling levers it can only record until they become parameters.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/modules/controlPlane.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/contracts/target-state-capabilities.json"
+        "https://github.com/avd-ops/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/bicep/modules/controlPlane.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/53c9e7d131f0dc7e0dd9acb40f9f4b2f2bd58cd7/contracts/target-state-capabilities.json"
       ],
       "date": "2026-10-20"
     },
@@ -5003,7 +5646,7 @@
       "verdict": "not-yet-tested",
       "observed": "Adopted as the landing zone's automatic sizing input, and its preflight warns above 6 sessions per vCPU. No real users have been measured against it, so the numbers are still Microsoft's prior, not our evidence.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -5013,8 +5656,8 @@
       "verdict": "agrees",
       "observed": "The landing zone's image build keeps WDOT's Appx package removal off for this reason; no sysprep failure has been seen with it off. Not yet tested with it on.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md",
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/specs/image-pipeline-spec.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md",
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/specs/image-pipeline-spec.md"
       ],
       "date": "2026-10-20"
     },
@@ -5024,7 +5667,7 @@
       "verdict": "extends",
       "observed": "WDOT's DiskCleanup category deletes every log, trace and event log file on the system drive, including an image build's own evidence before the image test reads it. The landing zone keeps that category off and cleans narrowly instead.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/wdot/README.md"
       ],
       "date": "2026-10-20"
     },
@@ -5034,8 +5677,8 @@
       "verdict": "extends",
       "observed": "What runs inside the guest isn't visible from the control plane, but the landing zone's image build tags each gallery image version with the WDOT release, commit and profile hash it ran, so a Reader can see which pin and profile an image claims. Images built any other way carry no such record.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/images/build.bicep",
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/Test-GoldenImage.ps1"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/images/build.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/scripts/image/Test-GoldenImage.ps1"
       ],
       "date": "2026-10-20"
     }
@@ -5070,12 +5713,20 @@
       "title": "a register of deployment dimensions and their baselines"
     },
     {
+      "id": "diagnostics-scope",
+      "title": "what a troubleshooting and diagnostics assessment can read, and which part becomes a fact"
+    },
+    {
       "id": "discovery",
       "title": "discovery"
     },
     {
       "id": "endpoints-scope",
       "title": "what an endpoints and clients assessment can judge, and from where"
+    },
+    {
+      "id": "error-code-map",
+      "title": "one map from the code an operator sees to its meaning and its flow"
     },
     {
       "id": "evidence-intake",
@@ -5136,6 +5787,26 @@
     {
       "id": "transport-classification",
       "title": "one name for the transport a connection used"
+    },
+    {
+      "id": "triage-cannot-connect",
+      "title": "triage when a user can't sign in, sees no resources or can't connect"
+    },
+    {
+      "id": "triage-host-unhealthy",
+      "title": "triage when a session host is unhealthy"
+    },
+    {
+      "id": "triage-profile-failed",
+      "title": "triage when a user profile fails to load"
+    },
+    {
+      "id": "triage-slow-logon",
+      "title": "triage when sign-in to a session is slow"
+    },
+    {
+      "id": "triage-slow-session",
+      "title": "triage when a session is slow or disconnects"
     },
     {
       "id": "tune-loop",
