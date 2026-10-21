@@ -42,7 +42,7 @@ Each question says what kind of answer it takes: **intake** (a field in C19, exi
 | Question | Answer | Informs |
 |---|---|---|
 | Which apps does each group need? List them in the private record. | narrative (app names never leave it) | app delivery |
-| Are any installed rather than web or SaaS? Does the group need Microsoft 365 apps? | intake `apps.installed`, `apps.m365` | image (`ref:caf-avd-assess#app-questions`) |
+| Are any installed rather than web or SaaS? Does the group need Microsoft 365 apps? | intake `apps.installed`, `apps.m365` | image (`ref:caf-avd-assess#application-questions`) |
 | Is any app known not to run on multi-session Windows? | intake `apps.multiSession` | host pool type (`ref:caf-avd-deploy#legacy-apps-personal`) |
 | Where do the apps' back ends live, and is any of them sensitive to latency? | intake `apps.backend` | region, network (`ref:caf-avd-deploy#app-remediation-blocks`) |
 | Full desktop, or only a few apps? | intake `delivery` | application group |

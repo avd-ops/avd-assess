@@ -1,0 +1,24 @@
+id: avd-gpu-acceleration
+title: Enable GPU acceleration for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/graphics-enable-gpu-acceleration
+pin: "Learn git_commit_id 4f40ccf54f4fb78f6d54951def316b2021aa2064, updated_at 2025-08-29"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment, benchmarks]
+notes: On 2026-10-20 the supported-size table still listed the NVv3 and NVv4 series, which the NV family page says retired on 2026-09-30, and didn't list NVads V710 v5. Read the table together with the current VM size pages before choosing a size.
+claims:
+  - id: supported-sizes
+    says: The page names the GPU-optimized VM series supported as session hosts and, for each, whether it supports GPU rendering and which codecs it can encode in hardware.
+    kind: published
+  - id: no-compute-gpus
+    says: NC, NCv2, NCv3, ND and NDv2 sizes are generally not appropriate as session hosts; they suit compute and machine learning, not the Windows user interface.
+    kind: published
+  - id: density-tradeoff
+    says: Larger GPUs give a better experience at a given user density, and fractional GPU sizes give finer control over cost and quality; the page gives no users-per-GPU number.
+    kind: guidance
+  - id: grid-license-25
+    says: VM sizes with an NVIDIA GPU come with a GRID license for 25 concurrent users.
+    kind: published
+  - id: grid-driver-only
+    says: Only Azure-distributed drivers are supported; on NVIDIA sizes only the GRID driver accelerates applications and the Windows user interface.
+    kind: published

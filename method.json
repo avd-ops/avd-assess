@@ -358,7 +358,8 @@
       "pillar": "reliability",
       "severity": "high",
       "claims": [
-        "ref:review-checklists-avd#A03.05"
+        "ref:review-checklists-avd#A03.05",
+        "ref:psrule-azure#AZR-000195"
       ],
       "facts": [
         "c11.storage.kind",

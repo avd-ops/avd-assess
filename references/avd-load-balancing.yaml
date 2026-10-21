@@ -1,0 +1,17 @@
+id: avd-load-balancing
+title: Configure host pool load balancing in Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/configure-host-pool-load-balancing
+pin: "Learn git_commit_id a2a9e65a51ae1c976e7dc98dfea2ca6d522e5028, updated_at 2025-06-24"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: breadth-first-performance
+    says: Breadth-first spreads new sessions across hosts to favor session performance.
+    kind: guidance
+  - id: depth-first-cost
+    says: Depth-first fills one host at a time to favor cost and needs a maximum session limit.
+    kind: guidance
+  - id: set-limit-from-insights
+    says: Set the maximum session limit from measured sessions per host and host performance in Insights; the page gives no number.
+    kind: guidance

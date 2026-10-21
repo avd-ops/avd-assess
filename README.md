@@ -4,7 +4,7 @@ Part of [avd-ops](https://avd-ops.dev/), the open toolkit for Azure Virtual Desk
 
 An open, curated methodology for assessing Azure Virtual Desktop estates: what to collect, how to judge it, what good looks like, and how to score it. It is a research index. It links to what Microsoft and the community already publish, pinned so a reader can see exactly what each source said on the day we read it. It adds what our own runs observed about those sources, and it writes new method only where nothing exists.
 
-Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/nickprignano/avd-current-state) is what is there now, and avd-assess is what it should be, and why.
+Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/nickprignano/avd-current-state) is what is there now, and avd-assess is what it should be, and why: the standards both engines read. It also holds the [foundation contracts](contracts/README.md), the formats those three repos exchange, which work the same with or without the layers above them.
 
 > [!WARNING]
 > **Personal project. Research and learning only. Not for production. No warranty.**
@@ -23,6 +23,8 @@ Where it sits in the family: [avd-landing-zone](https://github.com/nickprignano/
 | [Targets and benchmarks](methods/targets-benchmarks.md) | What good looks like, as numbers with their sources |
 | [Scoring](methods/scoring.md) | How outcomes roll up, and which design decisions the evidence can support |
 | [Sample check](methods/sample-check.md) | A short, point-in-time health check of measured user experience, built on the four above |
+| [Baseline profile](methods/baseline-profile.md) | What good looks like for a host pool of each workload class: experience, utilization, density |
+| [Tune and rightsize](methods/tune-rightsize.md) | A repeatable loop to move a running estate toward its profile at the lowest cost that keeps it there |
 | [Use cases](methods/use-cases.md) | Who uses the estate for what (personas, apps, performance, security and compliance needs), and what that says it should be |
 
 Every step on those pages cites one of three things:
@@ -43,7 +45,7 @@ The [gold-standard registry](gold-standards.yaml) names, for each metric, the cl
 
 Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observation as `avd-assess@<commit>:observations/<file>.yaml`, a gap as `avd-assess@<commit>:gaps/<file>.md`, and a check as `avd-assess@<commit>:method.json#<check id>`.
 
-[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, and the scoring. [avd-current-state](https://github.com/nickprignano/avd-current-state) runs a pinned copy. The design is in avd-second-brain's [assess spec](https://github.com/nickprignano/avd-second-brain/blob/main/docs/assess-spec.md).
+[method.json](method.json) is the part a tool runs: where each fact comes from, the checks, what each design decision needs, and the scoring. [avd-current-state](https://github.com/nickprignano/avd-current-state) runs a pinned copy. The design is in [docs/assess-spec.md](docs/assess-spec.md).
 
 ## Checks
 
@@ -51,17 +53,20 @@ Cite a claim as `avd-assess@<commit>:references/<file>.yaml#<claim>`, an observa
 pip install pyyaml jsonschema
 python3 scripts/build_index.py --check
 python3 tests/check_method.py
+python3 tests/check_contracts.py
+python3 tests/check_baselines.py
+python3 scripts/check_evidence.py
 ```
 
-`index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (avd-second-brain contract C20, `avd-assess-index/v1`), so the brain and avd-current-state read it without a YAML parser.
+`index.json` is generated: after changing a reference, an observation or a gap, run `python3 scripts/build_index.py` and commit the result. It is the same content as JSON (contract C20, `avd-assess-index/v1`, in [contracts/](contracts/README.md)), so the brain and avd-current-state read it without a YAML parser.
 
-The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; every registry entry cites a claim that exists and has the evidence its standing needs; `index.json` and `method.json` match avd-second-brain's schemas, vendored byte-identical in [contracts/](contracts/PINS.json); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address.
+The check verifies that every reference has a pin, a read date and claims; every observation and method step cites something that exists; every registry entry cites a claim that exists and has the evidence its standing needs; `index.json` and `method.json` match their schemas in [contracts/](contracts/README.md); every check in `method.json` cites real claims and built facts; and no file holds a GUID, email address or IP address. `tests/check_contracts.py` checks the foundation contracts themselves.
 
 ## Contributing
 
-Contributions and forks are welcome and encouraged. Fork it and make it your own, or send back what you learn: open an issue or a pull request with a new source, a better pin, or an observation from a real run that agrees or disagrees with a source. Small pull requests are easiest to review.
+Contributions and forks are welcome and encouraged. Fork it and make it your own, or send back what you learn: open an issue or a pull request with a new source, a better pin, or an observation from a real run that agrees or disagrees with a source. Measured results go through the [evidence intake](evidence/README.md): one checked file per submission, aggregates only. We use the same path for our own runs. Small pull requests are easiest to review.
 
-Before you open one, run `python3 scripts/build_index.py` and `python3 tests/check_method.py` as the [check workflow](.github/workflows/check.yml) does. Keep tenant data, IDs and secrets out of the repo, issues and pull requests. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
+Before you open one, run `python3 scripts/build_index.py`, `python3 tests/check_method.py`, `python3 tests/check_contracts.py`, `python3 tests/check_dimensions.py` and `python3 tests/check_baselines.py` as the [check workflow](.github/workflows/check.yml) does. Keep tenant data, IDs and secrets out of the repo, issues and pull requests. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
 
 ## License
 

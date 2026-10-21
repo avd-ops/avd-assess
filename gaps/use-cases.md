@@ -25,9 +25,9 @@ Optional `useCases` in the intake (C19), one entry per persona, foundation data 
 | `desktop` | `pooled`, `personal`, `either` | dedicated or pooled |
 | `dedicatedBecause` | any of `security`, `compliance`, `performance`, `noisy-neighbor`, `app-compatibility`, `admin-rights` | the published reasons for dedicated desktops (`ref:caf-avd-assess#persona-criteria`, `ref:caf-avd-deploy#legacy-apps-personal`) |
 | `delivery` | `desktop`, `remoteapp`, `both` | application group |
-| `apps.installed`, `apps.m365` | `yes`, `no`, `unknown` | custom image need (`ref:caf-avd-assess#app-questions`) |
-| `apps.multiSession` | `yes`, `no`, `unknown` | multi-session compatibility (`ref:caf-avd-assess#app-questions`) |
-| `apps.backend` | `none`, `azure`, `on-premises`, `saas`, `unknown` | where a latency-sensitive back end lives (`ref:caf-avd-assess#app-questions`) |
+| `apps.installed`, `apps.m365` | `yes`, `no`, `unknown` | custom image need (`ref:caf-avd-assess#application-questions`) |
+| `apps.multiSession` | `yes`, `no`, `unknown` | multi-session compatibility (`ref:caf-avd-assess#application-questions`) |
+| `apps.backend` | `none`, `azure`, `on-premises`, `saas`, `unknown` | where a latency-sensitive back end lives (`ref:caf-avd-assess#application-questions`) |
 | `userRegions` | up to 3 Azure regions, nearest first | where users work, measured from them (`ref:caf-avd-assess#region-test-from-users`) |
 | `workingHours` | the intake's working hours shape | when this persona works, if it differs from the estate's |
 | `trustBoundary` | `one-org-standard`, `needs-admin`, `multi-org` | who may share a host, the security slice's proposed intake question |
@@ -69,5 +69,5 @@ A disagreement is a finding for a person to review, never a silent rewrite of th
 
 ## Not yet decided
 
-- Where the record lives: optional fields in C19 (preferred, foundation data) or a sibling contract. Either way it lands in avd-assess `contracts/` first, after the schemas move there, and the fact register gains `intake.useCases.*` facts in one version bump.
+- Where the record lives: optional fields in C19 (preferred, foundation data) or a sibling contract. Either way it lands in avd-assess `contracts/` (where the schemas now live), and the fact register gains `intake.useCases.*` facts in one version bump.
 - How a measured group maps to a persona for an estate already on AVD: today a host pool (`hp-`) is the group, so personas that share a pool can't be told apart without per-user grouping, which the privacy rules don't allow below 10 users.

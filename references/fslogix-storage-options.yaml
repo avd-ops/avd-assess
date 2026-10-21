@@ -1,0 +1,14 @@
+id: fslogix-storage-options
+title: FSLogix container storage options
+url: https://learn.microsoft.com/fslogix/concepts-container-storage-options
+pin: "Learn git_commit_id 6110649daa9e8855bc6a333cada7625a74e8c7a5, updated_at 2026-05-20"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [benchmarks]
+claims:
+  - id: iops-per-user
+    says: "An example FSLogix profile needs about 10 IOPS per user in steady state and 50 at sign-in and sign-out."
+    kind: prior
+  - id: latency-first
+    says: Proximity (latency) to the hosts and performance against the user workload are the most important factors in choosing container storage.
+    kind: guidance

@@ -1,0 +1,20 @@
+id: avd-session-host-update
+title: Session host update for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/session-host-update
+pin: "Learn git_commit_id 552819d10384f25e8ce4031b6e928fd1bafdc3c6, updated_at 2026-07-02"
+read: 2026-10-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+claims:
+  - id: initial-then-batches
+    says: An update replaces one host first, then the rest in batches of a size the operator sets, so the rest of the pool stays available.
+    kind: published
+  - id: replaces-vms
+    says: Session host update replaces VMs from the host pool's session host configuration (image, size, disk type and more); local data on the old hosts is not kept.
+    kind: published
+  - id: autoscale-off-during-update
+    says: Autoscale must be disabled on the host pool for the whole update, or the update can fail.
+    kind: published
+  - id: test-on-aligned-pool
+    says: Test the update process and the new image on a test host pool aligned to the one being updated before updating production.
+    kind: guidance
