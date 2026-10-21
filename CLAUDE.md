@@ -11,6 +11,7 @@ python3 tests/check_dimensions.py
 python3 tests/check_baselines.py
 python3 tests/check_use_cases.py
 python3 tests/check_wording.py           # third-party products as categories only (tests/wording.json)
+python3 tests/check_security_review.py   # the security review map; add --family-root .. with sibling checkouts to check every pinned path
 ```
 
 ## Rules

@@ -27,6 +27,10 @@ Security isn't a separate project. Each foundation repo holds its usual slice, a
 
 The table and the reasons are in `gap:security-scope`.
 
+## Reviewing a deployment
+
+A security reviewer asked to approve deploying AVD with these repos needs a different view: not how to judge an estate, but what the tools themselves do, with which rights, and what proves it. That is the security review map, [security-review.yaml](../security-review.yaml) (`security-review.json`, contract C20, `avd-assess-security-review/v1`). Each claim says in one line what a repo does, links the file at a pinned commit, and carries how strong its evidence is: `run` (a real run showed it), `guarded` (a CI check fails if it breaks), `built` (in the code only) or `designed` (written down only). It also lists what the operator still owns, the reviewer's questions, a short summary per repo of what it can touch, and the gaps found. It cross-links this method and the pillars rather than restating them, and avd-ops.dev renders it.
+
 ## Not yet known
 
 - Four security checks run (method.json version 2); the items that still need a fact, a join or a host-side read are listed in `gap:checklist-mapping`.

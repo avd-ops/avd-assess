@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Builds index.json (contract C20, avd-assess-index/v1) from references/, observations/ and gaps/, and
 map.json (avd-assess-map/v1) from pillars.yaml, dimensions.yaml, baselines.yaml, use-cases.yaml and
-gold-standards.yaml, so readers need no YAML parser. --check fails when either file is stale.
+gold-standards.yaml, and security-review.json (avd-assess-security-review/v1) from security-review.yaml,
+so readers need no YAML parser. --check fails when any of them is stale.
 
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
@@ -15,6 +16,7 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "index.json"
 MAP = ROOT / "map.json"
+SECURITY = ROOT / "security-review.json"
 REF_KEYS = ["id", "title", "url", "pin", "archive", "read", "license", "areas", "pillars", "notes", "claims"]
 CLAIM_KEYS = ["id", "says", "kind"]
 OBS_KEYS = ["id", "claim", "verdict", "observed", "evidence", "date"]
@@ -59,14 +61,38 @@ def build_map():
     return json.dumps(doc, indent=2, ensure_ascii=True, default=str) + "\n"
 
 
+def build_security():
+    """The security review map as written, with each evidence item's pinned URL added for readers."""
+    doc = yaml.safe_load((ROOT / "security-review.yaml").read_text(encoding="utf-8")) or {}
+    pins = doc.get("pins", {})
+
+    def url(ev):
+        path, _, anchor = ev["path"].partition("#")
+        if ev["repo"] == "avd-assess":
+            return None
+        return f"https://github.com/avd-ops/{ev['repo']}/blob/{pins[ev['repo']]}/{path}" + (f"#{anchor}" if anchor else "")
+
+    def add_urls(node):
+        if isinstance(node, dict):
+            if {"repo", "path", "kind"} <= node.keys() and url(node):
+                node["url"] = url(node)
+            for v in node.values():
+                add_urls(v)
+        elif isinstance(node, list):
+            for v in node:
+                add_urls(v)
+    add_urls(doc)
+    return json.dumps(doc, indent=2, ensure_ascii=True, default=str) + "\n"
+
+
 def main():
-    wanted = {OUT: build(), MAP: build_map()}
+    wanted = {OUT: build(), MAP: build_map(), SECURITY: build_security()}
     if "--check" in sys.argv:
         stale = [p.name for p, text in wanted.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
         if stale:
             print(f"RESULT FAIL {', '.join(stale)} stale; run python3 scripts/build_index.py")
             return 1
-        print("RESULT PASS index.json and map.json are current")
+        print("RESULT PASS index.json, map.json and security-review.json are current")
         return 0
     for p, text in wanted.items():
         p.write_text(text, encoding="utf-8")
