@@ -1,0 +1,11 @@
+{
+  "schema": "avd-assess-map/v1",
+  "pillars": [
+    {
+      "id": "identitY"
+    },
+    {
+      "id": "network"
+    }
+  ]
+}

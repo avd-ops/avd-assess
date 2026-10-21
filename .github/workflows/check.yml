@@ -17,13 +17,45 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pyyaml jsonschema
-      - run: python3 scripts/build_index.py --check
-      - run: python3 tests/check_method.py
-      - run: python3 tests/check_contracts.py
-      - run: python3 tests/check_dimensions.py
-      - run: python3 tests/check_baselines.py
-      - run: python3 tests/check_use_cases.py
-      - run: python3 scripts/check_evidence.py
-      - run: python3 tests/check_evidence_fixtures.py
-      - run: python3 tests/check_endpoints.py
-      - run: python3 tests/check_wording.py
+      - run: python3 scripts/check_all.py
+      - name: Release bundle dry run (docs/distribution-spec.md section 4)
+        run: python3 scripts/bundle/build_bundle.py --check
+      - name: Keep the built bundle for the PowerShell verifier
+        run: python3 scripts/bundle/build_bundle.py --out out
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: bundle
+          path: out/bundle/
+          retention-days: 3
+
+  # The PowerShell verifier on the shared fixtures and the built bundle: Windows PowerShell 5.1 and
+  # PowerShell 7, as consumers run it.
+  bundle-powershell:
+    needs: method
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, shell: pwsh }
+          - { os: windows-latest, shell: pwsh }
+          - { os: windows-latest, shell: powershell }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: bundle
+          path: built
+      - name: Pester
+        run: |
+          Install-Module Pester -MinimumVersion 5.5.0 -Force -SkipPublisherCheck -Scope CurrentUser
+          Import-Module Pester -MinimumVersion 5.5.0
+          $env:AVD_ASSESS_BUNDLE = (Resolve-Path ./built).Path
+          $c = New-PesterConfiguration
+          $c.Run.Path = './tests/AvdAssessBundle.Tests.ps1'
+          $c.Run.Exit = $true
+          $c.Output.Verbosity = 'Detailed'
+          Invoke-Pester -Configuration $c

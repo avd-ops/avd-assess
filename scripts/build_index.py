@@ -8,6 +8,7 @@ Personal project, not for production, as is; not affiliated with the author's em
 Liquidware or Microsoft.
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -19,9 +20,12 @@ MAP = ROOT / "map.json"
 ENDPOINTS = ROOT / "endpoints.json"
 # Where a probe can run, and the lists each vantage judges, in the order views are written.
 VANTAGES = {"browser": ["client"], "device": ["client"], "host": ["host", "platform"]}
-REF_KEYS = ["id", "title", "url", "pin", "archive", "read", "license", "areas", "pillars", "notes", "claims"]
-CLAIM_KEYS = ["id", "says", "kind"]
-OBS_KEYS = ["id", "claim", "verdict", "observed", "evidence", "date"]
+REF_KEYS = ["id", "title", "url", "pin", "archive", "read", "license", "areas", "pillars", "notes", "deprecated", "claims"]
+CLAIM_KEYS = ["id", "says", "kind", "deprecated"]
+OBS_KEYS = ["id", "claim", "verdict", "observed", "evidence", "date", "deprecated"]
+# A gap page that a later major release may remove says so in one line (docs/distribution-spec.md section 6):
+# <!-- deprecated: since=1.2.0 replacedBy=other-gap -->
+GAP_DEPRECATED = re.compile(r"<!-- deprecated: since=(\S+)(?: replacedBy=(\S+))? -->")
 
 
 def pick(data, keys):
@@ -40,8 +44,13 @@ def build():
     for p in sorted((ROOT / "gaps").glob("*.md")):
         if p.name == "README.md":
             continue
-        heading = next((l[2:].strip() for l in p.read_text(encoding="utf-8").splitlines() if l.startswith("# ")), p.stem)
-        gaps.append({"id": p.stem, "title": heading.removeprefix("Gap: ")})
+        text = p.read_text(encoding="utf-8")
+        heading = next((l[2:].strip() for l in text.splitlines() if l.startswith("# ")), p.stem)
+        gap = {"id": p.stem, "title": heading.removeprefix("Gap: ")}
+        mark = GAP_DEPRECATED.search(text)
+        if mark:
+            gap["deprecated"] = {"since": mark.group(1), "replacedBy": mark.group(2)}
+        gaps.append(gap)
     doc = {"schema": "avd-assess-index/v1", "references": refs, "observations": obs, "gaps": gaps}
     return json.dumps(doc, indent=2, ensure_ascii=True) + "\n"
 

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://datapackage.org/profiles/2.0/datapackage.json",
+  "name": "avd-assess",
+  "version": "1.0.0",
+  "created": "2026-10-21T00:00:00+00:00",
+  "licenses": [
+    {
+      "name": "MIT",
+      "path": "LICENSE"
+    }
+  ],
+  "avdAssess": {
+    "commit": "0123456789abcdef0123456789abcdef01234567",
+    "profile": "avd-assess-bundle/v1"
+  },
+  "resources": [
+    {
+      "name": "license",
+      "path": "LICENSE",
+      "format": "LICENSE",
+      "bytes": 4,
+      "hash": "sha256:adc37366f403835c1470ab2df93d3837d4719372fc1ef8593d922e06f033f8b2"
+    },
+    {
+      "name": "map-json",
+      "path": "map.json",
+      "format": "json",
+      "bytes": 91,
+      "hash": "sha256:536b22e1c246d3ebed44967fdacdcc3e9ac96da621d14222294f2f437fd33ef5",
+      "schemaString": "avd-assess-map/v2",
+      "jsonSchema": "schemas/map.schema.json"
+    },
+    {
+      "name": "notes-md",
+      "path": "notes.md",
+      "format": "md",
+      "bytes": 8,
+      "hash": "sha256:365d0b84ae63c2afc293dedd2b00bdf0dc8d6ef70c9297d90f9e5682ab0d72ee"
+    },
+    {
+      "name": "schemas-map-schema-json",
+      "path": "schemas/map.schema.json",
+      "format": "json",
+      "bytes": 524,
+      "hash": "sha256:3c08a8ec46f514613b8ab45a347880909c8da65b863416dff64906462e03763c"
+    }
+  ]
+}

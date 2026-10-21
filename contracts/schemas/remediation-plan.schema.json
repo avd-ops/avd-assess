@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-remediation-plan/v1.json",
   "title": "avd-remediation-plan/v1: the ordered changes one assessment and its review call for (plan.json)",
   "description": "Contract C24, written by avd-current-state's assessment portal from a C21 report, its C23 review if there is one, and the method's remediation hints (C20). One item per finding to fix: the Fix rows of the review, or every non-pass check when there is no review. Each item cites what good is and why (avd-assess claims) and names the change: an avd-landing-zone parameter or setting, or manual with a code. It holds no names, IDs or free text, only the estate pseudonym, check IDs and public values, and works without the brain or avd-swarm, which may import it (optional extensions only). The method is avd-assess methods/remediation.md.",
   "type": "object",
