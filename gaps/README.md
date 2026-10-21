@@ -38,6 +38,8 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [intune-scope](intune-scope.md) | What an Intune and host management assessment can judge from where, how devices map to pools, and what is not applicable on multi-session |
 | [monitoring-scope](monitoring-scope.md) | The facts, draft checks and intake questions for monitoring, alerts, retention, scaling plans and power, and how to judge ramp-up timing and the first-connection wait |
 | [client-network](client-network.md) | Judging the networks users connect from, AVD Private Link from the client included |
+| [endpoints-scope](endpoints-scope.md) | What an endpoints and clients assessment can judge, from which evidence, the client support map and the proposed intake questions |
+| [governance-scope](governance-scope.md) | What a governance assessment can judge, the policy guardrail checks, the benchmark control map and the proposed intake questions |
 | [workload-benchmark](workload-benchmark.md) | How a pilot or a scripted load test is run so its result can replace the sizing guide's estimates |
 | [app-delivery-scope](app-delivery-scope.md) | What an app delivery and profile assessment can judge from where, the ways apps reach a host, and the joins the facts can't make yet |
 | [security-agents-scope](security-agents-scope.md) | Antivirus, EDR and SSE, ZTNA and VPN clients as categories: what is judged from where, outcomes, and what no source covers |

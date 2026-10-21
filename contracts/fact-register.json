@@ -2325,6 +2325,127 @@
       "evidences": [
         "identity"
       ]
+    },
+    {
+      "id": "c11.policy.doNotEnforce",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/policy/doNotEnforce",
+      "grain": "subscription",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.roleAssignments.roles",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/roleAssignments/roles",
+      "grain": "subscription",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c12.group.clients.byType",
+      "tier": "forensic",
+      "contract": "C12",
+      "path": "/groups/*/clients/byType",
+      "grain": "group",
+      "unit": "connection",
+      "privacy": "group-behavior",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c12.group.clients.byOs",
+      "tier": "forensic",
+      "contract": "C12",
+      "path": "/groups/*/clients/byOs",
+      "grain": "group",
+      "unit": "connection",
+      "privacy": "group-behavior",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "c12.group.clients.byVersion",
+      "tier": "forensic",
+      "contract": "C12",
+      "path": "/groups/*/clients/byVersion",
+      "grain": "group",
+      "unit": "connection",
+      "privacy": "group-behavior",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.clientDeviceManagement",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/clientDeviceManagement",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.peripheralNeeds",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/peripheralNeeds",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.printing",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/printing",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.complianceFrameworks",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/complianceFrameworks",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.auditRetentionDays",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/auditRetentionDays",
+      "grain": "estate",
+      "unit": "days",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
+    },
+    {
+      "id": "intake.changeControl",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/changeControl",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "specified",
+      "evidences": []
     }
   ]
 }

@@ -5,7 +5,7 @@ pin: "Learn git_commit_id a2c9d3b52ffe73e75a81d5f757380994c65169e1, updated_at 2
 read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment, collection]
-pillars: [identity]
+pillars: [governance, identity]
 claims:
   - id: scoped-roles
     says: AVD has built-in roles scoped to host pools, application groups, workspaces, sessions and session hosts, so admin duties can be split below Owner and Contributor.

@@ -5,7 +5,7 @@ pin: "Learn git_commit_id dd46df7408629964cd4e6e9a3185dffcf0bbda70, updated_at 2
 read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment]
-pillars: [intune]
+pillars: [governance, intune]
 claims:
   - id: intune-recommended
     says: Microsoft recommends Intune to manage AVD session hosts; it manages Entra joined and hybrid joined hosts, device and user configuration on multi-session included.

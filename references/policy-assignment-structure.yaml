@@ -1,0 +1,18 @@
+id: policy-assignment-structure
+title: Azure Policy assignment structure
+url: https://learn.microsoft.com/azure/governance/policy/concepts/assignment-structure
+pin: "Learn git_commit_id a404a6abd3de4275ac00471ae996ec31443b9aeb, updated_at 2026-09-18"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment, collection]
+pillars: [governance]
+claims:
+  - id: do-not-enforce
+    says: An assignment in DoNotEnforce mode evaluates compliance but doesn't enforce its effect on create or update, and writes no Activity log entry for it.
+    kind: published
+  - id: do-not-enforce-for-testing
+    says: Use DoNotEnforce to evaluate a new assignment before enforcing it; Default is for assignments meant to apply.
+    kind: guidance
+  - id: enroll-staged
+    says: Enroll mode enforces only on scopes or resources enrolled in the assignment, for staged rollout.
+    kind: published

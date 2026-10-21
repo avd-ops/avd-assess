@@ -1,0 +1,15 @@
+id: avd-admin-template
+title: Administrative template for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/administrative-template
+pin: "Learn git_commit_id f72577429d71e34a0e8bd47467206d5081ed5577, updated_at 2026-09-24"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [governance, intune]
+claims:
+  - id: template-delivery
+    says: The AVD administrative template is in the Intune settings catalog, can be added to domain Group Policy, and locally per host though not recommended at scale.
+    kind: published
+  - id: template-settings
+    says: It configures graphics data logging, Shortpath for managed networks, screen capture protection, watermarking and H.265 hardware acceleration.
+    kind: published
