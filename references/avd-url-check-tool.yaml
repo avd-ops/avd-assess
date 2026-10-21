@@ -9,3 +9,6 @@ claims:
   - id: run-on-host
     says: The Agent URL Tool ships with the agent and runs on a session host, reporting which required endpoints that host can reach.
     kind: published
+  - id: wildcards-not-checked
+    says: The tool checks only the concrete names it derives for the host's location, never the wildcard entries, which must be allowed before it runs.
+    kind: published

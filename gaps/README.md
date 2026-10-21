@@ -28,6 +28,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [transport-classification](transport-classification.md) | One family name for the transport a connection used, mapped to the three vocabularies Microsoft uses |
 | [diagnostics-scope](diagnostics-scope.md) | Which diagnostic source answers which symptom, who can read it, tools as categories, and the facts proposed for the collector |
 | [error-code-map](error-code-map.md) | One map from the code an operator sees to the claim that explains it and the triage flow that handles it |
+| [endpoint-map](endpoint-map.md) | One map of AVD endpoints that every family probe reads: where a probe means something, and which failures move a verdict |
 | [triage-cannot-connect](triage-cannot-connect.md) | Triage when a user can't sign in, sees no resources or can't connect |
 | [triage-host-unhealthy](triage-host-unhealthy.md) | Triage when a session host isn't Available |
 | [triage-slow-logon](triage-slow-logon.md) | Triage when sign-in to a session is slow, by stage |

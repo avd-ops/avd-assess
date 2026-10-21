@@ -711,7 +711,7 @@ dimensions:
     home: {decision: region, facts: [c12.group.rttMsP95], intake: [intake.userNetworks]}
     baseline:
       standing: published
-      claims: [ref:avd-required-fqdn#client-list, ref:avd-prerequisites#rtt-under-150, ref:avd-proxy#client-proxy-support, ref:avd-proxy#same-geography, ref:thin-clients#reproduce-on-windows-app, ref:review-checklists-avd#C02.04]
+      claims: [ref:avd-required-fqdn#client-list, ref:avd-prerequisites#rtt-under-150, ref:avd-proxy#client-proxy-support, ref:avd-proxy#same-geography, ref:thin-clients#reproduce-on-windows-app, ref:review-checklists-avd#C02.04, gap:endpoint-map]
       says: The published client endpoints allowed from every user network, proxies bypassed or close to the region, round trip under 150 ms.
     observations: [obs:region-latency-from-the-user]
     measure: intake
@@ -1535,7 +1535,7 @@ dimensions:
     home: {decision: network, facts: [c11.network.hostSubnets.avdOutboundDenied, c11.network.hostSubnets.fabricDenyRules]}
     baseline:
       standing: published
-      claims: [ref:avd-required-fqdn#host-list, ref:avd-required-fqdn#blocking-unsupported, ref:avd-required-fqdn#service-and-fqdn-tags, ref:avd-fabric-ips#no-deny-no-route, ref:firewall-avd#fqdn-tag-rules, ref:review-checklists-avd#F01.05, ref:review-checklists-avd#F01.07]
+      claims: [ref:avd-required-fqdn#host-list, ref:avd-required-fqdn#blocking-unsupported, ref:avd-required-fqdn#service-and-fqdn-tags, ref:avd-fabric-ips#no-deny-no-route, ref:firewall-avd#fqdn-tag-rules, ref:avd-url-check-tool#wildcards-not-checked, ref:review-checklists-avd#F01.05, ref:review-checklists-avd#F01.07, gap:endpoint-map]
       says: The published endpoints reachable from every host, by service and FQDN tags; no rule or route aimed at the platform addresses.
     measure: host-side
     landingZone: []
