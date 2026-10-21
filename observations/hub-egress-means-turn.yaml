@@ -1,7 +1,0 @@
-id: hub-egress-means-turn
-claim: ref:rdp-shortpath#symmetric-nat-means-turn
-verdict: not-yet-tested
-observed: In hub mode the landing zone can route host egress through a hub firewall, and Microsoft's Azure Firewall guide for AVD lists no UDP rules. By Microsoft's own claim, public-network Shortpath from such hosts should relay through TURN rather than connect directly; how much round-trip time that adds is unmeasured.
-evidence:
-  - https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep
-date: 2026-10-21

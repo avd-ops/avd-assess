@@ -68,6 +68,8 @@ for row in doc.get("dimensions") or []:
     for key in REQUIRED:
         if key not in row or row[key] in (None, ""):
             err(f"{did}: missing {key}")
+    if "pillar" in row and not re.fullmatch(r"P[1-9][0-9]?", str(row["pillar"])):
+        err(f"{did}: pillar must look like P1 to P99")
     home = row.get("home") or {}
     d = home.get("decision")
     if d and d not in decisions and not PROPOSED.match(d):

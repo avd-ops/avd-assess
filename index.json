@@ -3446,16 +3446,6 @@
       "date": "2026-10-20"
     },
     {
-      "id": "hub-egress-means-turn",
-      "claim": "ref:rdp-shortpath#symmetric-nat-means-turn",
-      "verdict": "not-yet-tested",
-      "observed": "In hub mode the landing zone can route host egress through a hub firewall, and Microsoft's Azure Firewall guide for AVD lists no UDP rules. By Microsoft's own claim, public-network Shortpath from such hosts should relay through TURN rather than connect directly; how much round-trip time that adds is unmeasured.",
-      "evidence": [
-        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
-      ],
-      "date": "2026-10-21"
-    },
-    {
       "id": "landing-zone-one-persona",
       "claim": "ref:caf-avd-poc#assumptions",
       "verdict": "agrees",
@@ -3548,6 +3538,17 @@
         "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/bicep/modules/storage.bicep"
       ],
       "date": "2026-10-20"
+    },
+    {
+      "id": "symmetric-nat-egress-means-turn",
+      "claim": "ref:rdp-shortpath#symmetric-nat-means-turn",
+      "verdict": "not-yet-tested",
+      "observed": "Both landing zone network modes give hosts symmetric NAT egress, a NAT Gateway when standalone and the hub firewall when hub-peered, so by Microsoft's claim public-network Shortpath should relay through TURN, never connect directly. TURN itself needs outbound UDP 3478 to the relay range; where the egress firewall doesn't allow it, sessions fall back to TCP instead. How much round-trip time the relay adds is unmeasured.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/network.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
+      ],
+      "date": "2026-10-21"
     },
     {
       "id": "transport-column-names-disagree",

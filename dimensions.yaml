@@ -8,6 +8,8 @@
 # baseline.standing: published (a source states it) | prior (a source states it but calls it an estimate)
 #   | guidance (a source gives direction, no number) | gap (no source; our method in the gap page)
 #   | owned (another method in this repo owns the baseline; see seeAlso).
+# pillar: optional, the map pillar that owns the row (P1, P2 and so on; P9 is remote protocol and session). Not a
+#   Well-Architected pillar; those stay on checks. tests/check_dimensions.py checks its form.
 # measure: fact (a built C11 fact) | rebuild (in avd-current-state's private rebuild package, not a C11
 #   fact) | measured (needs performance or in-guest data) | intake (only the operator knows) | none.
 # landingZone: parameter names in avd-landing-zone bicep/main.bicep at the commit below. Every one of the
@@ -254,7 +256,7 @@ dimensions:
       standing: published
       claims: [ref:rdp-shortpath#udp-transport, ref:rdp-shortpath#tcp-first-then-udp, ref:rdp-shortpath#stun-before-turn, ref:review-checklists-avd#F01.11, gap:transport-classification, gap:remote-protocols-scope]
       says: UDP where the network allows it, direct before relayed, with TCP reverse connect as the fallback; each connection is judged against the operator's stated networks through the family transport map. No share target is published.
-    observations: [obs:transport-column-names-disagree, obs:hub-egress-means-turn]
+    observations: [obs:transport-column-names-disagree, obs:symmetric-nat-egress-means-turn]
     measure: measured
     landingZone: []
     note: Needs the host pool's network data and connection categories in Log Analytics (ops.monitoring).
@@ -288,13 +290,13 @@ dimensions:
     area: protocol
     pillar: P9
     title: RDP Shortpath for public networks (STUN and TURN)
-    decides: Whether users on the internet get a direct UDP path through STUN or a relayed one through TURN, and whether either is turned off.
+    decides: Whether users on the internet get a direct UDP path through STUN or a relayed one through TURN (expected behind symmetric NAT egress), and whether either is turned off.
     home: {decision: network, facts: [proposed:c11.hostPool.udp.public, proposed:c11.hostPool.udp.relay, proposed:c12.group.transport.relayShare]}
     baseline:
       standing: published
-      claims: [ref:configure-rdp-shortpath#defaults-enabled, ref:configure-rdp-shortpath#hostpool-switches, ref:configure-rdp-shortpath#select-transport-policy, ref:rdp-shortpath#stun-before-turn, ref:rdp-shortpath#turn-range, ref:rdp-shortpath#symmetric-nat-means-turn, ref:rdp-shortpath#public-network-advice, ref:hostpool-api-changelog#udp-switches-preview-only]
+      claims: [ref:configure-rdp-shortpath#defaults-enabled, ref:configure-rdp-shortpath#hostpool-switches, ref:configure-rdp-shortpath#select-transport-policy, ref:configure-rdp-shortpath#turn-public-cloud-only, ref:rdp-shortpath#stun-before-turn, ref:rdp-shortpath#turn-range, ref:rdp-shortpath#symmetric-nat-means-turn, ref:rdp-shortpath#public-network-advice, ref:rdp-shortpath#turn-maintenance-drops, ref:hostpool-api-changelog#udp-switches-preview-only, ref:troubleshoot-rdp-shortpath#nat-type-test]
       says: Both options are on by default and work with no configuration when outbound UDP is allowed; hosts behind Azure Firewall or NAT Gateway relay through TURN. Turning an option off needs a reason.
-    observations: [obs:hub-egress-means-turn]
+    observations: [obs:symmetric-nat-egress-means-turn]
     measure: measured
     landingZone: []
     note: The landing zone leaves the host pool switches at Default; the networking pillars own the egress rules that decide STUN or TURN.
@@ -332,7 +334,7 @@ dimensions:
     baseline:
       standing: published
       claims: [ref:hostpool-api-changelog#private-link-udp-preview-only, ref:configure-rdp-shortpath#hostpool-switches]
-      says: UDP over Private Link is an opt-in on the host pool that requires the public-network options off; the networking pillar owns Private Link itself and the opt-in claim.
+      says: UDP over Private Link is a separate host pool opt-in, off unless set and readable only through a preview API version; its conditions are claims in the networking pillar's Private Link reference.
     measure: rebuild
     landingZone: [enableAvdPrivateLink]
   - id: protocol.qos
