@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 VERDICTS = {"agrees", "disagrees", "extends", "not-yet-tested"}
 KINDS = {"published", "prior", "guidance"}
 AREAS = {"collection", "assessment", "benchmarks", "scoring"}
-METHODS = ["collection", "assessment", "targets-benchmarks", "scoring", "sample-check", "baseline-profile", "tune-rightsize", "use-cases", "finops", "security"]
+METHODS = ["collection", "assessment", "remediation", "targets-benchmarks", "scoring", "sample-check", "baseline-profile", "tune-rightsize", "use-cases", "finops", "security"]
 STANDINGS = {"candidate", "gold", "baseline", "demoted"}
 CITE = re.compile(r"`((?:ref|obs|gap):[A-Za-z0-9._:#-]+)`")
 GUID = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b")
@@ -160,6 +160,13 @@ for c in method.get("checks", []):
     for d in c["informs"]:
         if d not in decisions:
             err(mpath, f"{c['id']} informs {d}, which isn't a register decision")
+    # Remediation hints (methods/remediation.md): every check says what would fix it, and a
+    # landing zone hint needs the commit it was read from.
+    hint = c.get("remediation")
+    if not hint:
+        err(mpath, f"{c['id']} has no remediation hint (use kind manual with a code when nothing is known)")
+    elif hint["kind"] != "manual" and not method.get("landingZoneCommit"):
+        err(mpath, f"{c['id']} names a landing zone {hint['kind']}, but method.json has no landingZoneCommit")
 rows = [r["decision"] for r in method.get("readiness", [])]
 if sorted(rows) != sorted(decisions):
     err(mpath, "readiness needs exactly one row per register decision")

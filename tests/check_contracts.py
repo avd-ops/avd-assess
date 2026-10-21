@@ -21,6 +21,7 @@ EXAMPLES = {
     "examples/assess/intake.example.json": "intake.schema.json",
     "examples/assess/assessment.example.json": "assessment.schema.json",
     "examples/assess/review.example.json": "assessment-review.schema.json",
+    "examples/assess/plan.example.json": "remediation-plan.schema.json",
     "examples/run-record/run.example.json": "run-record.schema.json",
     "examples/run-record/cost.example.json": "run-cost.schema.json",
     "examples/run-record/journal.example.jsonl": "run-journal.schema.json",
@@ -98,6 +99,34 @@ if review_schema:
             doc["decisions"][0] = {"check": "asm-sample-check", "outcome": "warn", **bad}
             if rv.is_valid(doc):
                 err(review_path, f"the C23 schema accepts a decision it must refuse: {bad}")
+
+
+# C24: one item per check, orders 1..n, and a change shaped by its kind (the schema's allOf).
+plan_schema = schemas.get("remediation-plan.schema.json")
+if plan_schema:
+    pv = Draft202012Validator(plan_schema)
+    plan_path = CONTRACTS / "examples/assess/plan.example.json"
+    plan = load(plan_path)
+    if plan is not None:
+        items = plan.get("items", [])
+        checks = [i["check"] for i in items]
+        if len(checks) != len(set(checks)):
+            err(plan_path, "a check has more than one item")
+        if sorted(i["order"] for i in items) != list(range(1, len(items) + 1)):
+            err(plan_path, "orders must run 1, 2, 3 ... with no gaps or repeats")
+        for bad in ({"kind": "manual"}, {"kind": "manual", "code": "process", "name": "startVmOnConnect"},
+                    {"kind": "lz-parameter", "to": True}, {"kind": "lz-parameter", "name": "x", "code": "process"},
+                    {"kind": "lz-setting", "name": "trusted-launch", "to": True},
+                    {"kind": "lz-parameter", "name": "spokeAddressPrefix", "to": "subnet/22"},
+                    {"kind": "manual", "code": "process", "note": "free text"}):
+            doc = json.loads(json.dumps(plan))
+            doc["items"][0]["change"] = bad
+            if pv.is_valid(doc):
+                err(plan_path, f"the C24 schema accepts a change it must refuse: {bad}")
+        doc = json.loads(json.dumps(plan))
+        doc["items"][0]["outcome"] = "pass"
+        if pv.is_valid(doc):
+            err(plan_path, "the C24 schema accepts an item for a passing check")
 
 
 def schema_has(schema, pointer):
