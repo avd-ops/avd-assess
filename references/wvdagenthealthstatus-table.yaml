@@ -1,0 +1,15 @@
+id: wvdagenthealthstatus-table
+title: WVDAgentHealthStatus table reference
+url: https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdagenthealthstatus
+pin: "Learn git_commit_id 079747596649a146d88952226998f2a50fdace9b, updated_at 2026-07-28"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection]
+pillars: [diagnostics]
+claims:
+  - id: health-history
+    says: Agent health rows carry each host's status, health check results, last heartbeat, agent and stack versions and upgrade state and error, so they keep the history the API's point-in-time read lacks.
+    kind: published
+  - id: host-pool-only
+    says: Agent health comes from host pools only.
+    kind: published

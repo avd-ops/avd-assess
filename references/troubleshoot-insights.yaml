@@ -1,0 +1,24 @@
+id: troubleshoot-insights
+title: Troubleshoot Azure Virtual Desktop Insights
+url: https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-insights
+pin: "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [diagnostics, monitoring]
+claims:
+  - id: read-access-needed
+    says: Reading Insights needs read access to the AVD resource groups, the session host resource groups and the Log Analytics workspaces.
+    kind: published
+  - id: ingestion-delay
+    says: Log data can take about 15 minutes to appear, so very recent activity may be missing.
+    kind: published
+  - id: errors-not-all-documented
+    says: Not every error message is documented, and some aren't phrased for people.
+    kind: published
+  - id: missing-completion
+    says: A connection's completion event can go missing, which skews some connection times.
+    kind: published
+  - id: time-to-connect-includes-credentials
+    says: Time to connect includes the time users take to enter credentials, which can show false peaks.
+    kind: published

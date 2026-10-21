@@ -11,14 +11,14 @@
 # pillar: the map pillar that owns the row, an id in pillars.yaml (one per row, required). Not a
 #   Well-Architected pillar; those stay on checks. tests/check_dimensions.py checks it against pillars.yaml.
 # measure: fact (a built C11 fact) | rebuild (in avd-current-state's private rebuild package, not a C11
-#   fact) | measured (needs performance or in-guest data) | intake (only the operator knows) | host-side (only
+#   fact) | measured (needs performance, in-guest or diagnostic log data) | intake (only the operator knows) | host-side (only
 #   a read on a session host sees it) | directory (needs a directory read) | none.
 # landingZone: parameter names in avd-landing-zone bicep/main.bicep at the commit below. Every one of the
 #   57 is either set by a dimension or listed in notDimensions with a reason (tests/check_dimensions.py).
 schema: avd-assess-dimensions/v1
 landingZone:
   commit: ae5c2877d53d9af8e1efbf47b85cfdef06c51364
-  source: https://github.com/nickprignano/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep
+  source: https://github.com/avd-ops/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep
   parameters: [namePrefix, environmentName, location, tags, avdUsersGroupObjectId, avdAdminsGroupObjectId,
     avdServicePrincipalObjectId, enrollInIntune, connectivityMode, spokeAddressPrefix, sessionHostSubnetPrefix,
     privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix,
@@ -99,7 +99,7 @@ dimensions:
     pillar: capacity
     title: Load balancing algorithm
     decides: Breadth-first (performance) or depth-first (cost) placement of new sessions.
-    home: {decision: proposed:hostPool.loadBalancing, facts: [proposed:c11.hostPool.loadBalancerType]}
+    home: {decision: proposed:hostPool.loadBalancing, facts: [c11.hostPool.loadBalancer]}
     baseline:
       standing: guidance
       claims: [ref:avd-load-balancing#breadth-first-performance, ref:avd-load-balancing#depth-first-cost, ref:avd-load-balancing#set-limit-from-insights, ref:review-checklists-avd#C01.04]
@@ -126,7 +126,7 @@ dimensions:
     pillar: capacity
     title: Whether hosts need a GPU
     decides: GPU or CPU-only hosts for each workload.
-    home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes], intake: [proposed:intake.graphicsWorkloads]}
+    home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes], intake: [intake.graphicsWorkloads]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#C01.12, ref:session-host-sizing#gpu-for-graphics]
@@ -165,7 +165,7 @@ dimensions:
     pillar: capacity
     title: OS disk type
     decides: Premium SSD, Standard SSD or an ephemeral OS disk for session hosts.
-    home: {decision: proposed:hostPool.osDisk, facts: [proposed:c11.sessionHost.osDiskType]}
+    home: {decision: proposed:hostPool.osDisk, facts: [c11.hostPool.sessionHosts.osDiskTypes]}
     baseline:
       standing: published
       claims: [ref:avd-deploy-host-pool#premium-ssd-os-disk, ref:review-checklists-avd#H03.01, ref:session-host-sizing#ssd-storage]
@@ -179,7 +179,7 @@ dimensions:
     pillar: capacity
     title: Ephemeral OS disks for stateless pools
     decides: Whether a pooled, stateless pool uses ephemeral OS disks.
-    home: {decision: proposed:hostPool.osDisk, facts: [proposed:c11.sessionHost.osDiskType]}
+    home: {decision: proposed:hostPool.osDisk, facts: [c11.hostPool.sessionHosts.osDiskTypes]}
     baseline:
       standing: published
       claims: [ref:avd-ephemeral-os-disks#stateless-only, ref:avd-ephemeral-os-disks#pooled-with-configuration, ref:avd-ephemeral-os-disks#unsupported-features, ref:avd-ephemeral-os-disks#size-must-fit-image, ref:avd-ephemeral-os-disks#autoscale-full-active]
@@ -269,7 +269,7 @@ dimensions:
     pillar: protocol
     title: RDP transport
     decides: Whether sessions use the UDP transport (RDP Shortpath) on managed and public networks, judged against the networks the operator says users connect from.
-    home: {decision: network, facts: [c12.group.rttMsP95, proposed:c12.group.transport.udpShare, proposed:c12.group.transport.relayShare], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [c12.group.rttMsP95, proposed:c12.group.transport.udpShare, proposed:c12.group.transport.relayShare], intake: [intake.userNetworks]}
     baseline:
       standing: published
       claims: [ref:rdp-shortpath#udp-transport, ref:rdp-shortpath#tcp-first-then-udp, ref:rdp-shortpath#stun-before-turn, ref:review-checklists-avd#F01.11, gap:transport-classification, gap:remote-protocols-scope]
@@ -296,7 +296,7 @@ dimensions:
     pillar: protocol
     title: RDP Shortpath for managed networks
     decides: Whether users on ExpressRoute or VPN get a direct UDP path, through the host listener and an inbound port or through ICE/STUN.
-    home: {decision: network, facts: [proposed:c11.hostPool.udp.managedPrivate, proposed:c11.hostPool.udp.direct], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [c11.hostPool.udp.managedPrivate, c11.hostPool.udp.direct], intake: [intake.userNetworks]}
     baseline:
       standing: published
       claims: [ref:configure-rdp-shortpath#four-options, ref:configure-rdp-shortpath#listener-for-managed, ref:configure-rdp-shortpath#most-restrictive-wins, ref:rdp-shortpath#first-found-wins, ref:review-checklists-avd#F01.11]
@@ -309,7 +309,7 @@ dimensions:
     pillar: protocol
     title: RDP Shortpath for public networks (STUN and TURN)
     decides: Whether users on the internet get a direct UDP path through STUN or a relayed one through TURN (expected behind symmetric NAT egress), and whether either is turned off.
-    home: {decision: network, facts: [proposed:c11.hostPool.udp.public, proposed:c11.hostPool.udp.relay, proposed:c12.group.transport.relayShare]}
+    home: {decision: network, facts: [c11.hostPool.udp.public, c11.hostPool.udp.relay, proposed:c12.group.transport.relayShare]}
     baseline:
       standing: published
       claims: [ref:configure-rdp-shortpath#defaults-enabled, ref:configure-rdp-shortpath#hostpool-switches, ref:configure-rdp-shortpath#select-transport-policy, ref:configure-rdp-shortpath#turn-public-cloud-only, ref:rdp-shortpath#stun-before-turn, ref:rdp-shortpath#turn-range, ref:rdp-shortpath#symmetric-nat-means-turn, ref:rdp-shortpath#public-network-advice, ref:rdp-shortpath#turn-maintenance-drops, ref:hostpool-api-changelog#udp-switches-preview-only, ref:troubleshoot-rdp-shortpath#nat-type-test]
@@ -336,7 +336,7 @@ dimensions:
     pillar: protocol
     title: RDP Multipath and modern auto-reconnect
     decides: Whether sessions keep backup paths and survive short network drops, which depends on the client app and version.
-    home: {decision: network, facts: [], intake: [proposed:intake.clientApps]}
+    home: {decision: network, facts: [], intake: [intake.clientApps]}
     baseline:
       standing: published
       claims: [ref:rdp-multipath#automatic, ref:rdp-multipath#client-floors, ref:rdp-multipath#shortpath-first, ref:avd-auto-reconnect#needs-multipath, ref:windows-app-platforms#multipath-by-platform, ref:avd-whats-new#multipath-ga]
@@ -348,7 +348,7 @@ dimensions:
     pillar: protocol
     title: UDP over Private Link
     decides: Whether sessions that use Private Link can still use UDP.
-    home: {decision: network, facts: [proposed:c11.hostPool.udp.privateLink, c11.network.privateEndpoints]}
+    home: {decision: network, facts: [c11.hostPool.udp.privateLink, c11.network.privateEndpoints]}
     baseline:
       standing: published
       claims: [ref:hostpool-api-changelog#private-link-udp-preview-only, ref:configure-rdp-shortpath#hostpool-switches]
@@ -360,7 +360,7 @@ dimensions:
     pillar: protocol
     title: QoS marking and throttle rate
     decides: Whether RDP traffic on managed networks is marked for priority (DSCP) or capped per session.
-    home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [], intake: [intake.userNetworks]}
     baseline:
       standing: guidance
       claims: [ref:rdp-qos#managed-udp-only, ref:rdp-qos#dscp-46, ref:rdp-qos#qos-before-bandwidth, ref:rdp-shortpath#managed-qos-and-throttle, ref:rdp-bandwidth#throttle-managed-only]
@@ -372,7 +372,7 @@ dimensions:
     pillar: protocol
     title: Graphics encoding and codecs
     decides: Software or hardware encoding, AVC 444, HEVC and chroma, set by host policy against the host's GPU and the client's decoder.
-    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes], intake: [proposed:intake.graphicsWorkloads]}
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes], intake: [intake.graphicsWorkloads]}
     baseline:
       standing: published
       claims: [ref:graphics-encoding#software-default, ref:graphics-encoding#codecs, ref:avd-gpu-acceleration#cpu-by-default, ref:avd-gpu-acceleration#avc444-needs-hw-encoding, ref:avd-gpu-acceleration#hevc-prerequisites, ref:avd-gpu-acceleration#verify-by-event, ref:graphics-chroma-444#only-support-verifies]
@@ -398,7 +398,7 @@ dimensions:
     pillar: capacity
     title: Accelerated networking
     decides: Whether host NICs use accelerated networking.
-    home: {decision: hostPool.vmSize, facts: [proposed:c11.sessionHost.acceleratedNetworking]}
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.sessionHosts.acceleratedNetworking]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#C01.13]
@@ -423,7 +423,7 @@ dimensions:
     pillar: networking-client
     title: Bandwidth per user
     decides: Whether user networks and host sizes carry the expected RDP traffic.
-    home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [], intake: [intake.userNetworks]}
     baseline:
       standing: prior
       claims: [ref:rdp-bandwidth#per-scenario-estimates, ref:rdp-bandwidth#monitor-real-users, ref:review-checklists-avd#F01.09]
@@ -435,7 +435,7 @@ dimensions:
     pillar: networking-client
     title: User networks and client reachability
     decides: What each user network (office, branch, home, guest Wi-Fi) must allow, and whether it reaches the region within the round-trip target.
-    home: {decision: region, facts: [c12.group.rttMsP95], intake: [proposed:intake.userNetworks]}
+    home: {decision: region, facts: [c12.group.rttMsP95], intake: [intake.userNetworks]}
     baseline:
       standing: published
       claims: [ref:avd-required-fqdn#client-list, ref:avd-prerequisites#rtt-under-150, ref:avd-proxy#client-proxy-support, ref:avd-proxy#same-geography, ref:thin-clients#reproduce-on-windows-app, ref:review-checklists-avd#C02.04]
@@ -448,7 +448,7 @@ dimensions:
     pillar: networking-client
     title: AVD Private Link from the client
     decides: Whether users reach feed and gateway privately, and how their networks resolve the private names.
-    home: {decision: network, facts: [], intake: [proposed:intake.userNetworks]}
+    home: {decision: network, facts: [], intake: [intake.userNetworks]}
     baseline:
       standing: published
       claims: [ref:avd-private-link#client-dns-sequence, ref:avd-private-link#mixed-feed-limit, ref:avd-private-link#global-workspace, ref:avd-private-link-setup#client-versions, ref:dns-private-resolver#hybrid-resolution, gap:client-network]
@@ -598,7 +598,7 @@ dimensions:
     pillar: security-posture
     title: Trusted launch and VM generation
     decides: Gen2 with Trusted launch, or confidential VMs.
-    home: {decision: proposed:hostPool.security, facts: [proposed:c11.sessionHost.securityType]}
+    home: {decision: proposed:hostPool.security, facts: [c11.hostPool.sessionHosts.trustedLaunch, c11.hostPool.sessionHosts.notTrustedLaunch]}
     baseline:
       standing: published
       claims: [ref:avd-deploy-host-pool#trusted-launch-default, ref:review-checklists-avd#B03.01]
@@ -626,7 +626,7 @@ dimensions:
     pillar: security-posture
     title: Disk encryption
     decides: Server-side encryption only, encryption at host, or confidential disk encryption.
-    home: {decision: proposed:hostPool.encryption, facts: [proposed:c11.sessionHost.encryptionAtHost]}
+    home: {decision: proposed:hostPool.encryption, facts: [c11.hostPool.sessionHosts.encryptionAtHost]}
     baseline:
       standing: published
       claims: [ref:disk-encryption-options#encryption-at-host, ref:disk-encryption-options#sse-always-on, ref:disk-encryption-options#ade-retirement]
@@ -639,7 +639,7 @@ dimensions:
     pillar: security-posture
     title: Key ownership
     decides: Platform-managed or customer-managed keys.
-    home: {decision: proposed:hostPool.encryption, facts: [], intake: [proposed:intake.keyRequirements]}
+    home: {decision: proposed:hostPool.encryption, facts: [], intake: [intake.keyRequirements]}
     baseline:
       standing: guidance
       claims: [ref:disk-encryption-options#customer-keys]
@@ -744,7 +744,7 @@ dimensions:
     pillar: reliability
     title: Availability zones
     decides: Whether hosts spread across zones.
-    home: {decision: proposed:hostPool.zones, facts: [proposed:c11.sessionHost.zone]}
+    home: {decision: proposed:hostPool.zones, facts: [c11.hostPool.sessionHosts.zones]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#A01.04]
@@ -794,7 +794,7 @@ dimensions:
     pillar: networking-azure
     title: Address space and subnet sizing
     decides: Spoke and subnet prefixes, and the headroom left for hosts and private endpoints.
-    home: {decision: network, facts: [c11.network.virtualNetworks, proposed:c11.network.hostSubnets.freeAddresses]}
+    home: {decision: network, facts: [c11.network.virtualNetworks, c11.network.hostSubnets.freeAddresses]}
     baseline:
       standing: guidance
       claims: [ref:avd-private-link#address-headroom, ref:arch-private-link-hub-spoke#placement-decision-tree, gap:network-scope]
@@ -806,7 +806,7 @@ dimensions:
     pillar: networking-azure
     title: Name resolution and private DNS zones
     decides: Azure-provided or custom DNS, private DNS zones local or central, and how on-premises and the hub resolve them.
-    home: {decision: network, facts: [c11.network.customDnsVirtualNetworks, proposed:c11.network.privateDnsZoneLinks]}
+    home: {decision: network, facts: [c11.network.customDnsVirtualNetworks, c11.network.privateDnsZoneLinks]}
     baseline:
       standing: published
       claims: [ref:private-endpoint-dns#zone-per-service, ref:dns-private-resolver#hybrid-resolution, ref:caf-avd-network#dns-like-iaas, ref:avd-private-link-setup#dns-zones]
@@ -818,7 +818,7 @@ dimensions:
     pillar: networking-azure
     title: Outbound connectivity
     decides: NAT Gateway, a route to a firewall or appliance, or load balancer outbound rules; default outbound access off.
-    home: {decision: network, facts: [c11.network.defaultRoutes, proposed:c11.network.hostSubnets.explicitEgress, proposed:c11.network.hostSubnets.defaultOutboundAccess]}
+    home: {decision: network, facts: [c11.network.defaultRoutes, c11.network.hostSubnets.explicitEgress, c11.network.hostSubnets.defaultOutboundAccess]}
     baseline:
       standing: published
       claims: [ref:default-outbound#explicit-outbound, ref:default-outbound#private-subnets-default, ref:nat-gateway#subnet-egress, ref:review-checklists-avd#F01.04, ref:review-checklists-avd#F01.06]
@@ -830,7 +830,7 @@ dimensions:
     pillar: networking-azure
     title: Required endpoints, ports and service tags
     decides: How hosts reach the published AVD endpoints, the platform addresses and the identity endpoints through NSGs, routes and firewalls.
-    home: {decision: network, facts: [proposed:c11.network.hostSubnets.avdOutboundDenied, proposed:c11.network.hostSubnets.fabricDenyRules]}
+    home: {decision: network, facts: [c11.network.hostSubnets.avdOutboundDenied, c11.network.hostSubnets.fabricDenyRules]}
     baseline:
       standing: published
       claims: [ref:avd-required-fqdn#host-list, ref:avd-required-fqdn#blocking-unsupported, ref:avd-required-fqdn#service-and-fqdn-tags, ref:avd-fabric-ips#no-deny-no-route, ref:firewall-avd#fqdn-tag-rules, ref:review-checklists-avd#F01.05, ref:review-checklists-avd#F01.07]
@@ -842,7 +842,7 @@ dimensions:
     pillar: networking-azure
     title: Inspection, proxies and forced tunneling
     decides: Which traffic a firewall, proxy or tunnel may carry or inspect, and what bypasses it.
-    home: {decision: network, facts: [c11.network.defaultRoutes], intake: [proposed:intake.inspection]}
+    home: {decision: network, facts: [c11.network.defaultRoutes], intake: [intake.inspection]}
     baseline:
       standing: published
       claims: [ref:avd-proxy#bypass-proxies, ref:avd-proxy#no-ssl-termination, ref:avd-proxy#no-auth-proxy, ref:avd-fabric-ips#never-proxy-or-tunnel, ref:firewall-avd#bypass-route-for-scale-in, ref:caf-avd-network#forced-tunnel-supported, ref:review-checklists-avd#F01.08]
@@ -855,7 +855,7 @@ dimensions:
     pillar: networking-azure
     title: Private endpoints and AVD Private Link (Azure side)
     decides: Which AVD Private Link layout (connection, feed, global) and public access settings, and private endpoints for profile storage and Key Vault.
-    home: {decision: network, facts: [c11.network.privateEndpoints, c11.storage.privateEndpoint, proposed:c11.hostPool.publicNetworkAccess, proposed:c11.workspace.publicNetworkAccess, proposed:c11.network.privateEndpoints.groupId], checks: [asm-files-private-endpoint]}
+    home: {decision: network, facts: [c11.network.privateEndpoints, c11.storage.privateEndpoint, c11.hostPool.publicNetworkAccess, c11.workspace.publicNetworkAccess], checks: [asm-files-private-endpoint]}
     baseline:
       standing: published
       claims: [ref:avd-private-link#three-sub-resources, ref:avd-private-link#four-scenarios, ref:avd-private-link#public-access-settings, ref:avd-private-link#global-workspace, ref:avd-private-link#udp-opt-in, ref:avd-private-link#full-port-range, ref:avd-private-link-setup#re-register-provider, ref:review-checklists-avd#F01.10]
@@ -868,7 +868,7 @@ dimensions:
     pillar: networking-azure
     title: Administrative access path
     decides: How operators reach hosts and private endpoints (Bastion SKU or a jumpbox), separate from the user path through AVD.
-    home: {decision: proposed:network.adminAccess, facts: [proposed:c11.network.bastionHosts, proposed:c11.network.hostPublicRdp]}
+    home: {decision: proposed:network.adminAccess, facts: [c11.network.bastionHosts, c11.network.hostPublicRdp]}
     baseline:
       standing: guidance
       claims: [ref:bastion#admin-path, gap:network-scope]
@@ -892,7 +892,7 @@ dimensions:
     pillar: networking-azure
     title: Network monitoring
     decides: Flow logs with traffic analytics and path tests for the host network.
-    home: {decision: proposed:network.monitoring, facts: [proposed:c11.network.flowLogs]}
+    home: {decision: proposed:network.monitoring, facts: [c11.network.flowLogs]}
     baseline:
       standing: guidance
       claims: [ref:vnet-flow-logs#flow-logging, ref:connection-monitor#path-tests, ref:caf-avd-network#nsg-on-all-subnets]
@@ -931,7 +931,7 @@ dimensions:
     pillar: monitoring
     title: Monitoring, Insights and alerts
     decides: Insights wiring (diagnostics per AVD object, agent and data collection rule per host), log retention and alerts.
-    home: {decision: proposed:operations.monitoring, facts: [proposed:c11.monitoring.diagnostics, proposed:c11.hostPool.sessionHosts.monitoringAgent, proposed:c11.hostPool.sessionHosts.insightsDcr, proposed:c11.monitoring.workspace.retentionDays, proposed:c11.monitoring.alerts]}
+    home: {decision: proposed:operations.monitoring, facts: [c11.monitoring.diagnostics, c11.hostPool.sessionHosts.monitoringAgent, c11.hostPool.sessionHosts.insightsDcr, c11.logAnalytics.retentionDays, c11.monitoring.alerts]}
     baseline:
       standing: published
       claims: [ref:avd-insights#hostpool-diagnostics, ref:avd-insights#workspace-diagnostics, ref:avd-insights#host-data-ama-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#latest-version, ref:amba-avd#host-resources, gap:insights-facts, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:deployment-dimensions]
@@ -977,3 +977,136 @@ dimensions:
     seeAlso: https://github.com/avd-ops/avd-assess/blob/5bc5da8f17de4cca7e51d62a4210bd7da893fa40/methods/finops.md
     measure: rebuild
     landingZone: [monthlyBudgetAmount, budgetStartDate, autoShutdownBudgetAction, autoShutdownBudgetPercent, tags]
+  # Troubleshooting and diagnostics (pillar diagnostics, methods/diagnostics.md). These rows are the
+  # data-source map: what each source shows, who can read it, and which part becomes a collector fact.
+  # The pillar sets no configuration of its own; monitoring owns how the sources are switched on.
+  - id: diag.service-diagnostics
+    area: diagnostics
+    pillar: diagnostics
+    title: AVD service diagnostics (the WVD tables)
+    decides: Whether the service's own record of connections, errors, checkpoints, feed, host registration and agent health exists to triage from, and for which objects.
+    home: {facts: [c11.monitoring.diagnostics]}
+    baseline:
+      standing: published
+      claims: [ref:diagnostics-log-analytics#categories, ref:diagnostics-log-analytics#per-object, ref:diagnostics-log-analytics#unreached-not-logged, ref:troubleshoot-overview#insights-or-kql, ref:troubleshoot-insights#read-access-needed, ref:troubleshoot-insights#ingestion-delay, gap:diagnostics-scope]
+      says: Diagnostics on every host pool, application group and workspace, read through Insights or queries with Reader on the resources and the workspace; a connection that never reached the service isn't in them.
+    observations: [obs:landing-zone-alerts-read-the-wvd-tables]
+    measure: rebuild
+    landingZone: []
+    note: Turning diagnostics on is ops.monitoring; this row is what a triage can read once they are on. The landing zone sends all categories of its host pool, application group and workspace.
+  - id: diag.host-health
+    area: diagnostics
+    pillar: diagnostics
+    title: Session host status and health checks
+    decides: Whether every host is Available, which health checks fail, and whether the agent still reports a heartbeat.
+    home: {facts: [c11.hostPool.sessionHosts.status, c11.hostPool.sessionHosts.staleHeartbeat, c11.hostPool.sessionHosts.failedHealthChecks]}
+    baseline:
+      standing: published
+      claims: [ref:session-host-health-checks#available-is-healthy, ref:session-host-health-checks#status-load-balancing, ref:session-host-health-checks#fatal-checks, ref:session-host-health-checks#needs-assistance-nonfatal, ref:session-host-health-checks#shutdown-vs-unavailable, ref:avd-sessionhost-get-api#health-check-results, ref:avd-sessionhost-get-api#health-check-names, ref:avd-sessionhost-get-api#fatal-by-name, ref:wvdagenthealthstatus-table#health-history, gap:triage-host-unhealthy]
+      says: Every running host Available and passing its checks; a fatal check makes a host Unavailable, a non-fatal one Needs Assistance, and Shutdown or Unavailable on a stopped VM is not a fault.
+    measure: fact
+    landingZone: []
+    note: The API read is point in time and needs only Reader; the agent health table keeps the history. The collector's stale heartbeat threshold (30 minutes) is a family choice with no source (gap:diagnostics-scope). Agent and stack versions and update state are the images pillar's facts.
+  - id: diag.connection-errors
+    area: diagnostics
+    pillar: diagnostics
+    title: Connection, feed and registration errors by code
+    decides: Which errors users and hosts hit over a window, by code, and which of them an admin can fix.
+    home: {facts: [c11.hostPool.diagnostics.windowDays, c11.hostPool.diagnostics.errorsByCode, c11.hostPool.diagnostics.serviceErrors, c11.subscription.diagnostics.workspaceErrorsByCode], intake: [intake.reportedSymptoms]}
+    baseline:
+      standing: gap
+      claims: [ref:wvderrors-table#code-columns, ref:wvderrors-table#resource-types, ref:diagnostics-log-analytics#service-error-split, ref:diagnostics-log-analytics#errors-scope, ref:troubleshoot-insights#errors-not-all-documented, gap:error-code-map, gap:diagnostics-scope]
+      says: Admin-fixable errors (ServiceError false) are the estate's to fix and service errors go to Microsoft with their correlation ID; no source lists every code or says how many errors are normal, so codes go through the family's error-code map.
+    observations: [obs:landing-zone-alerts-read-the-wvd-tables]
+    measure: measured
+    landingZone: []
+    note: A Log Analytics read for the collector, specified in the fact register; counts by code only, never user names or messages.
+  - id: diag.connection-outcomes
+    area: diagnostics
+    pillar: diagnostics
+    title: Connection outcomes and time to connect
+    decides: What share of connections reach the host, and where time to connect goes when it is slow.
+    home: {facts: [c11.hostPool.diagnostics.connections, c11.hostPool.diagnostics.connectionsFailed, c11.hostPool.diagnostics.timeToConnectSecondsP95, c12.group.logonSeconds.p95], intake: [intake.reportedSymptoms]}
+    baseline:
+      standing: gap
+      claims: [ref:diagnostics-log-analytics#connection-states, ref:avd-insights-glossary#time-to-connect-checkpoints, ref:avd-insights-glossary#time-to-connect-stages, ref:avd-insights-glossary#credential-time-subtracted, ref:troubleshoot-insights#time-to-connect-includes-credentials, ref:troubleshoot-insights#missing-completion, ref:wvdcheckpoints-table#named-steps, gap:diagnostics-scope, gap:triage-cannot-connect, gap:triage-slow-logon]
+      says: A connection that completes without ever connecting is a failure; time to connect runs from the Started row to the shell-ready checkpoint and splits into route, stack, logon and shell stages. No source sets a failure rate or a time; the logon target is ux-measurement's.
+    measure: measured
+    landingZone: []
+    note: Two Learn pages disagree on whether time to connect includes credential entry (gap:diagnostics-scope), so a high reading is checked against the stages before it is judged.
+  - id: diag.host-logs
+    area: diagnostics
+    pillar: diagnostics
+    title: Session host event logs
+    decides: Whether the agent, Remote Desktop Services and FSLogix events a triage needs are collected centrally or have to be read on the host.
+    home: {facts: [c11.hostPool.sessionHosts.insightsDcr]}
+    baseline:
+      standing: published
+      claims: [ref:avd-insights-glossary#required-event-logs, ref:troubleshoot-agent#app-event-sources, ref:avd-insights#host-data-ama-dcr, gap:error-code-map]
+      says: The Application, System, Remote Desktop Services and FSLogix logs Insights lists, sent through the data collection rule; agent faults show under the WVD-Agent, updater, boot loader and installer sources.
+    measure: host-side
+    landingZone: []
+  - id: diag.profile-logs
+    area: diagnostics
+    pillar: diagnostics
+    title: FSLogix logs
+    decides: Where a profile failure is read, from the FSLogix event logs centrally or the text and trace logs on the host.
+    home: {facts: []}
+    baseline:
+      standing: published
+      claims: [ref:fslogix-logs#three-log-types, ref:fslogix-logs#event-log-location, ref:fslogix-logs#profile-log-first, ref:fslogix-logs#kerberos-rc4-change, gap:triage-profile-failed]
+      says: The FSLogix event logs travel with the host event logs; the daily profile log on the host is the first place to look, and every warning and error in it carries a code.
+    observations: [obs:landing-zone-alerts-read-the-wvd-tables]
+    measure: host-side
+    landingZone: []
+    note: Profile configuration belongs to the profiles pillar; this row is only where the evidence is.
+  - id: diag.sign-in-logs
+    area: diagnostics
+    pillar: diagnostics
+    title: Entra sign-in logs for AVD
+    decides: Whether a sign-in failure can be read by its AADSTS code and Conditional Access result.
+    home: {facts: []}
+    baseline:
+      standing: published
+      claims: [ref:troubleshoot-sso-conditional-access#sign-in-logs-first, ref:troubleshoot-sso-conditional-access#aadsts-codes, ref:troubleshoot-sso-conditional-access#frequency-mismatch, ref:troubleshoot-sso-conditional-access#compliance-on-client, ref:troubleshoot-entra-joined#vm-user-login-role, ref:troubleshoot-entra-joined#per-user-mfa-unsupported, ref:troubleshoot-service-connection#conditional-access-blocks, gap:triage-cannot-connect]
+      says: Read the user's sign-in entries for the AVD and Windows Cloud Login apps; the AADSTS code and the Conditional Access tab say which policy or registration failed.
+    measure: directory
+    landingZone: []
+    note: The identity pillar owns the policies; this row is how a failure is read. A directory read waits on the owner's collector decision.
+  - id: diag.client-logs
+    area: diagnostics
+    pillar: diagnostics
+    title: Client logs and first checks
+    decides: What the user or operator collects from the client when the service shows nothing.
+    home: {facts: []}
+    baseline:
+      standing: published
+      claims: [ref:windows-app-logs#per-platform, ref:windows-app-basic#first-steps, ref:windows-app-basic#no-resources-message, ref:diagnostics-log-analytics#client-info-gaps, ref:troubleshoot-overview#network-is-local]
+      says: Latest Windows App, the same resource tried in a browser, then the app's own logs for the platform; problems on the user's network go to that network's administrators.
+    measure: intake
+    landingZone: []
+  - id: diag.network-path
+    area: diagnostics
+    pillar: diagnostics
+    title: Path checks from the host and the client
+    decides: Whether the host reaches the service's required endpoints and the client reaches the gateway, tested rather than assumed.
+    home: {facts: []}
+    baseline:
+      standing: published
+      claims: [ref:avd-url-check-tool#run-on-host, ref:troubleshoot-agent#event-3277-invalid-form, ref:troubleshoot-agent#event-3703-gateway, ref:troubleshoot-agent#event-3019-websocket, ref:troubleshoot-session-host-vm#no-heartbeat, ref:connection-monitor#path-tests, ref:troubleshoot-rdp-shortpath#nat-type-test]
+      says: The required URL check on the host first, then path tests where a route or firewall is in doubt; agent events 3277, 3703 and 3019 name which endpoint failed.
+    measure: host-side
+    landingZone: []
+    note: The networking pillars own the endpoint list and the rules; this row is the test a triage runs.
+  - id: diag.service-health
+    area: diagnostics
+    pillar: diagnostics
+    title: Service Health and escalation
+    decides: Whether a platform incident is ruled out first, and which problems go to Microsoft.
+    home: {facts: []}
+    baseline:
+      standing: published
+      claims: [ref:troubleshoot-overview#service-health-first, ref:troubleshoot-overview#escalation-tracks, ref:service-alerts#service-issue-and-advisory, ref:diagnostics-log-analytics#service-error-split]
+      says: Service Health first, with alerts for AVD service issues and advisories; service errors and anything past the troubleshooting pages go to support with the correlation ID.
+    measure: none
+    landingZone: []

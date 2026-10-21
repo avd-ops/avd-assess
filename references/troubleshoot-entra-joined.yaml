@@ -1,0 +1,15 @@
+id: troubleshoot-entra-joined
+title: Troubleshoot connections to Microsoft Entra joined VMs
+url: https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-azure-ad-connections
+pin: "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [diagnostics, identity]
+claims:
+  - id: vm-user-login-role
+    says: Users of Entra joined hosts need the Virtual Machine User Login role; without it they get an account or credentials error.
+    kind: published
+  - id: per-user-mfa-unsupported
+    says: Per-user enforced MFA isn't supported for sign-in to Entra joined hosts; use Conditional Access.
+    kind: published

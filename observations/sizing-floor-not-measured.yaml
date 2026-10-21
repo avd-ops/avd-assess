@@ -3,5 +3,5 @@ claim: ref:session-host-sizing#multisession-vcpu-range
 verdict: not-yet-tested
 observed: The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.
 evidence:
-  - https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md
+  - https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md
 date: 2026-10-20

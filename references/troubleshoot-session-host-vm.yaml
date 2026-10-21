@@ -1,0 +1,24 @@
+id: troubleshoot-session-host-vm
+title: Troubleshoot Azure Virtual Desktop session host virtual machine configuration
+url: https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-vm-configuration
+pin: "Learn git_commit_id 1b8057d59ce64d13aa08a4793922b88a9bec9cc2, updated_at 2025-10-02"
+read: 2026-10-21
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [diagnostics]
+claims:
+  - id: domain-join-errors
+    says: Hosts that didn't join the domain fail on credentials, permissions, DNS that can't resolve the domain, or blocked computer account reuse.
+    kind: published
+  - id: install-scriptlog
+    says: A missing agent and boot loader with no ScriptLog.log under the Windows temp folder means the installer never ran in the security context it was given.
+    kind: published
+  - id: isregistered-zero
+    says: An agent registry value IsRegistered of zero means the registration token expired.
+    kind: published
+  - id: no-heartbeat
+    says: A host that reports no heartbeat has a stopped boot loader service or can't reach the broker on port 443.
+    kind: published
+  - id: reverse-connect-stack-failure
+    says: O_REVERSE_CONNECT_STACK_FAILURE means the side-by-side stack isn't installed on the host.
+    kind: published
