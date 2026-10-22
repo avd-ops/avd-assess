@@ -1,9 +1,9 @@
 name: release
 
 # Publishes the avd-assess map as an immutable, attested release bundle (docs/distribution-spec.md
-# section 7) when the owner pushes a v<MAJOR.MINOR.PATCH> tag. A Claude session never tags. The publish
-# job waits in the `release` environment for the owner's approval, so a pushed tag alone publishes
-# nothing; the build job refuses to start if that environment has no required reviewer.
+# section 7) when a v<MAJOR.MINOR.PATCH> tag is pushed. The tag is the approval: the owner-only `v*`
+# tag ruleset decides who can push one, and a Claude session pushes one only on the owner's own words
+# in chat ("release vX.Y.Z"; CLAUDE.md). No click step (owner, 2026-10-22).
 # workflow_dispatch reruns only the Pages job (a failed Pages deploy after a publish).
 
 on:
@@ -42,42 +42,6 @@ jobs:
           git fetch --no-tags origin main
           git merge-base --is-ancestor "$GITHUB_SHA" origin/main || { echo "RESULT FAIL $TAG is not on main"; exit 1; }
           echo "RESULT PASS $TAG is a release tag on main"
-      - name: Refuse to run without the release gate
-        env:
-          RELEASE_OWNER: ${{ vars.RELEASE_OWNER || vars.HANDOFF_OWNER || github.repository_owner }}
-        run: |
-          echo "Reading the release environment's protection rules ..."
-          gh api "repos/$GH_REPO/environments/release" > env.json || { echo "RESULT FAIL could not read the release environment; create it first (spec section 17, phase 2)"; exit 1; }
-          python3 - "$RELEASE_OWNER" <<'PY'
-          import json, os, subprocess, sys
-          owner, env = sys.argv[1], json.load(open("env.json"))
-          rules = [r for r in env.get("protection_rules") or [] if r.get("type") == "required_reviewers"]
-          logins = [r.get("reviewer", {}).get("login") for rule in rules for r in rule.get("reviewers") or []]
-          errors = []
-          if not rules:
-              errors.append("the release environment has no required reviewer")
-          elif owner not in logins:
-              errors.append(f"{owner} is not a required reviewer of the release environment (reviewers: {logins})")
-          if any(rule.get("prevent_self_review") for rule in rules):
-              errors.append("prevent self-review is on, so the owner could never approve their own tag")
-          policy = env.get("deployment_branch_policy")
-          if policy and policy.get("protected_branches"):
-              errors.append("deployments are limited to protected branches, which refuses every tag; allow tags v*")
-          elif policy and policy.get("custom_branch_policies"):
-              out = subprocess.run(["gh", "api", f"repos/{os.environ['GH_REPO']}/environments/release/deployment-branch-policies"],
-                                   capture_output=True, text=True)
-              if out.returncode:
-                  errors.append(f"could not read the deployment policies: {out.stderr.strip()}")
-              else:
-                  tags = [p["name"] for p in json.loads(out.stdout).get("branch_policies", []) if p.get("type") == "tag"]
-                  if "v*" not in tags:
-                      errors.append(f"no deployment policy admits tags v* (tag policies: {tags})")
-          for e in errors:
-              print(f"RESULT FAIL {e}")
-          if errors:
-              sys.exit(1)
-          print(f"RESULT PASS the release environment waits for {owner} and admits v* tags")
-          PY
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.12'
@@ -175,7 +139,6 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    environment: release
     permissions:
       contents: write
       id-token: write
