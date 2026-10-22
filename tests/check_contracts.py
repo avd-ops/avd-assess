@@ -8,6 +8,7 @@ import json
 import sys
 from pathlib import Path
 
+import yaml
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,6 +25,7 @@ EXAMPLES = {
     "examples/assess/assessment.example.json": "assessment.schema.json",
     "examples/assess/review.example.json": "assessment-review.schema.json",
     "examples/assess/plan.example.json": "remediation-plan.schema.json",
+    "examples/checks/catalog.example.json": "check-catalog.schema.json",
     "examples/run-record/run.example.json": "run-record.schema.json",
     "examples/run-record/cost.example.json": "run-cost.schema.json",
     "examples/run-record/journal.example.jsonl": "run-journal.schema.json",
@@ -83,6 +85,56 @@ for rel, schema_name in EXAMPLES.items():
 for path in sorted((CONTRACTS / "examples").rglob("*.json*")):
     if str(path.relative_to(CONTRACTS)) not in EXAMPLES:
         err(path, "example isn't listed in tests/check_contracts.py, so nothing checks it")
+
+# C22: the shared definitions equal C20's, unique check IDs, what the example cites exists, and the
+# shapes the schema must refuse (one body, asm- for method checks only, a rule reads facts).
+catalog_schema = schemas.get("check-catalog.schema.json")
+method_schema = schemas.get("assess-method.schema.json")
+if catalog_schema and method_schema:
+    catalog_schema_path = SCHEMAS / "check-catalog.schema.json"
+    for name in ("deprecated", "remediation", "publicValue", "factId", "claimRef", "gapRef", "pointer", "property", "scalar", "test", "line"):
+        if catalog_schema["$defs"].get(name) != method_schema["$defs"].get(name):
+            err(catalog_schema_path, f"$defs/{name} differs from the C20 method schema's")
+    if catalog_schema["$defs"].get("rule") != method_schema["properties"]["checks"]["items"]["properties"]["rule"]:
+        err(catalog_schema_path, "$defs/rule differs from the C20 method schema's check rule")
+    cv = Draft202012Validator(catalog_schema)
+    catalog_path = CONTRACTS / "examples/checks/catalog.example.json"
+    catalog = load(catalog_path)
+    if catalog is not None:
+        ids = [c["id"] for c in catalog.get("checks", [])]
+        if len(ids) != len(set(ids)):
+            err(catalog_path, "a check ID appears more than once")
+        register_facts = {f["id"] for f in (load(CONTRACTS / "fact-register.json") or {}).get("facts", [])}
+        method_ids = {c["id"] for c in (load(ROOT / "method.json") or {}).get("checks", [])}
+        known_claims = {f"gap:{p.stem}" for p in (ROOT / "gaps").glob("*.md") if p.stem != "README"}
+        for ref_path in (ROOT / "references").glob("*.yaml"):
+            ref = yaml.safe_load(ref_path.read_text(encoding="utf-8")) or {}
+            known_claims.update(f"ref:{ref.get('id')}#{c['id']}" for c in ref.get("claims") or [] if c.get("id"))
+        for check in catalog.get("checks", []):
+            for fact in check.get("facts", []):
+                if fact not in register_facts:
+                    err(catalog_path, f"{check['id']}: fact {fact} isn't in the register")
+            for claim in check.get("claims", []):
+                if claim not in known_claims:
+                    err(catalog_path, f"{check['id']}: claim {claim} doesn't resolve")
+            if check.get("source") == "method" and check["id"] not in method_ids:
+                err(catalog_path, f"{check['id']}: no method check with that ID in method.json")
+        base = {"id": "sample-check", "title": "A sample check", "phase": ["drift"], "gate": "advise",
+                "pillar": "operations", "severity": "low", "claims": ["gap:governance-scope"]}
+        rule = {"each": "/subscriptions/*", "expect": {"policy/assignments": {"min": 1}}}
+        for bad in ({"reads": ["arm"]},
+                    {"facts": ["c11.policy.assignments"], "impl": "Get-SampleResult", "rule": rule},
+                    {"impl": "Get-SampleResult"},
+                    {"rule": rule, "reads": ["arm"]},
+                    {"source": "method"},
+                    {"id": "asm-sample-check", "impl": "Get-SampleResult", "reads": ["arm"]},
+                    {"id": "asm-sample-check", "source": "method", "facts": ["c11.hostPool.count"]},
+                    {"id": "asm-sample-check", "source": "method", "fixable": True}):
+            doc = json.loads(json.dumps(catalog))
+            doc["checks"][0] = {**base, **bad}
+            if cv.is_valid(doc):
+                err(catalog_path, f"the C22 schema accepts a check it must refuse: {bad}")
+
 
 # C23: one decision per check, and a reason that fits its disposition (the schema's allOf).
 review_schema = schemas.get("assessment-review.schema.json")
