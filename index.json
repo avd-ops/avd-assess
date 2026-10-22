@@ -737,7 +737,7 @@
       "pillars": [
         "scaling"
       ],
-      "notes": "The prerequisites and the meaning of each schedule field. The concepts page (ref:avd-autoscale) says what autoscale is for; this one says what a correct plan needs.",
+      "notes": "The prerequisites and the meaning of each schedule field. The concepts page (ref:avd-autoscale) says what autoscale is for; this one says what a correct plan needs. Its subscription-scope rule for the power role is contested by ref:troubleshoot-autoscale#role-scope-containing-pool (obs:power-role-at-resource-group-scope).",
       "claims": [
         {
           "id": "max-session-limit-required",
@@ -7699,7 +7699,8 @@
       "read": "2026-10-22",
       "license": "Microsoft Learn content (link only)",
       "areas": [
-        "assessment"
+        "assessment",
+        "collection"
       ],
       "pillars": [
         "scaling",
@@ -7709,12 +7710,7 @@
       "claims": [
         {
           "id": "role-scope-containing-pool",
-          "says": "The power on and off role on the host pool, its resource group or the subscription is enough for autoscale to start and stop hosts.",
-          "kind": "published"
-        },
-        {
-          "id": "required-hosts-formula",
-          "says": "In ramp-down and off-peak, autoscale keeps the higher of the minimum percentage of hosts and the sessions, disconnected included, divided by the session limit times the capacity threshold, rounded up.",
+          "says": "Autoscale can't start or stop hosts without the power on and off role, which the page says can be granted on the host pool, its resource group or the subscription.",
           "kind": "published"
         }
       ]
@@ -9056,7 +9052,7 @@
       "id": "power-role-at-resource-group-scope",
       "claim": "ref:autoscale-plan#role-at-subscription",
       "verdict": "not-yet-tested",
-      "observed": "Microsoft's pages disagree on the scope autoscale's power role needs. The scaling plan page says anything below the subscription stops autoscale working; the autoscale troubleshooting page accepts the host pool, its resource group or the subscription (ref:troubleshoot-autoscale#role-scope-containing-pool). The landing zone assigns the role on its control plane and session host resource groups only. The landing zone tracks the test as its issue 101. No run has yet read the autoscale diagnostics to show whether that works; if it does, this becomes a disagrees verdict for the brain's upstream list.",
+      "observed": "Microsoft's pages disagree on the scope autoscale's power role needs. The scaling plan page says anything below the subscription stops autoscale working; the autoscale troubleshooting page accepts the host pool, its resource group or the subscription (ref:troubleshoot-autoscale#role-scope-containing-pool). The landing zone assigns the role on its control plane and session host resource groups only. avd-landing-zone tracks the test as its issue 101. No run has yet read the autoscale diagnostics to show whether that works; if it does, this becomes a disagrees verdict for the brain's upstream list.",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/62f1e3460c2654b122238b4b8f92a1002f7aea2f/bicep/modules/controlPlane.bicep",
         "https://github.com/avd-ops/avd-landing-zone/blob/62f1e3460c2654b122238b4b8f92a1002f7aea2f/bicep/modules/sessionHosts.bicep"

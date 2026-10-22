@@ -4515,7 +4515,7 @@
           "ref:autoscale-plan#dynamic-needs-host-config",
           "ref:autoscale-plan#exclusion-tag"
         ],
-        "says": "One scaling plan per pool and no other scaling tool on it; a pooled pool needs its own session limit and the power role on a scope that contains the pool and its hosts (one Microsoft page says subscription only); maintenance uses the exclusion tag, because autoscale overrides drain mode."
+        "says": "One scaling plan per pool and no other scaling tool on it; a pooled pool needs its own session limit and the power role at subscription scope (a troubleshooting page also accepts the host pool or its resource group; untested); maintenance uses the exclusion tag, because autoscale overrides drain mode."
       },
       "observations": [
         "obs:scaling-and-start-on-connect-by-default",

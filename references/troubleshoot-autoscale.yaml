@@ -4,13 +4,10 @@ url: https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot
 pin: "Learn git_commit_id dc42685e97f5937c6a2b267667a03a169494a603, updated_at 2026-05-01"
 read: 2026-10-22
 license: Microsoft Learn content (link only)
-areas: [assessment]
+areas: [assessment, collection]
 pillars: [scaling, diagnostics]
 notes: Disagrees with ref:autoscale-plan#role-at-subscription on the scope the power role needs; both are cited until a run settles it (obs:power-role-at-resource-group-scope).
 claims:
   - id: role-scope-containing-pool
-    says: The power on and off role on the host pool, its resource group or the subscription is enough for autoscale to start and stop hosts.
-    kind: published
-  - id: required-hosts-formula
-    says: In ramp-down and off-peak, autoscale keeps the higher of the minimum percentage of hosts and the sessions, disconnected included, divided by the session limit times the capacity threshold, rounded up.
+    says: Autoscale can't start or stop hosts without the power on and off role, which the page says can be granted on the host pool, its resource group or the subscription.
     kind: published
