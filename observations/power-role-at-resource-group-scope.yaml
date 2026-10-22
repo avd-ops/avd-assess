@@ -1,0 +1,8 @@
+id: power-role-at-resource-group-scope
+claim: ref:autoscale-plan#role-at-subscription
+verdict: not-yet-tested
+observed: Microsoft's pages disagree on the scope autoscale's power role needs. The scaling plan page says anything below the subscription stops autoscale working; the autoscale troubleshooting page accepts the host pool, its resource group or the subscription (ref:troubleshoot-autoscale#role-scope-containing-pool). The landing zone assigns the role on its control plane and session host resource groups only. avd-landing-zone tracks the test as its issue 101. No run has yet read the autoscale diagnostics to show whether that works; if it does, this becomes a disagrees verdict for the brain's upstream list.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/62f1e3460c2654b122238b4b8f92a1002f7aea2f/bicep/modules/controlPlane.bicep
+  - https://github.com/avd-ops/avd-landing-zone/blob/62f1e3460c2654b122238b4b8f92a1002f7aea2f/bicep/modules/sessionHosts.bicep
+date: 2026-10-22

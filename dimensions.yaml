@@ -1898,9 +1898,9 @@ dimensions:
     home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.method, c11.hostPool.scalingPlan.exclusionTag, c11.hostPool.maxSessionLimit, c11.hostPool.type]}
     baseline:
       standing: published
-      claims: [ref:review-checklists-avd#E01.04, ref:avd-autoscale#scales-to-save-cost, ref:avd-autoscale#two-methods, ref:avd-autoscale#one-plan-per-pool, ref:avd-autoscale#exclusion-tags, ref:autoscale-plan#max-session-limit-required, ref:autoscale-plan#role-at-subscription, ref:autoscale-plan#no-other-scaling-tool, ref:autoscale-plan#dynamic-needs-host-config, ref:autoscale-plan#exclusion-tag]
-      says: One scaling plan per pool and no other scaling tool on it; a pooled pool needs its own session limit and the power role at subscription scope; maintenance uses the exclusion tag, because autoscale overrides drain mode.
-    observations: [obs:scaling-and-start-on-connect-by-default]
+      claims: [ref:review-checklists-avd#E01.04, ref:avd-autoscale#scales-to-save-cost, ref:avd-autoscale#two-methods, ref:avd-autoscale#one-plan-per-pool, ref:avd-autoscale#exclusion-tags, ref:autoscale-plan#max-session-limit-required, ref:autoscale-plan#role-at-subscription, ref:troubleshoot-autoscale#role-scope-containing-pool, ref:autoscale-plan#no-other-scaling-tool, ref:autoscale-plan#dynamic-needs-host-config, ref:autoscale-plan#exclusion-tag]
+      says: One scaling plan per pool and no other scaling tool on it; a pooled pool needs its own session limit and the power role at subscription scope (a troubleshooting page also accepts the host pool or its resource group; untested); maintenance uses the exclusion tag, because autoscale overrides drain mode.
+    observations: [obs:scaling-and-start-on-connect-by-default, obs:power-role-at-resource-group-scope]
     measure: fact
     landingZone: [scalingTimeZone]
     note: The landing zone fixes a power management plan in its control plane module, with exclusion tag avd-scaling-exclude.

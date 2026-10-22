@@ -4510,14 +4510,16 @@
           "ref:avd-autoscale#exclusion-tags",
           "ref:autoscale-plan#max-session-limit-required",
           "ref:autoscale-plan#role-at-subscription",
+          "ref:troubleshoot-autoscale#role-scope-containing-pool",
           "ref:autoscale-plan#no-other-scaling-tool",
           "ref:autoscale-plan#dynamic-needs-host-config",
           "ref:autoscale-plan#exclusion-tag"
         ],
-        "says": "One scaling plan per pool and no other scaling tool on it; a pooled pool needs its own session limit and the power role at subscription scope; maintenance uses the exclusion tag, because autoscale overrides drain mode."
+        "says": "One scaling plan per pool and no other scaling tool on it; a pooled pool needs its own session limit and the power role at subscription scope (a troubleshooting page also accepts the host pool or its resource group; untested); maintenance uses the exclusion tag, because autoscale overrides drain mode."
       },
       "observations": [
-        "obs:scaling-and-start-on-connect-by-default"
+        "obs:scaling-and-start-on-connect-by-default",
+        "obs:power-role-at-resource-group-scope"
       ],
       "measure": "fact",
       "landingZone": [
