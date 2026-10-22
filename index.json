@@ -7692,6 +7692,34 @@
       ]
     },
     {
+      "id": "troubleshoot-autoscale",
+      "title": "Troubleshoot autoscale issues in Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-autoscale",
+      "pin": "Learn git_commit_id dc42685e97f5937c6a2b267667a03a169494a603, updated_at 2026-05-01",
+      "read": "2026-10-22",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "scaling",
+        "diagnostics"
+      ],
+      "notes": "Disagrees with ref:autoscale-plan#role-at-subscription on the scope the power role needs; both are cited until a run settles it (obs:power-role-at-resource-group-scope).",
+      "claims": [
+        {
+          "id": "role-scope-containing-pool",
+          "says": "The power on and off role on the host pool, its resource group or the subscription is enough for autoscale to start and stop hosts.",
+          "kind": "published"
+        },
+        {
+          "id": "required-hosts-formula",
+          "says": "In ramp-down and off-peak, autoscale keeps the higher of the minimum percentage of hosts and the sessions, disconnected included, divided by the session limit times the capacity threshold, rounded up.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "troubleshoot-entra-joined",
       "title": "Troubleshoot connections to Microsoft Entra joined VMs",
       "url": "https://learn.microsoft.com/troubleshoot/azure/virtual-desktop/troubleshoot-azure-ad-connections",
@@ -9023,6 +9051,17 @@
         "https://github.com/avd-ops/avd-landing-zone/blob/237aa80db7b4462473be390ed719eb8e6cbecb58/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
+    },
+    {
+      "id": "power-role-at-resource-group-scope",
+      "claim": "ref:autoscale-plan#role-at-subscription",
+      "verdict": "not-yet-tested",
+      "observed": "Microsoft's pages disagree on the scope autoscale's power role needs. The scaling plan page says anything below the subscription stops autoscale working; the autoscale troubleshooting page accepts the host pool, its resource group or the subscription (ref:troubleshoot-autoscale#role-scope-containing-pool). The landing zone assigns the role on its control plane and session host resource groups only. The landing zone tracks the test as its issue 101. No run has yet read the autoscale diagnostics to show whether that works; if it does, this becomes a disagrees verdict for the brain's upstream list.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/62f1e3460c2654b122238b4b8f92a1002f7aea2f/bicep/modules/controlPlane.bicep",
+        "https://github.com/avd-ops/avd-landing-zone/blob/62f1e3460c2654b122238b4b8f92a1002f7aea2f/bicep/modules/sessionHosts.bicep"
+      ],
+      "date": "2026-10-22"
     },
     {
       "id": "premium-ssd-os-disk-default",
