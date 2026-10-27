@@ -17,14 +17,17 @@ Everything else here builds on those three: evidence mapped to items, measured t
 1. **Start from Microsoft's lists, not ours:** the AVD review checklist for all pillars (`ref:review-checklists-avd`) and APRL through WARA for reliability (`ref:aprl-desktop-virtualization`, `ref:wara#collector-avd-json`).
    Where PSRule for Azure, which avd-landing-zone runs on its templates, has a rule for the same item, cite its rule ID beside the item so both name one thing (`ref:psrule-azure`, `gap:checklist-mapping`).
 2. **Map each item to the facts that decide it**, and leave the rest `unknown` with the data they would need (`gap:checklist-mapping`).
-3. **Give each check one of four outcomes:** pass, warn (a trade-off to review), gap, or unknown. Unknown is never guessed, and a model never decides an outcome (`gap:scoring`).
+3. **Give each check one of five outcomes:** pass, warn (a trade-off to review), gap, unknown, or not-applicable (when the check's control plane was not collected or was scoped out via intake). Unknown is never guessed, and a model never decides an outcome (`gap:scoring`).
 4. **Judge the image against the landing zone's reviewed WDOT profile**, not against every WDOT item: some items destroy evidence or break sysprep (`ref:wdot#categories`, `obs:wdot-disk-cleanup-deletes-evidence`, `obs:wdot-appx-removal-left-off`).
 5. **Use the Well-Architected checklists' codes** (RE:04 and the rest) to place each finding in its pillar (`ref:waf-reliability-checklist#RE:04`).
 6. **Judge the security pillar with the [security method](security.md)**, which adds the sources security needs (`ref:avd-security-guide`, `gap:security-scope`).
-7. **Judge transport and session settings with the [remote protocol and session method](remote-protocols.md)**, which maps the transport vocabularies and judges each connection against the networks users connect from (`gap:remote-protocols-scope`, `gap:transport-classification`).
-8. **Judge host and device management with the [Intune and host management method](intune.md)**, which reads Intune state per host pool and scores what multi-session can't receive as not applicable (`gap:intune-scope`).
-9. **When something is wrong, find the cause with the [troubleshooting and diagnostics method](diagnostics.md)**, which maps each symptom to the sources that explain it and the pillar that owns the fix (`gap:diagnostics-scope`, `gap:error-code-map`).
-10. **Repeat on a cadence** and compare to the last run, as the Well-Architected Review does with milestones (`ref:waf-review-assessment#milestones`).
+7. **Judge identity and Conditional Access with the [Entra ID and identity method](entra.md)**, which combines Azure control-plane facts and Microsoft Graph reads across join type, single sign-on, Conditional Access, and Azure Files Kerberos (`gap:identity-scope`).
+8. **Judge transport and session settings with the [remote protocol and session method](remote-protocols.md)**, which maps the transport vocabularies and judges each connection against the networks users connect from (`gap:remote-protocols-scope`, `gap:transport-classification`).
+9. **Judge host and device management with the [Intune and host management method](intune.md)**, which reads Intune state per host pool and scores what multi-session can't receive as not applicable (`gap:intune-scope`).
+10. **Judge collaboration and productivity apps with the [Microsoft 365 and collaboration method](m365.md)**, which evaluates shared computer activation, OneDrive Known Folder Move and Files On-Demand, Teams media optimization, and multimedia redirection (`gap:m365-scope`).
+11. **Judge low-code environments and VNet integration with the [Power Platform and low-code governance method](power-platform.md)** when Power Platform is in scope for the estate (`gap:power-platform-scope`).
+12. **When something is wrong, find the cause with the [troubleshooting and diagnostics method](diagnostics.md)**, which maps each symptom to the sources that explain it and the pillar that owns the fix (`gap:diagnostics-scope`, `gap:error-code-map`).
+13. **Repeat on a cadence** and compare to the last run, as the Well-Architected Review does with milestones (`ref:waf-review-assessment#milestones`).
 
 ## Not yet known
 

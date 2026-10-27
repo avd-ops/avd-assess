@@ -1,0 +1,15 @@
+id: power-platform-vnet
+title: Virtual Network support overview for Power Platform
+url: https://learn.microsoft.com/power-platform/admin/vnet-support-overview
+pin: "Learn git_commit_id c998a642c96d92bafb78d5c9350b26eea0f4c9d0, updated_at 2026-10-05"
+read: 2026-10-27
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [networking-azure, governance]
+claims:
+  - id: enterprise-policy-subnet
+    says: A Microsoft.PowerPlatform/enterprisePolicies resource links a Power Platform environment to delegated Azure virtual network subnets so Dataverse and Power Platform components reach private endpoints without public exposure.
+    kind: published
+  - id: delegated-subnet-egress
+    says: Subnets used for Power Platform Virtual Network injection are delegated to Microsoft.PowerPlatform/enterprisePolicies in the environment's supported regions.
+    kind: published

@@ -21,7 +21,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parent.parent
-REPOS = {"avd-landing-zone", "avd-current-state", "avd-assess", "avd-second-brain", "avd-swarm", "avd-ops"}
+REPOS = {"avd-landing-zone", "avd-entra", "avd-intune", "avd-m365", "avd-azure", "avd-power-platform", "avd-current-state", "avd-assess", "avd-second-brain", "avd-swarm", "avd-ops"}
 NEEDS = {"run": {"lesson", "run"}, "guarded": {"test", "ci"}, "built": {"code", "license", "test", "ci"}}
 # A kind must match its path, so a doc can't be labeled a test to raise a claim's standing.
 KIND_PATH = {

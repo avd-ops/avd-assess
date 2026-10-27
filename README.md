@@ -29,8 +29,11 @@ Where it sits in the family: [avd-landing-zone](https://github.com/avd-ops/avd-l
 | [Use cases](methods/use-cases.md) | Who uses the estate for what (personas, apps, performance, security and compliance needs), and what that says it should be |
 | [FinOps](methods/finops.md) | How to judge what an estate costs against Microsoft's and the FinOps Framework's guidance, and which repo holds which part |
 | [Security](methods/security.md) | How to judge an estate's security against Microsoft's AVD guidance, and which repo holds which part |
+| [Entra ID and identity](methods/entra.md) | How session hosts join, how users sign in with single sign-on and Conditional Access, how Azure Files Kerberos is wired, and how app groups and admin roles are assigned |
 | [Remote protocol and session](methods/remote-protocols.md) | How sessions reach their hosts: RDP transport, Shortpath and Multipath, judged against the networks users connect from, plus the session settings that ride on it |
 | [Intune and host management](methods/intune.md) | How hosts and client devices are managed: Intune enrollment, settings, baselines, compliance, apps and updates on multi-session, against Group Policy where an estate keeps it |
+| [Microsoft 365 and collaboration](methods/m365.md) | How Microsoft 365 Apps shared computer activation, OneDrive Known Folder Move and Files On-Demand, Teams media optimization, and multimedia redirection are configured for AVD |
+| [Power Platform and low-code governance](methods/power-platform.md) | How Power Platform environments, DLP connector policies, VNet integration, and Power Automate Desktop machine groups are governed when used with AVD |
 | [Troubleshooting and diagnostics](methods/diagnostics.md) | Which source answers which symptom, the triage flow per symptom, the error-code map, and the diagnostic facts proposed for the collector |
 | [Network](methods/network.md) | How to judge an estate's network, Azure side and client side (AVD Private Link on both), and what can be measured from outside |
 | [Reliability](methods/reliability.md) | How to judge zones, backup, continuity and disaster recovery against the workload's own targets, and why only a test proves recovery |

@@ -18,9 +18,14 @@
 #   relative to the repo at pins.<repo>, with an optional #anchor; for avd-assess it is this repo.
 # Nothing here is a security audit, a compliance attestation or a penetration test.
 schema: avd-assess-security-review/v1
-checked: 2026-10-21
+checked: 2026-10-27
 pins:
   avd-landing-zone: e66d8660b8054ef0b827912d9ebed2d45676c828
+  avd-entra: 3a6132c2146a58a7c5feb44cbeab3581d750d3fc
+  avd-intune: f64c56a84f7f53bcb7aeb398a456e0853d877633
+  avd-m365: f18b14f9866cce604b92738c92afa390e14ee7fc
+  avd-azure: ac01bc41b1e60d04bdfc01f77fe7832255d6644c
+  avd-power-platform: 454335695e8db154dd71550788e1ce3694b59e7e
   avd-current-state: f914918d939a8395ea2db4e6dc500409821f3353
   avd-second-brain: f59a1c5207f89ba71f4752fe2a52a091ca6fd376
   avd-swarm: c81fbcbda8d6a268f66bec24381aac76850a5c2c
@@ -29,6 +34,11 @@ maturity:
   source: {repo: avd-ops, path: docs/roadmap-spec.md#6-proven-pre-beta-and-design, kind: doc}
   repos:
     avd-landing-zone: proven
+    avd-entra: pre-beta
+    avd-intune: pre-beta
+    avd-m365: pre-beta
+    avd-azure: pre-beta
+    avd-power-platform: pre-beta
     avd-current-state: proven
     avd-assess: pre-beta
     avd-second-brain: pre-beta
@@ -99,14 +109,30 @@ areas:
           - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L444, kind: test}
           - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L539, kind: test}
         note: Decision 0019 stays proposed until a sandbox run confirms the connection.
+      - id: entra-ca-groups
+        repo: avd-entra
+        says: Deploys per-pool user and admin security groups, dynamic session host device groups, and AVD Conditional Access policies (reportOnly by default, with break-glass exclusions and Entra Kerberos setup).
+        standing: guarded
+        evidence:
+          - {repo: avd-entra, path: policies/conditional-access/avd-require-mfa.json, kind: code}
+          - {repo: avd-entra, path: scripts/Deploy-AvdEntra.ps1, kind: code}
+          - {repo: avd-entra, path: .github/workflows/validate.yml, kind: ci}
       - id: cs-reader-only
         repo: avd-current-state
         says: The collector and validator need Reader (Desktop Virtualization Reader recommended) and no write role; they read through Resource Graph and REST GET, every request is listed in rebuild/scope.json, and files are written only to the local output folder.
-        standing: built
+        standing: guarded
         evidence:
           - {repo: avd-current-state, path: README.md#read-only-by-design, kind: doc}
           - {repo: avd-current-state, path: rebuild/scope.json, kind: code}
-        note: No test fails when a script gains a write call (gap ci-read-only-guard).
+          - {repo: avd-current-state, path: tests/Facts.Tests.ps1#L103, kind: test}
+      - id: cs-graph-readonly
+        repo: avd-current-state
+        says: Multi-plane collection across Entra, Intune, Microsoft 365, and Power Platform uses only read-only Graph scopes (Directory.Read.All, Policy.Read.All, DeviceManagementConfiguration.Read.All, DeviceManagementManagedDevices.Read.All) and BAP read endpoints; write scopes (.ReadWrite.*, .Manage.*) are rejected at runtime and guarded in CI.
+        standing: guarded
+        evidence:
+          - {repo: avd-current-state, path: README.md#read-only-by-design, kind: doc}
+          - {repo: avd-current-state, path: rebuild/scope.json, kind: code}
+          - {repo: avd-current-state, path: tests/Facts.Tests.ps1#L103, kind: test}
       - id: swarm-identities
         repo: avd-swarm
         says: Each agent and job has its own identity with least privilege, federated credentials and managed identities only, and its own named Graph apps so sign-in logs and Conditional Access can target them.
@@ -141,6 +167,20 @@ areas:
         standing: built
         evidence:
           - {repo: avd-landing-zone, path: bicep/modules/network.bicep#L61, kind: code}
+      - id: azure-plane-network
+        repo: avd-azure
+        says: The standalone Azure plane module enforces the same Private Link, private endpoint, and session host NSG rules as the landing zone orchestrator.
+        standing: guarded
+        evidence:
+          - {repo: avd-azure, path: bicep/modules/network.bicep, kind: code}
+          - {repo: avd-azure, path: .github/workflows/validate.yml, kind: ci}
+      - id: pp-vnet-enterprise-policy
+        repo: avd-power-platform
+        says: Deploys Microsoft.PowerPlatform/enterprisePolicies in Bicep to link Power Platform environments to delegated virtual network subnets when private network reachability is enabled.
+        standing: guarded
+        evidence:
+          - {repo: avd-power-platform, path: bicep/main.bicep, kind: code}
+          - {repo: avd-power-platform, path: .github/workflows/validate.yml, kind: ci}
 
   - id: data-storage
     title: Profiles, secrets and encryption
@@ -211,6 +251,22 @@ areas:
         standing: built
         evidence:
           - {repo: avd-landing-zone, path: bicep/modules/controlPlane.bicep#L58, kind: code}
+      - id: intune-host-profiles
+        repo: avd-intune
+        says: Configures Intune MDM auto-enrollment, multi-session Settings Catalog profiles (FSLogix, RDP Shortpath, session limits), and secure-by-default host compliance policies.
+        standing: guarded
+        evidence:
+          - {repo: avd-intune, path: profiles/compliance/avd-session-host-compliance.json, kind: code}
+          - {repo: avd-intune, path: profiles/settings-catalog/avd-fslogix-profile.json, kind: code}
+          - {repo: avd-intune, path: .github/workflows/validate.yml, kind: ci}
+      - id: m365-vdi-baseline
+        repo: avd-m365
+        says: Applies OneDrive Known Folder Move and Files On-Demand, Microsoft 365 Apps Shared Computer Activation, and Teams VDI media optimization policies for session hosts.
+        standing: guarded
+        evidence:
+          - {repo: avd-m365, path: baselines/vdi-workplace-baseline.json, kind: code}
+          - {repo: avd-m365, path: scripts/Deploy-AvdM365.ps1, kind: code}
+          - {repo: avd-m365, path: .github/workflows/validate.yml, kind: ci}
 
   - id: governance-spend
     title: Governance, spend and teardown
@@ -237,6 +293,14 @@ areas:
         evidence:
           - {repo: avd-second-brain, path: docs/knowledge/decisions/0016-never-delete-the-last-copy.md, kind: decision}
           - {repo: avd-landing-zone, path: build/tests/OfflineScenarios.Tests.ps1#L60, kind: test}
+      - id: pp-dlp-baseline
+        repo: avd-power-platform
+        says: Enforces a baseline Data Loss Prevention policy that blocks unapproved connectors and scopes day-2 AVD flows to a dedicated Power Platform environment.
+        standing: guarded
+        evidence:
+          - {repo: avd-power-platform, path: dlp/avd-dlp-baseline.json, kind: code}
+          - {repo: avd-power-platform, path: scripts/Deploy-AvdPowerPlatform.ps1, kind: code}
+          - {repo: avd-power-platform, path: .github/workflows/validate.yml, kind: ci}
 
   - id: privacy
     title: Data handling and privacy of the tools
@@ -297,10 +361,15 @@ areas:
     claims:
       - id: family-licenses
         repo: avd-ops
-        says: All six public repos are MIT licensed; what they adopt is listed with its license on the credits page, and code from unlicensed repos is used as reference only.
+        says: All eleven public repos are MIT licensed; what they adopt is listed with its license on the credits page, and code from unlicensed repos is used as reference only.
         standing: built
         evidence:
           - {repo: avd-landing-zone, path: LICENSE, kind: license}
+          - {repo: avd-entra, path: LICENSE, kind: license}
+          - {repo: avd-intune, path: LICENSE, kind: license}
+          - {repo: avd-m365, path: LICENSE, kind: license}
+          - {repo: avd-azure, path: LICENSE, kind: license}
+          - {repo: avd-power-platform, path: LICENSE, kind: license}
           - {repo: avd-current-state, path: LICENSE, kind: license}
           - {repo: avd-assess, path: LICENSE, kind: license}
           - {repo: avd-second-brain, path: LICENSE, kind: license}
@@ -416,31 +485,31 @@ operator:
 checklist:
   - id: rc-identity
     ask: Which identities deploy, read and change the estate, with which roles and for how long?
-    see: [lz-deploy-owner, lz-ci-oidc, lz-graph-delegated, lz-rbac, cs-reader-only, swarm-identities, op-subscription-owner]
+    see: [lz-deploy-owner, lz-ci-oidc, lz-graph-delegated, lz-rbac, entra-ca-groups, cs-reader-only, cs-graph-readonly, swarm-identities, op-subscription-owner]
   - id: rc-secrets
     ask: Where is every secret, who can read it, and does any operator have to remember or paste one?
     see: [lz-break-glass, lz-key-vault, lz-jumpbox, lz-ci-oidc, lz-registration-token]
   - id: rc-exposure
     ask: What is reachable from the internet, and how do admins reach hosts?
-    see: [lz-private-link, lz-private-data-plane, lz-nsg, lz-jumpbox]
+    see: [lz-private-link, lz-private-data-plane, lz-nsg, azure-plane-network, pp-vnet-enterprise-policy, lz-jumpbox]
   - id: rc-profiles
     ask: How are user profiles authenticated, encrypted and protected from deletion?
     see: [lz-profile-share, op-ntfs, lz-last-copy]
   - id: rc-hosts
     ask: How are hosts hardened, checked for drift and protected?
-    see: [lz-trusted-launch, lz-encryption-at-host, lz-host-baseline, lz-defender-intune, op-trust-boundary, op-host-baseline, op-endpoint-protection]
+    see: [lz-trusted-launch, lz-encryption-at-host, lz-host-baseline, lz-defender-intune, intune-host-profiles, m365-vdi-baseline, op-trust-boundary, op-host-baseline, op-endpoint-protection]
   - id: rc-session
     ask: What can move between the user's device and the session?
     see: [lz-redirection, op-redirection]
   - id: rc-access
     ask: Which Conditional Access, MFA and consent decisions does the deployment need from the tenant?
-    see: [op-conditional-access, op-admin-consent]
+    see: [entra-ca-groups, op-conditional-access, op-admin-consent]
   - id: rc-governance
     ask: Which guardrails, logs and budgets are on, and which come from the platform?
-    see: [lz-policy, lz-budget-shutdown, op-platform-policy, op-logging]
+    see: [lz-policy, lz-budget-shutdown, pp-dlp-baseline, op-platform-policy, op-logging]
   - id: rc-data
     ask: What do the tools collect, where does it go, and what leaves the browser or the tenant?
-    see: [cs-reader-only, cs-facts-redaction, cs-portal-state, lz-portal-local, lz-portal-report, brain-layers, family-no-ids, op-pseudonym-key]
+    see: [cs-reader-only, cs-graph-readonly, cs-facts-redaction, cs-portal-state, lz-portal-local, lz-portal-report, brain-layers, family-no-ids, op-pseudonym-key]
   - id: rc-supply-chain
     ask: Can the code and its dependencies change under a passing build?
     see: [lz-pinned-tools, lz-psrule, secret-scan, lz-actions-pinned, pinned-sources, family-licenses]
@@ -452,7 +521,7 @@ checklist:
 # formal says where a full review exists, or none.
 threats:
   - repo: avd-landing-zone
-    touches: Creates and changes every resource in the landing zone subscription, the groups and apps it needs in Entra, and deletes on teardown.
+    touches: Orchestrates the five control planes and creates and changes every resource in the landing zone subscription, the groups and apps it needs in Entra, and deletes on teardown.
     risks:
       - An over-privileged deploying identity
       - A secret in the repo or a log
@@ -460,12 +529,44 @@ threats:
       - A teardown that deletes the only copy
     limits: [lz-deploy-owner, lz-ci-oidc, lz-break-glass, lz-private-data-plane, secret-scan, lz-last-copy]
     formal: none
-  - repo: avd-current-state
-    touches: Reads the subscriptions it is pointed at; writes only local files.
+  - repo: avd-entra
+    touches: Creates and configures AVD Entra dynamic groups, Conditional Access policies, and the Kerberos storage principal in the Entra plane.
     risks:
-      - A read identity granted more than Reader
+      - A Conditional Access change locking out administrators
+      - Over-broad Graph write scopes during deployment
+    limits: [lz-graph-delegated, op-conditional-access, op-admin-consent]
+    formal: none
+  - repo: avd-intune
+    touches: Deploys Intune Settings Catalog profiles, compliance policies, and security baselines for AVD session hosts.
+    risks:
+      - Misconfigured device policy affecting non-AVD endpoints
+    limits: [lz-defender-intune, op-host-baseline]
+    formal: none
+  - repo: avd-m365
+    touches: Configures OneDrive Known Folder Move, Microsoft 365 Apps Shared Computer Activation, Teams media optimization, and multimedia redirection policies.
+    risks:
+      - Unintended tenant-wide collaboration policy scope
+    limits: [lz-graph-delegated, op-admin-consent]
+    formal: none
+  - repo: avd-azure
+    touches: Deploys the Azure Resource Manager plane (networking, storage, Key Vault, host pools, session hosts, monitoring, and policy guardrails).
+    risks:
+      - Public exposure of storage or Key Vault
+      - Over-privileged role assignments
+    limits: [lz-private-data-plane, lz-rbac, lz-policy]
+    formal: none
+  - repo: avd-power-platform
+    touches: Configures Power Platform environments, Data Loss Prevention connector policies, and VNet enterprise policies when opted in.
+    risks:
+      - Unblocked connectors exfiltrating data from session hosts
+    limits: [lz-policy, op-platform-policy]
+    formal: none
+  - repo: avd-current-state
+    touches: Reads the subscriptions and control planes it is pointed at; writes only local files.
+    risks:
+      - A read identity granted more than Reader or read-only Graph scopes
       - Collected names or IDs leaving with the facts
-    limits: [cs-reader-only, cs-facts-redaction, cs-portal-state]
+    limits: [cs-reader-only, cs-graph-readonly, cs-facts-redaction, cs-portal-state]
     formal: none
   - repo: avd-assess
     touches: Nothing in Azure; publishes method, references and contracts that the other repos pin.

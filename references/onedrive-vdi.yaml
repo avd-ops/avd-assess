@@ -1,0 +1,18 @@
+id: onedrive-vdi
+title: Use the sync app on virtual desktops (OneDrive VDI support)
+url: https://learn.microsoft.com/sharepoint/sync-vdi-support
+pin: "Learn git_commit_id 9d9b5cecc7cff8124eb11f6cad601b8168f5e30d, updated_at 2026-10-15"
+read: 2026-10-27
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [images, profiles]
+claims:
+  - id: silent-config-and-kfm
+    says: Silent account configuration signs users in to OneDrive automatically on virtual desktops, and Known Folder Move redirects Desktop, Documents and Pictures into OneDrive so user files survive outside the profile container.
+    kind: published
+  - id: files-on-demand-vdi
+    says: Files On-Demand is supported on Windows 10 and Windows 11 virtual desktops with FSLogix profile containers and keeps un-opened files online-only so they do not bloat the profile VHDX.
+    kind: published
+  - id: per-machine-install
+    says: On virtual desktops shared by multiple users, install the OneDrive sync app per machine (/allusers) in the image.
+    kind: published
