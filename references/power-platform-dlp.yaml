@@ -1,0 +1,18 @@
+id: power-platform-dlp
+title: Data loss prevention policies in Power Platform
+url: https://learn.microsoft.com/power-platform/admin/wp-data-loss-prevention
+pin: "Learn git_commit_id 1441cc222fef2a8af2d4b618da57831455284c20, updated_at 2026-10-16"
+read: 2026-10-27
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [governance, security-posture]
+claims:
+  - id: environment-coverage
+    says: Every Power Platform environment running operational automation should be covered by at least one data loss prevention policy that separates business connectors from non-business and blocked connectors.
+    kind: guidance
+  - id: default-group-blocked
+    says: Setting the default connector group to Blocked ensures newly added connectors in Power Platform are blocked until an administrator explicitly classifies them.
+    kind: guidance
+  - id: connector-groups
+    says: Power Platform DLP policies classify connectors into Business, Non-Business and Blocked groups to prevent flows from combining operational connectors with unapproved external endpoints.
+    kind: published

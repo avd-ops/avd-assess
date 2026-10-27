@@ -9,5 +9,7 @@
   "workingHours": { "start": "07:00", "end": "19:00", "days": ["Mon", "Tue", "Wed", "Thu", "Fri"], "timeZone": "America/Chicago" },
   "appDelivery": ["image", "app-attach"],
   "appCompatibility": "some-untested",
-  "profileSolution": "fslogix"
+  "profileSolution": "fslogix",
+  "m365PlaneScope": "in-scope",
+  "powerPlatformPlaneScope": "in-scope"
 }

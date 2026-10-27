@@ -83,7 +83,7 @@ for rel, schema_name in EXAMPLES.items():
         if doc is not None:
             report(path, validator, doc)
 for path in sorted((CONTRACTS / "examples").rglob("*.json*")):
-    if str(path.relative_to(CONTRACTS)) not in EXAMPLES:
+    if path.relative_to(CONTRACTS).as_posix() not in EXAMPLES:
         err(path, "example isn't listed in tests/check_contracts.py, so nothing checks it")
 
 # C22: the shared definitions equal C20's, unique check IDs, what the example cites exists, and the
@@ -196,7 +196,7 @@ if plan_schema:
     method_schema = schemas.get("assess-method.schema.json", {})
     hint = method_schema.get("$defs", {}).get("remediation", {}).get("properties", {})
     change = plan_schema["properties"]["items"]["items"]["properties"]["change"]["properties"]
-    for key in ("kind", "name", "code"):
+    for key in ("kind", "plane", "name", "code"):
         if hint.get(key) != change.get(key):
             err(SCHEMAS / "remediation-plan.schema.json", f"change.{key} differs from assess-method's remediation.{key}")
     if method_schema.get("$defs", {}).get("publicValue") != plan_schema["$defs"]["publicValue"]:

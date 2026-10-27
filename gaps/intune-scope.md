@@ -27,7 +27,7 @@ So `intuneManaged` never exceeds the pool's host count.
 
 ## Facts this pillar specifies
 
-All are counts or one boolean, so no device or user name leaves the collector. They are `specified` in the fact register; avd-current-state builds them when it gains an Intune read.
+All are counts, public enums or booleans, so no device or user name leaves the collector. They are `built` in the fact register and produced by `avd-current-state`'s `Get-AvdStateIntune` collector (`methods/intune.md`).
 
 | Fact | Counts | Source |
 |---|---|---|
@@ -39,6 +39,12 @@ All are counts or one boolean, so no device or user name leaves the collector. T
 | `c11.hostPool.sessionHosts.intuneBaselineApplied` | Hosts with a security baseline profile applied | Intune baseline state through Graph |
 | `c11.hostPool.intuneOrphans` | Device records for the pool's host names with no session host | Graph managed devices, matched as above |
 | `c11.intune.noPolicyMeansNoncompliant` | Whether the tenant marks a device with no compliance policy noncompliant | Graph device management settings |
+| `c11.intune.mdmAutoEnrollmentScope` | Windows MDM auto-enrollment scope (`all`, `some`, `none`) | Graph mobile device management policies |
+| `c11.intune.multiSessionCatalogProfiles` | Assigned Settings Catalog policies applicable to Windows Enterprise multi-session | Graph configuration policies |
+| `c11.intune.fslogixProfileConfigured` | Whether an assigned Settings Catalog policy configures FSLogix Profile Containers (`Enabled` and `VHDLocations`) | Graph configuration policies |
+| `c11.intune.rdpShortpathConfigured` | Whether an assigned Settings Catalog policy configures RDP Shortpath / UDP transport on session hosts | Graph configuration policies |
+| `c11.intune.sessionTimeLimitsConfigured` | Whether an assigned Settings Catalog policy configures disconnected and idle session time limits | Graph configuration policies |
+| `c11.intune.multiSessionUpdateRingAssigned` | Whether a Windows Update ring or Autopatch group targets pooled multi-session session hosts | Graph device configurations |
 
 Intake answers, proposed for contract C19 (`gap:intake`): `intake.hostManagement`, `intake.hostServicing`, `intake.clientDevices`.
 

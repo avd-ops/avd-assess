@@ -12,6 +12,7 @@
     {
       "order": 1,
       "check": "asm-files-zone-redundant",
+      "plane": "azure",
       "outcome": "warn",
       "pillar": "reliability",
       "severity": "high",
@@ -22,6 +23,7 @@
       "source": "unreviewed",
       "change": {
         "kind": "lz-parameter",
+        "plane": "azure",
         "name": "profileStorageSku",
         "from": "Premium_LRS",
         "to": "Premium_ZRS"
@@ -30,6 +32,7 @@
     {
       "order": 2,
       "check": "asm-personal-start-vm-on-connect",
+      "plane": "azure",
       "outcome": "warn",
       "pillar": "cost",
       "severity": "low",
@@ -39,6 +42,7 @@
       "source": "review-fix",
       "change": {
         "kind": "lz-parameter",
+        "plane": "azure",
         "name": "startVmOnConnect",
         "from": false,
         "to": true
@@ -47,6 +51,7 @@
     {
       "order": 3,
       "check": "asm-defender-servers",
+      "plane": "azure",
       "outcome": "unknown",
       "pillar": "security",
       "severity": "medium",
@@ -57,6 +62,7 @@
       "source": "unreviewed",
       "change": {
         "kind": "manual",
+        "plane": "azure",
         "code": "collect-evidence"
       }
     }

@@ -10,9 +10,9 @@ Recommendation and remediation planning is the fifth stage of an assessment. It 
 
 | Kind | Means | Carries |
 |---|---|---|
-| `lz-parameter` | An avd-landing-zone parameter fixes it | The parameter's name and, where it is one public value, the value |
-| `lz-setting` | The landing zone always applies the fix, so redeploying from it fixes the finding | A short name for the setting |
-| `manual` | Outside what a landing zone redeploy fixes | A code: `collect-evidence` (the outcome was unknown), `rebuild-hosts` (hosts the landing zone deploys have it; existing hosts must be replaced), `private-value` (needs a value only the operator holds), `outside-landing-zone`, `process` (an operating practice, not a setting), `no-known-change` |
+| `lz-parameter` | A target-state parameter fixes it | The parameter's name, its target `plane` (`azure`, `entra`, `intune`, `m365`, `power-platform`, `orchestrator`), and, where it is one public value, the value |
+| `lz-setting` | The target-state plane always applies the fix, so redeploying from it fixes the finding | A short name for the setting and its target `plane` |
+| `manual` | Outside what a target-state redeploy fixes | A code: `collect-evidence` (the outcome was unknown), `rebuild-hosts` (hosts the landing zone deploys have it; existing hosts must be replaced), `remove-orphaned-devices` (delete stale Entra ID and Intune device records left behind by replaced hosts), `private-value` (needs a value only the operator holds), `outside-landing-zone`, `process` (an operating practice, not a setting), `no-known-change`, plus its target `plane` |
 
 Values are public only: a SKU, a count, a boolean, a region. Anything that needs a name, a prefix or an address is `manual` with `private-value`, and the operator puts it in their own parameter file.
 

@@ -18,6 +18,5 @@ How to judge the way an estate manages its session hosts and the client devices 
 
 ## Not yet known
 
-- No check runs yet. The facts are `specified` in the fact register, and avd-current-state has no Intune read; the draft checks are in `gap:intune-scope`.
-- Whether matching Intune devices to host pools by name holds on a real estate, including hosts renamed or rebuilt under the same name. A sandbox run with enrolled hosts settles it; it waits on a cost estimate and the owner's go.
+- Whether matching Intune devices to host pools by name holds on a real estate, including hosts renamed or rebuilt under the same name. A sandbox run with enrolled hosts settles it; it waits on a cost estimate and the owner's go (`gap:intune-scope`).
 - How long Intune's own cleanup takes to remove records of deleted multi-session hosts; Microsoft gives no guarantee (`ref:intune-avd-multisession#orphaned-records`).

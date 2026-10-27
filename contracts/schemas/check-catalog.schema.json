@@ -46,6 +46,16 @@
             "manual"
           ]
         },
+        "plane": {
+          "enum": [
+            "azure",
+            "entra",
+            "intune",
+            "m365",
+            "power-platform",
+            "orchestrator"
+          ]
+        },
         "name": {
           "type": "string",
           "pattern": "^[a-z][A-Za-z0-9-]{2,60}$"
@@ -57,6 +67,7 @@
           "enum": [
             "collect-evidence",
             "rebuild-hosts",
+            "remove-orphaned-devices",
             "private-value",
             "outside-landing-zone",
             "process",

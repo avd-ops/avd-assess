@@ -1,0 +1,12 @@
+id: avd-multimedia-redirection
+title: Multimedia redirection for Azure Virtual Desktop
+url: https://learn.microsoft.com/azure/virtual-desktop/multimedia-redirection-intro
+pin: "Learn git_commit_id a5a6107238e1f12e2f22cbfb5d0dd011696b5540, updated_at 2026-10-20"
+read: 2026-10-27
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [protocol]
+claims:
+  - id: mmr-browser-video
+    says: Multimedia redirection redirects video playback and audio calls from Edge or Chrome inside the remote session to the local device for faster rendering and lower session host CPU consumption.
+    kind: published

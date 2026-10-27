@@ -1,8 +1,13 @@
 {
   "schema": "avd-assess-security-review/v1",
-  "checked": "2026-10-21",
+  "checked": "2026-10-27",
   "pins": {
     "avd-landing-zone": "e66d8660b8054ef0b827912d9ebed2d45676c828",
+    "avd-entra": "3a6132c2146a58a7c5feb44cbeab3581d750d3fc",
+    "avd-intune": "f64c56a84f7f53bcb7aeb398a456e0853d877633",
+    "avd-m365": "f18b14f9866cce604b92738c92afa390e14ee7fc",
+    "avd-azure": "ac01bc41b1e60d04bdfc01f77fe7832255d6644c",
+    "avd-power-platform": "454335695e8db154dd71550788e1ce3694b59e7e",
     "avd-current-state": "f914918d939a8395ea2db4e6dc500409821f3353",
     "avd-second-brain": "f59a1c5207f89ba71f4752fe2a52a091ca6fd376",
     "avd-swarm": "c81fbcbda8d6a268f66bec24381aac76850a5c2c",
@@ -17,6 +22,11 @@
     },
     "repos": {
       "avd-landing-zone": "proven",
+      "avd-entra": "pre-beta",
+      "avd-intune": "pre-beta",
+      "avd-m365": "pre-beta",
+      "avd-azure": "pre-beta",
+      "avd-power-platform": "pre-beta",
       "avd-current-state": "proven",
       "avd-assess": "pre-beta",
       "avd-second-brain": "pre-beta",
@@ -216,10 +226,36 @@
           "note": "Decision 0019 stays proposed until a sandbox run confirms the connection."
         },
         {
+          "id": "entra-ca-groups",
+          "repo": "avd-entra",
+          "says": "Deploys per-pool user and admin security groups, dynamic session host device groups, and AVD Conditional Access policies (reportOnly by default, with break-glass exclusions and Entra Kerberos setup).",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-entra",
+              "path": "policies/conditional-access/avd-require-mfa.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-entra/blob/3a6132c2146a58a7c5feb44cbeab3581d750d3fc/policies/conditional-access/avd-require-mfa.json"
+            },
+            {
+              "repo": "avd-entra",
+              "path": "scripts/Deploy-AvdEntra.ps1",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-entra/blob/3a6132c2146a58a7c5feb44cbeab3581d750d3fc/scripts/Deploy-AvdEntra.ps1"
+            },
+            {
+              "repo": "avd-entra",
+              "path": ".github/workflows/validate.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-entra/blob/3a6132c2146a58a7c5feb44cbeab3581d750d3fc/.github/workflows/validate.yml"
+            }
+          ]
+        },
+        {
           "id": "cs-reader-only",
           "repo": "avd-current-state",
           "says": "The collector and validator need Reader (Desktop Virtualization Reader recommended) and no write role; they read through Resource Graph and REST GET, every request is listed in rebuild/scope.json, and files are written only to the local output folder.",
-          "standing": "built",
+          "standing": "guarded",
           "evidence": [
             {
               "repo": "avd-current-state",
@@ -232,9 +268,40 @@
               "path": "rebuild/scope.json",
               "kind": "code",
               "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/rebuild/scope.json"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "tests/Facts.Tests.ps1#L103",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L103"
             }
-          ],
-          "note": "No test fails when a script gains a write call (gap ci-read-only-guard)."
+          ]
+        },
+        {
+          "id": "cs-graph-readonly",
+          "repo": "avd-current-state",
+          "says": "Multi-plane collection across Entra, Intune, Microsoft 365, and Power Platform uses only read-only Graph scopes (Directory.Read.All, Policy.Read.All, DeviceManagementConfiguration.Read.All, DeviceManagementManagedDevices.Read.All) and BAP read endpoints; write scopes (.ReadWrite.*, .Manage.*) are rejected at runtime and guarded in CI.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-current-state",
+              "path": "README.md#read-only-by-design",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/README.md#read-only-by-design"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "rebuild/scope.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/rebuild/scope.json"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "tests/Facts.Tests.ps1#L103",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L103"
+            }
+          ]
         },
         {
           "id": "swarm-identities",
@@ -324,6 +391,46 @@
               "path": "bicep/modules/network.bicep#L61",
               "kind": "code",
               "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/network.bicep#L61"
+            }
+          ]
+        },
+        {
+          "id": "azure-plane-network",
+          "repo": "avd-azure",
+          "says": "The standalone Azure plane module enforces the same Private Link, private endpoint, and session host NSG rules as the landing zone orchestrator.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-azure",
+              "path": "bicep/modules/network.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-azure/blob/ac01bc41b1e60d04bdfc01f77fe7832255d6644c/bicep/modules/network.bicep"
+            },
+            {
+              "repo": "avd-azure",
+              "path": ".github/workflows/validate.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-azure/blob/ac01bc41b1e60d04bdfc01f77fe7832255d6644c/.github/workflows/validate.yml"
+            }
+          ]
+        },
+        {
+          "id": "pp-vnet-enterprise-policy",
+          "repo": "avd-power-platform",
+          "says": "Deploys Microsoft.PowerPlatform/enterprisePolicies in Bicep to link Power Platform environments to delegated virtual network subnets when private network reachability is enabled.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-power-platform",
+              "path": "bicep/main.bicep",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-power-platform/blob/454335695e8db154dd71550788e1ce3694b59e7e/bicep/main.bicep"
+            },
+            {
+              "repo": "avd-power-platform",
+              "path": ".github/workflows/validate.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-power-platform/blob/454335695e8db154dd71550788e1ce3694b59e7e/.github/workflows/validate.yml"
             }
           ]
         }
@@ -521,6 +628,58 @@
               "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/bicep/modules/controlPlane.bicep#L58"
             }
           ]
+        },
+        {
+          "id": "intune-host-profiles",
+          "repo": "avd-intune",
+          "says": "Configures Intune MDM auto-enrollment, multi-session Settings Catalog profiles (FSLogix, RDP Shortpath, session limits), and secure-by-default host compliance policies.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-intune",
+              "path": "profiles/compliance/avd-session-host-compliance.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-intune/blob/f64c56a84f7f53bcb7aeb398a456e0853d877633/profiles/compliance/avd-session-host-compliance.json"
+            },
+            {
+              "repo": "avd-intune",
+              "path": "profiles/settings-catalog/avd-fslogix-profile.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-intune/blob/f64c56a84f7f53bcb7aeb398a456e0853d877633/profiles/settings-catalog/avd-fslogix-profile.json"
+            },
+            {
+              "repo": "avd-intune",
+              "path": ".github/workflows/validate.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-intune/blob/f64c56a84f7f53bcb7aeb398a456e0853d877633/.github/workflows/validate.yml"
+            }
+          ]
+        },
+        {
+          "id": "m365-vdi-baseline",
+          "repo": "avd-m365",
+          "says": "Applies OneDrive Known Folder Move and Files On-Demand, Microsoft 365 Apps Shared Computer Activation, and Teams VDI media optimization policies for session hosts.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-m365",
+              "path": "baselines/vdi-workplace-baseline.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-m365/blob/f18b14f9866cce604b92738c92afa390e14ee7fc/baselines/vdi-workplace-baseline.json"
+            },
+            {
+              "repo": "avd-m365",
+              "path": "scripts/Deploy-AvdM365.ps1",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-m365/blob/f18b14f9866cce604b92738c92afa390e14ee7fc/scripts/Deploy-AvdM365.ps1"
+            },
+            {
+              "repo": "avd-m365",
+              "path": ".github/workflows/validate.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-m365/blob/f18b14f9866cce604b92738c92afa390e14ee7fc/.github/workflows/validate.yml"
+            }
+          ]
         }
       ]
     },
@@ -589,6 +748,32 @@
               "path": "build/tests/OfflineScenarios.Tests.ps1#L60",
               "kind": "test",
               "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/build/tests/OfflineScenarios.Tests.ps1#L60"
+            }
+          ]
+        },
+        {
+          "id": "pp-dlp-baseline",
+          "repo": "avd-power-platform",
+          "says": "Enforces a baseline Data Loss Prevention policy that blocks unapproved connectors and scopes day-2 AVD flows to a dedicated Power Platform environment.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-power-platform",
+              "path": "dlp/avd-dlp-baseline.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-power-platform/blob/454335695e8db154dd71550788e1ce3694b59e7e/dlp/avd-dlp-baseline.json"
+            },
+            {
+              "repo": "avd-power-platform",
+              "path": "scripts/Deploy-AvdPowerPlatform.ps1",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-power-platform/blob/454335695e8db154dd71550788e1ce3694b59e7e/scripts/Deploy-AvdPowerPlatform.ps1"
+            },
+            {
+              "repo": "avd-power-platform",
+              "path": ".github/workflows/validate.yml",
+              "kind": "ci",
+              "url": "https://github.com/avd-ops/avd-power-platform/blob/454335695e8db154dd71550788e1ce3694b59e7e/.github/workflows/validate.yml"
             }
           ]
         }
@@ -759,7 +944,7 @@
         {
           "id": "family-licenses",
           "repo": "avd-ops",
-          "says": "All six public repos are MIT licensed; what they adopt is listed with its license on the credits page, and code from unlicensed repos is used as reference only.",
+          "says": "All eleven public repos are MIT licensed; what they adopt is listed with its license on the credits page, and code from unlicensed repos is used as reference only.",
           "standing": "built",
           "evidence": [
             {
@@ -767,6 +952,36 @@
               "path": "LICENSE",
               "kind": "license",
               "url": "https://github.com/avd-ops/avd-landing-zone/blob/e66d8660b8054ef0b827912d9ebed2d45676c828/LICENSE"
+            },
+            {
+              "repo": "avd-entra",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-entra/blob/3a6132c2146a58a7c5feb44cbeab3581d750d3fc/LICENSE"
+            },
+            {
+              "repo": "avd-intune",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-intune/blob/f64c56a84f7f53bcb7aeb398a456e0853d877633/LICENSE"
+            },
+            {
+              "repo": "avd-m365",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-m365/blob/f18b14f9866cce604b92738c92afa390e14ee7fc/LICENSE"
+            },
+            {
+              "repo": "avd-azure",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-azure/blob/ac01bc41b1e60d04bdfc01f77fe7832255d6644c/LICENSE"
+            },
+            {
+              "repo": "avd-power-platform",
+              "path": "LICENSE",
+              "kind": "license",
+              "url": "https://github.com/avd-ops/avd-power-platform/blob/454335695e8db154dd71550788e1ce3694b59e7e/LICENSE"
             },
             {
               "repo": "avd-current-state",
@@ -1094,7 +1309,9 @@
         "lz-ci-oidc",
         "lz-graph-delegated",
         "lz-rbac",
+        "entra-ca-groups",
         "cs-reader-only",
+        "cs-graph-readonly",
         "swarm-identities",
         "op-subscription-owner"
       ]
@@ -1117,6 +1334,8 @@
         "lz-private-link",
         "lz-private-data-plane",
         "lz-nsg",
+        "azure-plane-network",
+        "pp-vnet-enterprise-policy",
         "lz-jumpbox"
       ]
     },
@@ -1137,6 +1356,8 @@
         "lz-encryption-at-host",
         "lz-host-baseline",
         "lz-defender-intune",
+        "intune-host-profiles",
+        "m365-vdi-baseline",
         "op-trust-boundary",
         "op-host-baseline",
         "op-endpoint-protection"
@@ -1154,6 +1375,7 @@
       "id": "rc-access",
       "ask": "Which Conditional Access, MFA and consent decisions does the deployment need from the tenant?",
       "see": [
+        "entra-ca-groups",
         "op-conditional-access",
         "op-admin-consent"
       ]
@@ -1164,6 +1386,7 @@
       "see": [
         "lz-policy",
         "lz-budget-shutdown",
+        "pp-dlp-baseline",
         "op-platform-policy",
         "op-logging"
       ]
@@ -1173,6 +1396,7 @@
       "ask": "What do the tools collect, where does it go, and what leaves the browser or the tenant?",
       "see": [
         "cs-reader-only",
+        "cs-graph-readonly",
         "cs-facts-redaction",
         "cs-portal-state",
         "lz-portal-local",
@@ -1208,7 +1432,7 @@
   "threats": [
     {
       "repo": "avd-landing-zone",
-      "touches": "Creates and changes every resource in the landing zone subscription, the groups and apps it needs in Entra, and deletes on teardown.",
+      "touches": "Orchestrates the five control planes and creates and changes every resource in the landing zone subscription, the groups and apps it needs in Entra, and deletes on teardown.",
       "risks": [
         "An over-privileged deploying identity",
         "A secret in the repo or a log",
@@ -1226,14 +1450,79 @@
       "formal": "none"
     },
     {
-      "repo": "avd-current-state",
-      "touches": "Reads the subscriptions it is pointed at; writes only local files.",
+      "repo": "avd-entra",
+      "touches": "Creates and configures AVD Entra dynamic groups, Conditional Access policies, and the Kerberos storage principal in the Entra plane.",
       "risks": [
-        "A read identity granted more than Reader",
+        "A Conditional Access change locking out administrators",
+        "Over-broad Graph write scopes during deployment"
+      ],
+      "limits": [
+        "lz-graph-delegated",
+        "op-conditional-access",
+        "op-admin-consent"
+      ],
+      "formal": "none"
+    },
+    {
+      "repo": "avd-intune",
+      "touches": "Deploys Intune Settings Catalog profiles, compliance policies, and security baselines for AVD session hosts.",
+      "risks": [
+        "Misconfigured device policy affecting non-AVD endpoints"
+      ],
+      "limits": [
+        "lz-defender-intune",
+        "op-host-baseline"
+      ],
+      "formal": "none"
+    },
+    {
+      "repo": "avd-m365",
+      "touches": "Configures OneDrive Known Folder Move, Microsoft 365 Apps Shared Computer Activation, Teams media optimization, and multimedia redirection policies.",
+      "risks": [
+        "Unintended tenant-wide collaboration policy scope"
+      ],
+      "limits": [
+        "lz-graph-delegated",
+        "op-admin-consent"
+      ],
+      "formal": "none"
+    },
+    {
+      "repo": "avd-azure",
+      "touches": "Deploys the Azure Resource Manager plane (networking, storage, Key Vault, host pools, session hosts, monitoring, and policy guardrails).",
+      "risks": [
+        "Public exposure of storage or Key Vault",
+        "Over-privileged role assignments"
+      ],
+      "limits": [
+        "lz-private-data-plane",
+        "lz-rbac",
+        "lz-policy"
+      ],
+      "formal": "none"
+    },
+    {
+      "repo": "avd-power-platform",
+      "touches": "Configures Power Platform environments, Data Loss Prevention connector policies, and VNet enterprise policies when opted in.",
+      "risks": [
+        "Unblocked connectors exfiltrating data from session hosts"
+      ],
+      "limits": [
+        "lz-policy",
+        "op-platform-policy"
+      ],
+      "formal": "none"
+    },
+    {
+      "repo": "avd-current-state",
+      "touches": "Reads the subscriptions and control planes it is pointed at; writes only local files.",
+      "risks": [
+        "A read identity granted more than Reader or read-only Graph scopes",
         "Collected names or IDs leaving with the facts"
       ],
       "limits": [
         "cs-reader-only",
+        "cs-graph-readonly",
         "cs-facts-redaction",
         "cs-portal-state"
       ],

@@ -7,6 +7,7 @@
 1. **Pillar score:** for each Well-Architected pillar, the severity weight of checks that pass divided by the weight of checks assessed (pass, warn or gap). A `warn` counts half. Weights: high 3, medium 2, low 1 (the checklist's own severities).
 2. **Coverage beside every score:** the share of the pillar's checks that weren't `unknown`. An unknown never counts as a pass or a gap.
 3. **Decision readiness** from `gap:decision-readiness`, shown next to the scores.
-4. **No single overall number** in version 1, because one figure hides which pillar or decision is weak.
+4. **Per-plane rollup:** alongside the five Well-Architected pillars, C21 carries a secondary `planes` rollup (`azure`, `entra`, `intune`, `m365`, `power-platform`) using the same severity-weighted formula and coverage ratio over each plane's checks, with `not-applicable` outcomes excluded from both numerator and denominator.
+5. **No single overall number** in version 1, because one figure hides which pillar, plane or decision is weak.
 
 If a high score keeps coming with real problems in our runs, that becomes a `disagrees` observation on this gap.
