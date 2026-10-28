@@ -21,10 +21,13 @@
 | Event 3703 | Host Application log | Gateway URLs unreachable (`ref:troubleshoot-agent#event-3703-gateway`) | `gap:triage-host-unhealthy` |
 | Event 3019 | Host Application log | Web socket URLs unreachable (`ref:troubleshoot-agent#event-3019-websocket`) | `gap:triage-host-unhealthy` |
 | `NAME_ALREADY_REGISTERED` | Host Application log | Duplicate host name in the pool (`ref:troubleshoot-agent#name-already-registered`) | `gap:triage-host-unhealthy` |
-| `O_REVERSE_CONNECT_STACK_FAILURE` | Host | Side-by-side stack not installed (`ref:troubleshoot-session-host-vm#reverse-connect-stack-failure`) | `gap:triage-host-unhealthy` |
+| `Connection not found` (no active broker connection) | Host / `WVDErrors` | Host is at its session limit or the agent lost its broker connection (`ref:troubleshoot-agent#at-connection-limit`) | `gap:triage-cannot-connect` |
+| `O_REVERSE_CONNECT_STACK_FAILURE` | Host / `WVDErrors` | Side-by-side stack not installed (`ref:troubleshoot-session-host-vm#reverse-connect-stack-failure`) | `gap:triage-host-unhealthy` |
 | `AADSTS50058`, `AADSTS50076`, `AADSTS530002`, `AADSTS530032`, `AADSTS65001` | Entra sign-in logs | Session, MFA, compliance, tenant block, consent (`ref:troubleshoot-sso-conditional-access#aadsts-codes`) | `gap:triage-cannot-connect` |
-| Shortpath error codes | `WVDErrors` | UDP path dropped or below its reliability threshold (`ref:troubleshoot-rdp-shortpath#udp-error-codes`) | `gap:triage-slow-session` |
-| FSLogix `[WARN:...]`, `[ERROR:...]` | FSLogix profile log | Each carries its own code (`ref:fslogix-logs#profile-log-first`) | `gap:triage-profile-failed` |
+| Entra VM sign-in account / credentials error | Client / Entra sign-in | Missing `Virtual Machine User Login` role or per-user MFA enforced on Entra-joined host (`ref:troubleshoot-entra-joined#vm-user-login-role`, `ref:troubleshoot-entra-joined#per-user-mfa-unsupported`) | `gap:triage-cannot-connect` |
+| Feed empty (`no resources available`) | Client feed / `WVDFeeds` | User not assigned to an application group, assigned via distribution group, or subscription moved across tenants (`ref:troubleshoot-service-connection#no-feed-assignment`, `ref:troubleshoot-service-connection#feed-lost-after-tenant-move`) | `gap:triage-cannot-connect` |
+| Shortpath UDP drop / fallback codes | `WVDErrors` | UDP path dropped or below its reliability threshold (`ref:troubleshoot-rdp-shortpath#udp-error-codes`) | `gap:triage-slow-session` |
+| FSLogix `[WARN:...]`, `[ERROR:...]` (including Kerberos RC4/AES ticket errors) | FSLogix profile log / Event log | Container attach, VHDX lock or Kerberos encryption failure (`ref:fslogix-logs#profile-log-first`, `ref:fslogix-logs#kerberos-rc4-change`) | `gap:triage-profile-failed` |
 | Any other `CodeSymbolic` | `WVDErrors` | `unmapped`: read its message and source, then the component's page | by Source and Operation |
 
 Rules:

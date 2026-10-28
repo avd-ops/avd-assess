@@ -13,6 +13,7 @@ This folder is the authority for the formats the foundation repos exchange: avd-
 | C22 `avd-check-catalog/v1` | `schemas/check-catalog.schema.json`, `examples/checks/` | avd-current-state (`checks/catalog.json`) | avd-current-state's validator and drift check, avd-landing-zone (vendored with the checks module) |
 | C23 `avd-assessment-review/v1` | `schemas/assessment-review.schema.json` | avd-current-state's assessment portal | the plan (C24), the brain (optional import) |
 | C24 `avd-remediation-plan/v1` | `schemas/remediation-plan.schema.json` | avd-current-state's assessment portal | the operator, the landing zone (later), the brain and avd-swarm (optional import) |
+| C25 `avd-benchmark-result/v1` | `schemas/benchmark-result.schema.json`, `examples/assess/benchmark-result.example.json` | avd-benchmark (Tier 1 synthetic), avd-current-state (Tier 2 observational) | here (`evidence/`), the benchmark explorer portal, the standards library, the brain |
 
 The release manifest, `datapackage.json` with profile `avd-assess-bundle/v1` (`schemas/assess-bundle.schema.json`), is how all of the above ship together; it carries no contract number and is never committed ([distribution spec](../docs/distribution-spec.md)).
 
