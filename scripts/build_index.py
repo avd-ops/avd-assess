@@ -70,6 +70,7 @@ def build_map():
         "baselines": {k: v for k, v in read("baselines.yaml").items() if k != "schema"},
         "useCases": read("use-cases.yaml").get("entries", []),
         "goldStandards": read("gold-standards.yaml").get("entries", []),
+        "benchmarks": read("benchmarks/profiles.yaml").get("profiles", []),
     }
     return json.dumps(doc, indent=2, ensure_ascii=True, default=str) + "\n"
 

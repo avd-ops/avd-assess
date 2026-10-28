@@ -14,4 +14,4 @@
 
 **How it changes.** A value moves to `published` the day a source states it. A value that measured runs keep contradicting gets a `disagrees` observation and the gold-standard registry demotes it (`gap:gold-standards`).
 
-**Not yet known.** No profile value has been checked against users we measured (`obs:users-per-vcpu-adopted`). The 40% and 60% headroom figures come from a cost tool for all user-facing VMs, not from AVD testing.
+**Not yet known.** No profile value has been checked against users we measured (`obs:users-per-vcpu-adopted`). The 40% and 60% headroom figures come from a cost tool for all user-facing VMs, not from AVD testing. The two-tier benchmark profiles in [benchmarks/profiles.yaml](../benchmarks/profiles.yaml) (`gap:workload-benchmark`) and Contract C25 (`avd-benchmark-result/v1`) define how each prior and `not-yet-tested` observation is measured and submitted.

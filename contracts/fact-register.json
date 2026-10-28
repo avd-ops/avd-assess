@@ -567,7 +567,7 @@
       "grain": "hostPool",
       "unit": "bool",
       "privacy": "boolean",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -768,7 +768,7 @@
       "grain": "storageAccount",
       "unit": "bool",
       "privacy": "boolean",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -790,7 +790,7 @@
       "grain": "storageAccount",
       "unit": "bool",
       "privacy": "boolean",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -849,7 +849,7 @@
       "grain": "hostPool",
       "unit": "hosts",
       "privacy": "count",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -860,7 +860,7 @@
       "grain": "hostPool",
       "unit": "hosts",
       "privacy": "count",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -1093,7 +1093,7 @@
       "grain": "hostPool",
       "unit": "hosts",
       "privacy": "count",
-      "status": "specified",
+      "status": "built",
       "evidences": [
         "hostPool.vmSize"
       ]
@@ -1106,7 +1106,7 @@
       "grain": "hostPool",
       "unit": "hosts",
       "privacy": "count",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -1117,7 +1117,7 @@
       "grain": "hostPool",
       "unit": "count",
       "privacy": "count",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -1128,7 +1128,7 @@
       "grain": "hostPool",
       "unit": "count",
       "privacy": "count",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -1274,7 +1274,7 @@
       "grain": "hostPool",
       "unit": "enum",
       "privacy": "public",
-      "status": "specified",
+      "status": "built",
       "evidences": []
     },
     {
@@ -1307,7 +1307,7 @@
       "grain": "hostPool",
       "unit": "enum",
       "privacy": "public",
-      "status": "specified",
+      "status": "built",
       "evidences": [
         "hostPool.power"
       ]
@@ -2807,6 +2807,127 @@
       "grain": "estate",
       "unit": "enum",
       "privacy": "public",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.notAcceleratedNetworking",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/notAcceleratedNetworking",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "built",
+      "evidences": [
+        "hostPool.vmSize"
+      ]
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.notEncryptionAtHost",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/notEncryptionAtHost",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.nonPremiumOsDisk",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/nonPremiumOsDisk",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.hostPool.sessionHosts.unpinnedZones",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/sessionHosts/unpinnedZones",
+      "grain": "hostPool",
+      "unit": "hosts",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.insights.rttP50",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/insights/rttP50",
+      "grain": "hostPool",
+      "unit": "ms",
+      "privacy": "measure",
+      "status": "built",
+      "evidences": [
+        "region"
+      ]
+    },
+    {
+      "id": "c11.insights.rttP95",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/insights/rttP95",
+      "grain": "hostPool",
+      "unit": "ms",
+      "privacy": "measure",
+      "status": "built",
+      "evidences": [
+        "region"
+      ]
+    },
+    {
+      "id": "c11.insights.inputDelayP95",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/insights/inputDelayP95",
+      "grain": "hostPool",
+      "unit": "ms",
+      "privacy": "measure",
+      "status": "built",
+      "evidences": [
+        "hostPool.vmSize",
+        "hostPool.maxSessions"
+      ]
+    },
+    {
+      "id": "c11.insights.timeToConnectP95",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/insights/timeToConnectP95",
+      "grain": "hostPool",
+      "unit": "seconds",
+      "privacy": "measure",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.insights.fslogixReadIopsP95",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/insights/fslogixReadIopsP95",
+      "grain": "hostPool",
+      "unit": "iops",
+      "privacy": "measure",
+      "status": "built",
+      "evidences": [
+        "hostPool.profileQuotaGiB"
+      ]
+    },
+    {
+      "id": "c11.insights.connectionFailureRate",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/hostPools/*/insights/connectionFailureRate",
+      "grain": "hostPool",
+      "unit": "percent",
+      "privacy": "measure",
       "status": "built",
       "evidences": []
     }

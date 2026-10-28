@@ -121,23 +121,27 @@ classes:
     multiSession: {usersPerVcpuMax: 6, minVcpu: 8, minMemoryGiB: 16, osDiskGiB: 32}
     singleSession: {minVcpu: 2, minMemoryGiB: 8, osDiskGiB: 32}
     profileGiB: 30
-    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#single-session-minimums, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only]
+    benchmarkProfile: multisession-density
+    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#single-session-minimums, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only, obs:users-per-vcpu-adopted, gap:workload-benchmark]
     standing: prior
   - id: medium
     multiSession: {usersPerVcpuMax: 4, minVcpu: 8, minMemoryGiB: 16, osDiskGiB: 32}
     singleSession: {minVcpu: 4, minMemoryGiB: 16, osDiskGiB: 32}
     profileGiB: 30
-    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#single-session-minimums, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only]
+    benchmarkProfile: multisession-density
+    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#single-session-minimums, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only, obs:users-per-vcpu-adopted, obs:sizing-floor-not-measured, gap:workload-benchmark]
     standing: prior
   - id: heavy
     multiSession: {usersPerVcpuMax: 2, minVcpu: 8, minMemoryGiB: 16, osDiskGiB: 32}
     singleSession: {minVcpu: 8, minMemoryGiB: 32, osDiskGiB: 32}
     profileGiB: 30
-    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#single-session-minimums, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only]
+    benchmarkProfile: multisession-density
+    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#single-session-minimums, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only, obs:users-per-vcpu-adopted, gap:workload-benchmark]
     standing: prior
   - id: power
     multiSession: {usersPerVcpuMax: 1, minVcpu: 6, minMemoryGiB: 56, osDiskGiB: 340}
     profileGiB: 30
+    benchmarkProfile: multisession-density
     gpu: Consider GPU hosts for graphics-heavy apps or more than 3840 x 2160 total resolution; users per GPU has no published number
-    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#gpu-for-graphics, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only, gap:deployment-dimensions]
+    claims: [ref:session-host-sizing#multisession-users-per-vcpu, ref:session-host-sizing#multisession-minimums, ref:session-host-sizing#gpu-for-graphics, ref:session-host-sizing#profile-storage-minimum, ref:session-host-sizing#estimates-only, obs:users-per-vcpu-adopted, gap:deployment-dimensions, gap:workload-benchmark]
     standing: prior

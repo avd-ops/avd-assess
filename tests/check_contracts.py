@@ -25,6 +25,7 @@ EXAMPLES = {
     "examples/assess/assessment.example.json": "assessment.schema.json",
     "examples/assess/review.example.json": "assessment-review.schema.json",
     "examples/assess/plan.example.json": "remediation-plan.schema.json",
+    "examples/assess/benchmark-result.example.json": "benchmark-result.schema.json",
     "examples/checks/catalog.example.json": "check-catalog.schema.json",
     "examples/run-record/run.example.json": "run-record.schema.json",
     "examples/run-record/cost.example.json": "run-cost.schema.json",
