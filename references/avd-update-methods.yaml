@@ -1,8 +1,8 @@
 id: avd-update-methods
 title: Windows update management methodologies for Azure Virtual Desktop session hosts
 url: https://learn.microsoft.com/azure/virtual-desktop/windows-update-management-methodologies-session-hosts
-pin: "Learn git_commit_id c972d4459371656583cdf255f87778a5ffc75fa4, updated_at 2026-10-08"
-read: 2026-10-20
+pin: "Learn git_commit_id de6e2325bea5c22de746080fb3965dbf1b277e5a, updated_at 2026-10-28"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:
@@ -19,5 +19,5 @@ claims:
     says: Image-based servicing through session host update is recommended for pooled host pools; it keeps hosts consistent and eases rollback.
     kind: published
   - id: hotpatch
-    says: Hotpatch applies eligible monthly security updates without a reboot on supported editions, including multi-session.
+    says: Hotpatch applies eligible monthly security updates without a reboot on Windows Server Azure Edition and Windows 11 Enterprise 24H2 or later with VBS on; multi-session isn't supported.
     kind: published

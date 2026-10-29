@@ -1,8 +1,8 @@
 id: arch-avd-design-guide
 title: Azure Architecture Center, Azure Virtual Desktop landing zone design guide
 url: https://learn.microsoft.com/azure/architecture/landing-zones/azure-virtual-desktop/design-guide
-pin: "Learn git_commit_id 1a7a778bf46ec7c3bdd403f91d5985a92ac6cc25, updated_at 2026-10-05"
-read: 2026-10-21
+pin: "Learn git_commit_id dd1873a40db49a7541996af5597d94969aa63444, updated_at 2026-10-27"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:

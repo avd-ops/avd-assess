@@ -245,8 +245,8 @@
     }
   ],
   "landingZone": {
-    "commit": "ae5c2877d53d9af8e1efbf47b85cfdef06c51364",
-    "source": "https://github.com/avd-ops/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep",
+    "commit": "a0ca7c443aa0e7704e7ef1163da411a719ef262b",
+    "source": "https://github.com/avd-ops/avd-landing-zone/blob/a0ca7c443aa0e7704e7ef1163da411a719ef262b/bicep/main.bicep",
     "parameters": [
       "namePrefix",
       "environmentName",
@@ -304,7 +304,19 @@
       "deploySubscriptionSettings",
       "enablePolicyGuardrails",
       "recoveryLocation",
-      "allowedLocations"
+      "allowedLocations",
+      "sessionHostImageId",
+      "sessionHostGeneration",
+      "hostPoolStateTags",
+      "deployJumpbox",
+      "jumpboxSubnetPrefix",
+      "jumpboxOs",
+      "jumpboxVmSize",
+      "jumpboxAutoShutdownTime",
+      "jumpboxKeepRunningUntil",
+      "jumpboxExists",
+      "jumpboxAdminPassword",
+      "topology"
     ],
     "notDimensions": {
       "namePrefix": "Naming only.",
@@ -315,7 +327,11 @@
       "avdServicePrincipalObjectId": "The service's own identity in the tenant; fixed, not chosen.",
       "localAdminUsername": "Break-glass account name; the security method covers local admin rights.",
       "localAdminPassword": "A secret, recreated on every rebuild and never carried.",
-      "alertEmailAddresses": "Contact data, kept out of shared facts; whether alerts have receivers is ops.alerts."
+      "alertEmailAddresses": "Contact data, kept out of shared facts; whether alerts have receivers is ops.alerts.",
+      "sessionHostGeneration": "Host names per blue/green generation, set only by the rotation script; the rollout itself is updates.image-rollout.",
+      "hostPoolStateTags": "The rotation script's own state, carried from one deployment to the next; not a design choice.",
+      "jumpboxExists": "Deployment state that deploy.sh sets, not a design choice.",
+      "jumpboxAdminPassword": "A secret, random per deployment and never carried."
     }
   },
   "dimensions": [
@@ -522,8 +538,10 @@
       },
       "seeAlso": "https://github.com/avd-ops/avd-assess/blob/33b7ca036b5338a0031c441150244e5be7316e4e/methods/use-cases.md",
       "measure": "fact",
-      "landingZone": [],
-      "note": "The landing zone deploys one pooled host pool per environment; a second pool is a second deployment."
+      "landingZone": [
+        "topology"
+      ],
+      "note": "The landing zone deploys one pooled host pool per environment unless its topology manifest lists more pools, application groups and workspaces."
     },
     {
       "id": "hostpool.personal-assignment",
@@ -2817,7 +2835,8 @@
       },
       "measure": "rebuild",
       "landingZone": [
-        "sessionHostImage"
+        "sessionHostImage",
+        "sessionHostImageId"
       ],
       "note": "Replica count and storage type are set by the landing zone's image build parameters (replicaRegions), not the main template; their default is one Standard LRS replica."
     },
@@ -2848,7 +2867,8 @@
       "seeAlso": "https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md",
       "measure": "rebuild",
       "landingZone": [
-        "sessionHostImage"
+        "sessionHostImage",
+        "sessionHostImageId"
       ],
       "note": "A Trusted launch host is generation 2, but a host without it can be either, so generation needs its own fact (specified); Trusted launch itself is judged by the security method (security.host-type)."
     },
@@ -2965,7 +2985,8 @@
       ],
       "measure": "fact",
       "landingZone": [
-        "sessionHostImage"
+        "sessionHostImage",
+        "sessionHostImageId"
       ]
     },
     {
@@ -3576,7 +3597,8 @@
         "privateEndpointSubnetPrefix",
         "deployImageBuildSubnets",
         "imageBuildSubnetPrefix",
-        "imageBuildAciSubnetPrefix"
+        "imageBuildAciSubnetPrefix",
+        "jumpboxSubnetPrefix"
       ]
     },
     {
@@ -3763,10 +3785,17 @@
           "ref:bastion#admin-path",
           "gap:network-scope"
         ],
-        "says": "Users come in through AVD; operators through Bastion or a jumpbox, never a public RDP port. The landing zone's opt-in jumpbox (its decision 0019) is after its pinned commit."
+        "says": "Users come in through AVD; operators through Bastion or a jumpbox, never a public RDP port."
       },
       "measure": "fact",
-      "landingZone": []
+      "landingZone": [
+        "deployJumpbox",
+        "jumpboxOs",
+        "jumpboxVmSize",
+        "jumpboxAutoShutdownTime",
+        "jumpboxKeepRunningUntil"
+      ],
+      "note": "The landing zone's jumpbox (its decision 0019) is opt-in, reached through Bastion Developer, and stops daily unless kept running to a set time."
     },
     {
       "id": "network.hybrid",

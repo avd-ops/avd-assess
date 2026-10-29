@@ -67,6 +67,8 @@ for path in sorted((ROOT / "references").glob("*.yaml")):
             continue
         if c.get("kind") and c["kind"] not in KINDS:
             err(path, f"claim {c['id']}: unknown kind {c['kind']!r}")
+        if f"ref:{rid}#{c['id']}" in claims:
+            err(path, f"claim {c['id']} is listed twice")
         claims.add(f"ref:{rid}#{c['id']}")
 
 observations = set()

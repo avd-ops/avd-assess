@@ -1,0 +1,75 @@
+name: evidence-intake
+
+# Closes the loop on the "Baseline evidence" issue form (gap:evidence-intake, step 4): when a maintainer
+# labels an evidence issue accepted, scripts/evidence_issue.py takes the JSON file from the form, runs the
+# evidence check on it and writes evidence/<id>.json; this job runs every pull request check and opens a
+# PR that closes the issue. The label is the review gate (avd-ops decision 0004: accepted is the
+# approval); issue text is untrusted, is only parsed as JSON, and nothing merges without a reviewed PR.
+#
+# Opening the PR needs "Allow GitHub Actions to create and approve pull requests" (Settings > Actions >
+# General, set once by hand). Without it the branch is still pushed and the issue gets a link to open
+# the PR. PRs opened with GITHUB_TOKEN don't start other workflows; a maintainer closes and reopens the
+# PR to run CI.
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: evidence-intake-${{ github.event.issue.number }}
+
+jobs:
+  propose:
+    # Either label may go on last.
+    if: >-
+      (github.event.label.name == 'accepted' && contains(github.event.issue.labels.*.name, 'evidence')) ||
+      (github.event.label.name == 'evidence' && contains(github.event.issue.labels.*.name, 'accepted'))
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyyaml jsonschema
+      - name: Turn the issue into an evidence file
+        id: change
+        run: python3 scripts/evidence_issue.py --event "$GITHUB_EVENT_PATH" --body-file "$RUNNER_TEMP/pr-body.md"
+      - name: Run every pull request check
+        run: python3 scripts/check_all.py
+      - name: Push branch and open PR
+        env:
+          BRANCH: ${{ steps.change.outputs.branch }}
+          TITLE: ${{ steps.change.outputs.title }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git add evidence
+          git commit -m "$TITLE"
+          # The branch belongs to this issue, so a re-run after the submitter edits the issue replaces it.
+          git push --force origin "$BRANCH"
+          if url=$(gh pr view "$BRANCH" --json url,state --jq 'select(.state == "OPEN") | .url' 2>/dev/null) && [ -n "$url" ]; then
+            gh issue comment "$ISSUE" --body "Updated $url with the edited submission."
+          elif url=$(gh pr create --head "$BRANCH" --title "$TITLE" --body-file "$RUNNER_TEMP/pr-body.md"); then
+            gh issue comment "$ISSUE" --body "Opened $url for review."
+          else
+            gh issue comment "$ISSUE" --body "Pushed branch \`$BRANCH\` but couldn't open the pull request (see the workflow run). If Actions can't create pull requests in this repo, open one from that branch."
+          fi
+      - name: Report a refused submission
+        if: failure()
+        run: |
+          run="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [ -f evidence-error.txt ]; then
+            gh issue comment "$ISSUE" --body "Couldn't turn this into an evidence file: $(cat evidence-error.txt). Edit the issue, then remove and re-add the accepted label. Run: $run"
+          else
+            # The submission passed; the repo's own checks, git or gh failed. Nothing for the submitter to fix.
+            gh issue comment "$ISSUE" --body "The submission passed its check, but the intake workflow failed after that; a maintainer will look. Run: $run"
+          fi

@@ -2,7 +2,8 @@ name: pins
 
 # Weekly pin drift report (scripts/check_pins.py): Learn pages whose commit moved, GitHub paths gone at
 # head, landing zone parameters and review checklist items not yet in the map. It opens or updates one
-# issue and never edits a file; a pin moves only by a reviewed pull request.
+# issue, closes it when a run finds no drift and nothing it couldn't check, and never edits a file; a pin
+# moves only by a reviewed pull request.
 
 on:
   schedule:
@@ -23,13 +24,21 @@ jobs:
           python-version: '3.12'
       - run: pip install pyyaml
       - name: Compare every pin with its source
+        id: pins
         run: python3 scripts/check_pins.py --write-report report.md
-      - name: Open or update the drift issue
+      - name: Open, update or close the drift issue
         env:
           GH_TOKEN: ${{ github.token }}
+          ITEMS: ${{ steps.pins.outputs.items }}
+          UNCHECKED: ${{ steps.pins.outputs.unchecked }}
         run: |
           title="Pin drift report"
           number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --label pins --search "$title in:title" --json number --jq '.[0].number // empty')
+          if [ "$ITEMS" = "0" ] && [ "$UNCHECKED" = "0" ]; then
+            # A clean run closes the issue, so a resolved report doesn't sit open until the next drift.
+            [ -n "$number" ] && gh issue close "$number" --repo "$GITHUB_REPOSITORY" --reason completed --comment "No pin drift on $(date -u +%Y-%m-%d)."
+            exit 0
+          fi
           if [ -z "$number" ]; then
             gh label create pins --repo "$GITHUB_REPOSITORY" --description "Pin drift reports" --color 0E8A16 2>/dev/null || true
             gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --label pins --body-file report.md

@@ -1,8 +1,8 @@
 id: files-monitoring-alerts
 title: Create monitoring alerts for Azure Files
 url: https://learn.microsoft.com/azure/storage/files/files-monitoring-alerts
-pin: "Learn git_commit_id aa85b0febdf3dde390ad653f19cd406f8cc6aff5, updated_at 2026-10-07"
-read: 2026-10-21
+pin: "Learn git_commit_id ac4bcb1eb41ca6e2ace58e626de7d186ea80bb00, updated_at 2026-10-26"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment]
 pillars: [monitoring, profiles]

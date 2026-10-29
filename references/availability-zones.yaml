@@ -1,8 +1,8 @@
 id: availability-zones
 title: What are Azure availability zones?
 url: https://learn.microsoft.com/azure/reliability/availability-zones-overview
-pin: "Learn git_commit_id 2f7ee4c8b45127943bcd615810dc882f9ddd598e, updated_at 2026-10-13"
-read: 2026-10-21
+pin: "Learn git_commit_id 454863f3dc91952428e31d5a5fcd4ba88bdb1ad7, updated_at 2026-10-27"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment]
 pillars: [reliability]

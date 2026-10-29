@@ -1,8 +1,8 @@
 id: mdm-wins-over-gp
 title: Policy CSP - ControlPolicyConflict (MDMWinsOverGP)
 url: https://learn.microsoft.com/windows/client-management/mdm/policy-csp-controlpolicyconflict
-pin: "Learn git_commit_id a0d5f1399171210809959ea5d44801cc57b5ad30, updated_at 2026-10-16"
-read: 2026-10-21
+pin: "Learn git_commit_id 6e5887a2f20ef9f4a897a01f069534e71a53d71e, updated_at 2026-10-23"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment, collection]
 pillars: [intune]

@@ -1,8 +1,8 @@
 id: activity-log
 title: Activity log in Azure Monitor
 url: https://learn.microsoft.com/azure/azure-monitor/fundamentals/activity-log
-pin: "Learn git_commit_id e1e0379f84a8e116f30c72567d10ade8ea2f46e5, updated_at 2026-10-19"
-read: 2026-10-21
+pin: "Learn git_commit_id 25304e36332b7851db820ab35a8b2814ccbe7614, updated_at 2026-10-27"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment, collection]
 pillars: [governance]
