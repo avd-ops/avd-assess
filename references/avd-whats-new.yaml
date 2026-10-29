@@ -1,8 +1,8 @@
 id: avd-whats-new
 title: What's new in Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/whats-new
-pin: "Learn git_commit_id e1f3352792e5f5036e29c56eff58e883bb6b2b22, updated_at 2026-10-14"
-read: 2026-10-21
+pin: "Learn git_commit_id 9f188d1eb9303ec2326038144e80606e4d67ed4f, updated_at 2026-10-23"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:
@@ -10,5 +10,5 @@ claims:
     says: Since July 2025, new host pools have clipboard, drive, opaque low-level USB and printer redirection disabled by default.
     kind: published
   - id: multipath-ga
-    says: RDP Multipath became generally available in July 2025; redundant TCP paths began a phased GA rollout in May 2026.
+    says: RDP Multipath became generally available in July 2025; redundant TCP paths began a phased GA rollout in May 2026 and were generally available in July 2026.
     kind: published

@@ -7,14 +7,17 @@ which opens or updates one issue with the output.
 
 Usage: python3 scripts/check_pins.py [--write-report FILE]
 The report is always written, with a "Could not check" section for anything a fetch failed on, and the
-exit code is 0: drift is a to-do, not a failure.
+exit code is 0: drift is a to-do, not a failure. Under GitHub Actions it also writes items= (drift found)
+and unchecked= (fetches that failed) to $GITHUB_OUTPUT; the workflow closes its issue when both are 0.
 
 Personal project, not for production, as is; not affiliated with the author's employer,
 Liquidware or Microsoft.
 """
 import json
+import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -29,13 +32,33 @@ META = re.compile(r'<meta name="(git_commit_id|updated_at)" content="([^"]+)"')
 CHECKLIST = "https://raw.githubusercontent.com/Azure/review-checklists/main/checklists/avd_checklist.en.json"
 UA = {"User-Agent": "avd-assess pin check (https://github.com/avd-ops/avd-assess)"}
 TIMEOUT = 20
-WORKERS = 8
+WORKERS = 4
+RETRY_CAP = 30  # seconds; the longest Retry-After we honor before the one retry
+
+
+def retry_after(error):
+    """Seconds to wait before retrying a 429 or 5xx, or None for an error worth reporting at once."""
+    if not isinstance(error, urllib.error.HTTPError) or not (error.code == 429 or 500 <= error.code < 600):
+        return None
+    try:
+        return min(RETRY_CAP, max(1, int(error.headers.get("Retry-After", ""))))
+    except (TypeError, ValueError):
+        return 5
 
 
 def fetch(url, method="GET"):
+    """One retry, after a backoff, on a rate limit (429) or server error (5xx): Learn rate-limits a
+    weekly run of every page, and a transient error is not drift."""
     req = urllib.request.Request(url, headers=UA, method=method)
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        return r.read().decode("utf-8", "replace") if method == "GET" else ""
+    for attempt in (1, 2):
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                return r.read().decode("utf-8", "replace") if method == "GET" else ""
+        except urllib.error.HTTPError as e:
+            wait = retry_after(e)
+            if attempt == 2 or wait is None:
+                raise
+            time.sleep(wait)
 
 
 def exists(owner, repo, branch, path):
@@ -138,6 +161,7 @@ def main():
     refs = [yaml.safe_load(p.read_text(encoding="utf-8")) for p in sorted((ROOT / "references").glob("*.yaml"))]
     out = ["# Pin drift report", ""]
     failures = []
+    items = 0
 
     learn, failed = run(learn_one, refs)
     failures += failed
@@ -153,6 +177,7 @@ def main():
 
     try:
         new, gone, commit, url = landing_zone_drift()
+        items += len(new) + len(gone)
         out += [f"## Landing zone parameters against dimensions.yaml (pinned at `{commit[:7]}`, compared with {url})", ""]
         out.append(f"- New at head, no dimension yet: {', '.join(f'`{p}`' for p in new) or 'none'}")
         out.append(f"- Pinned but gone at head: {', '.join(f'`{p}`' for p in gone) or 'none'}")
@@ -162,6 +187,7 @@ def main():
 
     try:
         removed, unpinned, total, commit = checklist_drift()
+        items += len(removed) + len(unpinned)
         out += [f"## AVD review checklist against the pinned claims (pinned at `{commit[:7]}`)", ""]
         out.append(f"- Items at head: {total}; pinned as claims: {total - len(unpinned)}; not yet pinned: {len(unpinned)}")
         out.append(f"- Pinned items no longer at head: {', '.join(f'`{i}`' for i in removed) or 'none'}")
@@ -176,7 +202,11 @@ def main():
     print(text)
     if "--write-report" in sys.argv:
         Path(sys.argv[sys.argv.index("--write-report") + 1]).write_text(text, encoding="utf-8")
-    print(f"RESULT {'DRIFT' if learn or gh else 'OK'} ({len(learn)} Learn, {len(gh)} GitHub, {len(failures)} unchecked)")
+    items += len(learn) + len(gh)
+    if os.environ.get("GITHUB_OUTPUT"):
+        with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+            f.write(f"items={items}\nunchecked={len(failures)}\n")
+    print(f"RESULT {'DRIFT' if items else 'OK'} ({items} items: {len(learn)} Learn, {len(gh)} GitHub, the rest landing zone and checklist; {len(failures)} unchecked)")
     return 0
 
 

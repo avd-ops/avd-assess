@@ -17,8 +17,8 @@
 #   57 is either set by a dimension or listed in notDimensions with a reason (tests/check_dimensions.py).
 schema: avd-assess-dimensions/v1
 landingZone:
-  commit: ae5c2877d53d9af8e1efbf47b85cfdef06c51364
-  source: https://github.com/avd-ops/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep
+  commit: a0ca7c443aa0e7704e7ef1163da411a719ef262b
+  source: https://github.com/avd-ops/avd-landing-zone/blob/a0ca7c443aa0e7704e7ef1163da411a719ef262b/bicep/main.bicep
   parameters: [namePrefix, environmentName, location, tags, avdUsersGroupObjectId, avdAdminsGroupObjectId,
     avdServicePrincipalObjectId, enrollInIntune, connectivityMode, spokeAddressPrefix, sessionHostSubnetPrefix,
     privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix,
@@ -30,7 +30,9 @@ landingZone:
     monthlyBudgetAmount, budgetStartDate, enableAutoShutdown, autoShutdownTime, autoShutdownDays,
     autoShutdownTimeZone, autoShutdownScheduleAction, autoShutdownBudgetAction, autoShutdownBudgetPercent,
     autoShutdownRunbookUri, enableDefenderForCloud, deploySubscriptionSettings, enablePolicyGuardrails,
-    recoveryLocation, allowedLocations]
+    recoveryLocation, allowedLocations, sessionHostImageId, sessionHostGeneration, hostPoolStateTags, deployJumpbox,
+    jumpboxSubnetPrefix, jumpboxOs, jumpboxVmSize, jumpboxAutoShutdownTime, jumpboxKeepRunningUntil, jumpboxExists,
+    jumpboxAdminPassword, topology]
   notDimensions:
     namePrefix: Naming only.
     environmentName: A label; its one effect (validation pool default) is under updates.validation-pool.
@@ -41,6 +43,10 @@ landingZone:
     localAdminUsername: Break-glass account name; the security method covers local admin rights.
     localAdminPassword: A secret, recreated on every rebuild and never carried.
     alertEmailAddresses: Contact data, kept out of shared facts; whether alerts have receivers is ops.alerts.
+    sessionHostGeneration: Host names per blue/green generation, set only by the rotation script; the rollout itself is updates.image-rollout.
+    hostPoolStateTags: The rotation script's own state, carried from one deployment to the next; not a design choice.
+    jumpboxExists: Deployment state that deploy.sh sets, not a design choice.
+    jumpboxAdminPassword: A secret, random per deployment and never carried.
 
 dimensions:
   # Compute and density
@@ -132,8 +138,8 @@ dimensions:
       says: A pool per pool type and per image, since all hosts in a pool should share one image; languages can share a pool through one multi-language image. No source gives a number; the personas decide it.
     seeAlso: https://github.com/avd-ops/avd-assess/blob/33b7ca036b5338a0031c441150244e5be7316e4e/methods/use-cases.md
     measure: fact
-    landingZone: []
-    note: The landing zone deploys one pooled host pool per environment; a second pool is a second deployment.
+    landingZone: [topology]
+    note: The landing zone deploys one pooled host pool per environment unless its topology manifest lists more pools, application groups and workspaces.
   - id: hostpool.personal-assignment
     area: hostpool
     pillar: capacity
@@ -1184,7 +1190,7 @@ dimensions:
       claims: [ref:review-checklists-avd#B01.04, ref:avd-golden-image#gallery-for-production, ref:avd-prerequisites#image-sources, ref:compute-gallery#versioning-and-replication, ref:compute-gallery#replica-per-20-vms, ref:compute-gallery#zrs-in-zone-regions, ref:compute-gallery#replicate-latest-only, ref:compute-gallery#replication-takes-time, ref:compute-gallery#not-global, ref:compute-gallery#limits]
       says: An Azure Compute Gallery for production; one replica per 20 hosts created at once; ZRS where the region has zones; the latest version in every region the pools run in, a second gallery in another region for recovery.
     measure: rebuild
-    landingZone: [sessionHostImage]
+    landingZone: [sessionHostImage, sessionHostImageId]
     note: Replica count and storage type are set by the landing zone's image build parameters (replicaRegions), not the main template; their default is one Standard LRS replica.
   - id: image.vm-generation
     area: updates
@@ -1198,7 +1204,7 @@ dimensions:
       says: Generation 2, which Trusted launch needs; the gallery definition and the source image must name the same generation, and generation 1 hosts can be upgraded.
     seeAlso: https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md
     measure: rebuild
-    landingZone: [sessionHostImage]
+    landingZone: [sessionHostImage, sessionHostImageId]
     note: A Trusted launch host is generation 2, but a host without it can be either, so generation needs its own fact (specified); Trusted launch itself is judged by the security method (security.host-type).
   - id: image.office-onedrive
     area: updates
@@ -1250,7 +1256,7 @@ dimensions:
     seeAlso: https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md
     observations: [obs:wdot-pin-on-image-version]
     measure: fact
-    landingZone: [sessionHostImage]
+    landingZone: [sessionHostImage, sessionHostImageId]
   - id: updates.image-rollout
     area: updates
     pillar: images
@@ -1502,7 +1508,7 @@ dimensions:
       claims: [ref:avd-private-link#address-headroom, ref:arch-private-link-hub-spoke#placement-decision-tree, gap:network-scope]
       says: Leave headroom for private endpoints and growth; no source gives a hosts-to-prefix rule (gap:network-scope).
     measure: fact
-    landingZone: [spokeAddressPrefix, sessionHostSubnetPrefix, privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix]
+    landingZone: [spokeAddressPrefix, sessionHostSubnetPrefix, privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix, jumpboxSubnetPrefix]
   - id: network.dns
     area: network
     pillar: networking-azure
@@ -1574,9 +1580,10 @@ dimensions:
     baseline:
       standing: guidance
       claims: [ref:bastion#admin-path, gap:network-scope]
-      says: Users come in through AVD; operators through Bastion or a jumpbox, never a public RDP port. The landing zone's opt-in jumpbox (its decision 0019) is after its pinned commit.
+      says: Users come in through AVD; operators through Bastion or a jumpbox, never a public RDP port.
     measure: fact
-    landingZone: []
+    landingZone: [deployJumpbox, jumpboxOs, jumpboxVmSize, jumpboxAutoShutdownTime, jumpboxKeepRunningUntil]
+    note: The landing zone's jumpbox (its decision 0019) is opt-in, reached through Bastion Developer, and stops daily unless kept running to a set time.
   - id: network.hybrid
     area: network
     pillar: networking-azure

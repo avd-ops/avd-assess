@@ -1,8 +1,8 @@
 id: avd-multiregion-bcdr
 title: Multiregion BCDR for Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/architecture/example-scenario/azure-virtual-desktop/azure-virtual-desktop-multi-region-bcdr
-pin: "Learn git_commit_id d6054b5b6a0fda90d06619b94a3c5c2ce89c4513, updated_at 2026-10-05"
-read: 2026-10-21
+pin: "Learn git_commit_id 0762ad3f4f716eaeb4f5da294f815cf5f99bd965, updated_at 2026-10-23"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment, benchmarks]
 pillars: [reliability, profiles]
