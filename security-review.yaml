@@ -20,7 +20,7 @@
 schema: avd-assess-security-review/v1
 checked: 2026-10-27
 pins:
-  avd-landing-zone: e66d8660b8054ef0b827912d9ebed2d45676c828
+  avd-landing-zone: 810c2892c4e2f384ceea62d4c702af992a35be5e
   avd-entra: 3a6132c2146a58a7c5feb44cbeab3581d750d3fc
   avd-intune: f64c56a84f7f53bcb7aeb398a456e0853d877633
   avd-m365: f18b14f9866cce604b92738c92afa390e14ee7fc
@@ -83,6 +83,8 @@ areas:
           - {repo: avd-landing-zone, path: build/decisions/0016-graph-operator-app.md, kind: decision}
           - {repo: avd-landing-zone, path: scripts/ops/AvdLandingZone.psm1#L295, kind: code}
           - {repo: avd-landing-zone, path: build/tests/AvdLandingZone.Tests.ps1#L177, kind: test}
+          - {repo: avd-landing-zone, path: docs/operations.md#L68, kind: doc}
+        note: The operations docs state the trade-off for reviewers; there is no read-only scope set, and a reviewer who needs one runs the check with reader roles only.
       - id: lz-break-glass
         repo: avd-landing-zone
         says: The hosts' local administrator password is random per deployment unless one is supplied, stored in Key Vault for the hosts that deployment created, and recovered with VM reset password; nobody has to remember it.
@@ -99,15 +101,16 @@ areas:
           - {repo: avd-landing-zone, path: bicep/modules/storage.bicep, kind: code}
           - {repo: avd-landing-zone, path: bicep/modules/controlPlane.bicep, kind: code}
           - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L85, kind: test}
-        note: Only the runbook's roles have a template test; the other assignments are in the code with no test.
+          - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L599, kind: test}
+        note: The runbook's roles and the three on the hosts resource group have template tests; the storage and control plane assignments are in the code with no test.
       - id: lz-jumpbox
         repo: avd-landing-zone
         says: The admin jumpbox and Bastion Developer are opt-in and off by default; the box has no public IP, an NSG that denies the internet and onward RDP and SSH, a managed identity with no roles, a one-time password per connection, and a daily stop.
         standing: guarded
         evidence:
           - {repo: avd-landing-zone, path: build/decisions/0019-jumpbox-bastion-developer.md, kind: decision}
-          - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L444, kind: test}
-          - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L539, kind: test}
+          - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L449, kind: test}
+          - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L544, kind: test}
         note: Decision 0019 stays proposed until a sandbox run confirms the connection.
       - id: entra-ca-groups
         repo: avd-entra
@@ -150,7 +153,7 @@ areas:
         standing: built
         evidence:
           - {repo: avd-landing-zone, path: bicep/main.bicep#L96, kind: code}
-          - {repo: avd-landing-zone, path: bicep/modules/controlPlane.bicep#L60, kind: code}
+          - {repo: avd-landing-zone, path: bicep/modules/controlPlane.bicep#L121, kind: code}
       - id: lz-private-data-plane
         repo: avd-landing-zone
         says: The profile storage account, the Key Vault and the backup vault turn public network access off and are reached through private endpoints.
@@ -164,9 +167,11 @@ areas:
       - id: lz-nsg
         repo: avd-landing-zone
         says: The session host subnet denies inbound from the internet and outbound RDP and SSH to the virtual network (no lateral movement); the private endpoint subnet allows only SMB from the hosts and HTTPS inside the virtual network.
-        standing: built
+        standing: guarded
         evidence:
           - {repo: avd-landing-zone, path: bicep/modules/network.bicep#L61, kind: code}
+          - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L588, kind: test}
+        note: The template test covers the session host subnet's rules; the private endpoint subnet's are in the code.
       - id: azure-plane-network
         repo: avd-azure
         says: The standalone Azure plane module enforces the same Private Link, private endpoint, and session host NSG rules as the landing zone orchestrator.
@@ -217,8 +222,8 @@ areas:
         says: Session hosts and the jumpbox are Trusted Launch VMs with Secure Boot and vTPM, and the Well-Architected review warns when they are not.
         standing: guarded
         evidence:
-          - {repo: avd-landing-zone, path: bicep/modules/sessionHosts.bicep#L61, kind: code}
-          - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L467, kind: test}
+          - {repo: avd-landing-zone, path: bicep/modules/sessionHosts.bicep#L95, kind: code}
+          - {repo: avd-landing-zone, path: build/tests/Template.Tests.ps1#L472, kind: test}
         note: The template test covers the jumpbox; the hosts' setting is in the code.
       - id: lz-host-baseline
         repo: avd-landing-zone
@@ -227,7 +232,7 @@ areas:
         evidence:
           - {repo: avd-landing-zone, path: build/decisions/0018-host-security-baseline.md, kind: decision}
           - {repo: avd-landing-zone, path: scripts/security/host-baseline.json, kind: code}
-          - {repo: avd-landing-zone, path: build/tests/AvdLandingZone.Tests.ps1#L874, kind: test}
+          - {repo: avd-landing-zone, path: build/tests/AvdLandingZone.Tests.ps1#L886, kind: test}
         note: Decision 0018 is proposed; no sandbox run has confirmed the expected values yet.
       - id: lz-redirection
         repo: avd-landing-zone
@@ -250,7 +255,7 @@ areas:
         says: The host registration token is generated per deployment and valid for four hours.
         standing: built
         evidence:
-          - {repo: avd-landing-zone, path: bicep/modules/controlPlane.bicep#L58, kind: code}
+          - {repo: avd-landing-zone, path: bicep/modules/controlPlane.bicep#L119, kind: code}
       - id: intune-host-profiles
         repo: avd-intune
         says: Configures Intune MDM auto-enrollment, multi-session Settings Catalog profiles (FSLogix, RDP Shortpath, session limits), and secure-by-default host compliance policies.
@@ -292,7 +297,7 @@ areas:
         standing: guarded
         evidence:
           - {repo: avd-second-brain, path: docs/knowledge/decisions/0016-never-delete-the-last-copy.md, kind: decision}
-          - {repo: avd-landing-zone, path: build/tests/OfflineScenarios.Tests.ps1#L60, kind: test}
+          - {repo: avd-landing-zone, path: build/tests/OfflineScenarios.Tests.ps1#L61, kind: test}
       - id: pp-dlp-baseline
         repo: avd-power-platform
         says: Enforces a baseline Data Loss Prevention policy that blocks unapproved connectors and scopes day-2 AVD flows to a dedicated Power Platform environment.
@@ -313,7 +318,7 @@ areas:
         evidence:
           - {repo: avd-landing-zone, path: site/portal/README.md, kind: doc}
           - {repo: avd-landing-zone, path: build/decisions/0017-portal-hosting.md, kind: decision}
-          - {repo: avd-landing-zone, path: build/tests/portal/portal-core.test.mjs#L630, kind: test}
+          - {repo: avd-landing-zone, path: build/tests/portal/portal-core.test.mjs#L729, kind: test}
         note: connect-src allows any https origin so the probes work; the test guards that the page itself fetches only through the timed probe.
       - id: lz-portal-report
         repo: avd-landing-zone
@@ -382,14 +387,14 @@ areas:
         says: CI pins Bicep, PSRule and its Azure rules, PSScriptAnalyzer, Pester and gitleaks to exact versions, and Azure Verified Modules to exact versions in the templates.
         standing: guarded
         evidence:
-          - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L51, kind: ci}
+          - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L53, kind: ci}
           - {repo: avd-landing-zone, path: build/lessons/0016-analyzer-version.md, kind: lesson}
       - id: lz-psrule
         repo: avd-landing-zone
         says: PSRule for Azure checks the templates against Well-Architected rules on every change, and every suppression carries a justification.
         standing: guarded
         evidence:
-          - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L159, kind: ci}
+          - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L223, kind: ci}
           - {repo: avd-landing-zone, path: .ps-rule/Suppressions.Rule.yaml, kind: code}
           - {repo: avd-landing-zone, path: build/lessons/0018-psrule.md, kind: lesson}
       - id: secret-scan
@@ -403,10 +408,10 @@ areas:
         note: avd-current-state, avd-swarm and avd-assess have no secret scan (gap secret-scan-everywhere).
       - id: lz-actions-pinned
         repo: avd-landing-zone
-        says: In avd-landing-zone, 26 of 28 action references are pinned to a full commit SHA; the browser test job still uses two tags. The other repos reference actions by tag.
+        says: In avd-landing-zone, 28 of 30 action references are pinned to a full commit SHA; the browser test job still uses two tags. The other repos reference actions by tag.
         standing: built
         evidence:
-          - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L147, kind: ci}
+          - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L211, kind: ci}
       - id: pinned-sources
         repo: avd-assess
         says: Every source the method reads is pinned to a commit or a Learn page's git_commit_id, and the family's shared contracts are byte-identical copies whose hashes each consumer's tests check.
@@ -609,15 +614,12 @@ gaps:
   - id: secret-scan-everywhere
     repos: [avd-current-state, avd-swarm, avd-assess]
     says: No secret scan in CI.
-  - id: graph-scope-per-purpose
-    repos: [avd-landing-zone]
-    says: A read-only preflight signs in with the full delegated scope set, write scopes included (decision 0016's trade-off for one sign-in per session); document it for reviewers or offer a read-only set.
   - id: ci-read-only-guard
     repos: [avd-current-state]
     says: The read-only promise is documented and request-listed but no test fails when a script gains a write cmdlet or a non-GET call.
   - id: security-run-evidence
     repos: [avd-landing-zone]
-    says: The host baseline (decision 0018) and the jumpbox (decision 0019) have no real-run evidence yet; the hosts' Trusted Launch, network rules and role assignments have no template test.
+    says: The host baseline (decision 0018) and the jumpbox (decision 0019) have no real-run evidence yet. The hosts' Trusted Launch, subnet rules and role assignments now have template tests.
   - id: threat-models
     repos: [avd-landing-zone, avd-current-state]
     says: No written threat model for the two proven repos; avd-swarm's red team is the only formal review.
