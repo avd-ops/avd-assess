@@ -26,7 +26,7 @@ import check_evidence  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 FILE_HEADING = "The checked evidence file"
 SOURCE_HEADING = "Source"
-ID = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9-]{3,48}$")  # evidence/schema.json, id
+ID = re.compile(check_evidence.SCHEMA["properties"]["id"]["pattern"])  # also the file name
 
 
 class Refused(Exception):

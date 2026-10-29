@@ -37,24 +37,27 @@ RETRY_CAP = 30  # seconds; the longest Retry-After we honor before the one retry
 
 
 def retry_after(error):
-    """Seconds to wait before retrying a 429 or 5xx, or None for an error worth reporting at once."""
-    if not isinstance(error, urllib.error.HTTPError) or not (error.code == 429 or 500 <= error.code < 600):
-        return None
-    try:
-        return min(RETRY_CAP, max(1, int(error.headers.get("Retry-After", ""))))
-    except (TypeError, ValueError):
-        return 5
+    """Seconds to wait before retrying a 429, a 5xx or a timeout or reset, or None for an error worth
+    reporting at once (a 404 is drift, not a hiccup)."""
+    if isinstance(error, urllib.error.HTTPError):
+        if not (error.code == 429 or 500 <= error.code < 600):
+            return None
+        try:
+            return min(RETRY_CAP, max(1, int((error.headers or {}).get("Retry-After", ""))))
+        except (TypeError, ValueError):
+            return 5
+    return 5 if isinstance(error, (urllib.error.URLError, TimeoutError, ConnectionError)) else None
 
 
 def fetch(url, method="GET"):
-    """One retry, after a backoff, on a rate limit (429) or server error (5xx): Learn rate-limits a
-    weekly run of every page, and a transient error is not drift."""
+    """One retry, after a backoff, on a rate limit (429), a server error (5xx), a timeout or a reset:
+    Learn rate-limits a weekly run of every page, and a transient error is not drift."""
     req = urllib.request.Request(url, headers=UA, method=method)
     for attempt in (1, 2):
         try:
             with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
                 return r.read().decode("utf-8", "replace") if method == "GET" else ""
-        except urllib.error.HTTPError as e:
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as e:  # HTTPError is a URLError
             wait = retry_after(e)
             if attempt == 2 or wait is None:
                 raise

@@ -20,6 +20,7 @@ CHECKS = [
     ["scripts/check_evidence.py"],
     ["tests/check_evidence_fixtures.py"],
     ["tests/check_evidence_issue.py"],
+    ["tests/check_pin_check.py"],
     ["tests/check_endpoints.py"],
     ["tests/check_wording.py"],
     ["tests/check_security_review.py"],

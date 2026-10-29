@@ -25,7 +25,10 @@ concurrency:
 
 jobs:
   propose:
-    if: github.event.label.name == 'accepted' && contains(github.event.issue.labels.*.name, 'evidence')
+    # Either label may go on last.
+    if: >-
+      (github.event.label.name == 'accepted' && contains(github.event.issue.labels.*.name, 'evidence')) ||
+      (github.event.label.name == 'evidence' && contains(github.event.issue.labels.*.name, 'accepted'))
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
@@ -51,14 +54,22 @@ jobs:
           git switch -c "$BRANCH"
           git add evidence
           git commit -m "$TITLE"
-          git push --force-with-lease origin "$BRANCH"
-          if url=$(gh pr create --head "$BRANCH" --title "$TITLE" --body-file "$RUNNER_TEMP/pr-body.md"); then
+          # The branch belongs to this issue, so a re-run after the submitter edits the issue replaces it.
+          git push --force origin "$BRANCH"
+          if url=$(gh pr view "$BRANCH" --json url,state --jq 'select(.state == "OPEN") | .url' 2>/dev/null) && [ -n "$url" ]; then
+            gh issue comment "$ISSUE" --body "Updated $url with the edited submission."
+          elif url=$(gh pr create --head "$BRANCH" --title "$TITLE" --body-file "$RUNNER_TEMP/pr-body.md"); then
             gh issue comment "$ISSUE" --body "Opened $url for review."
           else
-            gh issue comment "$ISSUE" --body "Pushed branch \`$BRANCH\`. Actions can't open pull requests in this repo, so open one from that branch."
+            gh issue comment "$ISSUE" --body "Pushed branch \`$BRANCH\` but couldn't open the pull request (see the workflow run). If Actions can't create pull requests in this repo, open one from that branch."
           fi
       - name: Report a refused submission
         if: failure()
         run: |
-          reason="$(cat evidence-error.txt 2>/dev/null || echo 'a check failed; see the workflow run')"
-          gh issue comment "$ISSUE" --body "Couldn't turn this into an evidence file: ${reason}. Edit the issue, then remove and re-add the accepted label. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          run="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [ -f evidence-error.txt ]; then
+            gh issue comment "$ISSUE" --body "Couldn't turn this into an evidence file: $(cat evidence-error.txt). Edit the issue, then remove and re-add the accepted label. Run: $run"
+          else
+            # The submission passed; the repo's own checks, git or gh failed. Nothing for the submitter to fix.
+            gh issue comment "$ISSUE" --body "The submission passed its check, but the intake workflow failed after that; a maintainer will look. Run: $run"
+          fi
