@@ -52,7 +52,7 @@ DOCUMENTS = {
     "index.json": ("index", ["/references/*/id", "/references/*/claims/*/id", "/observations/*/id", "/gaps/*/id"]),
     "method.json": ("method", ["/checks/*/id"]),
     "map.json": ("map", ["/pillars/*/id", "/dimensions/*/id", "/baselines/window/*/id", "/baselines/classes/*/id",
-                         "/useCases/*/id"]),
+                         "/useCases/*/id", "/benchmarks/*/id"]),
     "security-review.json": ("security-review", ["/areas/*/id", "/areas/*/claims/*/id", "/operator/*/id",
                                                  "/checklist/*/id", "/gaps/*/id"]),
     "endpoints.json": ("endpoints", ["/lists/*/id", "/endpoints/*/id"]),

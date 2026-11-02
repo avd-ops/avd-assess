@@ -675,7 +675,11 @@
       "home": {
         "decision": "proposed:hostPool.osDisk",
         "facts": [
-          "c11.hostPool.sessionHosts.osDiskTypes"
+          "c11.hostPool.sessionHosts.osDiskTypes",
+          "c11.hostPool.sessionHosts.nonPremiumOsDisk"
+        ],
+        "checks": [
+          "asm-hosts-premium-os-disk"
         ]
       },
       "baseline": {
@@ -690,7 +694,7 @@
       "observations": [
         "obs:premium-ssd-os-disk-default"
       ],
-      "measure": "rebuild",
+      "measure": "fact",
       "landingZone": [],
       "note": "The landing zone fixes Premium SSD in its session host module; there is no parameter."
     },
@@ -840,7 +844,11 @@
         "facts": [
           "c12.group.profile.logonIopsPerUser",
           "c12.group.users",
-          "c11.storage.smbMultichannel"
+          "c11.storage.smbMultichannel",
+          "c11.insights.fslogixReadIopsP95"
+        ],
+        "checks": [
+          "asm-files-smb-multichannel"
         ]
       },
       "baseline": {
@@ -1682,7 +1690,11 @@
       "home": {
         "decision": "hostPool.vmSize",
         "facts": [
-          "c11.hostPool.sessionHosts.acceleratedNetworking"
+          "c11.hostPool.sessionHosts.acceleratedNetworking",
+          "c11.hostPool.sessionHosts.notAcceleratedNetworking"
+        ],
+        "checks": [
+          "asm-hosts-accelerated-networking"
         ]
       },
       "baseline": {
@@ -1696,7 +1708,7 @@
         ],
         "says": "Choose sizes that support accelerated networking (most sizes with two or more vCPUs, four with hyperthreading) and turn it on; it lowers latency, jitter and CPU use on the host."
       },
-      "measure": "rebuild",
+      "measure": "fact",
       "landingZone": [],
       "note": "The landing zone turns it on in its session host module; there is no parameter. The overview says NC and NV sizes don't support it, but some current GPU size pages list it as supported (NVadsA10 v5, read 2026-10-21), so a GPU size is judged by its own size page."
     },
@@ -1709,9 +1721,17 @@
       "home": {
         "decision": "region",
         "facts": [
+          "c11.insights.rttP95",
+          "c11.insights.inputDelayP95",
+          "c11.insights.timeToConnectP95",
           "c12.group.rttMsP95",
           "c12.group.logonSeconds.p95",
           "c12.group.uxScoreMedian"
+        ],
+        "checks": [
+          "asm-insights-rtt-target",
+          "asm-insights-input-delay-target",
+          "asm-insights-time-to-connect"
         ]
       },
       "baseline": {
@@ -2660,7 +2680,11 @@
       "home": {
         "decision": "proposed:hostPool.encryption",
         "facts": [
-          "c11.hostPool.sessionHosts.encryptionAtHost"
+          "c11.hostPool.sessionHosts.encryptionAtHost",
+          "c11.hostPool.sessionHosts.notEncryptionAtHost"
+        ],
+        "checks": [
+          "asm-hosts-encryption-at-host"
         ]
       },
       "baseline": {
@@ -2675,7 +2699,7 @@
       "observations": [
         "obs:encryption-at-host-by-default"
       ],
-      "measure": "rebuild",
+      "measure": "fact",
       "landingZone": [
         "encryptionAtHost"
       ]
@@ -3009,6 +3033,9 @@
           "c11.hostPool.sessionHosts.updateStates",
           "c11.hostPool.agentUpdate.scheduled",
           "c11.hostPool.startVmOnConnect"
+        ],
+        "checks": [
+          "asm-hostpool-scheduled-agent-updates"
         ]
       },
       "baseline": {
@@ -3029,7 +3056,7 @@
       "observations": [
         "obs:agent-update-window-while-hosts-off"
       ],
-      "measure": "rebuild",
+      "measure": "fact",
       "landingZone": [],
       "note": "The landing zone fixes the schedule (one window, Saturday 02:00 host time) in its control plane module; there is no parameter."
     },
@@ -3194,7 +3221,11 @@
         "decision": "proposed:hostPool.zones",
         "facts": [
           "c11.hostPool.sessionHosts.zones",
+          "c11.hostPool.sessionHosts.unpinnedZones",
           "c11.hostPool.sessionHosts.total"
+        ],
+        "checks": [
+          "asm-hosts-zone-redundant"
         ]
       },
       "baseline": {
@@ -3419,6 +3450,9 @@
           "c11.storage.backupTier",
           "c11.storage.lastBackupJob",
           "c11.storage.sku"
+        ],
+        "checks": [
+          "asm-files-backup-protected"
         ]
       },
       "baseline": {
@@ -4207,6 +4241,10 @@
           "c11.monitoring.diagnostics",
           "c11.hostPool.sessionHosts.monitoringAgent",
           "c11.hostPool.sessionHosts.insightsDcr"
+        ],
+        "checks": [
+          "asm-hostpool-diagnostics-enabled",
+          "asm-hosts-insights-agent"
         ]
       },
       "baseline": {
@@ -4498,6 +4536,9 @@
           "c11.hostPool.scalingPlan.exclusionTag",
           "c11.hostPool.maxSessionLimit",
           "c11.hostPool.type"
+        ],
+        "checks": [
+          "asm-pooled-autoscale-attached"
         ]
       },
       "baseline": {
@@ -4803,6 +4844,8 @@
       "decides": "What share of connections reach the host, and where time to connect goes when it is slow.",
       "home": {
         "facts": [
+          "c11.insights.connectionFailureRate",
+          "c11.insights.timeToConnectP95",
           "c11.hostPool.diagnostics.connections",
           "c11.hostPool.diagnostics.connectionsFailed",
           "c11.hostPool.diagnostics.timeToConnectSecondsP95",
@@ -4810,6 +4853,10 @@
         ],
         "intake": [
           "intake.reportedSymptoms"
+        ],
+        "checks": [
+          "asm-insights-connection-reliability",
+          "asm-insights-time-to-connect"
         ]
       },
       "baseline": {
@@ -5719,12 +5766,15 @@
           "osDiskGiB": 32
         },
         "profileGiB": 30,
+        "benchmarkProfile": "multisession-density",
         "claims": [
           "ref:session-host-sizing#multisession-users-per-vcpu",
           "ref:session-host-sizing#multisession-minimums",
           "ref:session-host-sizing#single-session-minimums",
           "ref:session-host-sizing#profile-storage-minimum",
-          "ref:session-host-sizing#estimates-only"
+          "ref:session-host-sizing#estimates-only",
+          "obs:users-per-vcpu-adopted",
+          "gap:workload-benchmark"
         ],
         "standing": "prior"
       },
@@ -5742,12 +5792,16 @@
           "osDiskGiB": 32
         },
         "profileGiB": 30,
+        "benchmarkProfile": "multisession-density",
         "claims": [
           "ref:session-host-sizing#multisession-users-per-vcpu",
           "ref:session-host-sizing#multisession-minimums",
           "ref:session-host-sizing#single-session-minimums",
           "ref:session-host-sizing#profile-storage-minimum",
-          "ref:session-host-sizing#estimates-only"
+          "ref:session-host-sizing#estimates-only",
+          "obs:users-per-vcpu-adopted",
+          "obs:sizing-floor-not-measured",
+          "gap:workload-benchmark"
         ],
         "standing": "prior"
       },
@@ -5765,12 +5819,15 @@
           "osDiskGiB": 32
         },
         "profileGiB": 30,
+        "benchmarkProfile": "multisession-density",
         "claims": [
           "ref:session-host-sizing#multisession-users-per-vcpu",
           "ref:session-host-sizing#multisession-minimums",
           "ref:session-host-sizing#single-session-minimums",
           "ref:session-host-sizing#profile-storage-minimum",
-          "ref:session-host-sizing#estimates-only"
+          "ref:session-host-sizing#estimates-only",
+          "obs:users-per-vcpu-adopted",
+          "gap:workload-benchmark"
         ],
         "standing": "prior"
       },
@@ -5783,6 +5840,7 @@
           "osDiskGiB": 340
         },
         "profileGiB": 30,
+        "benchmarkProfile": "multisession-density",
         "gpu": "Consider GPU hosts for graphics-heavy apps or more than 3840 x 2160 total resolution; users per GPU has no published number",
         "claims": [
           "ref:session-host-sizing#multisession-users-per-vcpu",
@@ -5790,7 +5848,9 @@
           "ref:session-host-sizing#gpu-for-graphics",
           "ref:session-host-sizing#profile-storage-minimum",
           "ref:session-host-sizing#estimates-only",
-          "gap:deployment-dimensions"
+          "obs:users-per-vcpu-adopted",
+          "gap:deployment-dimensions",
+          "gap:workload-benchmark"
         ],
         "standing": "prior"
       }
@@ -6832,6 +6892,337 @@
       "standing": "candidate",
       "since": "2026-10-20",
       "why": "The sizing guide's outer bound (users expect under 200 ms); the Insights bands stay the reference for grading a session."
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "storage-fslogix-io",
+      "version": "1.0.0",
+      "tier": "synthetic",
+      "title": "Profile share and OS disk I/O micro-benchmark",
+      "summary": "Measures local OS disk and FSLogix profile share IOPS, throughput and latency (p50/p95/p99) for VHDX attach, sequential logon read and steady-state 4K random read/write.",
+      "harness": "Microsoft diskspd (MIT, pinned release) plus PowerShell VHDX mount timer",
+      "parameters": [
+        {
+          "name": "blockSizeKiB",
+          "value": 4,
+          "unit": "kib"
+        },
+        {
+          "name": "durationSeconds",
+          "value": 120,
+          "unit": "s"
+        },
+        {
+          "name": "readWriteRatio",
+          "value": "70/30",
+          "unit": "ratio"
+        }
+      ],
+      "metrics": [
+        {
+          "metric": "readIops",
+          "unit": "iops"
+        },
+        {
+          "metric": "writeIops",
+          "unit": "iops"
+        },
+        {
+          "metric": "readLatencyMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "writeLatencyMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "vhdxAttachMs",
+          "unit": "ms"
+        }
+      ],
+      "claims": [
+        "ref:avd-deploy-host-pool#premium-ssd-os-disk",
+        "ref:disk-encryption-options#encryption-at-host",
+        "ref:review-checklists-avd#H03.05",
+        "ref:fslogix-storage-options#iops-per-user",
+        "gap:workload-benchmark",
+        "gap:baseline-profile"
+      ],
+      "observations": [
+        "obs:premium-ssd-os-disk-default",
+        "obs:encryption-at-host-by-default",
+        "obs:smb-channel-aes128-gcm-needed"
+      ]
+    },
+    {
+      "id": "host-logon-storm",
+      "version": "1.0.0",
+      "tier": "synthetic",
+      "title": "Concurrent session sign-in storm benchmark",
+      "summary": "Measures staggered or concurrent session sign-in duration broken down by stage (broker, transport, Entra Kerberos auth, FSLogix profile attach, policy evaluation and shell ready) alongside host CPU and memory spikes.",
+      "harness": "PowerShell session orchestrator plus TerminalServices and FSLogix Operational event logs and WVDConnections",
+      "parameters": [
+        {
+          "name": "concurrentSessions",
+          "value": 16,
+          "unit": "sessions"
+        },
+        {
+          "name": "staggerSeconds",
+          "value": 5,
+          "unit": "s"
+        }
+      ],
+      "metrics": [
+        {
+          "metric": "timeToConnectMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "profileLoadMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "vhdxAttachMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "cpuPct",
+          "unit": "percent"
+        },
+        {
+          "metric": "availableMemoryMiB",
+          "unit": "mib"
+        }
+      ],
+      "claims": [
+        "ref:defender-av-vdi#cache-maintenance-before-seal",
+        "ref:fslogix-prerequisites#exclusion-scope",
+        "ref:session-host-sizing#logon-storm-headroom",
+        "ref:avd-insights-glossary#time-to-connect-stages",
+        "gap:logon-target",
+        "gap:workload-benchmark"
+      ],
+      "observations": [
+        "obs:defender-cache-maintenance-not-in-image",
+        "obs:fslogix-exclusions-partial"
+      ]
+    },
+    {
+      "id": "multisession-density",
+      "version": "1.0.0",
+      "tier": "synthetic",
+      "title": "Multi-session persona density and experience gate benchmark",
+      "summary": "Ramps scripted multi-user processes calibrated to light (6/vCPU), medium (4/vCPU), heavy (2/vCPU) and power (1/vCPU) classes on one host while sampling CPU, processor queue length, memory per session and User Input Delay.",
+      "harness": "PowerShell multi-session persona worker loops plus PerfMon counters (User Input Delay per Session, Processor Time, Processor Queue Length, Available MBytes)",
+      "parameters": [
+        {
+          "name": "stepDurationMinutes",
+          "value": 15,
+          "unit": "minutes"
+        },
+        {
+          "name": "inputDelayGateP95Ms",
+          "value": 100,
+          "unit": "ms"
+        },
+        {
+          "name": "cpuGateP95Pct",
+          "value": 80,
+          "unit": "percent"
+        }
+      ],
+      "metrics": [
+        {
+          "metric": "sessionsPerVcpuTested",
+          "unit": "users-per-vcpu"
+        },
+        {
+          "metric": "maxPassingSessionsPerVcpu",
+          "unit": "users-per-vcpu"
+        },
+        {
+          "metric": "cpuPct",
+          "unit": "percent"
+        },
+        {
+          "metric": "pqlPerCore",
+          "unit": "ratio"
+        },
+        {
+          "metric": "availableMemoryMiB",
+          "unit": "mib"
+        },
+        {
+          "metric": "memoryPerSessionMiB",
+          "unit": "mib"
+        },
+        {
+          "metric": "inputDelayMs",
+          "unit": "ms"
+        }
+      ],
+      "claims": [
+        "ref:session-host-sizing#multisession-users-per-vcpu",
+        "ref:session-host-sizing#multisession-vcpu-range",
+        "ref:avd-insights-glossary#input-delay-bands",
+        "ref:avd-insights-use-cases#input-delay-host-100",
+        "ref:perfmon-troubleshooting#cpu-bands",
+        "gap:workload-benchmark",
+        "gap:baseline-profile"
+      ],
+      "observations": [
+        "obs:users-per-vcpu-adopted",
+        "obs:sizing-floor-not-measured"
+      ]
+    },
+    {
+      "id": "control-plane-autoscale",
+      "version": "1.0.0",
+      "tier": "synthetic",
+      "title": "Autoscale, Start VM on Connect and agent maintenance benchmark",
+      "summary": "Measures cold boot to Available latency, Start VM on Connect wake wait time, scaling plan ramp-up/drain reaction time, RBAC scope behavior and scheduled agent update window completion.",
+      "harness": "Azure Resource Graph, WVDConnections, WVDAgentHealthStatus and Activity Log timers",
+      "parameters": [
+        {
+          "name": "lookbackHours",
+          "value": 72,
+          "unit": "hours"
+        }
+      ],
+      "metrics": [
+        {
+          "metric": "coldBootToAvailableSec",
+          "unit": "s"
+        },
+        {
+          "metric": "startOnConnectWaitSec",
+          "unit": "s"
+        },
+        {
+          "metric": "drainToDeallocateSec",
+          "unit": "s"
+        }
+      ],
+      "claims": [
+        "ref:autoscale-plan#role-at-subscription",
+        "ref:avd-autoscale#scales-to-save-cost",
+        "ref:avd-scheduled-agent-updates#hosts-on-during-window",
+        "ref:cost-management-data#data-latency",
+        "gap:workload-benchmark"
+      ],
+      "observations": [
+        "obs:power-role-at-resource-group-scope",
+        "obs:scaling-and-start-on-connect-by-default",
+        "obs:agent-update-window-while-hosts-off",
+        "obs:run-cost-settles-late"
+      ]
+    },
+    {
+      "id": "bcdr-profile-recovery",
+      "version": "1.0.0",
+      "tier": "synthetic",
+      "title": "Profile share backup and recovery drill benchmark (R0/R1/R2)",
+      "summary": "Executes and times R0 (rebuild), R1 (restore anywhere) and R2 (warm standby) recovery drills and verifies Azure Files snapshot and vaulted backup jobs with shared-key access disabled.",
+      "harness": "avd-landing-zone recovery drill timer plus Azure Backup job status reader",
+      "parameters": [
+        {
+          "name": "recoveryModel",
+          "value": "R1",
+          "unit": "model"
+        }
+      ],
+      "metrics": [
+        {
+          "metric": "measuredRtoMinutes",
+          "unit": "minutes"
+        },
+        {
+          "metric": "measuredRpoMinutes",
+          "unit": "minutes"
+        },
+        {
+          "metric": "backupJobSuccess",
+          "unit": "bool"
+        }
+      ],
+      "claims": [
+        "ref:avd-multiregion-bcdr#rto-rpo-by-model",
+        "ref:files-backup-support#key-access-needed",
+        "ref:waf-disaster-recovery#drills-prove-targets",
+        "gap:workload-benchmark"
+      ],
+      "observations": [
+        "obs:recovery-tiers-not-yet-tested",
+        "obs:files-backup-key-access-off"
+      ]
+    },
+    {
+      "id": "insights-observational",
+      "version": "1.0.0",
+      "tier": "observational",
+      "title": "Longitudinal AVD Insights and PerfMon telemetry benchmark",
+      "summary": "Read-only 7-to-30-day KQL aggregation of WVDConnections, WVDConnectionNetworkData and Perf counters during working hours, grouped by public VM SKU, join type, storage SKU and session density band.",
+      "harness": "avd-current-state read-only KQL exporter (Export-AvdBenchmarkEvidence.ps1)",
+      "parameters": [
+        {
+          "name": "minWindowDays",
+          "value": 7,
+          "unit": "days"
+        }
+      ],
+      "metrics": [
+        {
+          "metric": "rttMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "inputDelayMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "timeToConnectMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "cpuPct",
+          "unit": "percent"
+        },
+        {
+          "metric": "availableMemoryMiB",
+          "unit": "mib"
+        },
+        {
+          "metric": "connectionFailureRatePct",
+          "unit": "percent"
+        },
+        {
+          "metric": "shortpathUdpSharePct",
+          "unit": "percent"
+        },
+        {
+          "metric": "turnRelaySharePct",
+          "unit": "percent"
+        }
+      ],
+      "claims": [
+        "ref:advisor-vm-rightsize#lookback",
+        "ref:avd-prerequisites#rtt-under-150",
+        "ref:avd-insights-glossary#input-delay-bands",
+        "ref:rdp-shortpath#symmetric-nat-means-turn",
+        "ref:configure-rdp-shortpath#verify-transport",
+        "ref:avd-private-link#full-port-range",
+        "ref:firewall-avd#bypass-route-for-scale-in",
+        "gap:insights-facts",
+        "gap:baseline-profile"
+      ],
+      "observations": [
+        "obs:symmetric-nat-egress-means-turn",
+        "obs:transport-column-names-disagree",
+        "obs:private-endpoint-nsg-narrower-than-avd-needs",
+        "obs:hub-route-without-avd-bypass"
+      ]
     }
   ]
 }

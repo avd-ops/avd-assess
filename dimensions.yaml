@@ -205,13 +205,13 @@ dimensions:
     pillar: capacity
     title: OS disk type
     decides: Premium SSD, Standard SSD or an ephemeral OS disk for session hosts.
-    home: {decision: proposed:hostPool.osDisk, facts: [c11.hostPool.sessionHosts.osDiskTypes]}
+    home: {decision: proposed:hostPool.osDisk, facts: [c11.hostPool.sessionHosts.osDiskTypes, c11.hostPool.sessionHosts.nonPremiumOsDisk], checks: [asm-hosts-premium-os-disk]}
     baseline:
       standing: published
       claims: [ref:avd-deploy-host-pool#premium-ssd-os-disk, ref:review-checklists-avd#H03.01, ref:session-host-sizing#ssd-storage]
       says: Premium SSD for production hosts.
     observations: [obs:premium-ssd-os-disk-default]
-    measure: rebuild
+    measure: fact
     landingZone: []
     note: The landing zone fixes Premium SSD in its session host module; there is no parameter.
   - id: disk.ephemeral-os
@@ -285,7 +285,7 @@ dimensions:
     pillar: profiles
     title: Profile storage IOPS and scale
     decides: Provisioned IOPS, share count, SMB Multichannel and handle headroom for sign-in storms.
-    home: {decision: hostPool.profileQuotaGiB, facts: [c12.group.profile.logonIopsPerUser, c12.group.users, c11.storage.smbMultichannel]}
+    home: {decision: hostPool.profileQuotaGiB, facts: [c12.group.profile.logonIopsPerUser, c12.group.users, c11.storage.smbMultichannel, c11.insights.fslogixReadIopsP95], checks: [asm-files-smb-multichannel]}
     baseline:
       standing: prior
       claims: [ref:fslogix-storage-options#iops-per-user, ref:azure-files-vdi#storm-sizing, ref:azure-files-vdi#users-per-share, ref:azure-files-vdi#handle-limits, ref:azure-files-smb#multichannel-ssd-only, ref:review-checklists-avd#H01.02, ref:review-checklists-avd#H03.04, ref:review-checklists-avd#E02.03]
@@ -670,12 +670,12 @@ dimensions:
     pillar: capacity
     title: Accelerated networking
     decides: Whether host NICs use accelerated networking.
-    home: {decision: hostPool.vmSize, facts: [c11.hostPool.sessionHosts.acceleratedNetworking]}
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.sessionHosts.acceleratedNetworking, c11.hostPool.sessionHosts.notAcceleratedNetworking], checks: [asm-hosts-accelerated-networking]}
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#C01.13, ref:accelerated-networking#lower-latency-jitter-cpu, ref:accelerated-networking#supported-sizes, ref:accelerated-networking#not-nc-nv, ref:accelerated-networking#deallocated-to-enable]
       says: Choose sizes that support accelerated networking (most sizes with two or more vCPUs, four with hyperthreading) and turn it on; it lowers latency, jitter and CPU use on the host.
-    measure: rebuild
+    measure: fact
     landingZone: []
     note: The landing zone turns it on in its session host module; there is no parameter. The overview says NC and NV sizes don't support it, but some current GPU size pages list it as supported (NVadsA10 v5, read 2026-10-21), so a GPU size is judged by its own size page.
   - id: perf.experience-targets
@@ -683,7 +683,7 @@ dimensions:
     pillar: ux-measurement
     title: User experience targets
     decides: The round-trip, input delay and logon targets a deployment is judged against.
-    home: {decision: region, facts: [c12.group.rttMsP95, c12.group.logonSeconds.p95, c12.group.uxScoreMedian]}
+    home: {decision: region, facts: [c11.insights.rttP95, c11.insights.inputDelayP95, c11.insights.timeToConnectP95, c12.group.rttMsP95, c12.group.logonSeconds.p95, c12.group.uxScoreMedian], checks: [asm-insights-rtt-target, asm-insights-input-delay-target, asm-insights-time-to-connect]}
     baseline:
       standing: published
       claims: [ref:avd-prerequisites#rtt-under-150, ref:avd-insights-glossary#input-delay-bands, gap:logon-target]
@@ -1113,13 +1113,13 @@ dimensions:
     pillar: security-posture
     title: Disk encryption
     decides: Server-side encryption only, encryption at host, or confidential disk encryption.
-    home: {decision: proposed:hostPool.encryption, facts: [c11.hostPool.sessionHosts.encryptionAtHost]}
+    home: {decision: proposed:hostPool.encryption, facts: [c11.hostPool.sessionHosts.encryptionAtHost, c11.hostPool.sessionHosts.notEncryptionAtHost], checks: [asm-hosts-encryption-at-host]}
     baseline:
       standing: published
       claims: [ref:disk-encryption-options#encryption-at-host, ref:disk-encryption-options#sse-always-on, ref:disk-encryption-options#ade-retirement]
       says: Encryption at host for new VMs (temp disks and caches too); no new Azure Disk Encryption, which retires on 2028-09-15.
     observations: [obs:encryption-at-host-by-default]
-    measure: rebuild
+    measure: fact
     landingZone: [encryptionAtHost]
   - id: encryption.keys
     area: encryption
@@ -1269,13 +1269,13 @@ dimensions:
     pillar: images
     title: AVD agent updates and token refresh
     decides: The agent update window and keeping idle hosts registered.
-    home: {decision: hostPool.power, facts: [c11.hostPool.sessionHosts.agentVersions, c11.hostPool.sessionHosts.sxsStackVersions, c11.hostPool.sessionHosts.updateStates, c11.hostPool.agentUpdate.scheduled, c11.hostPool.startVmOnConnect]}
+    home: {decision: hostPool.power, facts: [c11.hostPool.sessionHosts.agentVersions, c11.hostPool.sessionHosts.sxsStackVersions, c11.hostPool.sessionHosts.updateStates, c11.hostPool.agentUpdate.scheduled, c11.hostPool.startVmOnConnect], checks: [asm-hostpool-scheduled-agent-updates]}
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#E01.10, ref:avd-scheduled-agent-updates#off-by-default, ref:avd-scheduled-agent-updates#two-hour-windows, ref:avd-scheduled-agent-updates#hosts-on-during-window, ref:avd-agent-overview#latest-stable, ref:avd-agent-overview#flights, ref:avd-agent-overview#keeps-three-versions, ref:review-checklists-avd#E01.13, ref:avd-faq#token-90-days]
       says: Schedule agent updates in one or two two-hour windows when every host is on; expect versions to differ inside a pool for a few days during a flight; turn every host on for 20 minutes at least every 90 days.
     observations: [obs:agent-update-window-while-hosts-off]
-    measure: rebuild
+    measure: fact
     landingZone: []
     note: The landing zone fixes the schedule (one window, Saturday 02:00 host time) in its control plane module; there is no parameter.
   - id: updates.validation-pool
@@ -1351,7 +1351,7 @@ dimensions:
     pillar: reliability
     title: Availability zones
     decides: Whether hosts spread across zones, and how much headroom covers a lost zone.
-    home: {decision: proposed:hostPool.zones, facts: [c11.hostPool.sessionHosts.zones, c11.hostPool.sessionHosts.total]}
+    home: {decision: proposed:hostPool.zones, facts: [c11.hostPool.sessionHosts.zones, c11.hostPool.sessionHosts.unpinnedZones, c11.hostPool.sessionHosts.total], checks: [asm-hosts-zone-redundant]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#A01.04, ref:avd-multiregion-bcdr#spread-and-overprovision, ref:avd-multiregion-bcdr#zones-not-dr, ref:availability-zones#zonal-needs-multiple, ref:availability-zones#nonzonal-placement, ref:caf-avd-bcdr#availability-option-at-create]
@@ -1442,7 +1442,7 @@ dimensions:
     pillar: profiles
     title: Profile backup, its tier and its offsite copy
     decides: Which profile data is protected, whether the backup survives loss of the share and its account, and whether it runs at all.
-    home: {decision: proposed:profile.storage, facts: [c11.storage.backupProtected, c11.storage.backupTier, c11.storage.lastBackupJob, c11.storage.sku]}
+    home: {decision: proposed:profile.storage, facts: [c11.storage.backupProtected, c11.storage.backupTier, c11.storage.lastBackupJob, c11.storage.sku], checks: [asm-files-backup-protected]}
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#A03.01, ref:review-checklists-avd#A03.02, ref:review-checklists-avd#A03.04, ref:avd-faq#backup-by-storage, ref:azure-files-backup#snapshot-and-vaulted, ref:azure-files-backup#vaulted-survives-source-loss, ref:azure-files-backup#soft-delete, ref:files-backup-support#key-access-needed, ref:files-backup-portal#keys-or-private, ref:avd-multiregion-bcdr#back-up-primary-only, ref:fslogix-container-types#odfc-not-backed-up]
@@ -1777,7 +1777,7 @@ dimensions:
     pillar: monitoring
     title: Monitoring, Insights wiring
     decides: Insights wiring - diagnostics on every AVD object, and the monitoring agent and Insights data collection rule on every host.
-    home: {decision: proposed:operations.monitoring, facts: [c11.hostPool.diagnosticsSetting, c11.monitoring.diagnostics, c11.hostPool.sessionHosts.monitoringAgent, c11.hostPool.sessionHosts.insightsDcr]}
+    home: {decision: proposed:operations.monitoring, facts: [c11.hostPool.diagnosticsSetting, c11.monitoring.diagnostics, c11.hostPool.sessionHosts.monitoringAgent, c11.hostPool.sessionHosts.insightsDcr], checks: [asm-hostpool-diagnostics-enabled, asm-hosts-insights-agent]}
     baseline:
       standing: published
       claims: [ref:avd-insights#hostpool-diagnostics, ref:avd-insights#workspace-diagnostics, ref:avd-insights#host-data-ama-dcr, ref:avd-insights#designated-workspace, ref:avd-insights-costs#counter-set, ref:avd-insights-whats-new#latest-version, ref:avd-diagnostics#per-object, ref:avd-diagnostics#categories, ref:caf-avd-management#insights-config-workbook, ref:caf-avd-management#regional-workspace, ref:review-checklists-avd#E02.01, ref:review-checklists-avd#E02.02, gap:insights-facts, gap:monitoring-scope]
@@ -1895,7 +1895,7 @@ dimensions:
     pillar: scaling
     title: Scaling plan per host pool
     decides: Whether each pool has a scaling plan, power management or dynamic, and that nothing else scales it.
-    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.method, c11.hostPool.scalingPlan.exclusionTag, c11.hostPool.maxSessionLimit, c11.hostPool.type]}
+    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.method, c11.hostPool.scalingPlan.exclusionTag, c11.hostPool.maxSessionLimit, c11.hostPool.type], checks: [asm-pooled-autoscale-attached]}
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#E01.04, ref:avd-autoscale#scales-to-save-cost, ref:avd-autoscale#two-methods, ref:avd-autoscale#one-plan-per-pool, ref:avd-autoscale#exclusion-tags, ref:autoscale-plan#max-session-limit-required, ref:autoscale-plan#role-at-subscription, ref:troubleshoot-autoscale#role-scope-containing-pool, ref:autoscale-plan#no-other-scaling-tool, ref:autoscale-plan#dynamic-needs-host-config, ref:autoscale-plan#exclusion-tag]
@@ -2030,7 +2030,7 @@ dimensions:
     pillar: diagnostics
     title: Connection outcomes and time to connect
     decides: What share of connections reach the host, and where time to connect goes when it is slow.
-    home: {facts: [c11.hostPool.diagnostics.connections, c11.hostPool.diagnostics.connectionsFailed, c11.hostPool.diagnostics.timeToConnectSecondsP95, c12.group.logonSeconds.p95], intake: [intake.reportedSymptoms]}
+    home: {facts: [c11.insights.connectionFailureRate, c11.insights.timeToConnectP95, c11.hostPool.diagnostics.connections, c11.hostPool.diagnostics.connectionsFailed, c11.hostPool.diagnostics.timeToConnectSecondsP95, c12.group.logonSeconds.p95], intake: [intake.reportedSymptoms], checks: [asm-insights-connection-reliability, asm-insights-time-to-connect]}
     baseline:
       standing: gap
       claims: [ref:diagnostics-log-analytics#connection-states, ref:avd-insights-glossary#time-to-connect-checkpoints, ref:avd-insights-glossary#time-to-connect-stages, ref:avd-insights-glossary#credential-time-subtracted, ref:troubleshoot-insights#time-to-connect-includes-credentials, ref:troubleshoot-insights#missing-completion, ref:wvdcheckpoints-table#named-steps, gap:diagnostics-scope, gap:triage-cannot-connect, gap:triage-slow-logon]
