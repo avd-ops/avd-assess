@@ -1162,6 +1162,173 @@
         "ref:review-checklists-avd#A03.02",
         "gap:collection-map"
       ]
+    },
+    {
+      "fact": "c11.entra.skuWin365Available",
+      "from": "graph-rest",
+      "property": "subscribedSkus.prepaidUnits.enabled",
+      "claims": [
+        "gap:identity-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.assignmentFiltersCount",
+      "from": "graph-rest",
+      "property": "assignmentFilters",
+      "claims": [
+        "ref:windows-365-intune#assignment-filters-separate-platforms",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.multiSessionFilterPresent",
+      "from": "graph-rest",
+      "property": "assignmentFilters.rule",
+      "claims": [
+        "ref:windows-365-intune#assignment-filters-separate-platforms",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.cloudPcFilterPresent",
+      "from": "graph-rest",
+      "property": "assignmentFilters.rule",
+      "claims": [
+        "ref:windows-365-intune#assignment-filters-separate-platforms",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.unfilteredAllDevicesPolicies",
+      "from": "graph-rest",
+      "property": "configurationPolicies.assignments",
+      "claims": [
+        "ref:windows-365-intune#assignment-filters-separate-platforms",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.cloudPcManagedCompliant",
+      "from": "graph-rest",
+      "property": "managedDevices.complianceState",
+      "claims": [
+        "ref:windows-365-intune#cloudpc-intune-compliance",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.cloudPcManagedNoncompliant",
+      "from": "graph-rest",
+      "property": "managedDevices.complianceState",
+      "claims": [
+        "ref:windows-365-intune#cloudpc-intune-compliance",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.cloudPcCountByStatus",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.cloudPCs.status",
+      "claims": [
+        "ref:windows-365-intune#cloudpc-intune-compliance",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.provisioningPoliciesCount",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.provisioningPolicies",
+      "claims": [
+        "ref:windows-365-intune#provisioning-policy-sso",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.ssoEnabledOnAllPolicies",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.provisioningPolicies.enableSingleSignOn",
+      "claims": [
+        "ref:windows-365-intune#provisioning-policy-sso",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.networkMode",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.provisioningPolicies.managedType",
+      "claims": [
+        "ref:windows-365-intune#anc-health-checks",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.ancCountByHealth",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.onPremisesConnections.healthCheckStatus",
+      "claims": [
+        "ref:windows-365-intune#anc-health-checks",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.ancFailedCount",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.onPremisesConnections.healthCheckStatus",
+      "claims": [
+        "ref:windows-365-intune#anc-health-checks",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.userSettingsCount",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.userSettings",
+      "claims": [
+        "ref:windows-365-intune#user-settings-least-privilege",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.localAdminDisabled",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.userSettings.localAdminEnabled",
+      "claims": [
+        "ref:windows-365-intune#user-settings-least-privilege",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.restorePointFrequencyHoursMax",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.userSettings.restorePointSetting.frequencyInHours",
+      "claims": [
+        "ref:windows-365-intune#restore-point-cadence",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "c11.intune.win365.customImagesReady",
+      "from": "graph-rest",
+      "property": "virtualEndpoint.deviceImages.status",
+      "claims": [
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "intake.avdScope",
+      "from": "intake",
+      "claims": [
+        "gap:intake",
+        "gap:intune-scope"
+      ]
+    },
+    {
+      "fact": "intake.win365Scope",
+      "from": "intake",
+      "claims": [
+        "gap:intake",
+        "gap:intune-scope"
+      ]
     }
   ],
   "checks": [
@@ -2464,6 +2631,217 @@
         "plane": "azure",
         "name": "enableProfileBackup",
         "to": true
+      }
+    },
+    {
+      "id": "asm-intune-assignment-filters-separate-platforms",
+      "plane": "intune",
+      "title": "Intune assignment filters separate multi-session AVD hosts, Cloud PCs and physical endpoints",
+      "pillar": "operations",
+      "severity": "high",
+      "claims": [
+        "ref:windows-365-intune#assignment-filters-separate-platforms",
+        "ref:intune-avd-multisession#settings-catalog-only"
+      ],
+      "facts": [
+        "c11.intune.multiSessionFilterPresent",
+        "c11.intune.cloudPcFilterPresent",
+        "c11.intune.unfilteredAllDevicesPolicies"
+      ],
+      "rule": {
+        "each": "/intune",
+        "expect": {
+          "multiSessionFilterPresent": {
+            "eq": true
+          },
+          "cloudPcFilterPresent": {
+            "eq": true
+          },
+          "unfilteredAllDevicesPolicies": {
+            "max": 0
+          }
+        },
+        "onFail": "warn"
+      },
+      "informs": [],
+      "remediation": {
+        "kind": "lz-setting",
+        "plane": "intune",
+        "name": "intune-platform-assignment-filters"
+      }
+    },
+    {
+      "id": "asm-win365-sso-enabled",
+      "plane": "intune",
+      "title": "Windows 365 provisioning policies enable Microsoft Entra single sign-on",
+      "pillar": "security",
+      "severity": "medium",
+      "claims": [
+        "ref:windows-365-intune#provisioning-policy-sso"
+      ],
+      "facts": [
+        "c11.intune.win365.provisioningPoliciesCount",
+        "c11.intune.win365.ssoEnabledOnAllPolicies"
+      ],
+      "rule": {
+        "each": "/intune/win365",
+        "where": {
+          "provisioningPoliciesCount": {
+            "min": 1
+          }
+        },
+        "expect": {
+          "ssoEnabledOnAllPolicies": {
+            "eq": true
+          }
+        },
+        "onFail": "warn"
+      },
+      "informs": [
+        "identity"
+      ],
+      "remediation": {
+        "kind": "lz-parameter",
+        "plane": "intune",
+        "name": "win365EnableSingleSignOn",
+        "to": true
+      }
+    },
+    {
+      "id": "asm-win365-no-local-admin",
+      "plane": "intune",
+      "title": "Windows 365 user settings policies disable local administrator rights on Cloud PCs",
+      "pillar": "security",
+      "severity": "high",
+      "claims": [
+        "ref:windows-365-intune#user-settings-least-privilege"
+      ],
+      "facts": [
+        "c11.intune.win365.userSettingsCount",
+        "c11.intune.win365.localAdminDisabled"
+      ],
+      "rule": {
+        "each": "/intune/win365",
+        "where": {
+          "userSettingsCount": {
+            "min": 1
+          }
+        },
+        "expect": {
+          "localAdminDisabled": {
+            "eq": true
+          }
+        },
+        "onFail": "gap"
+      },
+      "informs": [],
+      "remediation": {
+        "kind": "lz-setting",
+        "plane": "intune",
+        "name": "win365-disable-local-admin"
+      }
+    },
+    {
+      "id": "asm-win365-restore-points-configured",
+      "plane": "intune",
+      "title": "Windows 365 user settings configure automatic point-in-time restore points every 12 hours or less",
+      "pillar": "reliability",
+      "severity": "medium",
+      "claims": [
+        "ref:windows-365-intune#restore-point-cadence"
+      ],
+      "facts": [
+        "c11.intune.win365.userSettingsCount",
+        "c11.intune.win365.restorePointFrequencyHoursMax"
+      ],
+      "rule": {
+        "each": "/intune/win365",
+        "where": {
+          "userSettingsCount": {
+            "min": 1
+          }
+        },
+        "expect": {
+          "restorePointFrequencyHoursMax": {
+            "max": 12
+          }
+        },
+        "onFail": "warn"
+      },
+      "informs": [],
+      "remediation": {
+        "kind": "lz-parameter",
+        "plane": "intune",
+        "name": "win365RestorePointFrequencyHours",
+        "to": 6
+      }
+    },
+    {
+      "id": "asm-win365-anc-healthy",
+      "plane": "intune",
+      "title": "Windows 365 Azure Network Connections pass all health checks",
+      "pillar": "reliability",
+      "severity": "high",
+      "claims": [
+        "ref:windows-365-intune#anc-health-checks"
+      ],
+      "facts": [
+        "c11.intune.win365.networkMode",
+        "c11.intune.win365.ancFailedCount"
+      ],
+      "rule": {
+        "each": "/intune/win365",
+        "where": {
+          "networkMode": {
+            "in": [
+              "azure-network-connection",
+              "mixed"
+            ]
+          }
+        },
+        "expect": {
+          "ancFailedCount": {
+            "max": 0
+          }
+        },
+        "onFail": "gap"
+      },
+      "informs": [
+        "network"
+      ],
+      "remediation": {
+        "kind": "lz-setting",
+        "plane": "intune",
+        "name": "win365-anc-health-check"
+      }
+    },
+    {
+      "id": "asm-win365-cloudpcs-compliant",
+      "plane": "intune",
+      "title": "Intune-managed Windows 365 Cloud PCs have zero noncompliant devices",
+      "pillar": "security",
+      "severity": "high",
+      "claims": [
+        "ref:windows-365-intune#cloudpc-intune-compliance",
+        "ref:intune-compliance#no-policy-default-compliant"
+      ],
+      "facts": [
+        "c11.intune.cloudPcManagedNoncompliant"
+      ],
+      "rule": {
+        "each": "/intune",
+        "expect": {
+          "cloudPcManagedNoncompliant": {
+            "max": 0
+          }
+        },
+        "onFail": "gap"
+      },
+      "informs": [],
+      "remediation": {
+        "kind": "lz-setting",
+        "plane": "intune",
+        "name": "intune-cloudpc-compliance"
       }
     }
   ],

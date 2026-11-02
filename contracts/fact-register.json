@@ -2930,6 +2930,223 @@
       "privacy": "measure",
       "status": "built",
       "evidences": []
+    },
+    {
+      "id": "c11.entra.skuWin365Available",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/entra/skuWin365Available",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.assignmentFiltersCount",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/assignmentFiltersCount",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.multiSessionFilterPresent",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/multiSessionFilterPresent",
+      "grain": "estate",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.cloudPcFilterPresent",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/cloudPcFilterPresent",
+      "grain": "estate",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.unfilteredAllDevicesPolicies",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/unfilteredAllDevicesPolicies",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.cloudPcManagedCompliant",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/cloudPcManagedCompliant",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.cloudPcManagedNoncompliant",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/cloudPcManagedNoncompliant",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.win365.cloudPcCountByStatus",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/cloudPcCountByStatus",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.win365.provisioningPoliciesCount",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/provisioningPoliciesCount",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.win365.ssoEnabledOnAllPolicies",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/ssoEnabledOnAllPolicies",
+      "grain": "estate",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "built",
+      "evidences": [
+        "identity"
+      ]
+    },
+    {
+      "id": "c11.intune.win365.networkMode",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/networkMode",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": [
+        "network"
+      ]
+    },
+    {
+      "id": "c11.intune.win365.ancCountByHealth",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/ancCountByHealth",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": [
+        "network"
+      ]
+    },
+    {
+      "id": "c11.intune.win365.ancFailedCount",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/ancFailedCount",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": [
+        "network"
+      ]
+    },
+    {
+      "id": "c11.intune.win365.userSettingsCount",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/userSettingsCount",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.win365.localAdminDisabled",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/localAdminDisabled",
+      "grain": "estate",
+      "unit": "bool",
+      "privacy": "boolean",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.win365.restorePointFrequencyHoursMax",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/restorePointFrequencyHoursMax",
+      "grain": "estate",
+      "unit": "hours",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.intune.win365.customImagesReady",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/intune/win365/customImagesReady",
+      "grain": "estate",
+      "unit": "count",
+      "privacy": "count",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "intake.avdScope",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/avdScope",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "intake.win365Scope",
+      "tier": "intake",
+      "contract": "C19",
+      "path": "/win365Scope",
+      "grain": "estate",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": []
     }
   ]
 }

@@ -45,8 +45,11 @@ All are counts, public enums or booleans, so no device or user name leaves the c
 | `c11.intune.rdpShortpathConfigured` | Whether an assigned Settings Catalog policy configures RDP Shortpath / UDP transport on session hosts | Graph configuration policies |
 | `c11.intune.sessionTimeLimitsConfigured` | Whether an assigned Settings Catalog policy configures disconnected and idle session time limits | Graph configuration policies |
 | `c11.intune.multiSessionUpdateRingAssigned` | Whether a Windows Update ring or Autopatch group targets pooled multi-session session hosts | Graph device configurations |
+| `c11.intune.assignmentFiltersCount`, `multiSessionFilterPresent`, `cloudPcFilterPresent`, `unfilteredAllDevicesPolicies` | Whether Intune assignment filters separate multi-session AVD hosts, Windows 365 Cloud PCs and physical desktops, and how many policies target all devices with no filter | Graph assignment filters and configuration policies (`ref:windows-365-intune#assignment-filters-separate-platforms`) |
+| `c11.intune.cloudPcManagedCompliant`, `cloudPcManagedNoncompliant` | Intune-managed Windows 365 Cloud PCs by compliance state | Graph managed devices (`ref:windows-365-intune#cloudpc-intune-compliance`) |
+| `c11.intune.win365.*` (`cloudPcCountByStatus`, `provisioningPoliciesCount`, `ssoEnabledOnAllPolicies`, `networkMode`, `ancCountByHealth`, `ancFailedCount`, `userSettingsCount`, `localAdminDisabled`, `restorePointFrequencyHoursMax`, `customImagesReady`) | Windows 365 Cloud PC provisioning policies, SSO state, network mode, Azure Network Connection health, user settings local admin and restore-point cadence, and custom image readiness | Graph `deviceManagement/virtualEndpoint` (`ref:windows-365-intune#provisioning-policy-sso`, `ref:windows-365-intune#user-settings-least-privilege`, `ref:windows-365-intune#restore-point-cadence`, `ref:windows-365-intune#anc-health-checks`) |
 
-Intake answers, proposed for contract C19 (`gap:intake`): `intake.hostManagement`, `intake.hostServicing`, `intake.clientDevices`.
+Intake answers, in contract C19 (`gap:intake`): `intake.avdScope`, `intake.win365Scope`, and proposed `intake.hostManagement`, `intake.hostServicing`, `intake.clientDevices`.
 
 Building any of these is a contract change here first: the per-pool counts join the session host summary in the C11 schema, and the tenant setting needs a new optional top-level `intune` object, because C11 has no tenant-level section yet (`contracts/README.md`).
 

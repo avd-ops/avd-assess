@@ -330,7 +330,8 @@
         "caAvdSignInFrequencyConfigured": { "type": "boolean" },
         "caAvdBreakGlassExcluded": { "type": "boolean" },
         "kerberosStoragePrincipalsReady": { "$ref": "#/$defs/count" },
-        "skuAvdEligibleAvailable": { "$ref": "#/$defs/count" }
+        "skuAvdEligibleAvailable": { "$ref": "#/$defs/count" },
+        "skuWin365Available": { "$ref": "#/$defs/count" }
       }
     },
     "intune": {
@@ -343,7 +344,29 @@
         "fslogixProfileConfigured": { "type": "boolean" },
         "rdpShortpathConfigured": { "type": "boolean" },
         "sessionTimeLimitsConfigured": { "type": "boolean" },
-        "multiSessionUpdateRingAssigned": { "type": "boolean" }
+        "multiSessionUpdateRingAssigned": { "type": "boolean" },
+        "assignmentFiltersCount": { "$ref": "#/$defs/count" },
+        "multiSessionFilterPresent": { "type": "boolean" },
+        "cloudPcFilterPresent": { "type": "boolean" },
+        "unfilteredAllDevicesPolicies": { "$ref": "#/$defs/count" },
+        "cloudPcManagedCompliant": { "$ref": "#/$defs/count" },
+        "cloudPcManagedNoncompliant": { "$ref": "#/$defs/count" },
+        "win365": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cloudPcCountByStatus": { "$ref": "#/$defs/countMap" },
+            "provisioningPoliciesCount": { "$ref": "#/$defs/count" },
+            "ssoEnabledOnAllPolicies": { "type": "boolean" },
+            "networkMode": { "enum": ["microsoft-hosted", "azure-network-connection", "mixed", "none"] },
+            "ancCountByHealth": { "$ref": "#/$defs/countMap" },
+            "ancFailedCount": { "$ref": "#/$defs/count" },
+            "userSettingsCount": { "$ref": "#/$defs/count" },
+            "localAdminDisabled": { "type": "boolean" },
+            "restorePointFrequencyHoursMax": { "$ref": "#/$defs/count" },
+            "customImagesReady": { "$ref": "#/$defs/count" }
+          }
+        }
       }
     },
     "m365": {
