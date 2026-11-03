@@ -36,7 +36,7 @@
 | `intake.clientDevices` (optional) | What must a client device prove to connect (`compliant`, `compliant-or-app-protected`, `any`, `undecided`)? | Whether Conditional Access should require a compliant device or app protection, until a directory read can see the policies (`ref:windows-app-device-compliance#app-protection-for-clients`) |
 **Proposed for the reliability pillar (2026-10-21).** Five more optional answers, `specified` in the register and not yet in the schema: `intake.recoveryTime`, `intake.recoveryPoint`, `intake.regionRecovery`, `intake.recoveryDependencies` and `intake.profileData`. Their questions and enums are in `gap:reliability-scope`; they join the schema as optional fields, so an intake file written today stays valid.
 
-**Proposed, not yet in the schema:** `intake.alertResponse`, `intake.logRetention`, `intake.coldStartTolerance` and `intake.deploymentMethod`, with their values and reasons in `gap:monitoring-scope`; the FinOps license and commitment questions in `gap:finops-scope`.
+**Proposed, not yet in the schema:** `intake.alertResponse`, `intake.logRetention`, `intake.coldStartTolerance` and `intake.deploymentMethod`, with their values and reasons in `gap:monitoring-scope`. The FinOps license (`intake.userLicense`) and commitment (`intake.computeCommitments`) questions from `gap:finops-scope` are built in `contracts/schemas/intake.schema.json`.
 **Specified for the identity pillar (2026-10-21), not yet in the C19 schema.** The fact register lists these as `specified` with their paths, so the intake form and avd-current-state's reader can add them together in one contract change; every answer is an enum, with no names, domains or IDs (`gap:identity-scope`).
 
 | Fact | Question | Answers | Why it matters |

@@ -1942,7 +1942,7 @@ dimensions:
     pillar: scaling
     title: Personal pool deallocation and hibernation
     decides: What turns personal hosts off after use, and whether they hibernate.
-    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.method, c11.hostPool.sessionHosts.hibernation, c11.hostPool.startVmOnConnect, c11.hostPool.type]}
+    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.method, c11.hostPool.sessionHosts.hibernation, c11.hostPool.startVmOnConnect, c11.hostPool.type], checks: [asm-personal-deallocation]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#E01.06, ref:start-vm-on-connect-faq#no-automatic-deallocation, ref:avd-autoscale#hibernate-personal, ref:autoscale-plan#hibernate-not-with-profiles]
@@ -1978,16 +1978,66 @@ dimensions:
   - id: cost.budget
     area: cost
     pillar: finops
-    title: Budgets, tags and cost guardrails
-    decides: Budgets, budget actions and cost allocation tags.
-    home: {decision: proposed:cost.budget, facts: []}
+    title: Budgets and spending guardrails
+    decides: Budgets at subscription or resource group scope and whether threshold alerts call an action group.
+    home: {decision: proposed:cost.budget, facts: [c11.subscription.budgets.total, c11.subscription.budgets.withActionGroup], checks: [asm-cost-budget-action-group]}
     baseline:
-      standing: owned
-      claims: []
-      says: Owned by the FinOps method.
-    seeAlso: https://github.com/avd-ops/avd-assess/blob/5bc5da8f17de4cca7e51d62a4210bd7da893fa40/methods/finops.md
-    measure: rebuild
-    landingZone: [monthlyBudgetAmount, budgetStartDate, autoShutdownBudgetAction, autoShutdownBudgetPercent, tags]
+      standing: guidance
+      claims: [ref:waf-cost-optimization-checklist#CO:02, ref:waf-cost-optimization-checklist#CO:03, ref:waf-cost-optimization-checklist#CO:04, ref:cost-management-budgets#alerts-dont-stop, ref:cost-management-budgets#action-group-scopes, gap:finops-scope]
+      says: Keep a budget per AVD subscription or resource group wired to an action group; a budget alert alone never stops spend.
+    observations: [obs:budget-alert-needs-a-lock, obs:run-cost-settles-late]
+    measure: fact
+    landingZone: [monthlyBudgetAmount, budgetStartDate, autoShutdownBudgetAction, autoShutdownBudgetPercent]
+  - id: cost.tagging
+    area: cost
+    pillar: finops
+    title: Cost allocation tags
+    decides: Whether host pools and session hosts carry cost allocation tags such as cm-resource-parent.
+    home: {decision: proposed:cost.tagging, facts: [c11.hostPool.costAllocationTag, c11.hostPool.sessionHosts.untaggedForCost], checks: [asm-cost-allocation-tags]}
+    baseline:
+      standing: guidance
+      claims: [ref:review-checklists-avd#E01.07, ref:avd-tagging#tag-host-pools-first, ref:avd-tagging#tags-only-direct, ref:avd-tagging#cm-resource-parent, ref:cost-tag-inheritance#inherit-to-usage-records, gap:finops-scope]
+      says: Tag host pools and their session hosts directly (or set cm-resource-parent to the host pool ID) so Cost Management groups compute and storage spend by pool.
+    measure: fact
+    landingZone: [tags]
+  - id: cost.advisor
+    area: cost
+    pillar: finops
+    title: Advisor cost recommendations (unattached disks and right-sizing)
+    decides: Whether unattached disks are removed and Advisor VM right-size or shutdown findings are reviewed alongside the scaling plan.
+    home: {decision: hostPool.vmSize, facts: [c11.advisor.recommendations, c11.advisor.unattachedDisks, c11.advisor.rightSizeVms], checks: [asm-cost-no-unattached-disks, asm-cost-advisor-rightsize-reviewed]}
+    baseline:
+      standing: guidance
+      claims: [ref:advisor-cost#unattached-disks, ref:advisor-cost#right-size-or-shutdown-vms, ref:waf-cost-optimization-checklist#CO:07, gap:tune-loop, gap:finops-scope]
+      says: Remove unattached managed disks and review Advisor VM right-size recommendations with the scaling plan and the tune loop before downsizing.
+    observations: [obs:scaling-and-start-on-connect-by-default]
+    measure: fact
+    landingZone: []
+  - id: cost.licensing
+    area: cost
+    pillar: finops
+    title: User licensing and per-user access pricing
+    decides: Which eligible license covers internal users and whether external commercial users sit in a separate subscription for per-user access pricing.
+    home: {decision: proposed:cost.licensing, facts: [c11.entra.skuAvdEligibleAvailable], intake: [intake.userLicense]}
+    baseline:
+      standing: published
+      claims: [ref:avd-licensing#eligible-license-per-user, ref:avd-licensing#per-user-access-external-only, ref:avd-licensing#separate-subscription-for-licensed-users, ref:avd-licensing#contractors-are-internal, gap:finops-scope]
+      says: Internal users (contractors included) need an eligible M365, Windows Enterprise or RDS CAL license; per-user access pricing is for external commercial users only and belongs in its own subscription.
+    measure: intake
+    landingZone: []
+  - id: cost.commitments
+    area: cost
+    pillar: finops
+    title: Compute commitments (reservations and savings plans)
+    decides: How much always-on session host compute is covered by a reservation or savings plan after hours and sizes are settled.
+    home: {decision: proposed:cost.commitments, facts: [c11.advisor.recommendations], intake: [intake.computeCommitments]}
+    baseline:
+      standing: gap
+      claims: [ref:commitment-choice#right-size-first, ref:reservations#hourly-billing-discount, ref:advisor-cost#vm-reservations, ref:advisor-cost#savings-plan, ref:waf-cost-optimization-checklist#CO:05, gap:commitment-floor, gap:finops-scope]
+      says: Right-size and autoscale before committing; commit only the floor of hours that run every day of the year.
+    observations: [obs:retail-price-lookalike-meters, obs:estimate-before-deploy]
+    measure: intake
+    landingZone: []
   # Troubleshooting and diagnostics (pillar diagnostics, methods/diagnostics.md). These rows are the
   # data-source map: what each source shows, who can read it, and which part becomes a collector fact.
   # The pillar sets no configuration of its own; monitoring owns how the sources are switched on.
