@@ -9469,6 +9469,10 @@
       "title": "a register of deployment dimensions and their baselines"
     },
     {
+      "id": "desktop-devops-scope",
+      "title": "Desktop DevOps across Azure Virtual Desktop, Windows 365 and Microsoft Intune"
+    },
+    {
       "id": "diagnostics-scope",
       "title": "what a troubleshooting and diagnostics assessment can read, and which part becomes a fact"
     },

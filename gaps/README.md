@@ -36,6 +36,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [triage-profile-failed](triage-profile-failed.md) | Triage when a user profile fails to load |
 | [network-scope](network-scope.md) | What a network assessment can judge, from which evidence, the draft network checks, and which repo does what |
 | [intune-scope](intune-scope.md) | What an Intune and host management assessment can judge from where, how devices map to pools, and what is not applicable on multi-session |
+| [desktop-devops-scope](desktop-devops-scope.md) | How a single Desktop DevOps lifecycle governs pooled AVD, personal AVD, Windows 365 Cloud PCs and physical Intune endpoints together |
 | [monitoring-scope](monitoring-scope.md) | The facts, draft checks and intake questions for monitoring, alerts, retention, scaling plans and power, and how to judge ramp-up timing and the first-connection wait |
 | [client-network](client-network.md) | Judging the networks users connect from, AVD Private Link from the client included |
 | [endpoints-scope](endpoints-scope.md) | What an endpoints and clients assessment can judge, from which evidence, the client support map and the proposed intake questions |
