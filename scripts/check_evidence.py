@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Checks evidence submissions (evidence/*.json, avd-assess-evidence/v1, gap:evidence-intake) before they
-are merged: the schema, the privacy rules, and that every metric and claim exists. Anyone runs the same
-check on their own file before submitting, and CI runs it on every pull request.
+"""Checks evidence submissions (evidence/*.json and evidence/*/*.json, avd-assess-evidence/v1 or
+avd-benchmark-result/v1 C25, gap:evidence-intake and gap:workload-benchmark) before they are merged:
+the schema, the privacy rules, and that every metric, profile, claim and observation exists. Anyone
+runs the same check on their own file before submitting, and CI runs it on every pull request.
 
   python3 scripts/check_evidence.py                      # every file in evidence/
   python3 scripts/check_evidence.py my-submission.json   # one file, before you submit it
@@ -20,6 +21,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 ROOT = Path(__file__).resolve().parent.parent
 EVIDENCE = ROOT / "evidence"
 SCHEMA = json.loads((EVIDENCE / "schema.json").read_text(encoding="utf-8"))
+BENCHMARK_SCHEMA = json.loads((ROOT / "contracts" / "schemas" / "benchmark-result.schema.json").read_text(encoding="utf-8"))
 
 # Metrics the baselines measure that have no registry entry yet; each says where its baseline lives.
 EXTRA_METRICS = {
@@ -50,15 +52,28 @@ def known_claims():
     return known
 
 
+def known_observations():
+    return {f"obs:{p.stem}" for p in (ROOT / "observations").glob("*.yaml")}
+
+
+def known_profiles():
+    profiles_path = ROOT / "benchmarks" / "profiles.yaml"
+    if not profiles_path.exists():
+        return set()
+    return {p["id"] for p in (load_yaml(profiles_path).get("profiles") or []) if p.get("id")}
+
+
 def registry():
     entries = load_yaml(ROOT / "gold-standards.yaml").get("entries") or []
     return {e["metric"]: e["claim"] for e in entries if e.get("metric")}
 
 
-def check(path, known=None, metrics=None):
+def check(path, known=None, metrics=None, observations=None, profiles=None):
     """Returns the problems with one submission; an empty list means it passes."""
     known = known if known is not None else known_claims()
     metrics = metrics if metrics is not None else {**EXTRA_METRICS, **registry()}
+    observations = observations if observations is not None else known_observations()
+    profiles = profiles if profiles is not None else known_profiles()
     problems = []
     raw = path.read_text(encoding="utf-8")
     if any(ord(ch) > 127 for ch in raw):
@@ -70,13 +85,29 @@ def check(path, known=None, metrics=None):
         doc = json.loads(raw)
     except json.JSONDecodeError as e:
         return problems + [f"not valid JSON ({e.msg})"]
-    for e in sorted(Draft202012Validator(SCHEMA, format_checker=FormatChecker()).iter_errors(doc), key=lambda e: list(e.path))[:8]:
+    schema_str = doc.get("schema") if isinstance(doc, dict) else None
+    active_schema = BENCHMARK_SCHEMA if schema_str == "avd-benchmark-result/v1" else SCHEMA
+    for e in sorted(Draft202012Validator(active_schema, format_checker=FormatChecker()).iter_errors(doc), key=lambda e: list(e.path))[:8]:
         where = "/".join(map(str, e.path)) or "(top)"
         problems.append(f"{where}: {e.message[:120]}")
     if problems:
         return problems
     if doc["id"] != path.stem:
         problems.append(f"id {doc['id']!r} must match the file name")
+    if schema_str == "avd-benchmark-result/v1":
+        if doc["source"] == "estate" and doc.get("consent") is not True:
+            problems.append("an estate submission needs consent: true (the owner agreed to share these aggregates)")
+        pid = doc["profile"]["id"]
+        if profiles and pid not in profiles:
+            problems.append(f"profile {pid!r} isn't in benchmarks/profiles.yaml")
+        for item in doc["verdict"]["claims"]:
+            c = item["claim"]
+            if c not in known:
+                problems.append(f"verdict claim {c!r} doesn't exist")
+            obs = item.get("observation")
+            if obs and obs not in observations:
+                problems.append(f"verdict observation {obs!r} doesn't exist")
+        return problems
     scope = doc["scope"]
     if doc["source"] == "estate":
         if doc.get("consent") is not True:
@@ -103,11 +134,12 @@ def check(path, known=None, metrics=None):
 
 
 def main(argv):
-    paths = [Path(a) for a in argv] or sorted(p for p in EVIDENCE.glob("*.json") if p.name != "schema.json")
+    paths = [Path(a) for a in argv] or sorted(p for p in EVIDENCE.rglob("*.json") if p.name != "schema.json")
     known, metrics = known_claims(), {**EXTRA_METRICS, **registry()}
+    observations, profiles = known_observations(), known_profiles()
     failed = 0
     for path in paths:
-        problems = check(path, known, metrics)
+        problems = check(path, known, metrics, observations, profiles)
         for p in problems:
             print(f"{path.name}: {p}")
         failed += bool(problems)
