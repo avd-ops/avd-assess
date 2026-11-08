@@ -14,7 +14,7 @@ How to judge what an estate costs, and whether it costs what it should, against 
 8. **Check allocation and guardrails:** host pools and their hosts carry a cost allocation tag (`ref:avd-tagging#tag-host-pools-first`, `ref:avd-tagging#cm-resource-parent`), and a budget that acts, not only alerts (`ref:cost-management-budgets#alerts-dont-stop`, `obs:budget-alert-needs-a-lock`).
 9. **Price with retail prices matched on product, SKU and meter,** report an unmatched line instead of guessing, and call the result an upper bound (`ref:retail-prices-api#unauthenticated-retail`, `obs:retail-price-lookalike-meters`, `obs:estimate-before-deploy`).
 10. **Report actual cost only once it has settled,** with the time it was read; before that it is `pending` (`ref:cost-management-data#data-latency`, `ref:cost-management-data#open-month-estimated`, `obs:run-cost-settles-late`).
-11. **Treat a deliberate trade-off as `warn` with its reason,** such as a host kept on for a night batch, and a setting nobody chose as `gap`; a model never decides which (`gap:scoring`).
+11. **Treat a deliberate trade-off as `warn` with its reason,** such as a host kept on for a night batch or a nonproduction sandbox that swaps standing hourly meters (always-on vector search, Private Endpoints, fixed web tiers) for consumption and free-grant tiers with Entra-only auth (`ref:waf-cost-optimization-checklist#CO:08`, `obs:sandbox-standing-meter-tradeoffs`), and a setting nobody chose as `gap`; a model never decides which (`gap:scoring`).
 12. **Repeat on a cadence** and compare with the last run, as for every other pillar (`ref:waf-review-assessment#milestones`, `ref:finops-framework#maturity-per-capability`).
 
 ## Where FinOps lives in the family

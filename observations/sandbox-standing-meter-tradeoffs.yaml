@@ -1,0 +1,9 @@
+id: sandbox-standing-meter-tradeoffs
+claim: ref:waf-cost-optimization-checklist#CO:08
+verdict: extends
+observed: "Keeping a nonproduction sandbox retrieval stack under 1 USD/month standing (or about 10 USD/month with Static Web Apps Standard) uses deliberate tradeoffs against standing hourly meters. Instead of Azure AI Search Basic (about 73 USD/month standing; F0 caps at 50 MB without managed identity), WVD* and Perf stay in Pay-As-You-Go Log Analytics inside the 5 GB/month free allowance (31-day retention, 0.5 GB/day cap) queried via KQL catalog IDs and the read-only Azure MCP Server, while semantic memory lives in Git or Cosmos DB NoSQL Serverless vector search. Container Apps Consumption (minReplicas 0), Content Safety F0, LRS storage (shared keys off), Entra-only auth instead of Private Endpoints (about 7.30 USD/month each), and code-first KQL checks keep idle spend near zero."
+evidence:
+  - https://github.com/avd-ops/avd-second-brain/blob/e54cbe5454ccb5d6563d4c3e77b5d4e7ab2aeb45/docs/knowledge/cost/README.md
+  - https://github.com/avd-ops/avd-second-brain/blob/f5785b94124f0965bf2ef7c384f86e2f66deeecd/docs/operations-redteam.md
+  - https://github.com/avd-ops/avd-swarm/blob/85debfcf9cca0566101bc789945edb4ae36e506f/docs/core-and-adapters.md
+date: 2026-11-08

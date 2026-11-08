@@ -35,7 +35,7 @@
 | avd-assess | What it should be: this method, its references, observations and gaps | Nothing |
 | avd-current-state | What is there now: collects the cost facts with Reader, reads billing when it has access, and runs the checks from a pinned copy of this method | Its own pinned copies only |
 | avd-landing-zone | How it's built: an estimate before every deployment, a scaling plan and Start VM on Connect by default, a budget with a Lock runbook, and each run's expected and actual cost (contract C17) | Nothing above it |
-| avd-second-brain | Why: cost decisions and accepted spend over the estate's life, such as why a host stays on or why a commitment was bought | Reads the three |
-| avd-swarm | How it's operated: its spend guard for lab runs, and schedule or size changes as plans a person approves, behind the gate and kill switch | Cites the brain |
+| avd-second-brain | Why: cost decisions and accepted spend over the estate's life, such as why a host stays on, why a commitment was bought, or which nonproduction tradeoffs keep a sandbox retrieval stack on consumption and free tiers (`ref:waf-cost-optimization-checklist#CO:08`, `obs:sandbox-standing-meter-tradeoffs`) | Reads the three |
+| avd-swarm | How it's operated: its spend guard for lab runs, deterministic KQL checks before any model call (`obs:sandbox-standing-meter-tradeoffs`), and schedule or size changes as plans a person approves, behind the gate and kill switch | Cites the brain |
 
 A separate FinOps repo isn't needed while cost is one section of each layer. The organization-wide tools already exist as open source (`ref:finops-toolkit#tools`), and the family links to them rather than rebuilding them.
