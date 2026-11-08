@@ -4764,15 +4764,17 @@
           "ref:waf-cost-optimization-checklist#CO:02",
           "ref:waf-cost-optimization-checklist#CO:03",
           "ref:waf-cost-optimization-checklist#CO:04",
+          "ref:waf-cost-optimization-checklist#CO:08",
           "ref:cost-management-budgets#alerts-dont-stop",
           "ref:cost-management-budgets#action-group-scopes",
           "gap:finops-scope"
         ],
-        "says": "Keep a budget per AVD subscription or resource group wired to an action group; a budget alert alone never stops spend."
+        "says": "Keep a budget per AVD subscription or resource group wired to an action group; a budget alert alone never stops spend, and nonproduction sandboxes avoid standing hourly meters so idle spend stays near zero."
       },
       "observations": [
         "obs:budget-alert-needs-a-lock",
-        "obs:run-cost-settles-late"
+        "obs:run-cost-settles-late",
+        "obs:sandbox-standing-meter-tradeoffs"
       ],
       "measure": "fact",
       "landingZone": [
