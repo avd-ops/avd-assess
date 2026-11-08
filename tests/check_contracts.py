@@ -137,6 +137,35 @@ if catalog_schema and method_schema:
                 err(catalog_path, f"the C22 schema accepts a check it must refuse: {bad}")
 
 
+# C19: userSentiment and userNetworks reject unbanded counts, out-of-range ratings, unknown symptoms and free text.
+intake_schema = schemas.get("intake.schema.json")
+if intake_schema:
+    iv = Draft202012Validator(intake_schema)
+    intake_path = CONTRACTS / "examples/assess/intake.example.json"
+    intake_doc = load(intake_path)
+    if intake_doc is not None:
+        for bad_sentiment in (
+            {"sampleBand": "5", "ratingMedian": 3},
+            {"sampleBand": "3-9", "ratingMedian": 6},
+            {"sampleBand": "3-9", "ratingMedian": 0},
+            {"sampleBand": "3-9", "lowRatingShare": 1.5},
+            {"sampleBand": "3-9", "symptoms": ["free-text-symptom"]},
+            {"sampleBand": "3-9", "comment": "free text must be refused"},
+        ):
+            doc = json.loads(json.dumps(intake_doc))
+            doc["userSentiment"] = bad_sentiment
+            if iv.is_valid(doc):
+                err(intake_path, f"the C19 schema accepts a userSentiment it must refuse: {bad_sentiment}")
+        for bad_net in (
+            {"kind": "hq-building-1", "allowsClientEndpoints": "yes", "outboundUdpAllowed": "yes", "proxyInPath": "no"},
+            {"kind": "office", "allowsClientEndpoints": "yes", "outboundUdpAllowed": "yes", "proxyInPath": "no", "note": "free text"},
+        ):
+            doc = json.loads(json.dumps(intake_doc))
+            doc["userNetworks"] = [bad_net]
+            if iv.is_valid(doc):
+                err(intake_path, f"the C19 schema accepts a userNetworks entry it must refuse: {bad_net}")
+
+
 # C23: one decision per check, and a reason that fits its disposition (the schema's allOf).
 review_schema = schemas.get("assessment-review.schema.json")
 if review_schema:

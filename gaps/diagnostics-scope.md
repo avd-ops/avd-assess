@@ -50,7 +50,7 @@ Two built facts this pillar cites, `c11.hostPool.sessionHosts.status` and `stale
 
 ## Intake
 
-`intake.reportedSymptoms` (specified, with its enum in the C19 intake schema): the symptoms the operator reports, any of `no-resources`, `sign-in-fails`, `cannot-connect`, `disconnects`, `slow-logon`, `slow-session`, `profile-failed`, `host-unhealthy`, or `none` or `unknown` alone. Each value picks a triage flow; an assessment with no reported symptom still reads the facts.
+`intake.reportedSymptoms` (built in the C19 intake schema and the fact register): the symptoms the operator reports or aggregates deterministically from `avd-linecheck` exports (`gap:client-network`), any of `no-resources`, `sign-in-fails`, `cannot-connect`, `disconnects`, `slow-logon`, `slow-session`, `profile-failed`, `host-unhealthy`, or `none` or `unknown` alone. Each value picks a triage flow; `intake.userSentiment` carries the banded rating and raw `avd-linecheck` symptom chips alongside it, and an assessment with no reported symptom still reads the facts.
 
 ## Open points
 
