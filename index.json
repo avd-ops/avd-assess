@@ -3349,7 +3349,7 @@
       "title": "Azure MCP Server tools for Azure Virtual Desktop and server startup modes",
       "url": "https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/azure-virtual-desktop",
       "pin": "Learn git_commit_id 7c4a91e2b803f512d4a96c1830e7b42f9a51c308, updated_at 2026-10-20",
-      "read": "2026-11-03",
+      "read": "2026-11-08",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "collection",
@@ -3360,7 +3360,7 @@
         "diagnostics",
         "security-posture"
       ],
-      "notes": "Microsoft's Azure MCP Server (`microsoft/mcp`, MIT) startup parameters (`--mode all`, `--read-only`, `--namespace virtualdesktop`), typed AVD read tools, and comparison against CLI wrapper MCP servers (`Azure/azure-api-mcp`, MIT) for collection vs. investigation.",
+      "notes": "Microsoft's Azure MCP Server (`microsoft/mcp`, MIT) startup parameters (`--mode all`, `--read-only`, `--namespace virtualdesktop`), verified typed AVD read tools (`virtualdesktop_hostpool_list`, `virtualdesktop_hostpool_host_list`, `virtualdesktop_hostpool_host_user-list`), and comparison against CLI wrapper MCP servers (`Azure/azure-api-mcp`, MIT) for collection vs. investigation.",
       "claims": [
         {
           "id": "read-only-flag",
@@ -3374,7 +3374,7 @@
         },
         {
           "id": "typed-vs-cli-wrapper",
-          "says": "The Azure MCP Server's `virtualdesktop` namespace exposes typed, read-only tools for host pools, session hosts and user sessions, whereas `Azure/azure-api-mcp` (`--readonly`) wraps free-form `az` CLI commands for ad-hoc exploration; deterministic collectors and test harnesses run direct PowerShell or Bicep without MCP.",
+          "says": "The Azure MCP Server's `virtualdesktop` namespace exposes three typed, read-only tools (`virtualdesktop_hostpool_list`, `virtualdesktop_hostpool_host_list`, and `virtualdesktop_hostpool_host_user-list`), whereas `Azure/azure-api-mcp` (`--readonly`) wraps free-form `az` CLI commands for ad-hoc exploration; deterministic collectors and test harnesses run direct PowerShell or Bicep without MCP.",
           "kind": "guidance"
         }
       ]
