@@ -13,7 +13,7 @@
 7. **A deprecated source with no replacement.** The Cloud Adoption Framework article (`ref:caf-avd-bcdr`) goes on 2026-10-30. Three of its claims have no living Learn source: that the AVD service has no financially backed SLA (`ref:caf-avd-bcdr#no-financial-sla`), that the availability option is fixed at creation (`ref:caf-avd-bcdr#availability-option-at-create`), and that pooled host VM state isn't worth backing up (`ref:caf-avd-bcdr#hosts-stateless-no-vm-backup`, partly carried by `ref:avd-multiregion-bcdr#pool-types-state`). Until a living page says them, they stand on the pinned read and Microsoft's own PDF of the article; when the drift report shows the page gone, each becomes a gap line here, not a deleted row.
 8. **Targets are per estate for now.** C19 has one answer per estate, so the intake asks for the strictest workload's targets and the critical-pools row says which pools they bind. Per-pool targets need a pool-keyed intake, which C19 doesn't have.
 
-**Draft checks.** Each fits method.json's rule grammar (one subject, one `where`, one `expect`, `onFail` warn) and cites facts the register lists as `specified` (2026-10-21); a check enters method.json in the same pull request that builds its facts in avd-current-state, because a check may only cite built facts.
+**Checks in `method.json`.** Each fits `method.json`'s rule grammar (one subject, one `where`, one `expect`) and cites facts `built` in `contracts/fact-register.json` (version 8):
 
 | Check | Claims | Facts | Rule |
 |---|---|---|---|
@@ -28,7 +28,7 @@ The existing `asm-files-zone-redundant` stays the check for share redundancy (`p
 
 **Needs more than one rule can say.** The grammar can't compare a host pool with an intake answer, so three judgments stay with the reviewer until it can: that the image's regions include the recovery region (`asm-image-replicated` only proves two regions), that a snapshot-only backup is acceptable because `intake.profileData` is `settings-only`, and that a pool's recovery model matches `intake.recoveryTime`. Growing the grammar is a C20 change, made here first.
 
-**Proposed intake answers.** Each is an enum, so C19 keeps its rule of no names, addresses or free text; they are `specified` in the register and join `contracts/schemas/intake.schema.json` as optional fields when a reader is built (`gap:intake`).
+**Intake answers.** Each is an enum, so C19 keeps its rule of no names, addresses or free text; they are `built` in the register and optional fields in `contracts/schemas/intake.schema.json` (`gap:intake`).
 
 | Fact | Question | Answers |
 |---|---|---|

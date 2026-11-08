@@ -15,19 +15,19 @@ Every agent appears here as a category (tests/wording.json): antivirus, an endpo
 
 | Row | Judges | Evidence | Needs |
 |---|---|---|---|
-| `agents.av-edr-present` | Antivirus and EDR run on every session host | `c11.subscription.defenderPlans` (built); Defender for Cloud's EDR recommendation per host, `c11.hostPool.sessionHosts.edrMissing` (specified); `intake.hostAgents` | Reader, and a Defender plan that runs the agentless scan |
+| `agents.av-edr-present` | Antivirus and EDR run on every session host | `c11.subscription.defenderPlans` (built); Defender for Cloud's EDR recommendation per host, `c11.hostPool.sessionHosts.edrMissing` (built); `intake.hostAgents` | Reader, and a Defender plan that runs the agentless scan |
 | `agents.coexistence` | One active antivirus; any other passive and mutually excluded | Defender Antivirus running mode (`proposed:c11.sessionHost.defenderRunningMode`); `intake.hostAgents` | A host-side read |
 | `agents.edr-onboarding` | EDR onboarded at first boot as one entry per host, the image itself never onboarded | A reviewer's look at the image build and the EDR console; `intake.hostAgents` says only which EDR | A reviewer, recorded with the date; no fact yet |
 | `security.endpoint-protection-tuning` | The published VDI antivirus settings and image sealing | Defender preferences (`proposed:c11.sessionHost.defenderVdiSettings`) | A host-side read |
 | `agents.exclusions` | The FSLogix exclusions in every security layer | Defender exclusions against the published list (`proposed:c11.sessionHost.fslogixExclusions`) | A host-side read, plus intake for the other layers |
-| `agents.vulnerability-assessment` | Vulnerability assessment covers the hosts | `c11.hostPool.sessionHosts.vulnerabilityFindings` (specified) | Reader, and a Defender plan |
+| `agents.vulnerability-assessment` | Vulnerability assessment covers the hosts | `c11.hostPool.sessionHosts.vulnerabilityFindings` (built) | Reader, and a Defender plan |
 | `agents.host-network-agents` | Tunnels and proxies on the host leave RDP and the platform addresses alone | `intake.hostAgents`, `intake.agentRdpBypass` | Intake, later a host-side read |
 | `network.client-agents` | Tunnels, inspection and proxies on user devices let RDP out directly | `intake.clientAgents`, `intake.agentRdpBypass` | Intake |
 | `agents.measured-cost` | What the agents cost per user | Nothing yet | A measured run (sandbox batch S3) |
 
 Anything none of these shows is `unknown`, never guessed.
 
-**Collector notes** (avd-current-state's backlog, `ref:resource-graph-tables`): the two `specified` facts read Defender for Cloud's recommendations for each session host VM with Reader, as Resource Graph security assessments: the EDR presence recommendation's unhealthy hosts (`edrMissing`) and the vulnerability findings recommendation's unhealthy hosts (`vulnerabilityFindings`), counted per host pool. With no plan running the scan, both are absent and the rows score `unknown`, never pass. The three `proposed:c11.sessionHost.*` facts wait for the owner's decision on a read-only host-side collector. The three intake facts are new optional fields in C19; the schema refuses unknown fields, so a reader on an older pin rejects an intake file that uses them, and operators answer them only after avd-current-state re-pins.
+**Collector notes** (`ref:resource-graph-tables`): the two `built` facts read Defender for Cloud's recommendations for each session host VM with Reader, as Resource Graph security assessments (`asm-hosts-edr-present` on `edrMissing` and `asm-hosts-vulnerability-assessment` on `vulnerabilityFindings`), counted per host pool. With no plan running the scan, both are absent and the rows score `unknown`, never pass. The three `proposed:c11.sessionHost.*` facts wait for the owner's decision on a read-only host-side collector. The three intake facts are optional fields in C19; the schema refuses unknown fields, so a reader on an older pin rejects an intake file that uses them, and operators answer them only after avd-current-state re-pins.
 
 ## Outcomes
 

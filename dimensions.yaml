@@ -765,7 +765,7 @@ dimensions:
     pillar: endpoint-protection
     title: Antivirus and EDR on every session host
     decides: Which antivirus and endpoint detection and response products run on the hosts, as categories.
-    home: {decision: proposed:hostPool.security, facts: [c11.subscription.defenderPlans, c11.hostPool.sessionHosts.edrMissing], intake: [intake.hostAgents]}
+    home: {decision: proposed:hostPool.security, facts: [c11.subscription.defenderPlans, c11.hostPool.sessionHosts.edrMissing], intake: [intake.hostAgents], checks: [asm-hosts-edr-present]}
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#G02.01, ref:avd-security-guide#endpoint-protection, ref:avd-security-guide#edr-microsoft-or-third-party, ref:mcsb-avd-baseline#ES-1, ref:mcsb-avd-baseline#ES-2, ref:defender-cloud-edr-detection#agentless-edr-check, ref:defender-cloud-edr-detection#third-party-recognized]
@@ -1041,7 +1041,7 @@ dimensions:
     pillar: endpoint-protection
     title: Vulnerability assessment of session hosts
     decides: Whether host software is scanned for vulnerabilities and the findings worked.
-    home: {decision: proposed:hostPool.security, facts: [c11.subscription.defenderPlans, c11.hostPool.sessionHosts.vulnerabilityFindings]}
+    home: {decision: proposed:hostPool.security, facts: [c11.subscription.defenderPlans, c11.hostPool.sessionHosts.vulnerabilityFindings], checks: [asm-hosts-vulnerability-assessment]}
     baseline:
       standing: published
       claims: [ref:avd-security-guide#endpoint-protection, ref:avd-security-guide#edr-microsoft-or-third-party, ref:defender-compute-recommendations#vm-recommendations, ref:review-checklists-avd#G03.04]
@@ -1357,7 +1357,7 @@ dimensions:
     pillar: reliability
     title: Availability zones
     decides: Whether hosts spread across zones, and how much headroom covers a lost zone.
-    home: {decision: proposed:hostPool.zones, facts: [c11.hostPool.sessionHosts.zones, c11.hostPool.sessionHosts.unpinnedZones, c11.hostPool.sessionHosts.total], checks: [asm-hosts-zone-redundant]}
+    home: {decision: proposed:hostPool.zones, facts: [c11.hostPool.sessionHosts.zones, c11.hostPool.sessionHosts.unpinnedZones, c11.hostPool.sessionHosts.total], checks: [asm-hosts-zone-redundant, asm-hosts-zone-spread]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#A01.04, ref:avd-multiregion-bcdr#spread-and-overprovision, ref:avd-multiregion-bcdr#zones-not-dr, ref:availability-zones#zonal-needs-multiple, ref:availability-zones#nonzonal-placement, ref:caf-avd-bcdr#availability-option-at-create]
@@ -1384,7 +1384,7 @@ dimensions:
     pillar: reliability
     title: Personal pool recovery
     decides: How personal session hosts, which hold state, come back after a zone or region loss.
-    home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.replicated, c11.hostPool.sessionHosts.notReplicated]}
+    home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.replicated, c11.hostPool.sessionHosts.notReplicated], checks: [asm-personal-hosts-replicated]}
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#A01.06, ref:avd-multiregion-bcdr#personal-site-recovery, ref:avd-multiregion-bcdr#no-asr-test-failover, ref:asr-zone-to-zone#limited-regions, ref:asr-zone-to-zone#may-fall-short-region-wide, ref:asr-zone-to-zone#rto-sla-not-rpo]
@@ -1397,7 +1397,7 @@ dimensions:
     pillar: reliability
     title: Session host backup
     decides: Whether session host VMs are backed up at all.
-    home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.backupProtected]}
+    home: {decision: proposed:hostPool.recovery, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.backupProtected], checks: [asm-pooled-hosts-not-backed-up]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#A01.05, ref:avd-multiregion-bcdr#pool-types-state, ref:caf-avd-bcdr#hosts-stateless-no-vm-backup, ref:reliability-virtual-machines#backup-not-availability, ref:avd-service-resilience#customer-owns-hosts]
@@ -1410,7 +1410,7 @@ dimensions:
     pillar: reliability
     title: Golden image in the recovery region
     decides: Whether the image a pool deploys from is available, at the same version, in every region a pool may be rebuilt in.
-    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images, c11.hostPool.imageSource, c11.hostPool.imageRegions]}
+    home: {decision: proposed:hostPool.image, facts: [c11.hostPool.images, c11.hostPool.imageSource, c11.hostPool.imageRegions], checks: [asm-image-replicated]}
     baseline:
       standing: guidance
       claims: [ref:review-checklists-avd#A02.01, ref:avd-multiregion-bcdr#image-in-both-regions, ref:compute-gallery#not-global, ref:compute-gallery#zrs-in-zone-regions, ref:compute-gallery#replication-takes-time]
@@ -1448,7 +1448,7 @@ dimensions:
     pillar: profiles
     title: Profile backup, its tier and its offsite copy
     decides: Which profile data is protected, whether the backup survives loss of the share and its account, and whether it runs at all.
-    home: {decision: proposed:profile.storage, facts: [c11.storage.backupProtected, c11.storage.backupTier, c11.storage.lastBackupJob, c11.storage.sku], checks: [asm-files-backup-protected]}
+    home: {decision: proposed:profile.storage, facts: [c11.storage.backupProtected, c11.storage.backupTier, c11.storage.lastBackupJob, c11.storage.sku], checks: [asm-files-backup-protected, asm-profile-backup-ran, asm-profile-backup-offsite]}
     baseline:
       standing: published
       claims: [ref:review-checklists-avd#A03.01, ref:review-checklists-avd#A03.02, ref:review-checklists-avd#A03.04, ref:avd-faq#backup-by-storage, ref:azure-files-backup#snapshot-and-vaulted, ref:azure-files-backup#vaulted-survives-source-loss, ref:azure-files-backup#soft-delete, ref:files-backup-support#key-access-needed, ref:files-backup-portal#keys-or-private, ref:avd-multiregion-bcdr#back-up-primary-only, ref:fslogix-container-types#odfc-not-backed-up]
@@ -1576,7 +1576,7 @@ dimensions:
     pillar: networking-azure
     title: Administrative access path
     decides: How operators reach hosts and private endpoints (Bastion SKU or a jumpbox), separate from the user path through AVD.
-    home: {decision: proposed:network.adminAccess, facts: [c11.network.bastionHosts, c11.network.hostPublicRdp]}
+    home: {decision: proposed:network.adminAccess, facts: [c11.network.bastionHosts, c11.network.hostPublicRdp], checks: [asm-hosts-no-public-rdp]}
     baseline:
       standing: guidance
       claims: [ref:bastion#admin-path, gap:network-scope]
