@@ -1658,6 +1658,28 @@
       "says": "No secret scan in CI."
     },
     {
+      "id": "graph-scope-per-purpose",
+      "deprecated": {
+        "since": "2.1.0",
+        "replacedBy": "cs-graph-readonly"
+      },
+      "repos": [
+        "avd-landing-zone"
+      ],
+      "says": "Closed in 2.1.0; read-only Graph scopes are enforced and guarded in CI (see cs-graph-readonly)."
+    },
+    {
+      "id": "ci-read-only-guard",
+      "deprecated": {
+        "since": "2.1.0",
+        "replacedBy": "cs-reader-only"
+      },
+      "repos": [
+        "avd-current-state"
+      ],
+      "says": "Closed in 2.1.0 by tests/ReadOnlyGuard.Tests.ps1 (see cs-reader-only)."
+    },
+    {
       "id": "security-run-evidence",
       "repos": [
         "avd-landing-zone"
