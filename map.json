@@ -1921,6 +1921,9 @@
         ],
         "intake": [
           "intake.hostAgents"
+        ],
+        "checks": [
+          "asm-hosts-edr-present"
         ]
       },
       "baseline": {
@@ -2549,6 +2552,9 @@
         "facts": [
           "c11.subscription.defenderPlans",
           "c11.hostPool.sessionHosts.vulnerabilityFindings"
+        ],
+        "checks": [
+          "asm-hosts-vulnerability-assessment"
         ]
       },
       "baseline": {
@@ -3246,7 +3252,8 @@
           "c11.hostPool.sessionHosts.total"
         ],
         "checks": [
-          "asm-hosts-zone-redundant"
+          "asm-hosts-zone-redundant",
+          "asm-hosts-zone-spread"
         ]
       },
       "baseline": {
@@ -3322,6 +3329,9 @@
           "c11.hostPool.type",
           "c11.hostPool.sessionHosts.replicated",
           "c11.hostPool.sessionHosts.notReplicated"
+        ],
+        "checks": [
+          "asm-personal-hosts-replicated"
         ]
       },
       "baseline": {
@@ -3351,6 +3361,9 @@
         "facts": [
           "c11.hostPool.type",
           "c11.hostPool.sessionHosts.backupProtected"
+        ],
+        "checks": [
+          "asm-pooled-hosts-not-backed-up"
         ]
       },
       "baseline": {
@@ -3380,6 +3393,9 @@
           "c11.hostPool.images",
           "c11.hostPool.imageSource",
           "c11.hostPool.imageRegions"
+        ],
+        "checks": [
+          "asm-image-replicated"
         ]
       },
       "baseline": {
@@ -3473,7 +3489,9 @@
           "c11.storage.sku"
         ],
         "checks": [
-          "asm-files-backup-protected"
+          "asm-files-backup-protected",
+          "asm-profile-backup-ran",
+          "asm-profile-backup-offsite"
         ]
       },
       "baseline": {
@@ -3811,6 +3829,9 @@
         "facts": [
           "c11.network.bastionHosts",
           "c11.network.hostPublicRdp"
+        ],
+        "checks": [
+          "asm-hosts-no-public-rdp"
         ]
       },
       "baseline": {
