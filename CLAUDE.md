@@ -16,6 +16,8 @@ python3 tests/check_endpoints.py         # the endpoint map: pins, no addresses,
 python3 tests/check_wording.py           # third-party products as categories only (tests/wording.json)
 python3 tests/check_security_review.py   # the security review map; add --family-root .. with sibling checkouts to check every pinned path
 python3 tests/check_bundle.py            # release tooling: verifier fixtures, diff rules, leak scan, schema $id
+python3 tests/check_evidence_issue.py    # the evidence issue form becomes a checked PR (evidence-intake.yml)
+python3 tests/check_pin_check.py         # the weekly pin check retries a 429, 5xx or timeout once
 python3 scripts/bundle/build_bundle.py --check   # release bundle dry run from HEAD's git blobs (commit first)
 pwsh -c "Invoke-Pester ./tests/AvdAssessBundle.Tests.ps1 -CI"   # the PowerShell verifier, same fixtures
 ```

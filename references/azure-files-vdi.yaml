@@ -1,8 +1,8 @@
 id: azure-files-vdi
 title: Azure Files guidance for virtual desktop workloads
 url: https://learn.microsoft.com/azure/storage/files/virtual-desktop-workloads
-pin: "Learn git_commit_id 21b4b7181ee0e882340a24ca59e1805107a58d64, updated_at 2026-10-19"
-read: 2026-10-20
+pin: "Learn git_commit_id ac4bcb1eb41ca6e2ace58e626de7d186ea80bb00, updated_at 2026-10-26"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [benchmarks]
 claims:

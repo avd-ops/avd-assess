@@ -1,8 +1,8 @@
 id: avd-security-guide
 title: Security recommendations for Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/security-guide
-pin: "Learn git_commit_id 02c72255bd133b6d98c53d233b6f97b780f2322a, updated_at 2026-08-27"
-read: 2026-10-20
+pin: "Learn git_commit_id 033104598fa925b1260d4d3d83012e0692c949a3, updated_at 2026-10-21"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment]
 notes: The AVD product team's own security page. The Well-Architected AVD security page resolves to the same article and commit. The review checklist's G items (ref:review-checklists-avd) link into its sections.
@@ -49,3 +49,6 @@ claims:
   - id: gsa-on-hosts
     says: Configure Global Secure Access on session hosts to apply the same access controls to private, internet and Microsoft 365 apps, external identities included.
     kind: guidance
+  - id: no-administrator-protection
+    says: Don't turn on Windows 11 Administrator protection on session hosts or their images; it isn't supported yet, and the Windows security baselines applied by Group Policy turn it on from the October 2026 security update.
+    kind: published

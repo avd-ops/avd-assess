@@ -1,8 +1,8 @@
 id: azure-files-networking
 title: Azure Files networking considerations
 url: https://learn.microsoft.com/azure/storage/files/storage-files-networking-overview
-pin: "Learn git_commit_id 7d8e1c58c58a4dc0ec333cbc4ad45173c7d61e6d, updated_at 2026-10-05"
-read: 2026-10-21
+pin: "Learn git_commit_id ac4bcb1eb41ca6e2ace58e626de7d186ea80bb00, updated_at 2026-10-26"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:

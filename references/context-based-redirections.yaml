@@ -1,8 +1,8 @@
 id: context-based-redirections
 title: Context-based redirections (preview), Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/context-based-redirections-avd
-pin: "Learn git_commit_id 3a92c56eeb06c2c44fb9e51ee18283bc9ac6e888, updated_at 2026-06-03"
-read: 2026-10-21
+pin: "Learn git_commit_id 9f188d1eb9303ec2326038144e80606e4d67ed4f, updated_at 2026-10-23"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [assessment]
 pillars: [endpoints, identity]
@@ -12,5 +12,5 @@ claims:
     says: Host pool RDP properties can tie clipboard, drive, printer and USB redirection to a Conditional Access authentication context, such as a compliant device.
     kind: published
   - id: full-desktop-only
-    says: Supported in Windows App on Windows, web, Android, iOS and iPadOS and macOS, for full desktop sessions.
+    says: Supported in Windows App on Windows, web, Android, iOS and iPadOS and macOS, for full desktop sessions and, in AVD, RemoteApp sessions too.
     kind: published

@@ -1,8 +1,8 @@
 id: avd-gis-workload-example
 title: Azure Architecture Center, a GIS desktop app on Azure Virtual Desktop (example scenario)
 url: https://learn.microsoft.com/azure/architecture/example-scenario/data/esri-arcgis-azure-virtual-desktop
-pin: "Learn git_commit_id 069a83fe2cc8d78c25f4123a93ba3b9819821147, updated_at 2026-06-03"
-read: 2026-10-21
+pin: "Learn git_commit_id fce7dc954ab10936e5083de69677c9c046b86494, updated_at 2026-10-27"
+read: 2026-10-29
 license: Microsoft Learn content (link only)
 areas: [benchmarks]
 notes: Read as an example of an app-specific workload scale for a graphics app, not for its numbers.
