@@ -20,7 +20,7 @@
 schema: avd-assess-security-review/v1
 checked: 2026-11-08
 pins:
-  avd-landing-zone: 810c2892c4e2f384ceea62d4c702af992a35be5e
+  avd-landing-zone: 9c1e74a2ee37dbf5c109be17a455d867fc7a6ef8
   avd-entra: 3a6132c2146a58a7c5feb44cbeab3581d750d3fc
   avd-intune: f64c56a84f7f53bcb7aeb398a456e0853d877633
   avd-m365: f18b14f9866cce604b92738c92afa390e14ee7fc
@@ -410,7 +410,7 @@ areas:
         note: avd-current-state, avd-swarm and avd-assess have no secret scan (gap secret-scan-everywhere).
       - id: lz-actions-pinned
         repo: avd-landing-zone
-        says: In avd-landing-zone, 28 of 30 action references are pinned to a full commit SHA; the browser test job still uses two tags. The other repos reference actions by tag.
+        says: In avd-landing-zone, all 30 action references are pinned to a full commit SHA with the tag as a comment.
         standing: built
         evidence:
           - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L211, kind: ci}
@@ -605,11 +605,11 @@ threats:
 # What this review found missing. Each is a proposed issue in the repo named, not a fix.
 gaps:
   - id: security-policy
-    repos: [avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm]
+    repos: [avd-current-state, avd-second-brain, avd-swarm]
     says: No SECURITY.md saying how to report a vulnerability privately; GitHub private vulnerability reporting is a repository setting the owner turns on. avd-assess gains one with this map, and avd-ops with the pull request that adds its security page.
   - id: actions-sha-pinning
-    repos: [avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess, avd-ops]
-    says: Actions referenced by tag can change under a passing build; pin each to a full commit SHA with the tag as a comment, as avd-landing-zone mostly does.
+    repos: [avd-current-state, avd-second-brain, avd-swarm, avd-ops]
+    says: Actions referenced by tag can change under a passing build; pin each to a full commit SHA with the tag as a comment, as avd-landing-zone and avd-assess do.
   - id: dependency-updates
     repos: [avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess, avd-ops]
     says: No automated update proposals for pinned actions and no dependency list or SBOM per repo.
