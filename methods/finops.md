@@ -31,6 +31,6 @@ The table and the reasons are in `gap:finops-scope`. The FinOps Foundation's own
 
 ## Not yet known
 
-- Most cost items need facts avd-current-state doesn't collect yet: scaling plans, tags, budgets and Advisor results (`gap:finops-scope`).
+- Commitment floor sizing (`gap:commitment-floor`) needs a billing-scope read of running hours by size and region alongside `intake.computeCommitments`.
 - No run has measured how long a pay-as-you-go sandbox's actual cost takes to appear, or compared a month of running hours with the scaling plan (`obs:run-cost-settles-late`, `obs:scaling-and-start-on-connect-by-default`).
 - There is no published or measured target for cost per user, so it is reported without a score.

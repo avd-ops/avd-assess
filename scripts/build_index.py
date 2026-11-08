@@ -141,7 +141,7 @@ def main():
         print("RESULT PASS index.json, map.json, endpoints.json and security-review.json are current")
         return 0
     for p, text in wanted.items():
-        p.write_text(text, encoding="utf-8")
+        p.write_text(text, encoding="utf-8", newline="\n")
         print(f"Wrote {p.relative_to(ROOT)}")
     return 0
 
