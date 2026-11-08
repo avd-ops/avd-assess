@@ -1,6 +1,6 @@
 {
   "schema": "avd-assess-security-review/v1",
-  "checked": "2026-10-27",
+  "checked": "2026-11-08",
   "pins": {
     "avd-landing-zone": "9c1e74a2ee37dbf5c109be17a455d867fc7a6ef8",
     "avd-entra": "3a6132c2146a58a7c5feb44cbeab3581d750d3fc",
