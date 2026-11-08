@@ -1,6 +1,6 @@
 {
   "schema": "avd-assess-security-review/v1",
-  "checked": "2026-10-27",
+  "checked": "2026-11-08",
   "pins": {
     "avd-landing-zone": "810c2892c4e2f384ceea62d4c702af992a35be5e",
     "avd-entra": "3a6132c2146a58a7c5feb44cbeab3581d750d3fc",
@@ -8,7 +8,7 @@
     "avd-m365": "f18b14f9866cce604b92738c92afa390e14ee7fc",
     "avd-azure": "ac01bc41b1e60d04bdfc01f77fe7832255d6644c",
     "avd-power-platform": "454335695e8db154dd71550788e1ce3694b59e7e",
-    "avd-current-state": "f914918d939a8395ea2db4e6dc500409821f3353",
+    "avd-current-state": "e74b76b1856d69473000fc9d505ddc69095c7da5",
     "avd-second-brain": "f59a1c5207f89ba71f4752fe2a52a091ca6fd376",
     "avd-swarm": "c81fbcbda8d6a268f66bec24381aac76850a5c2c",
     "avd-ops": "753f62b60e808efcff5654a0c22b2ebbe3eb3676"
@@ -274,19 +274,25 @@
               "repo": "avd-current-state",
               "path": "README.md#read-only-by-design",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/README.md#read-only-by-design"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/README.md#read-only-by-design"
             },
             {
               "repo": "avd-current-state",
               "path": "rebuild/scope.json",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/rebuild/scope.json"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/rebuild/scope.json"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L103",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L103"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/tests/Facts.Tests.ps1#L103"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "tests/ReadOnlyGuard.Tests.ps1",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/tests/ReadOnlyGuard.Tests.ps1"
             }
           ]
         },
@@ -300,19 +306,25 @@
               "repo": "avd-current-state",
               "path": "README.md#read-only-by-design",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/README.md#read-only-by-design"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/README.md#read-only-by-design"
             },
             {
               "repo": "avd-current-state",
               "path": "rebuild/scope.json",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/rebuild/scope.json"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/rebuild/scope.json"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L103",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L103"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/tests/Facts.Tests.ps1#L103"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "tests/ReadOnlyGuard.Tests.ps1",
+              "kind": "test",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/tests/ReadOnlyGuard.Tests.ps1"
             }
           ]
         },
@@ -864,19 +876,19 @@
               "repo": "avd-current-state",
               "path": "README.md#facts-snapshot-for-the-brain-and-avd-swarm",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/README.md#facts-snapshot-for-the-brain-and-avd-swarm"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/README.md#facts-snapshot-for-the-brain-and-avd-swarm"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L103",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L103"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/tests/Facts.Tests.ps1#L103"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L275",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L275"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/tests/Facts.Tests.ps1#L275"
             }
           ],
           "note": "The pseudonym key stays with the operator; whoever holds the key and the IDs can reverse a pseudonym."
@@ -891,7 +903,7 @@
               "repo": "avd-current-state",
               "path": "tests/PortalState.Tests.ps1#L43",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/PortalState.Tests.ps1#L43"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/tests/PortalState.Tests.ps1#L43"
             }
           ]
         },
@@ -1007,7 +1019,7 @@
               "repo": "avd-current-state",
               "path": "LICENSE",
               "kind": "license",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/LICENSE"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/LICENSE"
             },
             {
               "repo": "avd-assess",
@@ -1158,7 +1170,7 @@
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L203",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/f914918d939a8395ea2db4e6dc500409821f3353/tests/Facts.Tests.ps1#L203"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/e74b76b1856d69473000fc9d505ddc69095c7da5/tests/Facts.Tests.ps1#L203"
             }
           ]
         }
@@ -1647,13 +1659,6 @@
         "avd-assess"
       ],
       "says": "No secret scan in CI."
-    },
-    {
-      "id": "ci-read-only-guard",
-      "repos": [
-        "avd-current-state"
-      ],
-      "says": "The read-only promise is documented and request-listed but no test fails when a script gains a write cmdlet or a non-GET call."
     },
     {
       "id": "security-run-evidence",
