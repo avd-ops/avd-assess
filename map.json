@@ -1735,7 +1735,7 @@
       "area": "performance",
       "pillar": "ux-measurement",
       "title": "User experience targets",
-      "decides": "The round-trip, input delay and logon targets a deployment is judged against.",
+      "decides": "The round-trip, input delay and logon targets a deployment is judged against, alongside banded user sentiment and reported symptoms.",
       "home": {
         "decision": "region",
         "facts": [
@@ -1745,6 +1745,10 @@
           "c12.group.rttMsP95",
           "c12.group.logonSeconds.p95",
           "c12.group.uxScoreMedian"
+        ],
+        "intake": [
+          "intake.userSentiment",
+          "intake.reportedSymptoms"
         ],
         "checks": [
           "asm-insights-rtt-target",
@@ -1757,9 +1761,10 @@
         "claims": [
           "ref:avd-prerequisites#rtt-under-150",
           "ref:avd-insights-glossary#input-delay-bands",
-          "gap:logon-target"
+          "gap:logon-target",
+          "gap:client-network"
         ],
-        "says": "Round trip under 150 ms, input delay bands as published, logon against the estate's own baseline (gold-standards.yaml)."
+        "says": "Round trip under 150 ms, input delay bands as published, logon against the estate's own baseline (gold-standards.yaml), compared with banded user ratings and symptom chips."
       },
       "observations": [
         "obs:region-latency-from-the-user"

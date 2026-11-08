@@ -688,12 +688,12 @@ dimensions:
     area: performance
     pillar: ux-measurement
     title: User experience targets
-    decides: The round-trip, input delay and logon targets a deployment is judged against.
-    home: {decision: region, facts: [c11.insights.rttP95, c11.insights.inputDelayP95, c11.insights.timeToConnectP95, c12.group.rttMsP95, c12.group.logonSeconds.p95, c12.group.uxScoreMedian], checks: [asm-insights-rtt-target, asm-insights-input-delay-target, asm-insights-time-to-connect]}
+    decides: The round-trip, input delay and logon targets a deployment is judged against, alongside banded user sentiment and reported symptoms.
+    home: {decision: region, facts: [c11.insights.rttP95, c11.insights.inputDelayP95, c11.insights.timeToConnectP95, c12.group.rttMsP95, c12.group.logonSeconds.p95, c12.group.uxScoreMedian], intake: [intake.userSentiment, intake.reportedSymptoms], checks: [asm-insights-rtt-target, asm-insights-input-delay-target, asm-insights-time-to-connect]}
     baseline:
       standing: published
-      claims: [ref:avd-prerequisites#rtt-under-150, ref:avd-insights-glossary#input-delay-bands, gap:logon-target]
-      says: Round trip under 150 ms, input delay bands as published, logon against the estate's own baseline (gold-standards.yaml).
+      claims: [ref:avd-prerequisites#rtt-under-150, ref:avd-insights-glossary#input-delay-bands, gap:logon-target, gap:client-network]
+      says: Round trip under 150 ms, input delay bands as published, logon against the estate's own baseline (gold-standards.yaml), compared with banded user ratings and symptom chips.
     observations: [obs:region-latency-from-the-user]
     measure: measured
     landingZone: []
