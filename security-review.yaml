@@ -20,16 +20,16 @@
 schema: avd-assess-security-review/v1
 checked: 2026-11-08
 pins:
-  avd-landing-zone: 9c1e74a2ee37dbf5c109be17a455d867fc7a6ef8
+  avd-landing-zone: 00867a37d1a20d2880feb2c79023a2a297f4b1f6
   avd-entra: 3a6132c2146a58a7c5feb44cbeab3581d750d3fc
   avd-intune: f64c56a84f7f53bcb7aeb398a456e0853d877633
   avd-m365: f18b14f9866cce604b92738c92afa390e14ee7fc
   avd-azure: ac01bc41b1e60d04bdfc01f77fe7832255d6644c
   avd-power-platform: 454335695e8db154dd71550788e1ce3694b59e7e
-  avd-current-state: e74b76b1856d69473000fc9d505ddc69095c7da5
-  avd-second-brain: f59a1c5207f89ba71f4752fe2a52a091ca6fd376
-  avd-swarm: c81fbcbda8d6a268f66bec24381aac76850a5c2c
-  avd-ops: 753f62b60e808efcff5654a0c22b2ebbe3eb3676
+  avd-current-state: 0ab98c5695360229adb38820794ba614f118c532
+  avd-second-brain: 03906126d8b8d70c791aca399dcbee5edab24410
+  avd-swarm: 115784c59fc670fcc4f6e3fcfac76bae32c029e6
+  avd-ops: c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd
 maturity:
   source: {repo: avd-ops, path: docs/roadmap-spec.md#6-proven-pre-beta-and-design, kind: doc}
   repos:
@@ -401,19 +401,25 @@ areas:
           - {repo: avd-landing-zone, path: build/lessons/0018-psrule.md, kind: lesson}
       - id: secret-scan
         repo: avd-landing-zone
-        says: gitleaks scans the full history on every pull request in avd-landing-zone, avd-second-brain and avd-ops; avd-landing-zone's job also proves its subscription ID rule still fires on a planted ID.
+        says: gitleaks scans the history on every pull request in avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess and avd-ops; avd-landing-zone's job also proves its subscription ID rule still fires on a planted ID.
         standing: guarded
         evidence:
           - {repo: avd-landing-zone, path: .github/workflows/secret-scan.yml, kind: ci}
+          - {repo: avd-current-state, path: .github/workflows/secrets.yml, kind: ci}
           - {repo: avd-second-brain, path: .github/workflows/secrets.yml, kind: ci}
+          - {repo: avd-swarm, path: .github/workflows/secrets.yml, kind: ci}
+          - {repo: avd-assess, path: .github/workflows/secrets.yml, kind: ci}
           - {repo: avd-ops, path: .github/workflows/secrets.yml, kind: ci}
-        note: avd-current-state, avd-swarm and avd-assess have no secret scan (gap secret-scan-everywhere).
       - id: lz-actions-pinned
         repo: avd-landing-zone
-        says: In avd-landing-zone, all 30 action references are pinned to a full commit SHA with the tag as a comment.
-        standing: built
+        says: Action references across avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess and avd-ops are pinned to a 40-character commit SHA with the version tag as a comment.
+        standing: guarded
         evidence:
           - {repo: avd-landing-zone, path: .github/workflows/validate.yml#L211, kind: ci}
+          - {repo: avd-current-state, path: tests/portal/assess-core.test.mjs, kind: test}
+          - {repo: avd-assess, path: .github/workflows/check.yml, kind: ci}
+          - {repo: avd-assess, path: .github/workflows/evidence-intake.yml, kind: ci}
+          - {repo: avd-ops, path: .github/workflows/kb-feedback.yml, kind: ci}
       - id: pinned-sources
         repo: avd-assess
         says: Every source the method reads is pinned to a commit or a Learn page's git_commit_id, and the family's shared contracts are byte-identical copies whose hashes each consumer's tests check.
@@ -535,7 +541,7 @@ threats:
       - Public exposure of data services
       - A teardown that deletes the only copy
     limits: [lz-deploy-owner, lz-ci-oidc, lz-break-glass, lz-private-data-plane, secret-scan, lz-last-copy]
-    formal: none
+    formal: {repo: avd-landing-zone, path: docs/threat-model.md, kind: doc}
   - repo: avd-entra
     touches: Creates and configures AVD Entra dynamic groups, Conditional Access policies, and the Kerberos storage principal in the Entra plane.
     risks:
@@ -574,7 +580,7 @@ threats:
       - A read identity granted more than Reader or read-only Graph scopes
       - Collected names or IDs leaving with the facts
     limits: [cs-reader-only, cs-graph-readonly, cs-facts-redaction, cs-portal-state]
-    formal: none
+    formal: {repo: avd-current-state, path: docs/threat-model.md, kind: doc}
   - repo: avd-assess
     touches: Nothing in Azure; publishes method, references and contracts that the other repos pin.
     risks:
@@ -605,17 +611,20 @@ threats:
 # What this review found missing. Each is a proposed issue in the repo named, not a fix.
 gaps:
   - id: security-policy
+    deprecated: {since: "2.2.0", replacedBy: family-licenses}
     repos: [avd-current-state, avd-second-brain, avd-swarm]
-    says: No SECURITY.md saying how to report a vulnerability privately; GitHub private vulnerability reporting is a repository setting the owner turns on. avd-assess gains one with this map, and avd-ops with the pull request that adds its security page.
+    says: Closed in 2.2.0; SECURITY.md is present across avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess and avd-ops.
   - id: actions-sha-pinning
+    deprecated: {since: "2.2.0", replacedBy: lz-actions-pinned}
     repos: [avd-current-state, avd-second-brain, avd-swarm, avd-ops]
-    says: Actions referenced by tag can change under a passing build; pin each to a full commit SHA with the tag as a comment, as avd-landing-zone and avd-assess do.
+    says: Closed in 2.2.0; GitHub Actions across the family are pinned to 40-character commit SHAs (see lz-actions-pinned).
   - id: dependency-updates
     repos: [avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess, avd-ops]
     says: No automated update proposals for pinned actions and no dependency list or SBOM per repo.
   - id: secret-scan-everywhere
+    deprecated: {since: "2.2.0", replacedBy: secret-scan}
     repos: [avd-current-state, avd-swarm, avd-assess]
-    says: No secret scan in CI.
+    says: Closed in 2.2.0; gitleaks runs in CI across avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess and avd-ops (see secret-scan).
   - id: graph-scope-per-purpose
     deprecated: {since: "2.1.0", replacedBy: cs-graph-readonly}
     repos: [avd-landing-zone]
@@ -628,5 +637,6 @@ gaps:
     repos: [avd-landing-zone]
     says: The host baseline (decision 0018) and the jumpbox (decision 0019) have no real-run evidence yet. The hosts' Trusted Launch, subnet rules and role assignments now have template tests.
   - id: threat-models
+    deprecated: {since: "2.2.0", replacedBy: null}
     repos: [avd-landing-zone, avd-current-state]
-    says: No written threat model for the two proven repos; avd-swarm's red team is the only formal review.
+    says: Closed in 2.2.0; docs/threat-model.md is present in both avd-landing-zone and avd-current-state.
