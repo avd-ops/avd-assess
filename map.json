@@ -4916,10 +4916,15 @@
       "home": {
         "decision": "proposed:cost.commitments",
         "facts": [
-          "c11.advisor.recommendations"
+          "c11.advisor.recommendations",
+          "c11.advisor.commitmentRecommendations",
+          "c11.insights.runningHostFloor"
         ],
         "intake": [
           "intake.computeCommitments"
+        ],
+        "checks": [
+          "asm-cost-commitment-floor-reviewed"
         ]
       },
       "baseline": {
@@ -4939,7 +4944,7 @@
         "obs:retail-price-lookalike-meters",
         "obs:estimate-before-deploy"
       ],
-      "measure": "intake",
+      "measure": "fact",
       "landingZone": []
     },
     {
