@@ -2030,13 +2030,13 @@ dimensions:
     pillar: finops
     title: Compute commitments (reservations and savings plans)
     decides: How much always-on session host compute is covered by a reservation or savings plan after hours and sizes are settled.
-    home: {decision: proposed:cost.commitments, facts: [c11.advisor.recommendations], intake: [intake.computeCommitments]}
+    home: {decision: proposed:cost.commitments, facts: [c11.advisor.recommendations, c11.advisor.commitmentRecommendations, c11.insights.runningHostFloor], intake: [intake.computeCommitments], checks: [asm-cost-commitment-floor-reviewed]}
     baseline:
       standing: gap
       claims: [ref:commitment-choice#right-size-first, ref:reservations#hourly-billing-discount, ref:advisor-cost#vm-reservations, ref:advisor-cost#savings-plan, ref:waf-cost-optimization-checklist#CO:05, gap:commitment-floor, gap:finops-scope]
       says: Right-size and autoscale before committing; commit only the floor of hours that run every day of the year.
     observations: [obs:retail-price-lookalike-meters, obs:estimate-before-deploy]
-    measure: intake
+    measure: fact
     landingZone: []
   # Troubleshooting and diagnostics (pillar diagnostics, methods/diagnostics.md). These rows are the
   # data-source map: what each source shows, who can read it, and which part becomes a collector fact.
