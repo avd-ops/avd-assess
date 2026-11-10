@@ -127,7 +127,7 @@ jobs:
             $r = @(Get-AvdAssessBundleCheck -Path ./out/bundle)
             $r | ForEach-Object { "RESULT {0} {1}: {2}" -f $_.status, $_.id, $_.detail }
             if (@($r | Where-Object status -eq "FAIL").Count) { exit 1 }'
-      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release
           path: |
