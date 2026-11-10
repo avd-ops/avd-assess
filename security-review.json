@@ -819,13 +819,13 @@
               "repo": "avd-ops",
               "path": "docs/knowledge/decisions/0013-azure-us-government-and-gcc-high-support.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/knowledge/decisions/0013-azure-us-government-and-gcc-high-support.md"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/docs/knowledge/decisions/0013-azure-us-government-and-gcc-high-support.md"
             },
             {
               "repo": "avd-ops",
               "path": "docs/govcloud-support-spec.md",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/govcloud-support-spec.md"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/docs/govcloud-support-spec.md"
             },
             {
               "repo": "avd-assess",
