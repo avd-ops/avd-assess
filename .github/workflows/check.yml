@@ -22,7 +22,7 @@ jobs:
         run: python3 scripts/bundle/build_bundle.py --check
       - name: Keep the built bundle for the PowerShell verifier
         run: python3 scripts/bundle/build_bundle.py --out out
-      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: bundle
           path: out/bundle/
