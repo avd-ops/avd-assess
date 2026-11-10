@@ -1,0 +1,15 @@
+id: arc-servers-overview
+title: What is Azure Arc-enabled servers?
+url: https://learn.microsoft.com/azure/azure-arc/servers/overview
+pin: "Learn git_commit_id fff57502de0ce17a36606368322f03c2823ac046, updated_at 2026-07-27"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [hybrid]
+claims:
+  - id: azure-resource-projection
+    says: Onboarding a physical or virtual machine outside Azure with the Connected Machine agent gives it an Azure Resource ID in a resource group so Azure Policy, tags and Resource Graph read it alongside Azure VMs.
+    kind: published
+  - id: ama-and-extensions
+    says: Arc-enabled servers support VM extensions, Azure Update Manager, and the Azure Monitor Agent for log collection and change tracking and inventory into Log Analytics.
+    kind: published

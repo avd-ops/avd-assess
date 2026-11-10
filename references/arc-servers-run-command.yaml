@@ -1,0 +1,15 @@
+id: arc-servers-run-command
+title: Run command on Azure Arc-enabled servers
+url: https://learn.microsoft.com/azure/azure-arc/servers/run-command
+pin: "Learn git_commit_id a5faa4c9f98e83533dce5b2581a2a19116f7d874, updated_at 2026-02-24"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [hybrid]
+claims:
+  - id: agent-script-execution
+    says: Run command built into the Connected Machine agent (version 1.33 and later) executes scripts or commands remotely through Azure CLI, PowerShell or REST without direct RDP, WinRM or SSH access.
+    kind: published
+  - id: free-control-plane
+    says: Running commands on Arc-enabled servers carries no extra Azure charge unless scripts are stored in Azure storage.
+    kind: published
