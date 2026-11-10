@@ -5,6 +5,7 @@ pin: "Learn git_commit_id a8523e4b99048e51fff225a72041a48aea28c1dc, updated_at 2
 read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment]
+deprecated: {since: "2.2.0", replacedBy: null}
 claims:
   - id: deprecated
     says: The page is deprecated, no longer updated, and is to be removed from Learn on 2026-10-30; it points to the Architecture Center and the product docs instead.

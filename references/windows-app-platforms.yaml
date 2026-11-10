@@ -1,8 +1,8 @@
 id: windows-app-platforms
 title: Compare Windows App features across platforms and devices
 url: https://learn.microsoft.com/windows-app/compare-platforms-features
-pin: "Learn git_commit_id 4d3ffbf8caade302209f2c408b818484b73cf312, updated_at 2026-10-15"
-read: 2026-10-21
+pin: "Learn git_commit_id a379bb39d1db951ad024bf18188b53d627c11a99, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment, collection]
 notes: P10 (endpoints and clients) cites this reference for client features beyond transport.

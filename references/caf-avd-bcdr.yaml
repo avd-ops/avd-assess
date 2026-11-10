@@ -7,6 +7,7 @@ license: Microsoft Learn content (link only)
 areas: [assessment]
 pillars: [reliability]
 notes: Deprecated; Microsoft removes it on 2026-10-30. Three claims have no living source yet (no-financial-sla, availability-option-at-create, hosts-stateless-no-vm-backup); when the page goes, each moves to a living source or becomes a gap (gap:reliability-scope).
+deprecated: {since: "2.2.0", replacedBy: null}
 claims:
   - id: no-financial-sla
     says: Microsoft offers no financially backed SLA for the AVD service itself and aims for at least 99.9 percent availability of its URLs; the hosts' own SLA follows from their availability option and disks.

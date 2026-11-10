@@ -7,6 +7,7 @@ license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our word
 areas: [assessment]
 pillars: [identity]
 notes: Deprecated; Microsoft says the Learn page is removed on 2026-10-30. The GitHub pin stays readable after that, and the claims below are kept only where a current product page doesn't say the same.
+deprecated: {since: "2.2.0", replacedBy: null}
 claims:
   - id: ou-per-host-pool
     says: Put each host pool's session hosts in their own Active Directory OU to keep policy simple and orphaned objects easy to find.

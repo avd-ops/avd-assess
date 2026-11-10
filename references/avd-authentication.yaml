@@ -1,8 +1,8 @@
 id: avd-authentication
 title: Supported identities and authentication methods for Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/authentication
-pin: "Learn git_commit_id 74270aaa6471ca1c29c36103e393e55d95578ccb, updated_at 2026-10-15"
-read: 2026-10-21
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment]
 pillars: [identity]

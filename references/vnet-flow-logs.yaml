@@ -1,8 +1,8 @@
 id: vnet-flow-logs
 title: Virtual network flow logs
 url: https://learn.microsoft.com/azure/network-watcher/vnet-flow-logs-overview
-pin: "Learn git_commit_id 4ae52c3fa350e340059210b16c2a32d36fc65d15, updated_at 2026-10-06"
-read: 2026-10-21
+pin: "Learn git_commit_id 1d0b93ef19bb0828f1c6fae226f485b631826be7, updated_at 2026-11-03"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment, collection]
 claims:

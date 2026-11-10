@@ -1,8 +1,8 @@
 id: rdp-properties
 title: Supported RDP properties
 url: https://learn.microsoft.com/azure/virtual-desktop/rdp-properties
-pin: "Learn git_commit_id 2ef32495c3b6974be09cd3373e163f2b2a920d55, updated_at 2026-08-10"
-read: 2026-10-20
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [collection, assessment]
 notes: The host pool's custom RDP properties are readable from the control plane, so device redirection can be judged without signing in to a host. Session host policy can still restrict further.

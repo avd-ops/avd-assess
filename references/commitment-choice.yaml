@@ -1,8 +1,8 @@
 id: commitment-choice
 title: Decide between a savings plan and a reservation (Microsoft Cost Management)
 url: https://learn.microsoft.com/azure/cost-management-billing/savings-plan/decide-between-savings-plan-reservation
-pin: "Learn git_commit_id af8cc48c58d5deb8862962de76985fcc1e34ff0f, updated_at 2026-03-26"
-read: 2026-10-20
+pin: "Learn git_commit_id 27039a8fc14f3437117d741605652faea4b50a1d, updated_at 2026-10-29"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:

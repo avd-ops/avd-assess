@@ -1,8 +1,8 @@
 id: multimedia-redirection
 title: Multimedia redirection for video playback and calls in a remote session
 url: https://learn.microsoft.com/azure/virtual-desktop/multimedia-redirection-video-playback-calls
-pin: "Learn git_commit_id a5a6107238e1f12e2f22cbfb5d0dd011696b5540, updated_at 2026-10-20"
-read: 2026-10-21
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment, benchmarks]
 notes: The page lists the calling and video sites known to work by default, among them several contact center platforms; we keep only the fact that such a list exists, not the names.

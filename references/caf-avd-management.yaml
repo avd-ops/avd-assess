@@ -6,6 +6,7 @@ read: 2026-10-20
 license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
 areas: [assessment]
 notes: Microsoft is removing the CAF AVD scenario on 2026-10-30 (see caf-avd-assess), so the pin is the public GitHub copy.
+deprecated: {since: "2.2.0", replacedBy: null}
 claims:
   - id: insights-config-workbook
     says: Configure diagnostics, events and counters through Insights, and use its configuration workbook to stay current when new settings are required.

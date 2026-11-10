@@ -96,6 +96,8 @@ def default_branch(owner, repo):
 
 
 def learn_one(ref):
+    if ref.get("deprecated"):
+        return None
     m = LEARN_PIN.match(str(ref.get("pin", "")))
     if not m:
         return None
@@ -109,6 +111,8 @@ def learn_one(ref):
 
 
 def github_one(ref):
+    if ref.get("deprecated"):
+        return None
     m = GITHUB_PIN.match(str(ref.get("pin", "")))
     if not m:
         return None

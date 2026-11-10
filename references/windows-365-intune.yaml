@@ -1,8 +1,8 @@
 id: windows-365-intune
 title: Windows 365 Cloud PC provisioning, user settings and Intune assignment filters
 url: https://learn.microsoft.com/windows-365/enterprise/create-provisioning-policy
-pin: "Learn git_commit_id 4e8b71c3a902d114f6c88e1209a3b54d7e61f02a, updated_at 2026-10-18"
-read: 2026-11-02
+pin: "Learn git_commit_id 86ad7dff1efc212b09e59e501b123c85dc17b3f6, updated_at 2026-10-15"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [collection, assessment]
 pillars: [intune]

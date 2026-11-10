@@ -1,8 +1,8 @@
 id: windows-app-basic
 title: Basic troubleshooting for Windows App
 url: https://learn.microsoft.com/windows-app/troubleshoot-basic
-pin: "Learn git_commit_id b324bbcc20ce6a38aea774b94848957c52bcc481, updated_at 2026-08-11"
-read: 2026-10-21
+pin: "Learn git_commit_id 8ae87154de50be359c80866c1ba0de8abc4d4428, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment]
 pillars: [diagnostics, endpoints]

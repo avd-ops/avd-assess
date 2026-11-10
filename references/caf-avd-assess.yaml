@@ -6,6 +6,7 @@ read: 2026-10-20
 license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
 areas: [collection, assessment]
 notes: Microsoft is removing the whole CAF AVD scenario on 2026-10-30, so the pin is the public GitHub copy. On 2026-10-20 the Well-Architected AVD workload guide pages already redirected to the product overview, while the AVD workload review stayed live. Still the only Microsoft page listing the questions an AVD assessment answers.
+deprecated: {since: "2.2.0", replacedBy: null}
 claims:
   - id: unit-of-assessment
     says: Each assessment covers one combination of persona, host pool, applications and data, and user profiles, and answers its questions from data.

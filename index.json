@@ -42,8 +42,8 @@
       "id": "activity-log",
       "title": "Activity log in Azure Monitor",
       "url": "https://learn.microsoft.com/azure/azure-monitor/fundamentals/activity-log",
-      "pin": "Learn git_commit_id 25304e36332b7851db820ab35a8b2814ccbe7614, updated_at 2026-10-27",
-      "read": "2026-10-29",
+      "pin": "Learn git_commit_id a07b757d650e1215708e13f8546d4359adb8c38c, updated_at 2026-11-05",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -392,8 +392,8 @@
       "id": "app-attach",
       "title": "App Attach in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/app-attach-overview",
-      "pin": "Learn git_commit_id 18f8ed292f3df23081d1cb2446c480105abdbaf9, updated_at 2026-08-26",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -556,8 +556,8 @@
       "id": "arch-private-link-hub-spoke",
       "title": "Azure Architecture Center, Azure Private Link in a hub-and-spoke network",
       "url": "https://learn.microsoft.com/azure/architecture/networking/guide/private-link-hub-spoke-network",
-      "pin": "Learn git_commit_id 944e50dba8a8e76286bd3dcc6a1b837d0f5ac908, updated_at 2026-05-04",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 420cfb5ad93f30b1a84c0108271a0ab625d38751, updated_at 2026-11-05",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -676,8 +676,8 @@
       "id": "autoscale-faq",
       "title": "Azure Virtual Desktop autoscale FAQ",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-faq",
-      "pin": "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -727,8 +727,8 @@
       "id": "autoscale-plan",
       "title": "Create and assign an autoscale scaling plan for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-create-assign-scaling-plan",
-      "pin": "Learn git_commit_id 9482be6e3db06c8a844a8d6bfbf0cc312a7ba4c3, updated_at 2026-08-31",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -795,8 +795,8 @@
       "id": "availability-zones",
       "title": "What are Azure availability zones?",
       "url": "https://learn.microsoft.com/azure/reliability/availability-zones-overview",
-      "pin": "Learn git_commit_id 454863f3dc91952428e31d5a5fcd4ba88bdb1ad7, updated_at 2026-10-27",
-      "read": "2026-10-29",
+      "pin": "Learn git_commit_id 1db549d82fcbb266a75fe4914e62b130dd296d6d, updated_at 2026-11-03",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -924,8 +924,8 @@
       "id": "avd-authentication",
       "title": "Supported identities and authentication methods for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/authentication",
-      "pin": "Learn git_commit_id 74270aaa6471ca1c29c36103e393e55d95578ccb, updated_at 2026-10-15",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -1009,8 +1009,8 @@
       "id": "avd-autoscale",
       "title": "Autoscale scaling plans and example scenarios in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/autoscale-scenarios",
-      "pin": "Learn git_commit_id 14f9b38caae4e231e4245e435e9cc6cda26c84ca, updated_at 2026-06-29",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -1196,8 +1196,8 @@
       "id": "avd-data-locations",
       "title": "Data locations for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/data-locations",
-      "pin": "Learn git_commit_id ebbe087e9ad40882b4901691bb5c93bab04a149c, updated_at 2026-09-30",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -1234,8 +1234,8 @@
       "id": "avd-deploy-host-pool",
       "title": "Deploy Azure Virtual Desktop (host pools and session hosts)",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/deploy-azure-virtual-desktop",
-      "pin": "Learn git_commit_id d823adcfe80080adb47686ee827ee5b3ff8e397f, updated_at 2026-09-30",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -1334,8 +1334,8 @@
       "id": "avd-entra-joined-hosts",
       "title": "Microsoft Entra joined session hosts in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/azure-ad-joined-session-hosts",
-      "pin": "Learn git_commit_id 56121a97d2baa489be592daaeede59f7e9148999, updated_at 2026-05-19",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -1919,8 +1919,8 @@
       "id": "avd-language-packs",
       "title": "Add languages to a Windows 11 Enterprise image",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/windows-11-language-packs",
-      "pin": "Learn git_commit_id c1cff1160f21c7796f1396c26bdda0c0e5edcc4e, updated_at 2026-10-01",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -1951,8 +1951,8 @@
       "id": "avd-licensing",
       "title": "Licensing Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/licensing",
-      "pin": "Learn git_commit_id 5107b5fb31aafba47fc5410de88daa2b821313da, updated_at 2025-11-18",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -2103,8 +2103,8 @@
       "id": "avd-multimedia-redirection",
       "title": "Multimedia redirection for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/multimedia-redirection-intro",
-      "pin": "Learn git_commit_id a5a6107238e1f12e2f22cbfb5d0dd011696b5540, updated_at 2026-10-20",
-      "read": "2026-10-27",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "collection",
@@ -2125,8 +2125,8 @@
       "id": "avd-multiregion-bcdr",
       "title": "Multiregion BCDR for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/architecture/example-scenario/azure-virtual-desktop/azure-virtual-desktop-multi-region-bcdr",
-      "pin": "Learn git_commit_id 0762ad3f4f716eaeb4f5da294f815cf5f99bd965, updated_at 2026-10-23",
-      "read": "2026-10-29",
+      "pin": "Learn git_commit_id 7d86c1da5c5ea5d73b78957e0279666a79003a84, updated_at 2026-11-09",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -2361,8 +2361,8 @@
       "id": "avd-prerequisites",
       "title": "Prerequisites for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/prerequisites",
-      "pin": "Learn git_commit_id 98f726730d8d63d52a4fea0415ab8eaffffcd975, updated_at 2026-09-30",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "benchmarks",
@@ -2424,8 +2424,8 @@
       "id": "avd-private-link-setup",
       "title": "Set up Private Link with Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/private-link-setup",
-      "pin": "Learn git_commit_id f9304fa76124441b037c0f7c3eb02dfbacf92287, updated_at 2026-09-15",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -2458,8 +2458,8 @@
       "id": "avd-private-link",
       "title": "Azure Private Link with Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/private-link-overview",
-      "pin": "Learn git_commit_id 33922f102f6e56048302588f905c3d6a4fc92523, updated_at 2026-02-24",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -2608,8 +2608,8 @@
       "id": "avd-required-fqdn",
       "title": "Required FQDNs and endpoints for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/required-fqdn-endpoint",
-      "pin": "Learn git_commit_id 05df299786103f3d5886146cf73fab142cda335a, updated_at 2026-09-22",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -2882,8 +2882,8 @@
       "id": "avd-service-resilience",
       "title": "Azure Virtual Desktop service architecture and resilience",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/service-architecture-resilience",
-      "pin": "Learn git_commit_id 2448264961c9205321bb4012907ade9122c2871a, updated_at 2026-09-30",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -2946,8 +2946,8 @@
       "id": "avd-sessionhost-get-api",
       "title": "Session Hosts - Get (Desktop Virtualization REST API, 2025-10-10)",
       "url": "https://learn.microsoft.com/rest/api/desktopvirtualization/session-hosts/get",
-      "pin": "Learn git_commit_id e41049c4b677084ab48a88fd8d76c263c9df68df, updated_at 2026-03-19",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id bc0cce6cf38742bbc0087ccf7a0a2a1a4db49a28, updated_at 2026-11-05",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "collection"
@@ -2983,8 +2983,8 @@
       "id": "avd-sso",
       "title": "Configure single sign-on for Azure Virtual Desktop using Microsoft Entra ID",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/configure-single-sign-on",
-      "pin": "Learn git_commit_id 9e91f2c9068a0844f3041110ca90b6a25540b566, updated_at 2026-07-29",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -3129,8 +3129,8 @@
       "id": "avd-update-methods",
       "title": "Windows update management methodologies for Azure Virtual Desktop session hosts",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/windows-update-management-methodologies-session-hosts",
-      "pin": "Learn git_commit_id de6e2325bea5c22de746080fb3965dbf1b277e5a, updated_at 2026-10-28",
-      "read": "2026-10-29",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -3348,8 +3348,8 @@
       "id": "azure-mcp",
       "title": "Azure MCP Server tools for Azure Virtual Desktop and server startup modes",
       "url": "https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/azure-virtual-desktop",
-      "pin": "Learn git_commit_id 7c4a91e2b803f512d4a96c1830e7b42f9a51c308, updated_at 2026-10-20",
-      "read": "2026-11-08",
+      "pin": "Learn git_commit_id ffc3b47ce1cb85e3300a421a961885bbe1ea3aef, updated_at 2026-10-16",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "collection",
@@ -3436,6 +3436,10 @@
         "assessment"
       ],
       "notes": "Microsoft is removing the whole CAF AVD scenario on 2026-10-30, so the pin is the public GitHub copy. On 2026-10-20 the Well-Architected AVD workload guide pages already redirected to the product overview, while the AVD workload review stayed live. Still the only Microsoft page listing the questions an AVD assessment answers.",
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "unit-of-assessment",
@@ -3503,6 +3507,10 @@
         "reliability"
       ],
       "notes": "Deprecated; Microsoft removes it on 2026-10-30. Three claims have no living source yet (no-financial-sla, availability-option-at-create, hosts-stateless-no-vm-backup); when the page goes, each moves to a living source or becomes a gap (gap:reliability-scope).",
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "no-financial-sla",
@@ -3546,6 +3554,10 @@
       "areas": [
         "assessment"
       ],
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "persona-iterations",
@@ -3578,6 +3590,10 @@
         "identity"
       ],
       "notes": "Deprecated; Microsoft says the Learn page is removed on 2026-10-30. The GitHub pin stays readable after that, and the claims below are kept only where a current product page doesn't say the same.",
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "ou-per-host-pool",
@@ -3617,6 +3633,10 @@
         "assessment"
       ],
       "notes": "Deprecated with the rest of the Framework's AVD scenario and removed from Learn on 2026-10-30, so the pin is the Learn commit. One of the few Microsoft pages that names AVD scenarios by who uses them.",
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "deprecated",
@@ -3651,6 +3671,10 @@
         "assessment"
       ],
       "notes": "Microsoft is removing the CAF AVD scenario on 2026-10-30 (see caf-avd-assess), so the pin is the public GitHub copy.",
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "insights-config-workbook",
@@ -3684,6 +3708,10 @@
       "areas": [
         "assessment"
       ],
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "deprecated",
@@ -3741,6 +3769,10 @@
         "monitoring"
       ],
       "notes": "The checklist's link for E01.12. Microsoft removes the CAF AVD scenario on 2026-10-30, so the pin is the public GitHub copy, as for ref:caf-avd-management.",
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "deprecated",
@@ -3775,6 +3807,10 @@
         "assessment",
         "benchmarks"
       ],
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "deprecated",
@@ -3807,6 +3843,10 @@
         "governance"
       ],
       "notes": "Deprecated on the read date and due to be removed from Learn on 2026-10-30; the GitHub pin keeps the text readable.",
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": null
+      },
       "claims": [
         {
           "id": "compliance-dashboard",
@@ -3878,8 +3918,8 @@
       "id": "commitment-choice",
       "title": "Decide between a savings plan and a reservation (Microsoft Cost Management)",
       "url": "https://learn.microsoft.com/azure/cost-management-billing/savings-plan/decide-between-savings-plan-reservation",
-      "pin": "Learn git_commit_id af8cc48c58d5deb8862962de76985fcc1e34ff0f, updated_at 2026-03-26",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 27039a8fc14f3437117d741605652faea4b50a1d, updated_at 2026-10-29",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -4545,8 +4585,8 @@
       "id": "disk-encryption-options",
       "title": "Overview of managed disk encryption options",
       "url": "https://learn.microsoft.com/azure/virtual-machines/disk-encryption-overview",
-      "pin": "Learn git_commit_id fe259248937e88769914cfeb84ecbdcc6121d70e, updated_at 2026-09-16",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 4c94d59bd43d07cc39673f0220789f3e366df966, updated_at 2026-10-29",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -4697,8 +4737,8 @@
       "id": "files-backup-portal",
       "title": "Back up Azure Files in the Azure portal",
       "url": "https://learn.microsoft.com/azure/backup/backup-azure-files",
-      "pin": "Learn git_commit_id e9b0ca20cc1701ab1bf6865b58179e4c9abafb8b, updated_at 2026-09-23",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id c40337158c13af5288520be96396b5a3b0f91e29, updated_at 2026-11-09",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -4720,8 +4760,8 @@
       "id": "files-backup-support",
       "title": "Support matrix for Azure Files backup",
       "url": "https://learn.microsoft.com/azure/backup/azure-file-share-support-matrix",
-      "pin": "Learn git_commit_id 8ec165efbe56a9ea50ae0ce0ea42b0fbb5f23cf0, updated_at 2026-10-27",
-      "read": "2026-10-29",
+      "pin": "Learn git_commit_id c2168a7b2f9b381ce2c518a2271cf281f9f55071, updated_at 2026-11-09",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -4980,8 +5020,8 @@
       "id": "firewall-fqdn-tags",
       "title": "Azure Firewall FQDN tags overview",
       "url": "https://learn.microsoft.com/azure/firewall/fqdn-tags",
-      "pin": "Learn git_commit_id 8190b423118f465b0c4a17563696acbd635ba8d4, updated_at 2026-04-28",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 6b093aa6bcf09d0c5aba838dc0b36b4c93b86e35, updated_at 2026-10-30",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -5107,8 +5147,8 @@
       "id": "fslogix-configuration-examples",
       "title": "FSLogix configuration examples",
       "url": "https://learn.microsoft.com/fslogix/concepts-configuration-examples",
-      "pin": "Learn git_commit_id d91140933b18b132be63ef5f8b2f17568aa0885a, updated_at 2026-09-01",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id b1b5fd27f1ff1027ec449c2018637a69453fc11d, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -5185,8 +5225,8 @@
       "id": "fslogix-entra-profile",
       "title": "Store FSLogix profile containers on Azure Files using Microsoft Entra ID",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/create-profile-container-azure-ad",
-      "pin": "Learn git_commit_id 2afc1a6eb7f7a4b901c8679945c754ac3ebe4e5b, updated_at 2026-05-19",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id b1b5fd27f1ff1027ec449c2018637a69453fc11d, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -5342,8 +5382,8 @@
       "id": "fslogix-settings-reference",
       "title": "FSLogix configuration settings reference",
       "url": "https://learn.microsoft.com/fslogix/reference-configuration-settings",
-      "pin": "Learn git_commit_id d91140933b18b132be63ef5f8b2f17568aa0885a, updated_at 2026-09-01",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id b1b5fd27f1ff1027ec449c2018637a69453fc11d, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -5385,8 +5425,8 @@
       "id": "fslogix-settings",
       "title": "FSLogix configuration settings reference",
       "url": "https://learn.microsoft.com/fslogix/reference-configuration-settings",
-      "pin": "Learn git_commit_id d91140933b18b132be63ef5f8b2f17568aa0885a, updated_at 2026-09-01",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id b1b5fd27f1ff1027ec449c2018637a69453fc11d, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -5513,8 +5553,8 @@
       "id": "gsa-known-limitations",
       "title": "Known limitations for Global Secure Access",
       "url": "https://learn.microsoft.com/entra/global-secure-access/reference-current-known-limitations",
-      "pin": "Learn git_commit_id 1ca14c78a8a89186343ee999044f5db598b1e555, updated_at 2026-09-30",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 866f302a2dc3c5cf66a6fdc76cd575e3fe766e79, updated_at 2026-11-06",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -5574,8 +5614,8 @@
       "id": "intune-avd-multisession",
       "title": "Using Azure Virtual Desktop multi-session with Microsoft Intune",
       "url": "https://learn.microsoft.com/intune/solutions/azure-virtual-desktop-multi-session",
-      "pin": "Learn git_commit_id a5e9242650217721f235f2864d110c429542db15, updated_at 2026-10-12",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id f135b395f4c4439bbe70e73f519d9e4927b52e8e, updated_at 2026-11-03",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -5817,8 +5857,8 @@
       "id": "intune-reports",
       "title": "Microsoft Intune reports",
       "url": "https://learn.microsoft.com/intune/device-management/reports/overview",
-      "pin": "Learn git_commit_id a6e85fce52359c58245c729c6a820e0a669b7cda, updated_at 2026-07-16",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 0b2a8eb4fa304e6e4396b94abe89559824e6f48d, updated_at 2026-11-06",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "collection"
@@ -6156,8 +6196,8 @@
       "id": "multimedia-redirection",
       "title": "Multimedia redirection for video playback and calls in a remote session",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/multimedia-redirection-video-playback-calls",
-      "pin": "Learn git_commit_id a5a6107238e1f12e2f22cbfb5d0dd011696b5540, updated_at 2026-10-20",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -6480,8 +6520,8 @@
       "id": "rdp-multipath",
       "title": "Use RDP Multipath to improve connection reliability to Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-multipath",
-      "pin": "Learn git_commit_id fd2c58b5ac344436387554e034f9fedc90e656df, updated_at 2026-10-22",
-      "read": "2026-10-29",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -6519,8 +6559,8 @@
       "id": "rdp-printer-redirection",
       "title": "Configure printer redirection over the Remote Desktop Protocol",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/redirection-configure-printers",
-      "pin": "Learn git_commit_id 2ef32495c3b6974be09cd3373e163f2b2a920d55, updated_at 2026-08-10",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -6555,8 +6595,8 @@
       "id": "rdp-properties",
       "title": "Supported RDP properties",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-properties",
-      "pin": "Learn git_commit_id 2ef32495c3b6974be09cd3373e163f2b2a920d55, updated_at 2026-08-10",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "collection",
@@ -6603,8 +6643,8 @@
       "id": "rdp-redirection",
       "title": "Peripheral and resource redirection over the Remote Desktop Protocol",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/redirection-remote-desktop-protocol",
-      "pin": "Learn git_commit_id 6034b613281b515c846d7d046b8462dc4cdd7c77, updated_at 2026-09-17",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -6627,8 +6667,8 @@
       "id": "rdp-shortpath",
       "title": "RDP Shortpath for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/rdp-shortpath",
-      "pin": "Learn git_commit_id fd2c58b5ac344436387554e034f9fedc90e656df, updated_at 2026-10-22",
-      "read": "2026-10-29",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -6685,8 +6725,8 @@
       "id": "rdp-traffic-optimization",
       "title": "Optimization of RDP traffic (Windows 365 and Azure Virtual Desktop)",
       "url": "https://learn.microsoft.com/windows-365/enterprise/optimization-of-rdp",
-      "pin": "Learn git_commit_id b0c12cb818a1bcedf8a5b2d8999918ee62e0cf7c, updated_at 2026-10-07",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -6800,8 +6840,8 @@
       "id": "remoteapp-publish",
       "title": "Publish applications with RemoteApp in Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/publish-applications-stream-remoteapp",
-      "pin": "Learn git_commit_id b05bdc349ce47830c41647baf4f5242adea5d8f7, updated_at 2026-08-31",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -7445,8 +7485,8 @@
       "id": "savings-plans",
       "title": "What are savings plans? (Microsoft Cost Management)",
       "url": "https://learn.microsoft.com/azure/cost-management-billing/savings-plan/savings-plan-compute-overview",
-      "pin": "Learn git_commit_id c6ef6b2600dc9eaa8c1e7e82b0c48d2606e9f8f8, updated_at 2026-09-14",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 27039a8fc14f3437117d741605652faea4b50a1d, updated_at 2026-10-29",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -7514,8 +7554,8 @@
       "id": "service-tags",
       "title": "Azure service tags overview",
       "url": "https://learn.microsoft.com/azure/virtual-network/service-tags-overview",
-      "pin": "Learn git_commit_id 38dd8bbc352564387976d8096d3b1badcbab5e3e, updated_at 2026-09-17",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 438c68ee21f7ea890f0f6805f0879899e3fa87e7, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -7708,8 +7748,8 @@
       "id": "start-vm-on-connect",
       "title": "Configure Start VM on Connect for Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect",
-      "pin": "Learn git_commit_id 9482be6e3db06c8a844a8d6bfbf0cc312a7ba4c3, updated_at 2026-08-31",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -7731,8 +7771,8 @@
       "id": "teams-on-avd",
       "title": "Use Microsoft Teams on Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/teams-on-avd",
-      "pin": "Learn git_commit_id 34aad1fd443eb396735b6899c8e66e63a8009de3, updated_at 2026-06-17",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -7754,8 +7794,8 @@
       "id": "thin-clients",
       "title": "Thin client support (Azure Virtual Desktop)",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/thin-clients",
-      "pin": "Learn git_commit_id 8cd3e2378055def35bcc309fd4d8e644294d7cbe, updated_at 2026-10-21",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id baab03f7bd6d4310b464f0cc0dfb19184d95825b, updated_at 2026-11-05",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -8224,8 +8264,8 @@
       "id": "vnet-flow-logs",
       "title": "Virtual network flow logs",
       "url": "https://learn.microsoft.com/azure/network-watcher/vnet-flow-logs-overview",
-      "pin": "Learn git_commit_id 4ae52c3fa350e340059210b16c2a32d36fc65d15, updated_at 2026-10-06",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 1d0b93ef19bb0828f1c6fae226f485b631826be7, updated_at 2026-11-03",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -8622,8 +8662,8 @@
       "id": "windows-365-intune",
       "title": "Windows 365 Cloud PC provisioning, user settings and Intune assignment filters",
       "url": "https://learn.microsoft.com/windows-365/enterprise/create-provisioning-policy",
-      "pin": "Learn git_commit_id 4e8b71c3a902d114f6c88e1209a3b54d7e61f02a, updated_at 2026-10-18",
-      "read": "2026-11-02",
+      "pin": "Learn git_commit_id 86ad7dff1efc212b09e59e501b123c85dc17b3f6, updated_at 2026-10-15",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "collection",
@@ -8670,8 +8710,8 @@
       "id": "windows-app-basic",
       "title": "Basic troubleshooting for Windows App",
       "url": "https://learn.microsoft.com/windows-app/troubleshoot-basic",
-      "pin": "Learn git_commit_id b324bbcc20ce6a38aea774b94848957c52bcc481, updated_at 2026-08-11",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 8ae87154de50be359c80866c1ba0de8abc4d4428, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"
@@ -8729,8 +8769,8 @@
       "id": "windows-app-get-started",
       "title": "Get started with Windows App to connect to devices and apps",
       "url": "https://learn.microsoft.com/windows-app/get-started-connect-devices-desktops-apps?pivots=azure-virtual-desktop",
-      "pin": "Learn git_commit_id 7370f6fff5eeadbbbbd802c3a3d5d7133b44ec0b, updated_at 2026-10-08",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id 8ae87154de50be359c80866c1ba0de8abc4d4428, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -8788,8 +8828,8 @@
       "id": "windows-app-platforms",
       "title": "Compare Windows App features across platforms and devices",
       "url": "https://learn.microsoft.com/windows-app/compare-platforms-features",
-      "pin": "Learn git_commit_id 4d3ffbf8caade302209f2c408b818484b73cf312, updated_at 2026-10-15",
-      "read": "2026-10-21",
+      "pin": "Learn git_commit_id a379bb39d1db951ad024bf18188b53d627c11a99, updated_at 2026-11-04",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment",
@@ -9063,8 +9103,8 @@
       "id": "zero-trust-avd",
       "title": "Apply Zero Trust principles to Azure Virtual Desktop",
       "url": "https://learn.microsoft.com/security/zero-trust/azure-infrastructure-avd",
-      "pin": "Learn git_commit_id aacf4bfa9d35342e0399cdb1c37586dcb3cf2abf, updated_at 2026-05-31",
-      "read": "2026-10-20",
+      "pin": "Learn git_commit_id 9a981240c42d76dbc308eb52b213bcb45071dae8, updated_at 2026-11-03",
+      "read": "2026-11-09",
       "license": "Microsoft Learn content (link only)",
       "areas": [
         "assessment"

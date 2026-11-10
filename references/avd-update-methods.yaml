@@ -1,8 +1,8 @@
 id: avd-update-methods
 title: Windows update management methodologies for Azure Virtual Desktop session hosts
 url: https://learn.microsoft.com/azure/virtual-desktop/windows-update-management-methodologies-session-hosts
-pin: "Learn git_commit_id de6e2325bea5c22de746080fb3965dbf1b277e5a, updated_at 2026-10-28"
-read: 2026-10-29
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:

@@ -1,8 +1,8 @@
 id: avd-multimedia-redirection
 title: Multimedia redirection for Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/multimedia-redirection-intro
-pin: "Learn git_commit_id a5a6107238e1f12e2f22cbfb5d0dd011696b5540, updated_at 2026-10-20"
-read: 2026-10-27
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [collection, assessment]
 pillars: [protocol]

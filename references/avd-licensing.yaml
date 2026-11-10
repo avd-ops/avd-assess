@@ -1,8 +1,8 @@
 id: avd-licensing
 title: Licensing Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/licensing
-pin: "Learn git_commit_id 5107b5fb31aafba47fc5410de88daa2b821313da, updated_at 2025-11-18"
-read: 2026-10-20
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment]
 notes: Licensing isn't visible to a Reader-only run; the method takes it from the operator (gap:finops-scope).
