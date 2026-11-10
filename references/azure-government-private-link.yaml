@@ -1,0 +1,13 @@
+id: azure-government-private-link
+title: Azure Private Link and Private DNS zones in Azure Government
+url: https://learn.microsoft.com/azure/private-link/private-endpoint-dns
+pin: "Learn git_commit_id 3b719d04a52e819f60c43b782a10d49e7c56b120, updated_at 2026-10-18"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [networking-azure, security-posture]
+notes: Private DNS zone names for Azure Private Link in Azure Government (AzureUSGovernment) across AVD, Azure Files, Blob Storage and Key Vault.
+claims:
+  - id: usgov-private-dns-zones
+    says: In Azure US Government, Private Link endpoints resolve through sovereign Private DNS zones including privatelink.avd.azure.us (and privatelink-global.wvd.azure.us), privatelink.file.core.usgovcloudapi.net, privatelink.blob.core.usgovcloudapi.net and privatelink.vaultcore.usgovcloudapi.net.
+    kind: published

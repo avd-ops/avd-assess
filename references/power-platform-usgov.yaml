@@ -1,0 +1,13 @@
+id: power-platform-usgov
+title: Power Platform US Government (GCC, GCC High and DoD) service description
+url: https://learn.microsoft.com/power-platform/admin/powerapps-us-government
+pin: "Learn git_commit_id 6f1290d4e831a527c904b182d635f710a482c960, updated_at 2026-10-16"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [governance, networking-azure]
+notes: Sovereign BAP and Dataverse endpoints (gov.api.bap.microsoft.us, high.api.bap.microsoft.us, *.crm9.dynamics.com) and connector availability in US Government clouds.
+claims:
+  - id: usgov-bap-dataverse-endpoints
+    says: Power Platform US Government uses sovereign Business Application Platform endpoints (high.api.bap.microsoft.us for GCC High) and Dataverse instances (*.crm9.dynamics.com) with a restricted set of government-approved connectors.
+    kind: published

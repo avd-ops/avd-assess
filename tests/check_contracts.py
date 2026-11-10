@@ -263,6 +263,13 @@ def schema_has(schema, pointer):
     return True
 
 
+# Contract C26: cloud-environments.json passes its schema.
+ce_path = CONTRACTS / "cloud-environments.json"
+ce_doc = load(ce_path)
+if ce_doc is not None and "cloud-environments.schema.json" in schemas:
+    report(ce_path, Draft202012Validator(schemas["cloud-environments.schema.json"]), ce_doc)
+
+
 # Contract C15: the fact register (the brain's Test-FactRegister rules, ported).
 rpath = CONTRACTS / "fact-register.json"
 register = load(rpath)

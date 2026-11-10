@@ -1,0 +1,7 @@
+id: usgov-itar-redirection-default
+claim: ref:avd-security-guide#device-redirection
+verdict: extends
+observed: While commercial estates keep clipboard, printer, smart card, WebAuthn and camera redirection enabled by default for usability and score them as warn, estates with complianceProfile set to itar-cui disable clipboard, drive, USB and printer redirection by default and evaluate enabled redirection as a high-severity gap.
+evidence:
+  - https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/govcloud-support-spec.md
+date: 2026-11-09
