@@ -1,0 +1,21 @@
+id: avd-hybrid-deploy
+title: Deploy Azure Virtual Desktop Hybrid
+url: https://learn.microsoft.com/azure/virtual-desktop/deploy-azure-virtual-desktop-hybrid
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [hybrid]
+claims:
+  - id: join-types-by-os
+    says: Windows client session hosts on AVD Hybrid may be Entra joined, AD DS joined or hybrid joined; Windows Server session hosts must be AD DS joined or hybrid joined because the RDS licensing server dependency precludes Entra-only join.
+    kind: published
+  - id: hostpool-identity-reader
+    says: The host pool requires a managed identity granted the Reader role on the resource group that holds the Arc-enabled servers.
+    kind: published
+  - id: cloud-device-extension
+    says: Each Arc-enabled machine registers with the host pool through the Microsoft.AzureVirtualDesktop.CloudDeviceExtension extension using a registration token, into a standard host pool created without Azure virtual machines or session host configuration.
+    kind: published
+  - id: arc-and-avd-endpoints
+    says: On-premises session hosts must reach both the required AVD service endpoints and the Azure Arc network endpoints.
+    kind: published

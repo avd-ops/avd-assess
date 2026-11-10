@@ -6,6 +6,7 @@ read: 2026-10-21
 license: CC-BY-4.0 (MicrosoftDocs/cloud-adoption-framework); link only, our wording
 areas: [assessment]
 notes: Deprecated with the rest of the Framework's AVD scenario and removed from Learn on 2026-10-30, so the pin is the Learn commit. One of the few Microsoft pages that names AVD scenarios by who uses them.
+deprecated: {since: "2.2.0", replacedBy: null}
 claims:
   - id: deprecated
     says: The page is deprecated, no longer updated, and is to be removed from Learn on 2026-10-30.

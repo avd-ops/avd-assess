@@ -1,8 +1,8 @@
 id: avd-required-fqdn
 title: Required FQDNs and endpoints for Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/required-fqdn-endpoint
-pin: "Learn git_commit_id 05df299786103f3d5886146cf73fab142cda335a, updated_at 2026-09-22"
-read: 2026-10-21
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment, collection]
 notes: "The lists themselves stay on Learn: cite the claim and read the page at the pin, never copy the tables."

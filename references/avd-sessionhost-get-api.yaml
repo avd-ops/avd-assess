@@ -1,8 +1,8 @@
 id: avd-sessionhost-get-api
 title: Session Hosts - Get (Desktop Virtualization REST API, 2025-10-10)
 url: https://learn.microsoft.com/rest/api/desktopvirtualization/session-hosts/get
-pin: "Learn git_commit_id e41049c4b677084ab48a88fd8d76c263c9df68df, updated_at 2026-03-19"
-read: 2026-10-21
+pin: "Learn git_commit_id bc0cce6cf38742bbc0087ccf7a0a2a1a4db49a28, updated_at 2026-11-05"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [collection]
 pillars: [diagnostics]

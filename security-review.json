@@ -1,24 +1,24 @@
 {
   "schema": "avd-assess-security-review/v1",
-  "checked": "2026-11-08",
+  "checked": "2026-11-09",
   "pins": {
-    "avd-landing-zone": "00867a37d1a20d2880feb2c79023a2a297f4b1f6",
+    "avd-landing-zone": "bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b",
     "avd-entra": "3a6132c2146a58a7c5feb44cbeab3581d750d3fc",
     "avd-intune": "f64c56a84f7f53bcb7aeb398a456e0853d877633",
     "avd-m365": "f18b14f9866cce604b92738c92afa390e14ee7fc",
     "avd-azure": "ac01bc41b1e60d04bdfc01f77fe7832255d6644c",
     "avd-power-platform": "454335695e8db154dd71550788e1ce3694b59e7e",
-    "avd-current-state": "0ab98c5695360229adb38820794ba614f118c532",
-    "avd-second-brain": "03906126d8b8d70c791aca399dcbee5edab24410",
-    "avd-swarm": "115784c59fc670fcc4f6e3fcfac76bae32c029e6",
-    "avd-ops": "c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd"
+    "avd-current-state": "605cbb348714dccd769532a1c41f2e5a6b838cdf",
+    "avd-second-brain": "c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13",
+    "avd-swarm": "a29d92954a3dd655cae58cbfc31278de6c217529",
+    "avd-ops": "1b9f4b40ae9cb756168111202e44b3b6390d2e66"
   },
   "maturity": {
     "source": {
       "repo": "avd-ops",
       "path": "docs/roadmap-spec.md#6-proven-pre-beta-and-design",
       "kind": "doc",
-      "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/roadmap-spec.md#6-proven-pre-beta-and-design"
+      "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/docs/roadmap-spec.md#6-proven-pre-beta-and-design"
     },
     "repos": {
       "avd-landing-zone": "proven",
@@ -82,13 +82,13 @@
               "repo": "avd-landing-zone",
               "path": "docs/deploy.md#1-prerequisites",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/docs/deploy.md#1-prerequisites"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/docs/deploy.md#1-prerequisites"
             },
             {
               "repo": "avd-landing-zone",
               "path": "bicep/modules/governance.bicep",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/governance.bicep"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/governance.bicep"
             }
           ]
         },
@@ -102,19 +102,19 @@
               "repo": "avd-landing-zone",
               "path": "docs/ci.md#azure-access-oidc-no-stored-secrets",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/docs/ci.md#azure-access-oidc-no-stored-secrets"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/docs/ci.md#azure-access-oidc-no-stored-secrets"
             },
             {
               "repo": "avd-landing-zone",
               "path": ".github/workflows/deploy.yml",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/.github/workflows/deploy.yml"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/.github/workflows/deploy.yml"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/Template.Tests.ps1#L159",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/Template.Tests.ps1#L159"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/Template.Tests.ps1#L159"
             }
           ],
           "note": "The optional break-glass password can be a repository secret for CI; unset, deploy.sh generates one."
@@ -129,25 +129,25 @@
               "repo": "avd-landing-zone",
               "path": "build/decisions/0016-graph-operator-app.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/decisions/0016-graph-operator-app.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/decisions/0016-graph-operator-app.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "scripts/ops/AvdLandingZone.psm1#L295",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/scripts/ops/AvdLandingZone.psm1#L295"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/scripts/ops/AvdLandingZone.psm1#L295"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/AvdLandingZone.Tests.ps1#L177",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/AvdLandingZone.Tests.ps1#L177"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/AvdLandingZone.Tests.ps1#L177"
             },
             {
               "repo": "avd-landing-zone",
               "path": "docs/operations.md#L68",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/docs/operations.md#L68"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/docs/operations.md#L68"
             }
           ],
           "note": "The operations docs state the trade-off for reviewers; there is no read-only scope set, and a reviewer who needs one runs the check with reader roles only."
@@ -162,13 +162,13 @@
               "repo": "avd-landing-zone",
               "path": "build/decisions/0004-random-break-glass.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/decisions/0004-random-break-glass.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/decisions/0004-random-break-glass.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/lessons/0002-break-glass-password.md",
               "kind": "lesson",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/lessons/0002-break-glass-password.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/lessons/0002-break-glass-password.md"
             }
           ]
         },
@@ -182,31 +182,31 @@
               "repo": "avd-landing-zone",
               "path": "bicep/modules/sessionHosts.bicep",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/sessionHosts.bicep"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/sessionHosts.bicep"
             },
             {
               "repo": "avd-landing-zone",
               "path": "bicep/modules/storage.bicep",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/storage.bicep"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/storage.bicep"
             },
             {
               "repo": "avd-landing-zone",
               "path": "bicep/modules/controlPlane.bicep",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/controlPlane.bicep"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/controlPlane.bicep"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/Template.Tests.ps1#L85",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/Template.Tests.ps1#L85"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/Template.Tests.ps1#L85"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/Template.Tests.ps1#L599",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/Template.Tests.ps1#L599"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/Template.Tests.ps1#L599"
             }
           ],
           "note": "The runbook's roles and the three on the hosts resource group have template tests; the storage and control plane assignments are in the code with no test."
@@ -221,19 +221,19 @@
               "repo": "avd-landing-zone",
               "path": "build/decisions/0019-jumpbox-bastion-developer.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/decisions/0019-jumpbox-bastion-developer.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/decisions/0019-jumpbox-bastion-developer.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/Template.Tests.ps1#L449",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/Template.Tests.ps1#L449"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/Template.Tests.ps1#L449"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/Template.Tests.ps1#L544",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/Template.Tests.ps1#L544"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/Template.Tests.ps1#L544"
             }
           ],
           "note": "Decision 0019 stays proposed until a sandbox run confirms the connection."
@@ -274,25 +274,25 @@
               "repo": "avd-current-state",
               "path": "README.md#read-only-by-design",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/README.md#read-only-by-design"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/README.md#read-only-by-design"
             },
             {
               "repo": "avd-current-state",
               "path": "rebuild/scope.json",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/rebuild/scope.json"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/rebuild/scope.json"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L103",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/tests/Facts.Tests.ps1#L103"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/tests/Facts.Tests.ps1#L103"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/ReadOnlyGuard.Tests.ps1",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/tests/ReadOnlyGuard.Tests.ps1"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/tests/ReadOnlyGuard.Tests.ps1"
             }
           ]
         },
@@ -306,25 +306,25 @@
               "repo": "avd-current-state",
               "path": "README.md#read-only-by-design",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/README.md#read-only-by-design"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/README.md#read-only-by-design"
             },
             {
               "repo": "avd-current-state",
               "path": "rebuild/scope.json",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/rebuild/scope.json"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/rebuild/scope.json"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L103",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/tests/Facts.Tests.ps1#L103"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/tests/Facts.Tests.ps1#L103"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/ReadOnlyGuard.Tests.ps1",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/tests/ReadOnlyGuard.Tests.ps1"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/tests/ReadOnlyGuard.Tests.ps1"
             }
           ]
         },
@@ -338,7 +338,7 @@
               "repo": "avd-swarm",
               "path": "docs/identities.md",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-swarm/blob/115784c59fc670fcc4f6e3fcfac76bae32c029e6/docs/identities.md"
+              "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/docs/identities.md"
             }
           ]
         }
@@ -362,13 +362,13 @@
               "repo": "avd-landing-zone",
               "path": "bicep/main.bicep#L96",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/main.bicep#L96"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/main.bicep#L96"
             },
             {
               "repo": "avd-landing-zone",
               "path": "bicep/modules/controlPlane.bicep#L121",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/controlPlane.bicep#L121"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/controlPlane.bicep#L121"
             }
           ]
         },
@@ -382,25 +382,25 @@
               "repo": "avd-landing-zone",
               "path": "bicep/modules/storage.bicep#L49",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/storage.bicep#L49"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/storage.bicep#L49"
             },
             {
               "repo": "avd-landing-zone",
               "path": "bicep/modules/keyVault.bicep#L31",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/keyVault.bicep#L31"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/keyVault.bicep#L31"
             },
             {
               "repo": "avd-landing-zone",
               "path": "bicep/modules/backup.bicep#L59",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/backup.bicep#L59"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/backup.bicep#L59"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/lessons/0010-private-endpoint-rg.md",
               "kind": "lesson",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/lessons/0010-private-endpoint-rg.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/lessons/0010-private-endpoint-rg.md"
             }
           ],
           "note": "The lesson is about where private endpoints live, not their access settings, so the standing stays built."
@@ -415,13 +415,13 @@
               "repo": "avd-landing-zone",
               "path": "bicep/modules/network.bicep#L61",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/network.bicep#L61"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/network.bicep#L61"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/Template.Tests.ps1#L588",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/Template.Tests.ps1#L588"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/Template.Tests.ps1#L588"
             }
           ],
           "note": "The template test covers the session host subnet's rules; the private endpoint subnet's are in the code."
@@ -486,19 +486,19 @@
               "repo": "avd-landing-zone",
               "path": "bicep/modules/storage.bicep",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/storage.bicep"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/storage.bicep"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/lessons/0028-smb-channel-encryption-entra-kerberos.md",
               "kind": "lesson",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/lessons/0028-smb-channel-encryption-entra-kerberos.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/lessons/0028-smb-channel-encryption-entra-kerberos.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/lessons/0011-azure-files-rest.md",
               "kind": "lesson",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/lessons/0011-azure-files-rest.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/lessons/0011-azure-files-rest.md"
             }
           ]
         },
@@ -512,13 +512,13 @@
               "repo": "avd-landing-zone",
               "path": "bicep/modules/keyVault.bicep",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/keyVault.bicep"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/keyVault.bicep"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/lessons/0022-key-vault-recovery.md",
               "kind": "lesson",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/lessons/0022-key-vault-recovery.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/lessons/0022-key-vault-recovery.md"
             }
           ]
         },
@@ -532,7 +532,7 @@
               "repo": "avd-landing-zone",
               "path": "bicep/main.bicep#L144",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/main.bicep#L144"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/main.bicep#L144"
             }
           ]
         }
@@ -558,13 +558,13 @@
               "repo": "avd-landing-zone",
               "path": "bicep/modules/sessionHosts.bicep#L95",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/sessionHosts.bicep#L95"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/sessionHosts.bicep#L95"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/Template.Tests.ps1#L472",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/Template.Tests.ps1#L472"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/Template.Tests.ps1#L472"
             }
           ],
           "note": "The template test covers the jumpbox; the hosts' setting is in the code."
@@ -579,19 +579,19 @@
               "repo": "avd-landing-zone",
               "path": "build/decisions/0018-host-security-baseline.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/decisions/0018-host-security-baseline.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/decisions/0018-host-security-baseline.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "scripts/security/host-baseline.json",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/scripts/security/host-baseline.json"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/scripts/security/host-baseline.json"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/AvdLandingZone.Tests.ps1#L886",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/AvdLandingZone.Tests.ps1#L886"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/AvdLandingZone.Tests.ps1#L886"
             }
           ],
           "note": "Decision 0018 is proposed; no sandbox run has confirmed the expected values yet."
@@ -606,13 +606,13 @@
               "repo": "avd-landing-zone",
               "path": "bicep/main.bicep#L155",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/main.bicep#L155"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/main.bicep#L155"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/decisions/0018-host-security-baseline.md#decision",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/decisions/0018-host-security-baseline.md#decision"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/decisions/0018-host-security-baseline.md#decision"
             },
             {
               "repo": "avd-assess",
@@ -631,19 +631,19 @@
               "repo": "avd-landing-zone",
               "path": "bicep/main.bicep#L283",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/main.bicep#L283"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/main.bicep#L283"
             },
             {
               "repo": "avd-landing-zone",
               "path": "parameters/prod.bicepparam#L75",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/parameters/prod.bicepparam#L75"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/parameters/prod.bicepparam#L75"
             },
             {
               "repo": "avd-landing-zone",
               "path": "bicep/modules/governance.bicep",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/governance.bicep"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/governance.bicep"
             }
           ]
         },
@@ -657,7 +657,7 @@
               "repo": "avd-landing-zone",
               "path": "bicep/modules/controlPlane.bicep#L119",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/controlPlane.bicep#L119"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/controlPlane.bicep#L119"
             }
           ]
         },
@@ -733,13 +733,13 @@
               "repo": "avd-landing-zone",
               "path": "bicep/modules/governance.bicep",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/modules/governance.bicep"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/bicep/modules/governance.bicep"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/Template.Tests.ps1#L132",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/Template.Tests.ps1#L132"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/Template.Tests.ps1#L132"
             }
           ]
         },
@@ -753,13 +753,13 @@
               "repo": "avd-landing-zone",
               "path": "build/decisions/0011-auto-shutdown.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/decisions/0011-auto-shutdown.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/decisions/0011-auto-shutdown.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/Template.Tests.ps1#L106",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/Template.Tests.ps1#L106"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/Template.Tests.ps1#L106"
             }
           ]
         },
@@ -773,13 +773,13 @@
               "repo": "avd-second-brain",
               "path": "docs/knowledge/decisions/0016-never-delete-the-last-copy.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-second-brain/blob/03906126d8b8d70c791aca399dcbee5edab24410/docs/knowledge/decisions/0016-never-delete-the-last-copy.md"
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13/docs/knowledge/decisions/0016-never-delete-the-last-copy.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/OfflineScenarios.Tests.ps1#L61",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/OfflineScenarios.Tests.ps1#L61"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/OfflineScenarios.Tests.ps1#L61"
             }
           ]
         },
@@ -865,19 +865,19 @@
               "repo": "avd-landing-zone",
               "path": "site/portal/README.md",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/site/portal/README.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/site/portal/README.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/decisions/0017-portal-hosting.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/decisions/0017-portal-hosting.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/decisions/0017-portal-hosting.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/portal/portal-core.test.mjs#L729",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/portal/portal-core.test.mjs#L729"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/portal/portal-core.test.mjs#L729"
             }
           ],
           "note": "connect-src allows any https origin so the probes work; the test guards that the page itself fetches only through the timed probe."
@@ -892,13 +892,13 @@
               "repo": "avd-landing-zone",
               "path": "build/decisions/0008-portal-issue-reports.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/decisions/0008-portal-issue-reports.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/decisions/0008-portal-issue-reports.md"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/tests/portal/report.test.mjs",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/tests/portal/report.test.mjs"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/tests/portal/report.test.mjs"
             }
           ]
         },
@@ -912,19 +912,19 @@
               "repo": "avd-current-state",
               "path": "README.md#facts-snapshot-for-the-brain-and-avd-swarm",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/README.md#facts-snapshot-for-the-brain-and-avd-swarm"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/README.md#facts-snapshot-for-the-brain-and-avd-swarm"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L103",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/tests/Facts.Tests.ps1#L103"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/tests/Facts.Tests.ps1#L103"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L275",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/tests/Facts.Tests.ps1#L275"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/tests/Facts.Tests.ps1#L275"
             }
           ],
           "note": "The pseudonym key stays with the operator; whoever holds the key and the IDs can reverse a pseudonym."
@@ -939,7 +939,7 @@
               "repo": "avd-current-state",
               "path": "tests/PortalState.Tests.ps1#L43",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/tests/PortalState.Tests.ps1#L43"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/tests/PortalState.Tests.ps1#L43"
             }
           ]
         },
@@ -953,19 +953,19 @@
               "repo": "avd-second-brain",
               "path": "docs/architecture.md",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-second-brain/blob/03906126d8b8d70c791aca399dcbee5edab24410/docs/architecture.md"
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13/docs/architecture.md"
             },
             {
               "repo": "avd-second-brain",
               "path": "scripts/Test-KbLeaks.ps1",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-second-brain/blob/03906126d8b8d70c791aca399dcbee5edab24410/scripts/Test-KbLeaks.ps1"
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13/scripts/Test-KbLeaks.ps1"
             },
             {
               "repo": "avd-second-brain",
               "path": ".github/workflows/kb-validate.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-second-brain/blob/03906126d8b8d70c791aca399dcbee5edab24410/.github/workflows/kb-validate.yml"
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13/.github/workflows/kb-validate.yml"
             }
           ]
         },
@@ -984,19 +984,19 @@
               "repo": "avd-ops",
               "path": "docs/guardrails.md",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/guardrails.md"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/docs/guardrails.md"
             },
             {
               "repo": "avd-ops",
               "path": ".github/workflows/kb-validate.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/.github/workflows/kb-validate.yml"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/.github/workflows/kb-validate.yml"
             },
             {
               "repo": "avd-ops",
               "path": ".github/workflows/privacy.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/.github/workflows/privacy.yml"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/.github/workflows/privacy.yml"
             }
           ]
         }
@@ -1019,7 +1019,7 @@
               "repo": "avd-landing-zone",
               "path": "LICENSE",
               "kind": "license",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/LICENSE"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/LICENSE"
             },
             {
               "repo": "avd-entra",
@@ -1055,7 +1055,7 @@
               "repo": "avd-current-state",
               "path": "LICENSE",
               "kind": "license",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/LICENSE"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/LICENSE"
             },
             {
               "repo": "avd-assess",
@@ -1066,31 +1066,31 @@
               "repo": "avd-second-brain",
               "path": "LICENSE",
               "kind": "license",
-              "url": "https://github.com/avd-ops/avd-second-brain/blob/03906126d8b8d70c791aca399dcbee5edab24410/LICENSE"
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13/LICENSE"
             },
             {
               "repo": "avd-swarm",
               "path": "LICENSE",
               "kind": "license",
-              "url": "https://github.com/avd-ops/avd-swarm/blob/115784c59fc670fcc4f6e3fcfac76bae32c029e6/LICENSE"
+              "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/LICENSE"
             },
             {
               "repo": "avd-ops",
               "path": "LICENSE",
               "kind": "license",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/LICENSE"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/LICENSE"
             },
             {
               "repo": "avd-ops",
               "path": "credits.json",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/credits.json"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/credits.json"
             },
             {
               "repo": "avd-ops",
               "path": "docs/build-or-adopt.md",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/build-or-adopt.md"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/docs/build-or-adopt.md"
             }
           ]
         },
@@ -1104,13 +1104,13 @@
               "repo": "avd-landing-zone",
               "path": ".github/workflows/validate.yml#L53",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/.github/workflows/validate.yml#L53"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/.github/workflows/validate.yml#L53"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/lessons/0016-analyzer-version.md",
               "kind": "lesson",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/lessons/0016-analyzer-version.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/lessons/0016-analyzer-version.md"
             }
           ]
         },
@@ -1124,19 +1124,19 @@
               "repo": "avd-landing-zone",
               "path": ".github/workflows/validate.yml#L223",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/.github/workflows/validate.yml#L223"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/.github/workflows/validate.yml#L223"
             },
             {
               "repo": "avd-landing-zone",
               "path": ".ps-rule/Suppressions.Rule.yaml",
               "kind": "code",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/.ps-rule/Suppressions.Rule.yaml"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/.ps-rule/Suppressions.Rule.yaml"
             },
             {
               "repo": "avd-landing-zone",
               "path": "build/lessons/0018-psrule.md",
               "kind": "lesson",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/build/lessons/0018-psrule.md"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/build/lessons/0018-psrule.md"
             }
           ]
         },
@@ -1150,25 +1150,25 @@
               "repo": "avd-landing-zone",
               "path": ".github/workflows/secret-scan.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/.github/workflows/secret-scan.yml"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/.github/workflows/secret-scan.yml"
             },
             {
               "repo": "avd-current-state",
               "path": ".github/workflows/secrets.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/.github/workflows/secrets.yml"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/.github/workflows/secrets.yml"
             },
             {
               "repo": "avd-second-brain",
               "path": ".github/workflows/secrets.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-second-brain/blob/03906126d8b8d70c791aca399dcbee5edab24410/.github/workflows/secrets.yml"
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13/.github/workflows/secrets.yml"
             },
             {
               "repo": "avd-swarm",
               "path": ".github/workflows/secrets.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-swarm/blob/115784c59fc670fcc4f6e3fcfac76bae32c029e6/.github/workflows/secrets.yml"
+              "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/.github/workflows/secrets.yml"
             },
             {
               "repo": "avd-assess",
@@ -1179,27 +1179,75 @@
               "repo": "avd-ops",
               "path": ".github/workflows/secrets.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/.github/workflows/secrets.yml"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/.github/workflows/secrets.yml"
             }
           ]
         },
         {
           "id": "lz-actions-pinned",
           "repo": "avd-landing-zone",
-          "says": "Action references across avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess and avd-ops are pinned to a 40-character commit SHA with the version tag as a comment.",
+          "says": "Action references across avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess and avd-ops are pinned to a 40-character commit SHA with the version tag as a comment, with weekly Dependabot update proposals and an SPDX 2.3 Software Bill of Materials per repo.",
           "standing": "guarded",
           "evidence": [
             {
               "repo": "avd-landing-zone",
               "path": ".github/workflows/validate.yml#L211",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/.github/workflows/validate.yml#L211"
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/.github/workflows/validate.yml#L211"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": ".github/dependabot.yml",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/.github/dependabot.yml"
+            },
+            {
+              "repo": "avd-landing-zone",
+              "path": "sbom.spdx.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/sbom.spdx.json"
             },
             {
               "repo": "avd-current-state",
               "path": "tests/portal/assess-core.test.mjs",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/tests/portal/assess-core.test.mjs"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/tests/portal/assess-core.test.mjs"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": ".github/dependabot.yml",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/.github/dependabot.yml"
+            },
+            {
+              "repo": "avd-current-state",
+              "path": "sbom.spdx.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/sbom.spdx.json"
+            },
+            {
+              "repo": "avd-second-brain",
+              "path": ".github/dependabot.yml",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13/.github/dependabot.yml"
+            },
+            {
+              "repo": "avd-second-brain",
+              "path": "sbom.spdx.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13/sbom.spdx.json"
+            },
+            {
+              "repo": "avd-swarm",
+              "path": ".github/dependabot.yml",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/.github/dependabot.yml"
+            },
+            {
+              "repo": "avd-swarm",
+              "path": "sbom.spdx.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/sbom.spdx.json"
             },
             {
               "repo": "avd-assess",
@@ -1212,10 +1260,32 @@
               "kind": "ci"
             },
             {
+              "repo": "avd-assess",
+              "path": ".github/dependabot.yml",
+              "kind": "code"
+            },
+            {
+              "repo": "avd-assess",
+              "path": "sbom.spdx.json",
+              "kind": "code"
+            },
+            {
               "repo": "avd-ops",
               "path": ".github/workflows/kb-feedback.yml",
               "kind": "ci",
-              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/.github/workflows/kb-feedback.yml"
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/.github/workflows/kb-feedback.yml"
+            },
+            {
+              "repo": "avd-ops",
+              "path": ".github/dependabot.yml",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/.github/dependabot.yml"
+            },
+            {
+              "repo": "avd-ops",
+              "path": "sbom.spdx.json",
+              "kind": "code",
+              "url": "https://github.com/avd-ops/avd-ops/blob/1b9f4b40ae9cb756168111202e44b3b6390d2e66/sbom.spdx.json"
             }
           ]
         },
@@ -1244,7 +1314,7 @@
               "repo": "avd-current-state",
               "path": "tests/Facts.Tests.ps1#L203",
               "kind": "test",
-              "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/tests/Facts.Tests.ps1#L203"
+              "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/tests/Facts.Tests.ps1#L203"
             }
           ]
         }
@@ -1267,7 +1337,7 @@
               "repo": "avd-second-brain",
               "path": "docs/knowledge/decisions/0003-brain-thinks-swarm-acts.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-second-brain/blob/03906126d8b8d70c791aca399dcbee5edab24410/docs/knowledge/decisions/0003-brain-thinks-swarm-acts.md"
+              "url": "https://github.com/avd-ops/avd-second-brain/blob/c29951b33c4cdc8c5cd2e4fd6f0dbc38a9f25c13/docs/knowledge/decisions/0003-brain-thinks-swarm-acts.md"
             }
           ]
         },
@@ -1281,13 +1351,13 @@
               "repo": "avd-swarm",
               "path": "docs/governance.md",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-swarm/blob/115784c59fc670fcc4f6e3fcfac76bae32c029e6/docs/governance.md"
+              "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/docs/governance.md"
             },
             {
               "repo": "avd-swarm",
               "path": "docs/decisions/0002-governance-and-kill-switch.md",
               "kind": "decision",
-              "url": "https://github.com/avd-ops/avd-swarm/blob/115784c59fc670fcc4f6e3fcfac76bae32c029e6/docs/decisions/0002-governance-and-kill-switch.md"
+              "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/docs/decisions/0002-governance-and-kill-switch.md"
             }
           ]
         },
@@ -1301,13 +1371,13 @@
               "repo": "avd-swarm",
               "path": "docs/security-tooling.md",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-swarm/blob/115784c59fc670fcc4f6e3fcfac76bae32c029e6/docs/security-tooling.md"
+              "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/docs/security-tooling.md"
             },
             {
               "repo": "avd-swarm",
               "path": "docs/spec.md",
               "kind": "doc",
-              "url": "https://github.com/avd-ops/avd-swarm/blob/115784c59fc670fcc4f6e3fcfac76bae32c029e6/docs/spec.md"
+              "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/docs/spec.md"
             }
           ]
         }
@@ -1559,7 +1629,7 @@
         "repo": "avd-landing-zone",
         "path": "docs/threat-model.md",
         "kind": "doc",
-        "url": "https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/docs/threat-model.md"
+        "url": "https://github.com/avd-ops/avd-landing-zone/blob/bf78f0f0b0ebf4d544c1d6001b3ec93ee08d124b/docs/threat-model.md"
       }
     },
     {
@@ -1643,7 +1713,7 @@
         "repo": "avd-current-state",
         "path": "docs/threat-model.md",
         "kind": "doc",
-        "url": "https://github.com/avd-ops/avd-current-state/blob/0ab98c5695360229adb38820794ba614f118c532/docs/threat-model.md"
+        "url": "https://github.com/avd-ops/avd-current-state/blob/605cbb348714dccd769532a1c41f2e5a6b838cdf/docs/threat-model.md"
       }
     },
     {
@@ -1686,7 +1756,7 @@
         "repo": "avd-swarm",
         "path": "docs/redteam.md",
         "kind": "doc",
-        "url": "https://github.com/avd-ops/avd-swarm/blob/115784c59fc670fcc4f6e3fcfac76bae32c029e6/docs/redteam.md"
+        "url": "https://github.com/avd-ops/avd-swarm/blob/a29d92954a3dd655cae58cbfc31278de6c217529/docs/redteam.md"
       }
     },
     {
@@ -1732,6 +1802,10 @@
     },
     {
       "id": "dependency-updates",
+      "deprecated": {
+        "since": "2.2.0",
+        "replacedBy": "lz-actions-pinned"
+      },
       "repos": [
         "avd-landing-zone",
         "avd-current-state",
@@ -1740,7 +1814,7 @@
         "avd-assess",
         "avd-ops"
       ],
-      "says": "No automated update proposals for pinned actions and no dependency list or SBOM per repo."
+      "says": "Closed in 2.2.0; weekly Dependabot update configs (.github/dependabot.yml) and SPDX 2.3 Software Bills of Materials (sbom.spdx.json) are present across avd-landing-zone, avd-current-state, avd-second-brain, avd-swarm, avd-assess and avd-ops (see lz-actions-pinned)."
     },
     {
       "id": "secret-scan-everywhere",

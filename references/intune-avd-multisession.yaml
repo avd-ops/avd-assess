@@ -1,8 +1,8 @@
 id: intune-avd-multisession
 title: Using Azure Virtual Desktop multi-session with Microsoft Intune
 url: https://learn.microsoft.com/intune/solutions/azure-virtual-desktop-multi-session
-pin: "Learn git_commit_id a5e9242650217721f235f2864d110c429542db15, updated_at 2026-10-12"
-read: 2026-10-21
+pin: "Learn git_commit_id f135b395f4c4439bbe70e73f519d9e4927b52e8e, updated_at 2026-11-03"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment, collection]
 pillars: [intune]

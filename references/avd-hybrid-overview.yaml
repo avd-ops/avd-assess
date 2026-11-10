@@ -1,0 +1,24 @@
+id: avd-hybrid-overview
+title: Azure Virtual Desktop Hybrid overview
+url: https://learn.microsoft.com/azure/virtual-desktop/hybrid-overview
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [hybrid]
+claims:
+  - id: arc-enabled-hosts
+    says: AVD Hybrid keeps the management service in Azure while session hosts run on existing on-premises hypervisors or dedicated headless physical servers onboarded as Azure Arc-enabled servers with the AVD Arc extension.
+    kind: published
+  - id: supported-os
+    says: Supported operating systems are Windows Server 2016 through 2025 on virtual machines and headless physical servers, and single-session Windows 10 and 11 Enterprise on virtual machines or dedicated rack-mounted headless hosts (never laptops or personal PCs).
+    kind: published
+  - id: no-client-multisession
+    says: Windows 10 and Windows 11 Enterprise multi-session are not supported on AVD Hybrid.
+    kind: published
+  - id: no-platform-lifecycle
+    says: AVD Hybrid does not manage virtual machine state - power management, autoscale, Start VM on Connect and session host configuration are unsupported, and the operator manages provisioning and power through their own tooling.
+    kind: published
+  - id: hybrid-licensing
+    says: Access requires both an eligible OS user entitlement (RDS CAL with Software Assurance or user subscription for Windows Server; eligible Microsoft 365, Windows Enterprise or VDA license for Windows client) and the AVD Hybrid service user license.
+    kind: published

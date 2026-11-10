@@ -1,8 +1,8 @@
 id: avd-entra-joined-hosts
 title: Microsoft Entra joined session hosts in Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/azure-ad-joined-session-hosts
-pin: "Learn git_commit_id 56121a97d2baa489be592daaeede59f7e9148999, updated_at 2026-05-19"
-read: 2026-10-21
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment, collection]
 pillars: [identity, intune]
