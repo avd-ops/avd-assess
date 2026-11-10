@@ -27,10 +27,10 @@ schema: avd-assess-endpoints/v1
 version: 1
 cloud: azure-public
 readAt:
-  avd-required-fqdn: 05df299786103f3d5886146cf73fab142cda335a
+  avd-required-fqdn: 25ba534755b2d60d76ee19617f24acfec7f2158a
   avd-fabric-ips: 9df01472230d01bf9bb36b02e508abd74e4dc029
   avd-url-check-tool: c0f1884420aae53e640ac0be2683cc30b519e621
-  rdp-shortpath: fd2c58b5ac344436387554e034f9fedc90e656df
+  rdp-shortpath: 25ba534755b2d60d76ee19617f24acfec7f2158a
 lists:
   - id: client
     title: End-user devices

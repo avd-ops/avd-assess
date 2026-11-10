@@ -1,8 +1,8 @@
 id: disk-encryption-options
 title: Overview of managed disk encryption options
 url: https://learn.microsoft.com/azure/virtual-machines/disk-encryption-overview
-pin: "Learn git_commit_id fe259248937e88769914cfeb84ecbdcc6121d70e, updated_at 2026-09-16"
-read: 2026-10-20
+pin: "Learn git_commit_id 4c94d59bd43d07cc39673f0220789f3e366df966, updated_at 2026-10-29"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:

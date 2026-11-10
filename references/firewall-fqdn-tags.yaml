@@ -1,8 +1,8 @@
 id: firewall-fqdn-tags
 title: Azure Firewall FQDN tags overview
 url: https://learn.microsoft.com/azure/firewall/fqdn-tags
-pin: "Learn git_commit_id 8190b423118f465b0c4a17563696acbd635ba8d4, updated_at 2026-04-28"
-read: 2026-10-21
+pin: "Learn git_commit_id 6b093aa6bcf09d0c5aba838dc0b36b4c93b86e35, updated_at 2026-10-30"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:

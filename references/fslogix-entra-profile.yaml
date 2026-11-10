@@ -1,8 +1,8 @@
 id: fslogix-entra-profile
 title: Store FSLogix profile containers on Azure Files using Microsoft Entra ID
 url: https://learn.microsoft.com/azure/virtual-desktop/create-profile-container-azure-ad
-pin: "Learn git_commit_id 2afc1a6eb7f7a4b901c8679945c754ac3ebe4e5b, updated_at 2026-05-19"
-read: 2026-10-21
+pin: "Learn git_commit_id b1b5fd27f1ff1027ec449c2018637a69453fc11d, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment, collection]
 pillars: [identity, profiles]

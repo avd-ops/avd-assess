@@ -1,8 +1,8 @@
 id: teams-on-avd
 title: Use Microsoft Teams on Azure Virtual Desktop
 url: https://learn.microsoft.com/azure/virtual-desktop/teams-on-avd
-pin: "Learn git_commit_id 34aad1fd443eb396735b6899c8e66e63a8009de3, updated_at 2026-06-17"
-read: 2026-10-20
+pin: "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment]
 claims:

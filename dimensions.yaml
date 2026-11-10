@@ -17,8 +17,8 @@
 #   57 is either set by a dimension or listed in notDimensions with a reason (tests/check_dimensions.py).
 schema: avd-assess-dimensions/v1
 landingZone:
-  commit: a0ca7c443aa0e7704e7ef1163da411a719ef262b
-  source: https://github.com/avd-ops/avd-landing-zone/blob/a0ca7c443aa0e7704e7ef1163da411a719ef262b/bicep/main.bicep
+  commit: 00867a37d1a20d2880feb2c79023a2a297f4b1f6
+  source: https://github.com/avd-ops/avd-landing-zone/blob/00867a37d1a20d2880feb2c79023a2a297f4b1f6/bicep/main.bicep
   parameters: [namePrefix, environmentName, location, tags, avdUsersGroupObjectId, avdAdminsGroupObjectId,
     avdServicePrincipalObjectId, enrollInIntune, connectivityMode, spokeAddressPrefix, sessionHostSubnetPrefix,
     privateEndpointSubnetPrefix, deployImageBuildSubnets, imageBuildSubnetPrefix, imageBuildAciSubnetPrefix,
@@ -32,7 +32,7 @@ landingZone:
     autoShutdownRunbookUri, enableDefenderForCloud, deploySubscriptionSettings, enablePolicyGuardrails,
     recoveryLocation, allowedLocations, sessionHostImageId, sessionHostGeneration, hostPoolStateTags, deployJumpbox,
     jumpboxSubnetPrefix, jumpboxOs, jumpboxVmSize, jumpboxAutoShutdownTime, jumpboxKeepRunningUntil, jumpboxExists,
-    jumpboxAdminPassword, topology]
+    jumpboxAdminPassword, deployTripwires, tripwireSecretName, tripwireAlertMinutes, topology]
   notDimensions:
     namePrefix: Naming only.
     environmentName: A label; its one effect (validation pool default) is under updates.validation-pool.
@@ -47,6 +47,7 @@ landingZone:
     hostPoolStateTags: The rotation script's own state, carried from one deployment to the next; not a design choice.
     jumpboxExists: Deployment state that deploy.sh sets, not a design choice.
     jumpboxAdminPassword: A secret, random per deployment and never carried.
+    tripwireSecretName: Caller-chosen decoy secret name, stored as a secure parameter and never carried.
 
 dimensions:
   # Compute and density
@@ -1112,6 +1113,19 @@ dimensions:
     seeAlso: https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md
     measure: rebuild
     landingZone: [rdpProperties]
+  - id: security.tripwires
+    area: security
+    pillar: security-posture
+    title: Estate tripwire alerts
+    decides: Whether to deploy decoy Key Vault secret and storage key-listing tripwire alerts, and the Key Vault query alert interval.
+    home: {decision: proposed:hostPool.security, facts: []}
+    baseline:
+      standing: owned
+      claims: []
+      says: Owned by the security method.
+    seeAlso: https://github.com/avd-ops/avd-assess/blob/719b13b9e3229bacefabede57914376c3c3fa8e0/methods/security.md
+    measure: rebuild
+    landingZone: [deployTripwires, tripwireAlertMinutes]
 
   # Encryption
   - id: encryption.disks

@@ -1,8 +1,8 @@
 id: gsa-known-limitations
 title: Known limitations for Global Secure Access
 url: https://learn.microsoft.com/entra/global-secure-access/reference-current-known-limitations
-pin: "Learn git_commit_id 1ca14c78a8a89186343ee999044f5db598b1e555, updated_at 2026-09-30"
-read: 2026-10-21
+pin: "Learn git_commit_id 866f302a2dc3c5cf66a6fdc76cd575e3fe766e79, updated_at 2026-11-06"
+read: 2026-11-09
 license: Microsoft Learn content (link only)
 areas: [assessment]
 pillars: [endpoint-protection, networking-client]
