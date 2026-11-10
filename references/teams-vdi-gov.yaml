@@ -1,0 +1,13 @@
+id: teams-vdi-gov
+title: Microsoft Teams VDI optimization in US Government clouds (GCC High and DoD)
+url: https://learn.microsoft.com/microsoftteams/rooms/vdi-2
+pin: "Learn git_commit_id 2c8301f9a472e518b604d923c715a840e291b650, updated_at 2026-10-19"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [protocol, endpoints]
+notes: WebRTC Redirector and SlimCore VDI optimization availability and Multimedia Redirection (MMR) limitations in GCC High and DoD environments.
+claims:
+  - id: webrtc-supported-mmr-unsupported
+    says: Microsoft Teams VDI media optimization is supported in GCC High and DoD, while Azure Virtual Desktop Multimedia Redirection (MMR) browser video offload is not supported in Azure US Government.
+    kind: published

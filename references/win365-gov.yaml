@@ -1,0 +1,16 @@
+id: win365-gov
+title: Windows 365 Government overview and networking requirements
+url: https://learn.microsoft.com/windows-365/enterprise/windows-365-government-overview
+pin: "Learn git_commit_id 9e4012b7c385a610d492f831b605e724a193c540, updated_at 2026-10-20"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [intune, networking-azure, capacity]
+notes: Windows 365 Government architecture, Azure Network Connection (ANC) requirement, and capability differences compared to commercial Windows 365 Enterprise.
+claims:
+  - id: anc-required-no-mhn
+    says: Windows 365 Government requires an Azure Network Connection (ANC) into an Azure subscription virtual network and does not support Microsoft Hosted Network (MHN) or Windows 365 Frontline shared/shift Cloud PCs.
+    kind: published
+  - id: cross-cloud-anc
+    says: Windows 365 Government supports deploying Cloud PCs into Azure Commercial or Azure US Government virtual networks through an Azure Network Connection depending on tenant configuration.
+    kind: published

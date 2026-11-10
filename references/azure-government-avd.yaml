@@ -1,0 +1,22 @@
+id: azure-government-avd
+title: Deploy Azure Virtual Desktop in Azure Government
+url: https://learn.microsoft.com/azure/virtual-desktop/azure-gov-overview
+pin: "Learn git_commit_id 8c4a129e0b31d47e95a0123b8f742651c0d98e41, updated_at 2026-10-15"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [governance, security-posture, networking-azure, capacity]
+notes: Microsoft's overview and requirements for deploying Azure Virtual Desktop in Azure US Government (AzureUSGovernment) and Microsoft 365 GCC High.
+claims:
+  - id: usgov-regions
+    says: Azure Virtual Desktop in Azure Government is available in the US Gov Virginia (usgovvirginia), US Gov Arizona (usgovarizona) and US Gov Texas (usgovtexas) regions.
+    kind: published
+  - id: usgov-portal-and-arm
+    says: Azure Government deployments use the sovereign portal (portal.azure.us), the Azure Resource Manager endpoint (management.usgovcloudapi.net), and the AVD feed and web client at rdweb.wvd.azure.us.
+    kind: published
+  - id: usgov-feature-parity-gaps
+    says: Several commercial Azure Virtual Desktop features have different availability or prerequisites in Azure Government, including Windows 365 Cloud PC networking modes and Azure Bastion Developer SKU.
+    kind: published
+  - id: fips-tls-baseline
+    says: Federal, DoD and ITAR/CUI workloads in Azure Government require TLS 1.2 minimum across control and data planes and FIPS 140-2/3 validated cryptographic modules on session hosts.
+    kind: published

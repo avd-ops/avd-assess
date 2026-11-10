@@ -36,7 +36,7 @@ PROFILE = "avd-assess-bundle/v1"
 # a folder; '**' crosses folders.
 INCLUDE = [
     "index.json", "method.json", "map.json", "security-review.json", "endpoints.json",
-    "contracts/fact-register.json", "contracts/run-use-cases.json",
+    "contracts/fact-register.json", "contracts/run-use-cases.json", "contracts/cloud-environments.json",
     "contracts/schemas/*.json", "evidence/schema.json", "contracts/examples/**",
     "methods/*.md", "gaps/*.md", "contracts/README.md", "README.md", "LICENSE", "NOTICE",
     "tools/avd_assess_bundle.py", "tools/AvdAssessBundle.psm1", "tools/diff_bundle.py",
@@ -58,6 +58,7 @@ DOCUMENTS = {
     "endpoints.json": ("endpoints", ["/lists/*/id", "/endpoints/*/id"]),
     "contracts/fact-register.json": ("fact-register", ["/facts/*/id", "/decisions/*/id"]),
     "contracts/run-use-cases.json": ("run-use-cases", ["/useCases/*/id"]),
+    "contracts/cloud-environments.json": ("cloud-environments", ["/environments/*/id"]),
 }
 # Schemas whose documents carry no top-level schema string (a journal line has 'v' instead).
 SCHEMA_NAMES = {"contracts/schemas/run-journal.schema.json": "avd-run-journal",

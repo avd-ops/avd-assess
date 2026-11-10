@@ -808,6 +808,42 @@
               "url": "https://github.com/avd-ops/avd-power-platform/blob/454335695e8db154dd71550788e1ce3694b59e7e/.github/workflows/validate.yml"
             }
           ]
+        },
+        {
+          "id": "usgov-cloud-profile",
+          "repo": "avd-assess",
+          "says": "Publishes Contract C26 (avd-cloud-environments/v1) mapping Azure US Government and Microsoft 365 GCC High sovereign endpoints, Private DNS zones, allowed regions, capability flags, and ITAR/CUI redirection lockdown checks, guarded by offline schema and method tests.",
+          "standing": "guarded",
+          "evidence": [
+            {
+              "repo": "avd-ops",
+              "path": "docs/knowledge/decisions/0013-azure-us-government-and-gcc-high-support.md",
+              "kind": "decision",
+              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/knowledge/decisions/0013-azure-us-government-and-gcc-high-support.md"
+            },
+            {
+              "repo": "avd-ops",
+              "path": "docs/govcloud-support-spec.md",
+              "kind": "doc",
+              "url": "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/govcloud-support-spec.md"
+            },
+            {
+              "repo": "avd-assess",
+              "path": "contracts/cloud-environments.json",
+              "kind": "code"
+            },
+            {
+              "repo": "avd-assess",
+              "path": "observations/usgov-itar-redirection-default.yaml",
+              "kind": "doc"
+            },
+            {
+              "repo": "avd-assess",
+              "path": "tests/check_contracts.py",
+              "kind": "test"
+            }
+          ],
+          "note": "Offline contract and method checks guard the usgov profile and ITAR checks; standing stays guarded until a live AzureUSGovernment sandbox run records run evidence."
         }
       ]
     },
@@ -1438,6 +1474,7 @@
       "ask": "What can move between the user's device and the session?",
       "see": [
         "lz-redirection",
+        "usgov-cloud-profile",
         "op-redirection"
       ]
     },
@@ -1457,6 +1494,7 @@
         "lz-policy",
         "lz-budget-shutdown",
         "pp-dlp-baseline",
+        "usgov-cloud-profile",
         "op-platform-policy",
         "op-logging"
       ]

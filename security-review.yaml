@@ -308,6 +308,17 @@ areas:
           - {repo: avd-power-platform, path: dlp/avd-dlp-baseline.json, kind: code}
           - {repo: avd-power-platform, path: scripts/Deploy-AvdPowerPlatform.ps1, kind: code}
           - {repo: avd-power-platform, path: .github/workflows/validate.yml, kind: ci}
+      - id: usgov-cloud-profile
+        repo: avd-assess
+        says: Publishes Contract C26 (avd-cloud-environments/v1) mapping Azure US Government and Microsoft 365 GCC High sovereign endpoints, Private DNS zones, allowed regions, capability flags, and ITAR/CUI redirection lockdown checks, guarded by offline schema and method tests.
+        standing: guarded
+        evidence:
+          - {repo: avd-ops, path: docs/knowledge/decisions/0013-azure-us-government-and-gcc-high-support.md, kind: decision}
+          - {repo: avd-ops, path: docs/govcloud-support-spec.md, kind: doc}
+          - {repo: avd-assess, path: contracts/cloud-environments.json, kind: code}
+          - {repo: avd-assess, path: observations/usgov-itar-redirection-default.yaml, kind: doc}
+          - {repo: avd-assess, path: tests/check_contracts.py, kind: test}
+        note: Offline contract and method checks guard the usgov profile and ITAR checks; standing stays guarded until a live AzureUSGovernment sandbox run records run evidence.
 
   - id: privacy
     title: Data handling and privacy of the tools
@@ -513,13 +524,13 @@ checklist:
     see: [lz-trusted-launch, lz-encryption-at-host, lz-host-baseline, lz-defender-intune, intune-host-profiles, m365-vdi-baseline, op-trust-boundary, op-host-baseline, op-endpoint-protection]
   - id: rc-session
     ask: What can move between the user's device and the session?
-    see: [lz-redirection, op-redirection]
+    see: [lz-redirection, usgov-cloud-profile, op-redirection]
   - id: rc-access
     ask: Which Conditional Access, MFA and consent decisions does the deployment need from the tenant?
     see: [entra-ca-groups, op-conditional-access, op-admin-consent]
   - id: rc-governance
     ask: Which guardrails, logs and budgets are on, and which come from the platform?
-    see: [lz-policy, lz-budget-shutdown, pp-dlp-baseline, op-platform-policy, op-logging]
+    see: [lz-policy, lz-budget-shutdown, pp-dlp-baseline, usgov-cloud-profile, op-platform-policy, op-logging]
   - id: rc-data
     ask: What do the tools collect, where does it go, and what leaves the browser or the tenant?
     see: [cs-reader-only, cs-graph-readonly, cs-facts-redaction, cs-portal-state, lz-portal-local, lz-portal-report, brain-layers, family-no-ids, op-pseudonym-key]

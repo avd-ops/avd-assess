@@ -1,0 +1,7 @@
+id: usgov-capability-gaps-not-applicable
+claim: ref:win365-gov#anc-required-no-mhn
+verdict: extends
+observed: When assessing an Azure US Government (usgov) estate, checks for features that are unavailable in Azure Government (such as Multimedia Redirection, Windows 365 Microsoft Hosted Network, Windows 365 Frontline and Bastion Developer SKU) evaluate to not-applicable with reason unsupported-in-cloud so sovereign estates are not penalized in pillar or plane scores.
+evidence:
+  - https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/govcloud-support-spec.md
+date: 2026-11-09

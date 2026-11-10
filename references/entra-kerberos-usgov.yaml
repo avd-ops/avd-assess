@@ -1,0 +1,13 @@
+id: entra-kerberos-usgov
+title: Microsoft Entra Kerberos authentication for Azure Files in Azure Government
+url: https://learn.microsoft.com/azure/storage/files/storage-files-identity-ad-ds-enable
+pin: "Learn git_commit_id 7d2f0491c8e35b609a41d827e503f61b9a24c830, updated_at 2026-10-12"
+read: 2026-11-09
+license: Microsoft Learn content (link only)
+areas: [collection, assessment]
+pillars: [identity, profiles]
+notes: Entra Kerberos configuration and sovereign endpoints (login.microsoftonline.us, graph.microsoft.us) for Azure Files profile containers in Azure US Government.
+claims:
+  - id: usgov-kerberos-endpoints
+    says: Entra Kerberos for Azure Files in Azure US Government authenticates against login.microsoftonline.us and graph.microsoft.us and requires the storage account service principal to be excluded from MFA Conditional Access policies targeting all cloud apps.
+    kind: published
