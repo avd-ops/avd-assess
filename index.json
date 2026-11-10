@@ -517,6 +517,60 @@
       ]
     },
     {
+      "id": "arc-servers-overview",
+      "title": "What is Azure Arc-enabled servers?",
+      "url": "https://learn.microsoft.com/azure/azure-arc/servers/overview",
+      "pin": "Learn git_commit_id fff57502de0ce17a36606368322f03c2823ac046, updated_at 2026-07-27",
+      "read": "2026-11-09",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "hybrid"
+      ],
+      "claims": [
+        {
+          "id": "azure-resource-projection",
+          "says": "Onboarding a physical or virtual machine outside Azure with the Connected Machine agent gives it an Azure Resource ID in a resource group so Azure Policy, tags and Resource Graph read it alongside Azure VMs.",
+          "kind": "published"
+        },
+        {
+          "id": "ama-and-extensions",
+          "says": "Arc-enabled servers support VM extensions, Azure Update Manager, and the Azure Monitor Agent for log collection and change tracking and inventory into Log Analytics.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "arc-servers-run-command",
+      "title": "Run command on Azure Arc-enabled servers",
+      "url": "https://learn.microsoft.com/azure/azure-arc/servers/run-command",
+      "pin": "Learn git_commit_id a5faa4c9f98e83533dce5b2581a2a19116f7d874, updated_at 2026-02-24",
+      "read": "2026-11-09",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "collection",
+        "assessment"
+      ],
+      "pillars": [
+        "hybrid"
+      ],
+      "claims": [
+        {
+          "id": "agent-script-execution",
+          "says": "Run command built into the Connected Machine agent (version 1.33 and later) executes scripts or commands remotely through Azure CLI, PowerShell or REST without direct RDP, WinRM or SSH access.",
+          "kind": "published"
+        },
+        {
+          "id": "free-control-plane",
+          "says": "Running commands on Arc-enabled servers carries no extra Azure charge unless scripts are stored in Azure storage.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "arch-avd-design-guide",
       "title": "Azure Architecture Center, Azure Virtual Desktop landing zone design guide",
       "url": "https://learn.microsoft.com/azure/architecture/landing-zones/azure-virtual-desktop/design-guide",
@@ -1089,12 +1143,41 @@
       "areas": [
         "assessment"
       ],
-      "notes": "Extension point only: the network pillar has no Azure Local method yet.",
+      "pillars": [
+        "hybrid",
+        "networking-azure"
+      ],
+      "notes": "Covers AVD on Azure Local host pool separation, supported operating systems, Connected Machine agent requirement, three-part billing, and profile storage.",
       "claims": [
         {
           "id": "no-mixed-pools",
           "says": "A host pool holds session hosts on Azure or on Azure Local, never both.",
           "kind": "published"
+        },
+        {
+          "id": "multisession-and-shortpath",
+          "says": "Supports Windows 10 and 11 Enterprise multi-session, single-session client, and Windows Server 2019 through 2025 on registered Azure Local 23H2 or later instances, with RDP Shortpath and Azure Marketplace images.",
+          "kind": "published"
+        },
+        {
+          "id": "connected-machine-agent",
+          "says": "Session hosts on Azure Local run the Azure Connected Machine agent to reach the Azure Instance Metadata Service endpoint that AVD requires.",
+          "kind": "published"
+        },
+        {
+          "id": "three-part-pricing",
+          "says": "Running AVD on Azure Local carries three cost components - user access rights, the Azure Local service fee, and the AVD for Azure Local fee per active vCPU.",
+          "kind": "published"
+        },
+        {
+          "id": "entra-join-outside-portal",
+          "says": "The Azure portal adds Azure Local session hosts only to AD DS (including Entra hybrid join); native Entra join uses PowerShell or another deployment method.",
+          "kind": "published"
+        },
+        {
+          "id": "local-smb-for-profiles",
+          "says": "FSLogix profile containers on Azure Local use an on-premises SMB share - a clustered file server on the instance, or an external SMB share on the same network for larger deployments.",
+          "kind": "guidance"
         }
       ]
     },
@@ -1668,6 +1751,83 @@
         {
           "id": "limit-can-be-exceeded",
           "says": "Under high concurrent connection load, sessions on a host can exceed the maximum session limit.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-hybrid-deploy",
+      "title": "Deploy Azure Virtual Desktop Hybrid",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/deploy-azure-virtual-desktop-hybrid",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "hybrid"
+      ],
+      "claims": [
+        {
+          "id": "join-types-by-os",
+          "says": "Windows client session hosts on AVD Hybrid may be Entra joined, AD DS joined or hybrid joined; Windows Server session hosts must be AD DS joined or hybrid joined because the RDS licensing server dependency precludes Entra-only join.",
+          "kind": "published"
+        },
+        {
+          "id": "hostpool-identity-reader",
+          "says": "The host pool requires a managed identity granted the Reader role on the resource group that holds the Arc-enabled servers.",
+          "kind": "published"
+        },
+        {
+          "id": "cloud-device-extension",
+          "says": "Each Arc-enabled machine registers with the host pool through the Microsoft.AzureVirtualDesktop.CloudDeviceExtension extension using a registration token, into a standard host pool created without Azure virtual machines or session host configuration.",
+          "kind": "published"
+        },
+        {
+          "id": "arc-and-avd-endpoints",
+          "says": "On-premises session hosts must reach both the required AVD service endpoints and the Azure Arc network endpoints.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "avd-hybrid-overview",
+      "title": "Azure Virtual Desktop Hybrid overview",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/hybrid-overview",
+      "pin": "Learn git_commit_id 25ba534755b2d60d76ee19617f24acfec7f2158a, updated_at 2026-11-04",
+      "read": "2026-11-09",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "hybrid"
+      ],
+      "claims": [
+        {
+          "id": "arc-enabled-hosts",
+          "says": "AVD Hybrid keeps the management service in Azure while session hosts run on existing on-premises hypervisors or dedicated headless physical servers onboarded as Azure Arc-enabled servers with the AVD Arc extension.",
+          "kind": "published"
+        },
+        {
+          "id": "supported-os",
+          "says": "Supported operating systems are Windows Server 2016 through 2025 on virtual machines and headless physical servers, and single-session Windows 10 and 11 Enterprise on virtual machines or dedicated rack-mounted headless hosts (never laptops or personal PCs).",
+          "kind": "published"
+        },
+        {
+          "id": "no-client-multisession",
+          "says": "Windows 10 and Windows 11 Enterprise multi-session are not supported on AVD Hybrid.",
+          "kind": "published"
+        },
+        {
+          "id": "no-platform-lifecycle",
+          "says": "AVD Hybrid does not manage virtual machine state - power management, autoscale, Start VM on Connect and session host configuration are unsupported, and the operator manages provisioning and power through their own tooling.",
+          "kind": "published"
+        },
+        {
+          "id": "hybrid-licensing",
+          "says": "Access requires both an eligible OS user entitlement (RDS CAL with Software Assurance or user subscription for Windows Server; eligible Microsoft 365, Windows Enterprise or VDA license for Windows client) and the AVD Hybrid service user license.",
           "kind": "published"
         }
       ]
@@ -9612,6 +9772,10 @@
     {
       "id": "host-baseline-profile",
       "title": "a security baseline profile for multi-session hosts"
+    },
+    {
+      "id": "hybrid-scope",
+      "title": "what a hybrid and Azure Local assessment can judge, and where Azure Arc helps on-premises"
     },
     {
       "id": "identity-scope",

@@ -2402,3 +2402,91 @@ dimensions:
       says: An Entra tenant with a linked subscription and quota for the chosen sizes in the chosen regions.
     measure: rebuild
     landingZone: []
+
+  # Hybrid and Azure Local (pillar hybrid, gaps/hybrid-scope.md). On-premises session host placement across
+  # AVD Hybrid (Arc-enabled servers) and AVD on Azure Local, plus Arc inventory and remote execution.
+  - id: hybrid.host-platform
+    area: compute
+    pillar: hybrid
+    title: On-premises session host platform (AVD Hybrid vs Azure Local)
+    decides: Whether workloads that must stay on-premises run on existing hypervisors or dedicated physical servers through AVD Hybrid (Azure Arc) or on Azure Local clusters, with each host pool on a single platform.
+    home: {decision: region, facts: [proposed:c11.hostPool.sessionHosts.arcConnected], intake: [intake.residency]}
+    baseline:
+      standing: published
+      claims: [ref:avd-hybrid-overview#arc-enabled-hosts, ref:avd-azure-local#no-mixed-pools, ref:avd-azure-local#multisession-and-shortpath, gap:hybrid-scope]
+      says: Keep Azure, AVD Hybrid and Azure Local session hosts in separate host pools; pick Azure Local when on-premises pools need Windows 10 or 11 Enterprise multi-session or Azure-managed host lifecycle, and AVD Hybrid when keeping existing hypervisors or dedicated physical servers.
+    measure: intake
+    landingZone: []
+  - id: hybrid.os-and-session-model
+    area: compute
+    pillar: hybrid
+    title: Operating system and multi-session boundary on-premises
+    decides: Which operating system runs on on-premises session hosts, given that Windows 10 and 11 Enterprise multi-session is supported on Azure Local but not on AVD Hybrid.
+    home: {decision: hostPool.type, facts: [c11.hostPool.type, proposed:c11.hostPool.sessionHosts.arcConnected]}
+    baseline:
+      standing: published
+      claims: [ref:avd-hybrid-overview#supported-os, ref:avd-hybrid-overview#no-client-multisession, ref:avd-azure-local#multisession-and-shortpath, ref:avd-azure-local-workload#multi-session-when, ref:avd-azure-local-workload#single-session-when]
+      says: On AVD Hybrid, use Windows Server 2016 through 2025 for pooled multi-session or single-session Windows 10 or 11 Enterprise on virtual machines or dedicated rack-mounted headless hosts; use Azure Local when Windows 10 or 11 Enterprise multi-session is required on-premises.
+    measure: fact
+    landingZone: []
+  - id: hybrid.identity-and-join
+    area: identity
+    pillar: hybrid
+    title: Directory join for on-premises session hosts
+    decides: How on-premises session hosts join a directory across Windows Server and Windows client operating systems.
+    home: {decision: identity, facts: [c11.hostPool.sessionHosts.entraJoined, c11.hostPool.sessionHosts.domainJoined], intake: [intake.joinType, intake.identityConstraints]}
+    baseline:
+      standing: published
+      claims: [ref:avd-hybrid-deploy#join-types-by-os, ref:avd-azure-local#entra-join-outside-portal, ref:avd-azure-local#local-smb-for-profiles]
+      says: Join Windows Server session hosts on AVD Hybrid to AD DS or Entra hybrid join so RDS licensing works; Windows client hosts may use Entra, AD DS or hybrid join, and native Entra join on Azure Local is deployed through PowerShell or templates rather than the portal.
+    measure: fact
+    landingZone: []
+  - id: hybrid.arc-registration
+    area: operations
+    pillar: hybrid
+    title: Host pool managed identity and Arc extension registration
+    decides: How on-premises session hosts onboard to Azure Arc and register with the AVD host pool.
+    home: {decision: proposed:operations.hybridRegistration, facts: [proposed:c11.hostPool.sessionHosts.arcConnected, proposed:c11.hostPool.sessionHosts.arcAgentDisconnected, proposed:c11.hostPool.sessionHosts.cloudDeviceExtensionFailed, proposed:c11.hostPool.arcResourceGroupReaderAssigned]}
+    baseline:
+      standing: published
+      claims: [ref:avd-hybrid-deploy#hostpool-identity-reader, ref:avd-hybrid-deploy#cloud-device-extension, ref:avd-hybrid-deploy#arc-and-avd-endpoints, ref:avd-azure-local#connected-machine-agent, gap:hybrid-scope]
+      says: Install the Connected Machine agent on every on-premises host, assign a managed identity on the host pool with Reader on the Arc resource group, register AVD Hybrid hosts through Microsoft.AzureVirtualDesktop.CloudDeviceExtension in a standard host pool created without Azure VMs or session host configuration, and allow outbound access to both AVD and Arc endpoints.
+    measure: fact
+    landingZone: []
+  - id: hybrid.lifecycle-and-power
+    area: operations
+    pillar: hybrid
+    title: Provisioning, power management and scaling on AVD Hybrid
+    decides: How on-premises AVD Hybrid hosts are provisioned, updated and power-managed when Azure does not control the hypervisor.
+    home: {decision: hostPool.power, facts: [c11.hostPool.scalingPlan.method, c11.hostPool.startVmOnConnect], intake: [intake.hostServicing]}
+    baseline:
+      standing: published
+      claims: [ref:avd-hybrid-overview#no-platform-lifecycle, gap:hybrid-scope]
+      says: Leave Azure autoscale, Start VM on Connect, power management and session host configuration off on AVD Hybrid pools, and run provisioning, image updates and power schedules through the on-premises hypervisor or management tooling.
+    measure: fact
+    landingZone: []
+  - id: hybrid.licensing-and-cost
+    area: cost
+    pillar: hybrid
+    title: On-premises licensing and fee model
+    decides: Which user licenses and infrastructure fees apply to AVD Hybrid versus AVD on Azure Local.
+    home: {decision: proposed:cost.licensing, facts: [proposed:c11.hostPool.sessionHosts.arcConnected], intake: [intake.userLicense]}
+    baseline:
+      standing: published
+      claims: [ref:avd-hybrid-overview#hybrid-licensing, ref:avd-azure-local#three-part-pricing]
+      says: Pair each user's OS entitlement (RDS CAL with Software Assurance or user subscription for Windows Server; eligible Microsoft 365, Windows Enterprise or VDA license for Windows client) with the AVD Hybrid user license on AVD Hybrid, or budget for user access rights plus the Azure Local per-core fee and the per-active-vCPU fee on Azure Local.
+    measure: intake
+    landingZone: []
+  - id: hybrid.arc-inventory-and-run-command
+    area: operations
+    pillar: hybrid
+    title: Arc resource projection, monitoring and remote command execution
+    decides: When Azure Arc is used for on-premises server inventory, log collection and remote script execution, and when agentless discovery or broker collectors are used instead.
+    home: {decision: proposed:operations.monitoring, facts: [proposed:c11.hostPool.sessionHosts.arcConnected, c11.hostPool.sessionHosts.insightsDcr]}
+    baseline:
+      standing: published
+      claims: [ref:arc-servers-overview#azure-resource-projection, ref:arc-servers-overview#ama-and-extensions, ref:arc-servers-run-command#agent-script-execution, ref:arc-servers-run-command#free-control-plane, gap:hybrid-scope]
+      says: Where machines are already Arc-enabled, query Microsoft.HybridCompute/machines in Resource Graph for OS and hardware facts, attach the Azure Monitor Agent for logs, and use Connected Machine agent Run command (1.33 or later) for zero-inbound script execution at no control-plane fee; use agentless discovery exports and VDI broker collectors when Arc is not deployed or when reading broker collections and profiles.
+    measure: fact
+    landingZone: []
+

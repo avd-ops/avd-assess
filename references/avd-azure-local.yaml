@@ -5,8 +5,24 @@ pin: "Learn git_commit_id cc9c735dd826d60c173941f64ad41d130b6287a3, updated_at 2
 read: 2026-10-21
 license: Microsoft Learn content (link only)
 areas: [assessment]
-notes: "Extension point only: the network pillar has no Azure Local method yet."
+pillars: [hybrid, networking-azure]
+notes: "Covers AVD on Azure Local host pool separation, supported operating systems, Connected Machine agent requirement, three-part billing, and profile storage."
 claims:
   - id: no-mixed-pools
     says: A host pool holds session hosts on Azure or on Azure Local, never both.
     kind: published
+  - id: multisession-and-shortpath
+    says: Supports Windows 10 and 11 Enterprise multi-session, single-session client, and Windows Server 2019 through 2025 on registered Azure Local 23H2 or later instances, with RDP Shortpath and Azure Marketplace images.
+    kind: published
+  - id: connected-machine-agent
+    says: Session hosts on Azure Local run the Azure Connected Machine agent to reach the Azure Instance Metadata Service endpoint that AVD requires.
+    kind: published
+  - id: three-part-pricing
+    says: Running AVD on Azure Local carries three cost components - user access rights, the Azure Local service fee, and the AVD for Azure Local fee per active vCPU.
+    kind: published
+  - id: entra-join-outside-portal
+    says: The Azure portal adds Azure Local session hosts only to AD DS (including Entra hybrid join); native Entra join uses PowerShell or another deployment method.
+    kind: published
+  - id: local-smb-for-profiles
+    says: FSLogix profile containers on Azure Local use an on-premises SMB share - a clustered file server on the instance, or an external SMB share on the same network for larger deployments.
+    kind: guidance

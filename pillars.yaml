@@ -116,9 +116,9 @@ pillars:
     status: mapped
   - id: hybrid
     title: Hybrid and Azure Local
-    scope: AVD on Azure Local and the hybrid identity and network overlaps; an extension point only.
+    scope: On-premises session host placement across AVD Hybrid (Arc-enabled servers on existing hypervisors or dedicated physical servers) and AVD on Azure Local; supported operating systems, join types and licensing per path; host pool managed identity and Arc extension registration; host lifecycle and power management boundaries; and Arc server inventory, monitoring and remote command execution.
     checklist: []
-    status: extension
+    status: mapped
   - id: diagnostics
     title: Troubleshooting and diagnostics
     scope: Triage flows per symptom; the data sources (Insights, the diagnostic tables, agent health and logs, event, profile and client logs, Resource Graph); tools as categories; error-code maps; the diagnostic facts the collector reads.
