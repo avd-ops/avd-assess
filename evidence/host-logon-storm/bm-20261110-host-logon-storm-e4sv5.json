@@ -1,0 +1,105 @@
+{
+  "schema": "avd-benchmark-result/v1",
+  "id": "bm-20261110-host-logon-storm-e4sv5",
+  "date": "2026-11-10",
+  "source": "sandbox",
+  "tier": "synthetic",
+  "profile": {
+    "id": "host-logon-storm",
+    "version": "1.0.0",
+    "assessCommit": "cfcc3026b968c3c15a4150b8c7160891a138d3f0",
+    "benchmarkCommit": "52c93d5c516c36536796fc9388b694c5fcad71ed"
+  },
+  "environment": {
+    "vmSku": "Standard_E4s_v5",
+    "vcpu": 4,
+    "memoryGiB": 32,
+    "osDiskType": "Premium_LRS",
+    "ephemeralOsDisk": false,
+    "encryptionAtHost": true,
+    "trustedLaunch": true,
+    "osImage": "win11-24h2-avd-m365",
+    "wdotProfile": "avd-ops-reviewed-v1",
+    "defenderCacheMaintained": true,
+    "fslogixExclusions": "full",
+    "joinType": "entra-joined",
+    "intuneEnrolled": true,
+    "profileStorageSku": "Premium_ZRS",
+    "profileAuth": "entra-kerberos",
+    "smbChannelEncryption": "AES-128-GCM+AES-256-GCM",
+    "networkEgress": "nat-gateway",
+    "sampleHostsBand": "1-2",
+    "sampleSessionsBand": "10-25",
+    "windowHours": 1
+  },
+  "metrics": {
+    "timeToConnectMs": {
+      "min": 11200,
+      "p10": 12400,
+      "p50": 14800,
+      "p90": 19600,
+      "p95": 22400,
+      "p99": 26800,
+      "max": 28400
+    },
+    "profileLoadMs": {
+      "min": 3100,
+      "p10": 3500,
+      "p50": 4200,
+      "p90": 6100,
+      "p95": 6900,
+      "p99": 8400,
+      "max": 9100
+    },
+    "vhdxAttachMs": {
+      "min": 980,
+      "p10": 1120,
+      "p50": 1420,
+      "p90": 1980,
+      "p95": 2240,
+      "p99": 2720,
+      "max": 2950
+    },
+    "cpuPct": {
+      "min": 38,
+      "p10": 46.5,
+      "p50": 64.2,
+      "p90": 76.8,
+      "p95": 79.4,
+      "p99": 82.8,
+      "max": 84.5
+    },
+    "availableMemoryMiB": {
+      "min": 9420,
+      "p10": 10180,
+      "p50": 12640,
+      "p90": 16820,
+      "p95": 18240,
+      "p99": 19600,
+      "max": 20480
+    }
+  },
+  "verdict": {
+    "experienceGate": "pass",
+    "claims": [
+      {
+        "claim": "gap:logon-target",
+        "verdict": "extends"
+      },
+      {
+        "claim": "ref:defender-av-vdi#cache-maintenance-before-seal",
+        "observation": "obs:defender-cache-maintenance-not-in-image",
+        "verdict": "agrees"
+      },
+      {
+        "claim": "ref:fslogix-prerequisites#exclusion-scope",
+        "observation": "obs:fslogix-exclusions-partial",
+        "verdict": "agrees"
+      },
+      {
+        "claim": "ref:session-host-sizing#logon-storm-headroom",
+        "verdict": "agrees"
+      }
+    ]
+  }
+}

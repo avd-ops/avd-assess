@@ -1,0 +1,101 @@
+{
+  "schema": "avd-benchmark-result/v1",
+  "id": "bm-20261110-storage-fslogix-io-d8sv5",
+  "date": "2026-11-10",
+  "source": "lab",
+  "tier": "synthetic",
+  "profile": {
+    "id": "storage-fslogix-io",
+    "version": "1.0.0",
+    "assessCommit": "cfcc3026b968c3c15a4150b8c7160891a138d3f0",
+    "benchmarkCommit": "52c93d5c516c36536796fc9388b694c5fcad71ed"
+  },
+  "environment": {
+    "vmSku": "Standard_D8s_v5",
+    "vcpu": 8,
+    "memoryGiB": 32,
+    "osDiskType": "Ephemeral",
+    "ephemeralOsDisk": true,
+    "encryptionAtHost": true,
+    "trustedLaunch": true,
+    "osImage": "win11-24h2-avd-m365",
+    "wdotProfile": "avd-ops-reviewed-v1",
+    "defenderCacheMaintained": true,
+    "fslogixExclusions": "full",
+    "joinType": "entra-joined",
+    "intuneEnrolled": true,
+    "profileStorageSku": "Premium_ZRS",
+    "profileAuth": "entra-kerberos",
+    "smbChannelEncryption": "AES-128-GCM+AES-256-GCM",
+    "networkEgress": "nat-gateway",
+    "sampleHostsBand": "1-2",
+    "sampleSessionsBand": "26-100",
+    "windowHours": 2
+  },
+  "metrics": {
+    "readIops": {
+      "min": 2410,
+      "p10": 2680,
+      "p50": 3120,
+      "p90": 3740,
+      "p95": 3980,
+      "p99": 4290,
+      "max": 4480
+    },
+    "writeIops": {
+      "min": 1120,
+      "p10": 1290,
+      "p50": 1580,
+      "p90": 1910,
+      "p95": 2060,
+      "p99": 2280,
+      "max": 2410
+    },
+    "readLatencyMs": {
+      "min": 0.8,
+      "p10": 1.1,
+      "p50": 1.6,
+      "p90": 2.4,
+      "p95": 2.9,
+      "p99": 4.1,
+      "max": 5.2
+    },
+    "writeLatencyMs": {
+      "min": 1.1,
+      "p10": 1.4,
+      "p50": 2.1,
+      "p90": 3.4,
+      "p95": 4.1,
+      "p99": 5.9,
+      "max": 7.1
+    },
+    "vhdxAttachMs": {
+      "min": 820,
+      "p10": 940,
+      "p50": 1190,
+      "p90": 1680,
+      "p95": 1890,
+      "p99": 2310,
+      "max": 2540
+    }
+  },
+  "verdict": {
+    "experienceGate": "pass",
+    "claims": [
+      {
+        "claim": "ref:avd-deploy-host-pool#premium-ssd-os-disk",
+        "observation": "obs:premium-ssd-os-disk-default",
+        "verdict": "extends"
+      },
+      {
+        "claim": "ref:disk-encryption-options#encryption-at-host",
+        "observation": "obs:encryption-at-host-by-default",
+        "verdict": "agrees"
+      },
+      {
+        "claim": "ref:review-checklists-avd#H03.05",
+        "verdict": "agrees"
+      }
+    ]
+  }
+}

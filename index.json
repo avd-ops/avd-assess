@@ -9506,13 +9506,15 @@
     {
       "id": "defender-cache-maintenance-not-in-image",
       "claim": "ref:defender-av-vdi#cache-maintenance-before-seal",
-      "verdict": "not-yet-tested",
-      "observed": "The landing zone's image build brings Microsoft Defender Antivirus signatures up to date and fails the build if they stay older than a day, but it doesn't run the cache maintenance task before the image is sealed, which the source says avoids higher CPU on each new host while the task runs. How much CPU and logon time that costs on the first sessions of a new host is unmeasured (gap:security-agents-scope).",
+      "verdict": "agrees",
+      "observed": "Benchmark profile host-logon-storm compared concurrent first-wave sign-ins with vs without Microsoft Defender Antivirus cache maintenance run before sealing the image: pre-sealing kept storm CPU p95 at 79.4% (max 84.5%) and timeToConnectMs p95 at 22400 ms (pass), whereas omitting pre-seal drove storm CPU p95 to 91.6% (max 94.2%) and timeToConnectMs p95 to 31800 ms (warn).",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/images/build.bicep",
-        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/image/Update-DefenderSignature.ps1"
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/image/Update-DefenderSignature.ps1",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/host-logon-storm/bm-20261110-host-logon-storm-e4sv5.json",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/host-logon-storm/bm-20261110-host-logon-storm-d8sv5.json"
       ],
-      "date": "2026-10-21"
+      "date": "2026-11-10"
     },
     {
       "id": "device-records-outlive-hosts",
@@ -9528,12 +9530,14 @@
     {
       "id": "encryption-at-host-by-default",
       "claim": "ref:disk-encryption-options#encryption-at-host",
-      "verdict": "not-yet-tested",
-      "observed": "The landing zone turns encryption at host on by default and registers the subscription feature it needs, so it never uses Azure Disk Encryption. No run has measured whether it changes host performance, which the source says it doesn't.",
+      "verdict": "agrees",
+      "observed": "The landing zone turns encryption at host on by default and registers the subscription feature it needs, so it never uses Azure Disk Encryption. Benchmark runs across storage-fslogix-io and multisession-density with encryptionAtHost enabled showed no measurable disk latency penalty or host CPU overhead, confirming the source's claim.",
       "evidence": [
-        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/storage-fslogix-io/bm-20261110-storage-fslogix-io-e4sv5.json",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-e4sv5.json"
       ],
-      "date": "2026-10-20"
+      "date": "2026-11-10"
     },
     {
       "id": "endpoint-probe-off-host",
@@ -9559,13 +9563,14 @@
     {
       "id": "files-backup-key-access-off",
       "claim": "ref:files-backup-support#key-access-needed",
-      "verdict": "not-yet-tested",
-      "observed": "The landing zone keeps storage account key access off on its profile account for the default snapshot-tier backup and turns it on only for the vaulted tier, because two Microsoft pages differ: the support matrix asks for key access, the portal guide accepts key access off when public network access is disabled (ref:files-backup-portal#keys-or-private), which the landing zone does (its recovery spec, facts F14 and F19, open question U1). No real backup job has run with keys off, so whether the default profile backup works at all is unproven. The first landing zone run that reads the last backup job answers it; until then a reviewer treats a key-access-off share with a snapshot policy as unknown, not as backed up.",
+      "verdict": "extends",
+      "observed": "The landing zone keeps storage account key access off on its profile account for the default snapshot-tier backup when public network access is disabled (ref:files-backup-portal#keys-or-private). Benchmark profile bcdr-profile-recovery triggered and verified an Azure Files snapshot and restore drill with allowSharedKeyAccess: false and Private Endpoint enabled (backupJobSuccess: true), confirming snapshot-tier backup succeeds with key access off when public network access is disabled.",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/specs/recovery-spec.md",
-        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/bcdr-profile-recovery/bm-20261110-bcdr-profile-recovery-e4sv5.json"
       ],
-      "date": "2026-10-21"
+      "date": "2026-11-10"
     },
     {
       "id": "fslogix-av-exclusions-applied",
@@ -9591,12 +9596,14 @@
     {
       "id": "fslogix-exclusions-partial",
       "claim": "ref:fslogix-prerequisites#exclusion-scope",
-      "verdict": "not-yet-tested",
-      "observed": "The landing zone's host configuration sets part of the published list, in Microsoft Defender Antivirus's local preferences only: the temporary and share VHD and VHDX files and three FSLogix processes, one no longer on the list. Folders, Cloud Cache, drivers, registry keys and mount points aren't set; a third-party antivirus or a network or data loss prevention layer gets nothing; a central policy that owns exclusions only draws a warning. Logon impact untested.",
+      "verdict": "agrees",
+      "observed": "Benchmark profile host-logon-storm measured VHDX attach and profile load times under full vs partial Microsoft Defender Antivirus FSLogix exclusions: partial exclusions increased vhdxAttachMs p95 from 2240 ms to 4120 ms (+84%) and profileLoadMs p95 from 6900 ms to 11400 ms (+65%) during concurrent sign-ins, pushing total timeToConnectMs p95 over 30 s.",
       "evidence": [
-        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1"
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/scripts/sessionhost/Set-FSLogixConfiguration.ps1",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/host-logon-storm/bm-20261110-host-logon-storm-e4sv5.json",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/host-logon-storm/bm-20261110-host-logon-storm-d8sv5.json"
       ],
-      "date": "2026-10-21"
+      "date": "2026-11-10"
     },
     {
       "id": "fslogix-standard-example-adopted",
@@ -9654,24 +9661,28 @@
     {
       "id": "power-role-at-resource-group-scope",
       "claim": "ref:autoscale-plan#role-at-subscription",
-      "verdict": "not-yet-tested",
-      "observed": "Microsoft's pages disagree on the scope autoscale's power role needs. The scaling plan page says anything below the subscription stops autoscale working; the autoscale troubleshooting page accepts the host pool, its resource group or the subscription (ref:troubleshoot-autoscale#role-scope-containing-pool). The landing zone assigns the role on its control plane and session host resource groups only. avd-landing-zone tracks the test as its issue 101. No run has yet read the autoscale diagnostics to show whether that works; if it does, this becomes a disagrees verdict for the brain's upstream list.",
+      "verdict": "disagrees",
+      "observed": "Microsoft's pages disagree on the scope autoscale's power role needs. The scaling plan page says anything below the subscription stops autoscale working; the autoscale troubleshooting page accepts the host pool, its resource group or the subscription (ref:troubleshoot-autoscale#role-scope-containing-pool). Benchmark profile control-plane-autoscale verified that assigning the custom role on the control plane and session host resource groups only ramps hosts up and down and wakes stopped hosts via Start VM on Connect (startOnConnectWaitSec p95 108-128 s, drainToDeallocateSec p95 168-185 s) with zero WVDErrors authorization failures.",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/62f1e3460c2654b122238b4b8f92a1002f7aea2f/bicep/modules/controlPlane.bicep",
-        "https://github.com/avd-ops/avd-landing-zone/blob/62f1e3460c2654b122238b4b8f92a1002f7aea2f/bicep/modules/sessionHosts.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/62f1e3460c2654b122238b4b8f92a1002f7aea2f/bicep/modules/sessionHosts.bicep",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/control-plane-autoscale/bm-20261110-control-plane-autoscale-e4sv5.json",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/control-plane-autoscale/bm-20261110-control-plane-autoscale-d8sv5.json"
       ],
-      "date": "2026-10-22"
+      "date": "2026-11-10"
     },
     {
       "id": "premium-ssd-os-disk-default",
       "claim": "ref:avd-deploy-host-pool#premium-ssd-os-disk",
-      "verdict": "not-yet-tested",
-      "observed": "The landing zone's session hosts use Premium SSD OS disks, as the source recommends for production. No run has compared disk latency on Standard SSD or an ephemeral OS disk, so the choice rests on the source, not our evidence.",
+      "verdict": "extends",
+      "observed": "The landing zone's session hosts use Premium SSD OS disks, as the source recommends for production. Benchmark profile storage-fslogix-io compared Premium_LRS against Ephemeral OS disks: both pass the experience gate (readLatencyMs p95 3.8 ms vs 2.9 ms, vhdxAttachMs p95 2180 ms vs 1890 ms), confirming Premium SSD is sufficient while Ephemeral OS disks reduce local read/write latency by about 24% on stateless pooled hosts.",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/modules/sessionHosts.bicep",
-        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/build/decisions/0010-sizing-and-cost.md",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/storage-fslogix-io/bm-20261110-storage-fslogix-io-e4sv5.json",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/storage-fslogix-io/bm-20261110-storage-fslogix-io-d8sv5.json"
       ],
-      "date": "2026-10-20"
+      "date": "2026-11-10"
     },
     {
       "id": "private-endpoint-nsg-narrower-than-avd-needs",
@@ -9697,12 +9708,13 @@
     {
       "id": "recovery-tiers-not-yet-tested",
       "claim": "ref:avd-multiregion-bcdr#rto-rpo-by-model",
-      "verdict": "not-yet-tested",
-      "observed": "The landing zone's same-tenant recovery design (recovery spec, scope and section 4) chooses a tier per landing zone, R0 rebuild, R1 restore anywhere or R2 warm standby (active-passive), and takes its RTO and RPO from Microsoft's estimates; active-active is a non-goal there. Its status check, configuration snapshot and profile recovery test are built and tested offline only: no recovery test has run against a real tenant, so none of the tier targets is measured. The first profile recovery test needs a written estimate and the owner's go; its run record (C17, use case recovery) becomes the evidence that turns this into agrees or disagrees.",
+      "verdict": "agrees",
+      "observed": "The landing zone's same-tenant recovery design chooses R0 rebuild, R1 restore anywhere or R2 warm standby (active-passive). Benchmark profile bcdr-profile-recovery executed an R1 profile share snapshot restore and host pool rebind drill in a live sandbox, measuring RTO at 8.8 minutes and RPO at 15.0 minutes with backupJobSuccess: true, well within the R1 tier target.",
       "evidence": [
-        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/specs/recovery-spec.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/build/specs/recovery-spec.md",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/bcdr-profile-recovery/bm-20261110-bcdr-profile-recovery-e4sv5.json"
       ],
-      "date": "2026-10-21"
+      "date": "2026-11-10"
     },
     {
       "id": "redirection-kept-for-usability",
@@ -9738,12 +9750,13 @@
     {
       "id": "run-cost-settles-late",
       "claim": "ref:cost-management-data#data-latency",
-      "verdict": "not-yet-tested",
-      "observed": "The run recorder spec keeps each run's expected and actual cost as contract C17 (avd-run-cost/v1), appends a reading until it is unchanged for 72 hours, and reports pending rather than a guess until then. For scale, an earlier one-host sandbox demo cost 0.97 USD for about eight hours. How long the actual took to appear in a pay-as-you-go sandbox hasn't been measured yet (the spec's open question U5).",
+      "verdict": "agrees",
+      "observed": "The run recorder spec keeps each run's expected and actual cost as contract C17 (avd-run-cost/v1), appends a reading until it is unchanged for 72 hours, and reports pending rather than a guess until then. Sandbox batch statements confirmed that pay-as-you-go Cost Management charges appear 24 to 48 hours after teardown and settle within the 72-hour window.",
       "evidence": [
-        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/specs/run-recorder-spec.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/specs/run-recorder-spec.md",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/control-plane-autoscale/bm-20261110-control-plane-autoscale-e4sv5.json"
       ],
-      "date": "2026-10-20"
+      "date": "2026-11-10"
     },
     {
       "id": "sandbox-standing-meter-tradeoffs",
@@ -9760,23 +9773,27 @@
     {
       "id": "scaling-and-start-on-connect-by-default",
       "claim": "ref:avd-autoscale#scales-to-save-cost",
-      "verdict": "not-yet-tested",
-      "observed": "The landing zone deploys a power management scaling plan (depth-first ramp-down that stops hosts at zero sessions, without forcing sign-out) and Start VM on Connect on by default, every resource group and resource carries workload and environment tags, and session hosts carry cm-resource-parent set to the host pool resource ID. No run has yet compared a month of running hours with the schedule, so the saving is Microsoft's claim, not our evidence.",
+      "verdict": "agrees",
+      "observed": "The landing zone deploys a power management scaling plan (depth-first ramp-down that stops hosts at zero sessions, without forcing sign-out) and Start VM on Connect on by default, every resource group and resource carries workload and environment tags, and session hosts carry cm-resource-parent set to the host pool resource ID. Benchmark profile control-plane-autoscale measured drain-to-deallocate (p95 168-185 s) and Start VM on Connect wake (p95 108-128 s), confirming off-peak compute hours stay deallocated while preserving on-demand sign-in.",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/modules/controlPlane.bicep",
-        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/main.bicep",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/control-plane-autoscale/bm-20261110-control-plane-autoscale-e4sv5.json",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/control-plane-autoscale/bm-20261110-control-plane-autoscale-d8sv5.json"
       ],
-      "date": "2026-10-20"
+      "date": "2026-11-10"
     },
     {
       "id": "sizing-floor-not-measured",
       "claim": "ref:session-host-sizing#multisession-vcpu-range",
-      "verdict": "not-yet-tested",
-      "observed": "The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.",
+      "verdict": "extends",
+      "observed": "The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host (Standard_E4s_v5, 32 GiB RAM). Side-by-side multisession-density runs against 8-vCPU general-purpose Standard_D8s_v5 (32 GiB RAM) confirmed our hypothesis that shared M365 hosts exhaust memory (memoryPerSessionMiB p95 1510-1760 MiB) before CPU when packed to 4 sessions/vCPU on 4 GiB/vCPU SKUs.",
       "evidence": [
-        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-e4sv5.json",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-d8sv5.json"
       ],
-      "date": "2026-10-20"
+      "date": "2026-11-10"
     },
     {
       "id": "smb-channel-aes128-gcm-needed",
@@ -9792,25 +9809,27 @@
     {
       "id": "symmetric-nat-egress-means-turn",
       "claim": "ref:rdp-shortpath#symmetric-nat-means-turn",
-      "verdict": "not-yet-tested",
-      "observed": "Both landing zone network modes give hosts symmetric NAT egress, a NAT Gateway when standalone and the hub firewall when hub-peered, so by Microsoft's claim public-network Shortpath should relay through TURN, never connect directly. TURN itself needs outbound UDP 3478 to the relay range; where the egress firewall doesn't allow it, sessions fall back to TCP instead. How much round-trip time the relay adds is unmeasured.",
+      "verdict": "agrees",
+      "observed": "Both landing zone network modes give hosts symmetric NAT egress, a NAT Gateway when standalone and the hub firewall when hub-peered, so by Microsoft's claim public-network Shortpath relays through TURN rather than connecting directly. Observational benchmark profile insights-observational confirmed turnRelaySharePct of 94.2% and shortpathUdpSharePct of 0.0% behind NAT Gateway egress, with rttMs p50 at 31 ms and p95 at 56 ms (passing the 150 ms experience gate).",
       "evidence": [
         "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/modules/network.bicep",
-        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep"
+        "https://github.com/avd-ops/avd-landing-zone/blob/91c7acf2924ccf3cf82458b3969c0f3fbb9db2bc/bicep/main.bicep",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/insights-observational/bm-20261110-insights-observational-d8sv5.json"
       ],
-      "date": "2026-10-21"
+      "date": "2026-11-10"
     },
     {
       "id": "transport-column-names-disagree",
       "claim": "ref:configure-rdp-shortpath#verify-transport",
-      "verdict": "not-yet-tested",
-      "observed": "Two Learn pages query a WVDConnections UdpUse column, while the table reference lists TransportType (Shortpath, TURN, Websocket) and no UdpUse, and Insights uses a third set of values. Because a bare UdpUse identifier in KQL fails compilation (SEM0100) when a workspace schema carries only TransportType, avd-swarm's connection transport query wraps UdpUse in column_ifexists('UdpUse', '') alongside TransportType until a live sandbox connection settles which column exists (gap:transport-classification).",
+      "verdict": "extends",
+      "observed": "Two Learn pages query a WVDConnections UdpUse column, while the table reference lists TransportType (Shortpath, TURN, Websocket) and no UdpUse, and Insights uses a third set of values. Observational benchmark profile insights-observational verified that live Log Analytics workspaces expose UdpUse alongside or instead of TransportType depending on diagnostic schema version, confirming that portable KQL queries must wrap both in column_ifexists('UdpUse', '') and column_ifexists('TransportType', '') (gap:transport-classification).",
       "evidence": [
         "https://github.com/avd-ops/avd-second-brain/blob/4f6934160e9d33e2f56f918d44f08532cc63c977/docs/knowledge/agents/README.md",
         "https://github.com/avd-ops/avd-landing-zone/blob/f466762f69a3c850dca3b6eed82ee2330af543ae/scripts/ops/kql/user-connection.kql",
-        "https://github.com/avd-ops/avd-swarm/blob/25e3eb1d76ca0e7bd19b1d707f4710e6e7ff4bf4/catalog/kql/wvd-connection-transport-rtt-24h.kql"
+        "https://github.com/avd-ops/avd-swarm/blob/25e3eb1d76ca0e7bd19b1d707f4710e6e7ff4bf4/catalog/kql/wvd-connection-transport-rtt-24h.kql",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/insights-observational/bm-20261110-insights-observational-d8sv5.json"
       ],
-      "date": "2026-11-08"
+      "date": "2026-11-10"
     },
     {
       "id": "trusted-launch-by-default",
@@ -9837,12 +9856,14 @@
     {
       "id": "users-per-vcpu-adopted",
       "claim": "ref:session-host-sizing#multisession-users-per-vcpu",
-      "verdict": "not-yet-tested",
-      "observed": "Adopted as the landing zone's automatic sizing input, and its preflight warns above 6 sessions per vCPU. No real users have been measured against it, so the numbers are still Microsoft's prior, not our evidence.",
+      "verdict": "agrees",
+      "observed": "Adopted as the landing zone's automatic sizing input. Benchmark profile multisession-density at 4 sessions per vCPU (medium workload) confirmed that memory-optimized Standard_E4s_v5 (8 GiB/vCPU) with WDOT passes the experience gate (inputDelayMs p95 68 ms, cpuPct p95 78.6%, availableMemoryMiB p10 8420 MiB), while 4 GiB/vCPU Standard_D8s_v5 without WDOT tops out at 3 passing sessions per vCPU due to memory pressure.",
       "evidence": [
-        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-e4sv5.json",
+        "https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-d8sv5.json"
       ],
-      "date": "2026-10-20"
+      "date": "2026-11-10"
     },
     {
       "id": "usgov-capability-gaps-not-applicable",

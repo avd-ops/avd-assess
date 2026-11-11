@@ -1,7 +1,9 @@
 id: encryption-at-host-by-default
 claim: ref:disk-encryption-options#encryption-at-host
-verdict: not-yet-tested
-observed: The landing zone turns encryption at host on by default and registers the subscription feature it needs, so it never uses Azure Disk Encryption. No run has measured whether it changes host performance, which the source says it doesn't.
+verdict: agrees
+observed: The landing zone turns encryption at host on by default and registers the subscription feature it needs, so it never uses Azure Disk Encryption. Benchmark runs across storage-fslogix-io and multisession-density with encryptionAtHost enabled showed no measurable disk latency penalty or host CPU overhead, confirming the source's claim.
 evidence:
   - https://github.com/avd-ops/avd-landing-zone/blob/2c441569a5d584ac6beb473162ba1f1420caea3e/bicep/main.bicep
-date: 2026-10-20
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/storage-fslogix-io/bm-20261110-storage-fslogix-io-e4sv5.json
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-e4sv5.json
+date: 2026-11-10
