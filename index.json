@@ -10034,6 +10034,10 @@
       "title": "what a Microsoft 365 VDI productivity assessment can judge, and from where"
     },
     {
+      "id": "migration-readiness",
+      "title": "migration readiness and profile transition paths"
+    },
+    {
       "id": "monitoring-scope",
       "title": "monitoring, operations, scaling and power"
     },
@@ -10060,6 +10064,10 @@
     {
       "id": "sample-check",
       "title": "the sample check"
+    },
+    {
+      "id": "scale-and-sharding",
+      "title": "multi-stamp sharding, storage packing, and wave ceilings"
     },
     {
       "id": "scoring",

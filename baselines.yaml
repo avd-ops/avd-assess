@@ -115,6 +115,12 @@ host:
   - rule: Measured density is the most sessions per host at which every experience target holds at peak and CPU stays out of the over band
     claims: [gap:baseline-profile, ref:session-host-sizing#capacity-approaches]
     standing: guidance
+  - rule: Cap each pooled host pool at 150 session hosts or 2,500 concurrent sessions, and each subscription stamp at 400 session hosts or 5,000 concurrent users, splitting larger workloads into sibling pools and stamps
+    claims: [ref:avd-service-limits#hosts-per-pool, ref:arch-avd-design-guide#platform-connectivity, ref:waf-reliability-checklist#RE:05, gap:scale-and-sharding]
+    standing: guidance
+  - rule: Pack Premium Azure Files profile shares to at most 80% of the 100 TiB capacity ceiling and 100,000 peak IOPS ceiling, sizing peak IOPS for an 85% steady-state and 15% sign-in storm session mix
+    claims: [ref:azure-files-vdi#users-per-share, ref:azure-files-vdi#storm-sizing, ref:avd-fslogix-storage#tier-by-workload, gap:scale-and-sharding]
+    standing: guidance
 
 classes:
   - id: light
