@@ -46,5 +46,7 @@ Method we wrote because no source covers it. Each file opens with what was searc
 | [security-agents-scope](security-agents-scope.md) | Antivirus, EDR and SSE, ZTNA and VPN clients as categories: what is judged from where, outcomes, and what no source covers |
 | [reliability-scope](reliability-scope.md) | What a reliability and disaster recovery assessment can judge, from which evidence, the draft checks, the recovery intake questions, and which repo does what |
 | [hybrid-scope](hybrid-scope.md) | When on-premises requirements fit AVD Hybrid (Arc-enabled servers) versus AVD on Azure Local, what Azure Arc gives an on-premises assessment and operation, and the proposed Arc host facts and checks |
+| [migration-readiness](migration-readiness.md) | AD-to-Entra readiness gate, brownfield pool disposition, and the three profile transition paths |
+| [scale-and-sharding](scale-and-sharding.md) | Operational sharding ceilings for host pools, Premium Azure Files profile shares, subscription stamps, and migration waves |
 
 The parts of these gaps that a tool runs (the collection map, checks, readiness and scoring) are in [method.json](../method.json), avd-second-brain contract C20 (`avd-assess-method/v1`). avd-current-state runs a pinned copy.
