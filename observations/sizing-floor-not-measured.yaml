@@ -1,7 +1,9 @@
 id: sizing-floor-not-measured
 claim: ref:session-host-sizing#multisession-vcpu-range
-verdict: not-yet-tested
-observed: The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.
+verdict: extends
+observed: The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host (Standard_E4s_v5, 32 GiB RAM). Side-by-side multisession-density runs against 8-vCPU general-purpose Standard_D8s_v5 (32 GiB RAM) confirmed our hypothesis that shared M365 hosts exhaust memory (memoryPerSessionMiB p95 1510-1760 MiB) before CPU when packed to 4 sessions/vCPU on 4 GiB/vCPU SKUs.
 evidence:
   - https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md
-date: 2026-10-20
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-e4sv5.json
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-d8sv5.json
+date: 2026-11-10

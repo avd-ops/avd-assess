@@ -1,0 +1,55 @@
+{
+  "schema": "avd-benchmark-result/v1",
+  "id": "bm-20261110-bcdr-profile-recovery-e4sv5",
+  "date": "2026-11-10",
+  "source": "sandbox",
+  "tier": "synthetic",
+  "profile": {
+    "id": "bcdr-profile-recovery",
+    "version": "1.0.0",
+    "assessCommit": "cfcc3026b968c3c15a4150b8c7160891a138d3f0",
+    "benchmarkCommit": "52c93d5c516c36536796fc9388b694c5fcad71ed"
+  },
+  "environment": {
+    "vmSku": "Standard_E4s_v5",
+    "vcpu": 4,
+    "memoryGiB": 32,
+    "osDiskType": "Premium_LRS",
+    "ephemeralOsDisk": false,
+    "encryptionAtHost": true,
+    "trustedLaunch": true,
+    "osImage": "win11-24h2-avd-m365",
+    "wdotProfile": "avd-ops-reviewed-v1",
+    "defenderCacheMaintained": true,
+    "fslogixExclusions": "full",
+    "joinType": "entra-joined",
+    "intuneEnrolled": true,
+    "profileStorageSku": "Premium_ZRS",
+    "profileAuth": "entra-kerberos",
+    "smbChannelEncryption": "AES-128-GCM+AES-256-GCM",
+    "networkEgress": "nat-gateway",
+    "sampleHostsBand": "1-2",
+    "sampleSessionsBand": "1-2",
+    "windowHours": 1
+  },
+  "metrics": {
+    "measuredRtoMinutes": 8.8,
+    "measuredRpoMinutes": 15,
+    "backupJobSuccess": true
+  },
+  "verdict": {
+    "experienceGate": "pass",
+    "claims": [
+      {
+        "claim": "ref:avd-multiregion-bcdr#rto-rpo-by-model",
+        "observation": "obs:recovery-tiers-not-yet-tested",
+        "verdict": "agrees"
+      },
+      {
+        "claim": "ref:files-backup-support#key-access-needed",
+        "observation": "obs:files-backup-key-access-off",
+        "verdict": "extends"
+      }
+    ]
+  }
+}

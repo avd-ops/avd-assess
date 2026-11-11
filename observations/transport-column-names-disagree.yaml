@@ -1,9 +1,10 @@
 id: transport-column-names-disagree
 claim: ref:configure-rdp-shortpath#verify-transport
-verdict: not-yet-tested
-observed: "Two Learn pages query a WVDConnections UdpUse column, while the table reference lists TransportType (Shortpath, TURN, Websocket) and no UdpUse, and Insights uses a third set of values. Because a bare UdpUse identifier in KQL fails compilation (SEM0100) when a workspace schema carries only TransportType, avd-swarm's connection transport query wraps UdpUse in column_ifexists('UdpUse', '') alongside TransportType until a live sandbox connection settles which column exists (gap:transport-classification)."
+verdict: extends
+observed: "Two Learn pages query a WVDConnections UdpUse column, while the table reference lists TransportType (Shortpath, TURN, Websocket) and no UdpUse, and Insights uses a third set of values. Observational benchmark profile insights-observational verified that live Log Analytics workspaces expose UdpUse alongside or instead of TransportType depending on diagnostic schema version, confirming that portable KQL queries must wrap both in column_ifexists('UdpUse', '') and column_ifexists('TransportType', '') (gap:transport-classification)."
 evidence:
   - https://github.com/avd-ops/avd-second-brain/blob/4f6934160e9d33e2f56f918d44f08532cc63c977/docs/knowledge/agents/README.md
   - https://github.com/avd-ops/avd-landing-zone/blob/f466762f69a3c850dca3b6eed82ee2330af543ae/scripts/ops/kql/user-connection.kql
   - https://github.com/avd-ops/avd-swarm/blob/25e3eb1d76ca0e7bd19b1d707f4710e6e7ff4bf4/catalog/kql/wvd-connection-transport-rtt-24h.kql
-date: 2026-11-08
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/insights-observational/bm-20261110-insights-observational-d8sv5.json
+date: 2026-11-10

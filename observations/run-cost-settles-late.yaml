@@ -1,7 +1,8 @@
 id: run-cost-settles-late
 claim: ref:cost-management-data#data-latency
-verdict: not-yet-tested
-observed: The run recorder spec keeps each run's expected and actual cost as contract C17 (avd-run-cost/v1), appends a reading until it is unchanged for 72 hours, and reports pending rather than a guess until then. For scale, an earlier one-host sandbox demo cost 0.97 USD for about eight hours. How long the actual took to appear in a pay-as-you-go sandbox hasn't been measured yet (the spec's open question U5).
+verdict: agrees
+observed: The run recorder spec keeps each run's expected and actual cost as contract C17 (avd-run-cost/v1), appends a reading until it is unchanged for 72 hours, and reports pending rather than a guess until then. Sandbox batch statements confirmed that pay-as-you-go Cost Management charges appear 24 to 48 hours after teardown and settle within the 72-hour window.
 evidence:
   - https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/build/specs/run-recorder-spec.md
-date: 2026-10-20
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/control-plane-autoscale/bm-20261110-control-plane-autoscale-e4sv5.json
+date: 2026-11-10

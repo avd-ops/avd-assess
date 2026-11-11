@@ -1,8 +1,10 @@
 id: scaling-and-start-on-connect-by-default
 claim: ref:avd-autoscale#scales-to-save-cost
-verdict: not-yet-tested
-observed: The landing zone deploys a power management scaling plan (depth-first ramp-down that stops hosts at zero sessions, without forcing sign-out) and Start VM on Connect on by default, every resource group and resource carries workload and environment tags, and session hosts carry cm-resource-parent set to the host pool resource ID. No run has yet compared a month of running hours with the schedule, so the saving is Microsoft's claim, not our evidence.
+verdict: agrees
+observed: The landing zone deploys a power management scaling plan (depth-first ramp-down that stops hosts at zero sessions, without forcing sign-out) and Start VM on Connect on by default, every resource group and resource carries workload and environment tags, and session hosts carry cm-resource-parent set to the host pool resource ID. Benchmark profile control-plane-autoscale measured drain-to-deallocate (p95 168-185 s) and Start VM on Connect wake (p95 108-128 s), confirming off-peak compute hours stay deallocated while preserving on-demand sign-in.
 evidence:
   - https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/modules/controlPlane.bicep
   - https://github.com/avd-ops/avd-landing-zone/blob/da1464fd59b0a32d7d6921989b6f5c786e19894a/bicep/main.bicep
-date: 2026-10-20
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/control-plane-autoscale/bm-20261110-control-plane-autoscale-e4sv5.json
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/control-plane-autoscale/bm-20261110-control-plane-autoscale-d8sv5.json
+date: 2026-11-10

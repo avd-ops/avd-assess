@@ -1,0 +1,104 @@
+{
+  "schema": "avd-benchmark-result/v1",
+  "id": "bm-20261110-multisession-density-d8sv5",
+  "date": "2026-11-10",
+  "source": "lab",
+  "tier": "synthetic",
+  "profile": {
+    "id": "multisession-density",
+    "version": "1.0.0",
+    "workloadClass": "medium",
+    "assessCommit": "cfcc3026b968c3c15a4150b8c7160891a138d3f0",
+    "benchmarkCommit": "52c93d5c516c36536796fc9388b694c5fcad71ed"
+  },
+  "environment": {
+    "vmSku": "Standard_D8s_v5",
+    "vcpu": 8,
+    "memoryGiB": 32,
+    "osDiskType": "Premium_LRS",
+    "ephemeralOsDisk": false,
+    "encryptionAtHost": true,
+    "trustedLaunch": true,
+    "osImage": "win11-24h2-avd-m365",
+    "wdotProfile": "none",
+    "defenderCacheMaintained": false,
+    "fslogixExclusions": "partial",
+    "joinType": "entra-joined",
+    "intuneEnrolled": true,
+    "profileStorageSku": "Premium_ZRS",
+    "profileAuth": "entra-kerberos",
+    "smbChannelEncryption": "AES-128-GCM+AES-256-GCM",
+    "networkEgress": "nat-gateway",
+    "sampleHostsBand": "1-2",
+    "sampleSessionsBand": "26-100",
+    "windowHours": 2
+  },
+  "metrics": {
+    "sessionsPerVcpuTested": 4,
+    "maxPassingSessionsPerVcpu": 3,
+    "cpuPct": {
+      "min": 41,
+      "p10": 49.2,
+      "p50": 64.8,
+      "p90": 79.4,
+      "p95": 83.2,
+      "p99": 88.6,
+      "max": 91.4
+    },
+    "pqlPerCore": {
+      "min": 0.1,
+      "p10": 0.3,
+      "p50": 0.7,
+      "p90": 1.6,
+      "p95": 1.9,
+      "p99": 2.4,
+      "max": 2.8
+    },
+    "availableMemoryMiB": {
+      "min": 1480,
+      "p10": 1920,
+      "p50": 3120,
+      "p90": 5420,
+      "p95": 6180,
+      "p99": 6840,
+      "max": 7240
+    },
+    "memoryPerSessionMiB": {
+      "min": 1080,
+      "p10": 1190,
+      "p50": 1390,
+      "p90": 1680,
+      "p95": 1760,
+      "p99": 1890,
+      "max": 1960
+    },
+    "inputDelayMs": {
+      "min": 18,
+      "p10": 24,
+      "p50": 38,
+      "p90": 88,
+      "p95": 114,
+      "p99": 162,
+      "max": 188
+    }
+  },
+  "verdict": {
+    "experienceGate": "warn",
+    "claims": [
+      {
+        "claim": "ref:session-host-sizing#multisession-users-per-vcpu",
+        "observation": "obs:users-per-vcpu-adopted",
+        "verdict": "extends"
+      },
+      {
+        "claim": "ref:session-host-sizing#multisession-vcpu-range",
+        "observation": "obs:sizing-floor-not-measured",
+        "verdict": "agrees"
+      },
+      {
+        "claim": "gap:workload-benchmark",
+        "verdict": "extends"
+      }
+    ]
+  }
+}

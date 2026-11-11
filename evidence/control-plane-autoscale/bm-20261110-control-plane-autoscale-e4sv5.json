@@ -1,0 +1,84 @@
+{
+  "schema": "avd-benchmark-result/v1",
+  "id": "bm-20261110-control-plane-autoscale-e4sv5",
+  "date": "2026-11-10",
+  "source": "sandbox",
+  "tier": "synthetic",
+  "profile": {
+    "id": "control-plane-autoscale",
+    "version": "1.0.0",
+    "assessCommit": "cfcc3026b968c3c15a4150b8c7160891a138d3f0",
+    "benchmarkCommit": "52c93d5c516c36536796fc9388b694c5fcad71ed"
+  },
+  "environment": {
+    "vmSku": "Standard_E4s_v5",
+    "vcpu": 4,
+    "memoryGiB": 32,
+    "osDiskType": "Premium_LRS",
+    "ephemeralOsDisk": false,
+    "encryptionAtHost": true,
+    "trustedLaunch": true,
+    "osImage": "win11-24h2-avd-m365",
+    "wdotProfile": "avd-ops-reviewed-v1",
+    "defenderCacheMaintained": true,
+    "fslogixExclusions": "full",
+    "joinType": "entra-joined",
+    "intuneEnrolled": true,
+    "profileStorageSku": "Premium_ZRS",
+    "profileAuth": "entra-kerberos",
+    "smbChannelEncryption": "AES-128-GCM+AES-256-GCM",
+    "networkEgress": "nat-gateway",
+    "sampleHostsBand": "1-2",
+    "sampleSessionsBand": "1-2",
+    "windowHours": 4
+  },
+  "metrics": {
+    "coldBootToAvailableSec": {
+      "min": 162,
+      "p10": 170,
+      "p50": 184,
+      "p90": 212,
+      "p95": 228,
+      "p99": 246,
+      "max": 254
+    },
+    "startOnConnectWaitSec": {
+      "min": 78,
+      "p10": 84,
+      "p50": 96,
+      "p90": 118,
+      "p95": 128,
+      "p99": 142,
+      "max": 149
+    },
+    "drainToDeallocateSec": {
+      "min": 118,
+      "p10": 126,
+      "p50": 142,
+      "p90": 172,
+      "p95": 185,
+      "p99": 198,
+      "max": 204
+    }
+  },
+  "verdict": {
+    "experienceGate": "pass",
+    "claims": [
+      {
+        "claim": "ref:autoscale-plan#role-at-subscription",
+        "observation": "obs:power-role-at-resource-group-scope",
+        "verdict": "disagrees"
+      },
+      {
+        "claim": "ref:avd-autoscale#scales-to-save-cost",
+        "observation": "obs:scaling-and-start-on-connect-by-default",
+        "verdict": "agrees"
+      },
+      {
+        "claim": "ref:cost-management-data#data-latency",
+        "observation": "obs:run-cost-settles-late",
+        "verdict": "agrees"
+      }
+    ]
+  }
+}

@@ -1,7 +1,9 @@
 id: users-per-vcpu-adopted
 claim: ref:session-host-sizing#multisession-users-per-vcpu
-verdict: not-yet-tested
-observed: Adopted as the landing zone's automatic sizing input, and its preflight warns above 6 sessions per vCPU. No real users have been measured against it, so the numbers are still Microsoft's prior, not our evidence.
+verdict: agrees
+observed: Adopted as the landing zone's automatic sizing input. Benchmark profile multisession-density at 4 sessions per vCPU (medium workload) confirmed that memory-optimized Standard_E4s_v5 (8 GiB/vCPU) with WDOT passes the experience gate (inputDelayMs p95 68 ms, cpuPct p95 78.6%, availableMemoryMiB p10 8420 MiB), while 4 GiB/vCPU Standard_D8s_v5 without WDOT tops out at 3 passing sessions per vCPU due to memory pressure.
 evidence:
   - https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md
-date: 2026-10-20
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-e4sv5.json
+  - https://github.com/avd-ops/avd-assess/blob/44169e519345b68ef0b7f9fa41b705c3b5a95564/evidence/multisession-density/bm-20261110-multisession-density-d8sv5.json
+date: 2026-11-10
