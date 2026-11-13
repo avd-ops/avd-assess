@@ -19,6 +19,7 @@ This folder is the authority for the formats the foundation repos exchange: avd-
 | C28 `avd-source-inventory/v1` | `schemas/source-inventory.schema.json`, `examples/assess/source-inventory.example.json` | read-only source inventory exporters | the assessment and migration-readiness methods, the brain |
 | C29 `avd-wave-plan/v1` | `schemas/wave-plan.schema.json`, `examples/assess/wave-plan.example.json` | wave planners | the operator, the brain |
 | C30 `avd-verify-report/v1` | `schemas/verify-report.schema.json`, `examples/assess/verify-report.example.json` | post-wave parity evaluators | the operator, the brain |
+| C31 `avd-networking-outputs/v1` | `schemas/networking-outputs.schema.json`, `examples/assess/networking-outputs.example.json` | avd-networking (or compatible hub IaC) | avd-azure, avd-landing-zone, avd-current-state |
 
 The release manifest, `datapackage.json` with profile `avd-assess-bundle/v1` (`schemas/assess-bundle.schema.json`), is how all of the above ship together; it carries no contract number and is never committed ([distribution spec](../docs/distribution-spec.md)).
 
