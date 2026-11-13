@@ -134,7 +134,7 @@ Before inspecting resources, the operator captures what telemetry cannot infer (
 
 Each control plane is versioned in its own repository and orchestrated by `avd-landing-zone`:
 
-- **`avd-azure`:** Host pools, session hosts, Compute Gallery, Azure Files Premium ZRS profile storage, Private Endpoints and scaling plans in Bicep.
+- **`avd-azure` / `avd-hcl`:** Host pools, session hosts, Compute Gallery, Azure Files Premium ZRS profile storage, Private Endpoints and scaling plans -- in Bicep (`avd-azure`, zero-state Azure-native) or Terraform and Packer (`avd-hcl`, recommended enterprise IaC option for multi-provider orchestration, explicit state, and `plan` fidelity).
 - **`avd-entra`:** Security and dynamic device groups (including `cloudPcDynamicGroupId` with rule `(device.devicePhysicalIds -any (_ -startsWith "[OrderId]:"))` or `(device.model -startsWith "Cloud PC")`) and Conditional Access policies requiring phishing-resistant MFA across both the AVD client app and the Windows 365 web client first-party enterprise applications.
 - **`avd-intune`:** Four platform assignment filters (`profiles/filters/*.json`), multi-session Settings Catalog baselines (`profiles/settings-catalog/*.json`), and Windows 365 provisioning policy and user-setting templates (`profiles/win365/*.json`), deployed idempotently via `Deploy-AvdIntune.ps1 -DeployAssignmentFilters -IncludeWin365`.
 - **`avd-m365`:** Shared Computer Activation, OneDrive Known Folder Move and Files On-Demand, and Teams media optimization.
