@@ -31,6 +31,7 @@ EXAMPLES = {
     "examples/assess/wave-plan.example.json": "wave-plan.schema.json",
     "examples/assess/verify-report.example.json": "verify-report.schema.json",
     "examples/assess/networking-outputs.example.json": "networking-outputs.schema.json",
+    "examples/assess/gcp-outputs.example.json": "gcp-outputs.schema.json",
     "examples/checks/catalog.example.json": "check-catalog.schema.json",
     "examples/run-record/run.example.json": "run-record.schema.json",
     "examples/run-record/cost.example.json": "run-cost.schema.json",
