@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-gcp-outputs/v1.json",
+  "title": "avd-gcp-outputs/v1: GCP Hybrid AVD control-plane deployment outputs",
+  "description": "Redacted/structured GCP Hybrid AVD session-host plane outputs produced by avd-gcp and consumed by avd-azure, avd-landing-zone, and avd-current-state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "environment",
+    "region",
+    "profile",
+    "osFamily",
+    "identityMode",
+    "vpcName",
+    "subnetName",
+    "egressMode",
+    "fslogixStorageMode",
+    "arcResourceGroup",
+    "hostPoolName"
+  ],
+  "properties": {
+    "schema": {
+      "const": "avd-gcp-outputs/v1"
+    },
+    "environment": {
+      "type": "string",
+      "enum": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    "region": {
+      "type": "string",
+      "minLength": 2,
+      "description": "GCP region hosting the Compute Engine session hosts (e.g. us-central1)."
+    },
+    "profile": {
+      "type": "string",
+      "enum": [
+        "lab",
+        "enterprise"
+      ]
+    },
+    "osFamily": {
+      "type": "string",
+      "enum": [
+        "windows-11-enterprise",
+        "windows-10-enterprise",
+        "windows-server-2025",
+        "windows-server-2022"
+      ],
+      "description": "AVD Hybrid supported OS family (multi-session client OS is unsupported on Hybrid)."
+    },
+    "identityMode": {
+      "type": "string",
+      "enum": [
+        "entra-joined",
+        "ad-ds-joined",
+        "hybrid-joined"
+      ]
+    },
+    "vpcName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subnetName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "egressMode": {
+      "type": "string",
+      "enum": [
+        "cloud-nat",
+        "hub-nva",
+        "direct-vpc"
+      ]
+    },
+    "rdpShortpathUdp3478": {
+      "type": "boolean"
+    },
+    "fslogixStorageMode": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "gcp-netapp-volumes",
+        "gcp-smb-vm",
+        "azure-files-vpn"
+      ]
+    },
+    "fslogixShareUnc": {
+      "type": "string",
+      "description": "Optional redacted SMB UNC path or volume name when FSLogix storage is enabled."
+    },
+    "instanceGroupName": {
+      "type": "string"
+    },
+    "sessionHostCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "arcResourceGroup": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Azure Resource Group name where GCP VMs are projected as Azure Arc-enabled servers."
+    },
+    "hostPoolName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Azure AVD Hybrid host pool name that the Arc CloudDeviceExtension registers hosts into."
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

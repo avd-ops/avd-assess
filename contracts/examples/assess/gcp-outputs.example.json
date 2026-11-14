@@ -1,0 +1,18 @@
+{
+  "schema": "avd-gcp-outputs/v1",
+  "environment": "dev",
+  "region": "us-central1",
+  "profile": "lab",
+  "osFamily": "windows-11-enterprise",
+  "identityMode": "entra-joined",
+  "vpcName": "vpc-avd-hybrid-dev",
+  "subnetName": "snet-avd-hosts-dev",
+  "egressMode": "cloud-nat",
+  "rdpShortpathUdp3478": true,
+  "fslogixStorageMode": "gcp-netapp-volumes",
+  "fslogixShareUnc": "\\\\netapp-avd-dev.contoso.internal\\fslogix-profiles",
+  "instanceGroupName": "mig-avd-hosts-dev",
+  "sessionHostCount": 2,
+  "arcResourceGroup": "rg-avd-arc-dev",
+  "hostPoolName": "hp-avd-hybrid-dev"
+}
