@@ -45,3 +45,11 @@ None is in `method.json` until its facts are built in `avd-current-state`:
 | `asm-hybrid-hostpool-identity-reader` | Pool holds Arc-enabled session hosts | Host pool managed identity holds `Reader` on every Arc server resource group (`ref:avd-hybrid-deploy#hostpool-identity-reader`) | | Missing managed identity or missing `Reader` role assignment | Role assignments not read |
 | `asm-hybrid-arc-extension-healthy` | Pool holds Arc-enabled session hosts | Every Arc host is `Connected` with `CloudDeviceExtension` in `Succeeded` (`ref:avd-hybrid-deploy#cloud-device-extension`) | Agent disconnected on deallocated or maintenance hosts | Extension failed or missing on active hosts | Arc resource group not read |
 | `asm-hybrid-no-native-autoscale` | Pool holds AVD Hybrid session hosts | No Azure autoscale plan or Start VM on Connect enabled on an AVD Hybrid pool (`ref:avd-hybrid-overview#no-platform-lifecycle`) | Autoscale or Start VM on Connect enabled where the platform ignores it | No external power or provisioning runbook recorded when scaling is required | Intake not answered |
+
+## Non-Azure clouds and Entra-only profile storage
+
+AVD Hybrid's Arc-enabled server model applies equally to non-Azure public clouds (such as Google Cloud Compute Engine via `avd-gcp`, emitting contract C32 `avd-gcp-outputs/v1`) as well as on-premises hypervisors. Two operational rules carry across every non-Azure platform:
+
+- **Platform owns lifecycle and egress:** The hosting cloud or hypervisor owns VM provisioning, power schedules, and outbound-only TCP `443` / optional UDP `3478` egress (blocking inbound internet RDP `3389`).
+- **Entra-only profile storage:** Third-party managed SMB services (such as Google Cloud NetApp Volumes) require Active Directory Domain Services and do not support workgroup mode or native Entra ID / Entra Kerberos authentication. Entra-joined only AVD Hybrid deployments without AD DS must use **local profiles** (for single-session personal desktops) or **Azure Files with Microsoft Entra Kerberos**.
+
