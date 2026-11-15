@@ -1,0 +1,9 @@
+id: win11-patchmode-automatic-by-os
+claim: ref:autopatch-avd#exclude-multisession
+verdict: extends
+observed: 'Azure VM Guest Patching (patchMode: AutomaticByPlatform) is rejected on Windows 11 client images
+  (MicrosoftWindowsDesktop), which require AutomaticByOS. Separately, Azure Network RP rejects service
+  tags (such as VirtualNetwork) inside plural sourceAddressPrefixes and requires singular sourceAddressPrefix.'
+evidence:
+- https://github.com/avd-ops/avd-assess/blob/94196ad84a1fd0886323ea891cc3c9c34ec5d498/gaps/host-baseline-profile.md
+date: '2026-11-03'
