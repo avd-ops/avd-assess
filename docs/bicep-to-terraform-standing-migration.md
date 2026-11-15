@@ -4,7 +4,7 @@
 
 ## Scenario
 
-An Azure Virtual Desktop (AVD) environment with standing shared services — a shared Azure Compute Gallery with image-builder managed identities, plus an Automation Account and Storage Account for run history and cost-guardrail schedules — transitions its Infrastructure as Code (IaC) standard from Bicep to Terraform (HCL).
+An Azure Virtual Desktop (AVD) environment with standing shared services - a shared Azure Compute Gallery with image-builder managed identities, plus an Automation Account and Storage Account for run history and cost-guardrail schedules - transitions its Infrastructure as Code (IaC) standard from Bicep to Terraform (HCL).
 
 Bicep is stateless: removing or refactoring a resource in `.bicep` leaves it orphaned in Azure unless wrapped in Deployment Stacks, and moving to Terraform via destroy-and-recreate risks:
 - Breaking RBAC assignments when managed identity principal IDs change.
@@ -36,6 +36,6 @@ Bicep is stateless: removing or refactoring a resource in `.bicep` leaves it orp
 ### Key provider & parity lessons
 
 1. **Keyless storage accounts require `storage_use_azuread = true` on `provider "azurerm"`:** Importing a storage account with `shared_access_key_enabled = false` fails data-plane reads (`403 KeyBasedAuthenticationNotPermitted`) unless `storage_use_azuread = true` is configured on the provider.
-2. **ARM resource ID casing in role assignment `scope`:** Azure's role assignment API can return `/resourcegroups/` (lowercase) while Terraform's `azurerm_storage_container.*.id` emits `/resourceGroups/` (camelCase), triggering a `ForceNew` replacement (`-/+`) on import. Normalizing the segment casing in HCL (`replace(..., "resourceGroups", "resourcegroups")`) — noting that Terraform's `replace()` treats `/.../` as regex — keeps the import at 0 replace.
+2. **ARM resource ID casing in role assignment `scope`:** Azure's role assignment API can return `/resourcegroups/` (lowercase) while Terraform's `azurerm_storage_container.*.id` emits `/resourceGroups/` (camelCase), triggering a `ForceNew` replacement (`-/+`) on import. Normalizing the segment casing in HCL (`replace(..., "resourceGroups", "resourcegroups")`) - noting that Terraform's `replace()` treats `/.../` as regex - keeps the import at 0 replace.
 3. **Automation runbook line-ending normalization:** `azurerm_automation_runbook` compares `content` byte-for-byte; CRLF/LF differences between checkouts and ARM cause spurious full-file diffs. Use `lifecycle { ignore_changes = [content] }` during adoption or normalize line endings explicitly.
 4. **Separate standing-adoption roots from greenfield modules:** Adopting existing Bicep-named resources into dedicated adoption roots avoids forcing replacement against greenfield naming conventions.

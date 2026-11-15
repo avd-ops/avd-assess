@@ -5,3 +5,5 @@
 979ff8be-5f3a-4d8e-9aa3-407ecdd6d6f7
 939cb85c-102a-4e0a-ab82-5c92116d3778
 38721758-2cc2-4d6b-b7b7-8b47dadbf7df
+# Placeholder all-zeros subscription GUID used in contracts/examples/assess/networking-outputs.example.json
+00000000-0000-0000-0000-000000000000
