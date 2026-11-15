@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-gpu-skus/v1.json",
+  "title": "avd-gpu-skus/v1: canonical GPU VM size classification for AVD session hosts",
+  "description": "Contract C32. Classifies Azure GPU VM sizes into supported NV-family AVD sizes, retired NVv3/NVv4 sizes, and compute-only NC/ND sizes.",
+  "type": "object",
+  "required": ["schema", "version", "supported", "retiredPrefixes", "computePrefixes"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema": { "const": "avd-gpu-skus/v1" },
+    "version": { "type": "integer", "minimum": 1 },
+    "supported": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["vmSize", "family", "vendor", "driverExtension", "acceleratedNetworkingSupported", "hevcSupported"],
+        "additionalProperties": false,
+        "properties": {
+          "vmSize": { "type": "string", "pattern": "^Standard_NV[A-Za-z0-9_]+$" },
+          "family": { "type": "string" },
+          "vendor": { "enum": ["nvidia", "amd"] },
+          "driverExtension": { "enum": ["NvidiaGpuDriverWindows", "AmdGpuDriverWindows"] },
+          "acceleratedNetworkingSupported": { "type": "boolean" },
+          "gridLicenseMaxUsers": { "type": ["integer", "null"], "minimum": 1 },
+          "hevcSupported": { "type": "boolean" }
+        }
+      }
+    },
+    "retiredPrefixes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["pattern", "series", "retiredOn"],
+        "additionalProperties": false,
+        "properties": {
+          "pattern": { "type": "string" },
+          "series": { "type": "string" },
+          "retiredOn": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "computePrefixes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    }
+  }
+}

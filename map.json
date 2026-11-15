@@ -644,7 +644,16 @@
       "home": {
         "decision": "proposed:hostPool.gpu",
         "facts": [
-          "c11.hostPool.vmSizes"
+          "c11.hostPool.vmSizes",
+          "c11.hostPool.sessionHosts.gpuHosts",
+          "c11.hostPool.sessionHosts.gpuComputeSkus",
+          "c11.hostPool.sessionHosts.gpuRetiredSkus",
+          "c11.hostPool.sessionHosts.gpuDriverMissing"
+        ],
+        "checks": [
+          "asm-gpu-no-compute-skus",
+          "asm-gpu-no-retired-skus",
+          "asm-gpu-driver-extension"
         ]
       },
       "baseline": {
@@ -671,7 +680,11 @@
       "home": {
         "decision": "hostPool.maxSessions",
         "facts": [
-          "c12.group.perHost.peakSessionsPerHost"
+          "c12.group.perHost.peakSessionsPerHost",
+          "c11.hostPool.sessionHosts.gpuMaxSessionOver25"
+        ],
+        "checks": [
+          "asm-gpu-grid-session-cap"
         ]
       },
       "baseline": {
@@ -1658,10 +1671,14 @@
       "home": {
         "decision": "hostPool.vmSize",
         "facts": [
-          "c11.hostPool.vmSizes"
+          "c11.hostPool.vmSizes",
+          "c11.hostPool.graphicsDiagnosticsEnabled"
         ],
         "intake": [
           "intake.graphicsWorkloads"
+        ],
+        "checks": [
+          "asm-gpu-graphics-diagnostics"
         ]
       },
       "baseline": {

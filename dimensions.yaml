@@ -185,7 +185,7 @@ dimensions:
     pillar: capacity
     title: GPU size and driver
     decides: Which GPU series and fraction, and which driver.
-    home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes]}
+    home: {decision: proposed:hostPool.gpu, facts: [c11.hostPool.vmSizes, c11.hostPool.sessionHosts.gpuHosts, c11.hostPool.sessionHosts.gpuComputeSkus, c11.hostPool.sessionHosts.gpuRetiredSkus, c11.hostPool.sessionHosts.gpuDriverMissing], checks: [asm-gpu-no-compute-skus, asm-gpu-no-retired-skus, asm-gpu-driver-extension]}
     baseline:
       standing: published
       claims: [ref:avd-gpu-acceleration#supported-sizes, ref:avd-gpu-acceleration#no-compute-gpus, ref:avd-gpu-acceleration#grid-driver-only]
@@ -198,7 +198,7 @@ dimensions:
     pillar: capacity
     title: Users per GPU
     decides: How many sessions share one GPU or GPU fraction.
-    home: {decision: hostPool.maxSessions, facts: [c12.group.perHost.peakSessionsPerHost]}
+    home: {decision: hostPool.maxSessions, facts: [c12.group.perHost.peakSessionsPerHost, c11.hostPool.sessionHosts.gpuMaxSessionOver25], checks: [asm-gpu-grid-session-cap]}
     baseline:
       standing: gap
       claims: [ref:avd-gpu-acceleration#density-tradeoff, ref:avd-gpu-acceleration#grid-license-25, gap:deployment-dimensions]
@@ -651,7 +651,7 @@ dimensions:
     pillar: protocol
     title: Graphics encoding and codecs
     decides: Software or hardware encoding, AVC 444, HEVC and chroma, set by host policy against the host's GPU and the client's decoder.
-    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes], intake: [intake.graphicsWorkloads]}
+    home: {decision: hostPool.vmSize, facts: [c11.hostPool.vmSizes, c11.hostPool.graphicsDiagnosticsEnabled], intake: [intake.graphicsWorkloads], checks: [asm-gpu-graphics-diagnostics]}
     baseline:
       standing: published
       claims: [ref:graphics-encoding#software-default, ref:graphics-encoding#codecs, ref:avd-gpu-acceleration#cpu-by-default, ref:avd-gpu-acceleration#avc444-needs-hw-encoding, ref:avd-gpu-acceleration#hevc-prerequisites, ref:avd-gpu-acceleration#verify-by-event, ref:graphics-chroma-444#only-support-verifies]
