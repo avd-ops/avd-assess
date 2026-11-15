@@ -1,0 +1,9 @@
+id: az-rest-bap-unknown-audience
+claim: ref:troubleshoot-overview#insights-or-kql
+verdict: extends
+observed: 'In GitHub Actions using azure/login@v2 with enable-AzPSSession: true, Get-AzContext().Account.Type
+  is AccessToken rather than ServicePrincipal. Additionally, Invoke-AzRestMethod throws a terminating
+  unknown-audience error on api.bap.microsoft.com because that endpoint is not in Az environment metadata.'
+evidence:
+- https://github.com/avd-ops/avd-current-state/blob/cb53adb1b64dc242dac55c63a1d96f83bb107903/docs/reader-identity.md
+date: '2026-11-09'

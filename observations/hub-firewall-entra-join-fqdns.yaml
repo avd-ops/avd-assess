@@ -1,0 +1,12 @@
+id: hub-firewall-entra-join-fqdns
+claim: ref:arch-hub-spoke#hub-shared-services
+verdict: extends
+observed: When spoke default-route egress routes through a hub Azure Firewall, Entra ID Join on session
+  hosts (AADLoginForWindows) fails unless the firewall allows enterpriseregistration.windows.net, login.microsoftonline.com,
+  device.login.microsoftonline.com, pas.windows.net, autologon.microsoftazuread-sso.com, *.msauth.net,
+  and *.msftauth.net. Additionally, large Bicep templates can exceed ARM's 4 MB RequestContentTooLarge
+  limit unless minified with jq -c before deployment.
+evidence:
+- https://github.com/avd-ops/avd-azure/blob/fa0f48ece5068ba34fcd0beed2f62b48a3cebe42/README.md
+- https://github.com/avd-ops/avd-networking/blob/f8c3146f04fed423f46b845932703a4ad6f6163c/README.md
+date: '2026-11-15'

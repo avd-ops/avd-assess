@@ -1,0 +1,10 @@
+id: gcp-hybrid-mig-and-registration-token
+claim: ref:troubleshoot-agent#event-3277-token
+verdict: extends
+observed: Live AVD hybrid deployments on GCP require a paid Cloud Billing account for Windows Compute
+  Engine images, regional MIG max_unavailable_fixed >= zone count (or 0 with max_surge_fixed >= zone count),
+  no resource_policies on instance templates, and CloudDeviceExtension protected settings using registrationToken
+  (not registrationInfoToken) passed via @file in PowerShell 5.1.
+evidence:
+- https://github.com/avd-ops/avd-gcp/tree/53bcfdcdde145a4fabe61f4080a5fdaa61af560f/environments/example/01-hybrid
+date: '2026-11-14'
