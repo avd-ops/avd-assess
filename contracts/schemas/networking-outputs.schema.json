@@ -53,6 +53,15 @@
         "vwan"
       ]
     },
+    "firewallMode": {
+      "type": "string",
+      "enum": [
+        "azure-firewall",
+        "nva",
+        "none"
+      ],
+      "description": "Hub egress firewall mode: Azure Firewall, 3rd-party NVA, or none."
+    },
     "resourceGroup": {
       "type": "string"
     },
@@ -93,6 +102,12 @@
       "type": "string"
     },
     "gatewayResourceId": {
+      "type": "string"
+    },
+    "vpnGatewayResourceId": {
+      "type": "string"
+    },
+    "expressRouteGatewayResourceId": {
       "type": "string"
     },
     "extensions": {
