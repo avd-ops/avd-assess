@@ -5,6 +5,7 @@
   "location": "eastus2",
   "profile": "enterprise",
   "connectivityTopology": "hub-spoke",
+  "firewallMode": "azure-firewall",
   "resourceGroup": "rg-avd-hub-prod",
   "hubVnetResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-avd-hub-prod/providers/Microsoft.Network/virtualNetworks/vnet-avd-hub-prod",
   "hubFirewallPrivateIp": "0.0.0.0",
@@ -18,5 +19,7 @@
     "avdGlobal": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-avd-hub-prod/providers/Microsoft.Network/privateDnsZones/privatelink-global.wvd.microsoft.com"
   },
   "bastionResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-avd-hub-prod/providers/Microsoft.Network/bastionHosts/bas-avd-hub-prod",
-  "gatewayResourceId": ""
+  "gatewayResourceId": "",
+  "vpnGatewayResourceId": "",
+  "expressRouteGatewayResourceId": ""
 }
