@@ -7,9 +7,9 @@
   "connectivityTopology": "hub-spoke",
   "resourceGroup": "rg-avd-hub-prod",
   "hubVnetResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-avd-hub-prod/providers/Microsoft.Network/virtualNetworks/vnet-avd-hub-prod",
-  "hubFirewallPrivateIp": "10.0.1.4",
+  "hubFirewallPrivateIp": "0.0.0.0",
   "dnsServers": [
-    "10.0.4.4"
+    "0.0.0.0"
   ],
   "centralPrivateDnsZoneResourceIds": {
     "file": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-avd-hub-prod/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net",
