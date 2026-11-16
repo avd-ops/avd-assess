@@ -14,6 +14,19 @@ Where it sits in the family: [avd-landing-zone](https://github.com/avd-ops/avd-l
 > - It is provided **"as is", without warranty of any kind**, under the [MIT License](LICENSE). You use it at your own risk.
 > - **Contributions and forks are welcome and encouraged.** See [Contributing](#contributing).
 
+## How it connects
+
+| Direction | Repo | Relationship |
+|---|---|---|
+| Front door | [avd-ops](https://github.com/avd-ops/avd-ops#readme) | Overview, [repo page](https://avd-ops.dev/docs/repos/avd-assess.html), and published standards library |
+| Sibling | [avd-current-state](https://github.com/avd-ops/avd-current-state#readme) | Runs `method.json` and `endpoints.json` at a pinned commit to collect & validate |
+| Sibling | [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone#readme) | Targets remediation hints and landing zone parameters (`dimensions.yaml`) |
+| Downstream | [avd-migrate](https://github.com/avd-ops/avd-migrate#readme) | Consumes `C11`/`C19`/`C27` schemas to emit `C14` target-state manifests |
+| Downstream | [avd-benchmark](https://github.com/avd-ops/avd-benchmark#readme) | Implements Tier 1 synthetic profiles and emits `C25` evidence |
+| Downstream | [avd-linecheck](https://github.com/avd-ops/avd-linecheck#readme) | Reads `endpoints.json` at a pinned commit for browser network checks |
+| Downstream | [avd-remediate](https://github.com/avd-ops/avd-remediate#readme) | Grounds triage in `ref:`/`obs:` claims and `C21`/`C24` schemas |
+| Intelligence | [avd-second-brain](https://github.com/avd-ops/avd-second-brain#readme) | Cites pinned claims, baselines, and the security review map |
+
 ## Start here: the methods
 
 | Method | Answers |
