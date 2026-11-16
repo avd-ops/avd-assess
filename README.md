@@ -7,7 +7,7 @@ An open, curated methodology for assessing Azure Virtual Desktop estates: what t
 Where it sits in the family: [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) is how an estate is built and changed from here, [avd-current-state](https://github.com/avd-ops/avd-current-state) is what is there now, and avd-assess is what it should be, and why: the map and the dictionary both engines read, from the standards to the endpoint map. It also holds the [foundation contracts](contracts/README.md), the formats those three repos exchange, which work the same with or without the layers above them.
 
 > [!WARNING]
-> **Personal project. Research and learning only. Not for production. No warranty.**
+> **Community research project. Use at your own risk. No warranty.**
 >
 > - This is my own personal project, built on my own time **for research and learning**. It is **not affiliated with, endorsed by or supported by my employer, Liquidware or Microsoft**, and it does not represent their views, products or guidance. It is not an official Microsoft methodology.
 > - Nothing here is a production-readiness certification, a compliance attestation or a security audit. Check every recommendation against its source and try it in a lab first.
