@@ -189,3 +189,26 @@ Every Desktop DevOps check in `method.json` traces from its upstream source clai
 | `asm-win365-restore-points-24h` | `intune` | `reliability` | `medium` | `c11.intune.win365.restorePointFrequencyHoursMax` (when `intake.win365Scope != 'not-used'`) | `ref:windows-365-intune#restore-point-cadence` | `avd-intune`: `profiles/win365/user-setting.json` (`frequencyInHours <= 12`) | `hosts.cloudpc-health` / `D1` `dataLossGuard` |
 | `asm-win365-anc-healthy` | `intune` | `network` | `high` | `c11.intune.win365.ancFailedCount` (when `intake.win365Scope != 'not-used'`) | `ref:windows-365-intune#anc-health-checks` | `avd-intune` + `avd-azure`: `win365-anc-subnet-dns-remediation` | `hosts.cloudpc-health` |
 | `asm-win365-cloudpcs-compliant` | `intune` | `security` | `high` | `c11.intune.cloudPcManagedCompliant`, `c11.intune.cloudPcManagedNoncompliant` (when `intake.win365Scope != 'not-used'`) | `ref:windows-365-intune#cloudpc-intune-compliance`, `ref:ca-require-compliant-device#compliance-signal` | `avd-intune`: `win365-cloudpc-compliance-policy` + `avd-entra` Conditional Access | `intune.policy-drift` (`policy-pr`) |
+
+---
+
+## 5. Same-tenant human AVD and CUA agent desktops
+
+When a task has no API (legacy line-of-business consoles, portal-only settings, or interactive verification) and requires a Computer-Use Agent (CUA), an adopter can run **human AVD desktops and CUA agent desktops in the same Entra tenant** without mixing identities, policies, or billing ([avd-ops decision 0022](https://github.com/avd-ops/avd-ops/blob/main/docs/knowledge/decisions/0022-cua-external-executor-plumbing.md), [cua-executor-spec.md](https://github.com/avd-ops/avd-ops/blob/main/docs/cua-executor-spec.md)):
+
+### 5.1 Dual-backend placement (adopt first, AVD fallback)
+
+| Workload | Execution surface | Identity & Conditional Access | Billing & isolation |
+|---|---|---|---|
+| **Human users** | AVD pooled multi-session or personal (`avd-landing-zone`) | Human Entra accounts, phishing-resistant MFA (FIDO2 / WHfB), Intune-compliant device CA | AVD consumption + per-user licensing; human host pools block CUA identities |
+| **CUAs (adopt-first default)** | **Windows 365 for Agents** (stateless Cloud PC pool, `mcp_W365ComputerUse`) | **Entra Agent ID** (`Agent ID user`, `agentType` in `SigninLogs`), Conditional Access for agents, Intune agent security baseline & assignment filter | **Pay-as-you-go (PAYGO)** per task-hour via Azure billing policy (plus optional always-available monthly fee), no idle human-seat license |
+| **CUAs (AVD-native fallback)** | **`avd-landing-zone` isolated host pool** (single-session ephemeral, hardened image baseline) | Dedicated CUA identity container / AU + per-session passwordless auth (or Entra Agent ID where supported), fixed-egress named location CA | Ephemeral AVD compute reimaged/deallocated at task end; used when custom VNet, custom image, or sovereign-cloud control is required |
+
+### 5.2 What the AVD family adds over Microsoft's primitives
+
+The AVD family adopts Microsoft's agent identity and managed desktop primitives (**Entra Agent ID**, **Conditional Access for agents**, **Windows 365 for Agents PAYGO**, **Defender for Endpoint**, and **Purview Endpoint DLP**) rather than rebuilding them, and adds the cross-plane governance Microsoft does not provide:
+
+1. **Out-of-chat human approval (`C9` -> GitHub Environment -> `C10`):** API-first remains the rule. When a UI-only task is needed, `avd-swarm` proposes an `external-executor` (`cua`) plan that must be approved by a person in a GitHub Environment with no standing write credential.
+2. **One layered kill switch (`halt-actions`, `halt-agents`, `halt-all`):** Stops `avd-swarm` agents, API writes, and any external CUA executor together.
+3. **Cross-lane and rogue-CUA detection:** Watchdog KQL joins `SigninLogs`, `WVDConnections`, MDE synthetic-input signals (`INJECTED` flags / automation processes), and approved `C9` plans to flag CUA identities touching human pools, humans touching isolated CUA pools, or unpaired sessions.
+4. **Decision-linked `executor-evidence` (`C10` / `C18`):** External CUA runs return redacted, hashed outcomes (status, scope, timestamps, artifact hashes -- never raw screenshots or secrets) to `avd-second-brain`.
