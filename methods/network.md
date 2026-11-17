@@ -30,7 +30,7 @@ Client-side steps are intake or a reviewer's test on the user's network (`gap:cl
 
 ## Extension points
 
-- **AVD on Azure Local** (`network.azure-local`): a host pool is all Azure or all Azure Local (`ref:avd-azure-local#no-mixed-pools`); no method yet.
+- **AVD on Azure Local** (`network.azure-local`): a host pool is all Azure or all Azure Local (`ref:avd-azure-local#no-mixed-pools`), and Azure Local 23H2+ pools support RDP Shortpath (`ref:avd-azure-local#multisession-and-shortpath`). `C11` (`c11.hostPool.hostPlacement`, `c11.hostPool.sessionHosts.azureLocalHosts`) and `C19` (`intake.hostPlacement`, `intake.profileStorageType`) are specified; draft checks in `gap:hybrid-scope` enter `method.json` once `avd-current-state` collects them.
 - **3rd-party NVAs and hybrid gateways** (`network.hybrid`, `network.inspection`): when egress or DNS is handled by a 3rd-party NVA (e.g., `VirtualAppliance` UDR, `customDnsServers`) or hybrid VPN/ExpressRoute gateways (Active-Active, BGP, FastPath, coexistence in `GatewaySubnet`), Azure Reader can verify the spoke UDR next hop, `GatewaySubnet` route table symmetry, and gateway BGP/SKU properties, while NVA internal policy and custom DNS forwarders remain intake/host-read (`gap:network-scope`).
 
 ## Where the network lives in the family
