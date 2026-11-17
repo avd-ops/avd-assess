@@ -750,14 +750,14 @@ dimensions:
   - id: network.azure-local
     area: network
     pillar: networking-azure
-    title: AVD on Azure Local (extension)
-    decides: The network design for host pools on Azure Local.
-    home: {decision: network, facts: []}
+    title: AVD on Azure Local (placement and Shortpath)
+    decides: The network and placement boundary for host pools on Azure Local.
+    home: {decision: network, facts: [c11.hostPool.hostPlacement, c11.hostPool.sessionHosts.azureLocalHosts]}
     baseline:
-      standing: gap
-      claims: [ref:avd-azure-local#no-mixed-pools, gap:network-scope]
-      says: Extension point only; no method yet.
-    measure: none
+      standing: published
+      claims: [ref:avd-azure-local#no-mixed-pools, ref:avd-azure-local#multisession-and-shortpath, gap:hybrid-scope]
+      says: Keep Azure and Azure Local session hosts in separate host pools; Azure Local 23H2+ pools support RDP Shortpath and outbound Arc/AVD connectivity.
+    measure: fact
     landingZone: []
 
   # Endpoint protection and security agents (gap:security-agents-scope)
@@ -2410,7 +2410,7 @@ dimensions:
     pillar: hybrid
     title: On-premises session host platform (AVD Hybrid vs Azure Local)
     decides: Whether workloads that must stay on-premises run on existing hypervisors or dedicated physical servers through AVD Hybrid (Azure Arc) or on Azure Local clusters, with each host pool on a single platform.
-    home: {decision: region, facts: [proposed:c11.hostPool.sessionHosts.arcConnected], intake: [intake.residency]}
+    home: {decision: region, facts: [c11.hostPool.hostPlacement, c11.hostPool.sessionHosts.azureLocalHosts, c11.hostPool.sessionHosts.arcConnected], intake: [intake.residency, intake.hostPlacement]}
     baseline:
       standing: published
       claims: [ref:avd-hybrid-overview#arc-enabled-hosts, ref:avd-azure-local#no-mixed-pools, ref:avd-azure-local#multisession-and-shortpath, gap:hybrid-scope]
@@ -2422,7 +2422,7 @@ dimensions:
     pillar: hybrid
     title: Operating system and multi-session boundary on-premises
     decides: Which operating system runs on on-premises session hosts, given that Windows 10 and 11 Enterprise multi-session is supported on Azure Local but not on AVD Hybrid.
-    home: {decision: hostPool.type, facts: [c11.hostPool.type, proposed:c11.hostPool.sessionHosts.arcConnected]}
+    home: {decision: hostPool.type, facts: [c11.hostPool.type, c11.hostPool.sessionHosts.arcConnected, c11.hostPool.sessionHosts.azureLocalHosts]}
     baseline:
       standing: published
       claims: [ref:avd-hybrid-overview#supported-os, ref:avd-hybrid-overview#no-client-multisession, ref:avd-azure-local#multisession-and-shortpath, ref:avd-azure-local-workload#multi-session-when, ref:avd-azure-local-workload#single-session-when]
@@ -2446,7 +2446,7 @@ dimensions:
     pillar: hybrid
     title: Host pool managed identity and Arc extension registration
     decides: How on-premises session hosts onboard to Azure Arc and register with the AVD host pool.
-    home: {decision: proposed:operations.hybridRegistration, facts: [proposed:c11.hostPool.sessionHosts.arcConnected, proposed:c11.hostPool.sessionHosts.arcAgentDisconnected, proposed:c11.hostPool.sessionHosts.cloudDeviceExtensionFailed, proposed:c11.hostPool.arcResourceGroupReaderAssigned]}
+    home: {decision: proposed:operations.hybridRegistration, facts: [c11.hostPool.sessionHosts.arcConnected, c11.hostPool.sessionHosts.arcAgentDisconnected, c11.hostPool.sessionHosts.cloudDeviceExtensionFailed, proposed:c11.hostPool.arcResourceGroupReaderAssigned]}
     baseline:
       standing: published
       claims: [ref:avd-hybrid-deploy#hostpool-identity-reader, ref:avd-hybrid-deploy#cloud-device-extension, ref:avd-hybrid-deploy#arc-and-avd-endpoints, ref:avd-azure-local#connected-machine-agent, gap:hybrid-scope]
@@ -2470,7 +2470,7 @@ dimensions:
     pillar: hybrid
     title: On-premises licensing and fee model
     decides: Which user licenses and infrastructure fees apply to AVD Hybrid versus AVD on Azure Local.
-    home: {decision: proposed:cost.licensing, facts: [proposed:c11.hostPool.sessionHosts.arcConnected], intake: [intake.userLicense]}
+    home: {decision: proposed:cost.licensing, facts: [c11.hostPool.sessionHosts.arcConnected, c11.hostPool.sessionHosts.azureLocalHosts], intake: [intake.userLicense]}
     baseline:
       standing: published
       claims: [ref:avd-hybrid-overview#hybrid-licensing, ref:avd-azure-local#three-part-pricing]
@@ -2482,7 +2482,7 @@ dimensions:
     pillar: hybrid
     title: Arc resource projection, monitoring and remote command execution
     decides: When Azure Arc is used for on-premises server inventory, log collection and remote script execution, and when agentless discovery or broker collectors are used instead.
-    home: {decision: proposed:operations.monitoring, facts: [proposed:c11.hostPool.sessionHosts.arcConnected, c11.hostPool.sessionHosts.insightsDcr]}
+    home: {decision: proposed:operations.monitoring, facts: [c11.hostPool.sessionHosts.arcConnected, c11.hostPool.sessionHosts.insightsDcr]}
     baseline:
       standing: published
       claims: [ref:arc-servers-overview#azure-resource-projection, ref:arc-servers-overview#ama-and-extensions, ref:arc-servers-run-command#agent-script-execution, ref:arc-servers-run-command#free-control-plane, gap:hybrid-scope]

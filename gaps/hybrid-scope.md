@@ -30,9 +30,11 @@ All proposed facts emit counts or booleans per host pool so no machine name, dom
 
 | Proposed fact | What it measures | Source |
 |---|---|---|
-| `proposed:c11.hostPool.sessionHosts.arcConnected` | Session hosts in the pool backed by an Arc-enabled server (`Microsoft.HybridCompute/machines`) | AVD session host resource link and Resource Graph |
-| `proposed:c11.hostPool.sessionHosts.arcAgentDisconnected` | Arc-backed session hosts whose Connected Machine agent status is not `Connected` | Resource Graph `HybridCompute/machines` |
-| `proposed:c11.hostPool.sessionHosts.cloudDeviceExtensionFailed` | Arc-backed session hosts where `Microsoft.AzureVirtualDesktop.CloudDeviceExtension` is not `Succeeded` (`ref:avd-hybrid-deploy#cloud-device-extension`) | Resource Graph `HybridCompute/machines/extensions` |
+| `c11.hostPool.hostPlacement` | Whether the pool holds Azure VMs, Azure Local VM instances, or both (`mixed`) (`ref:avd-azure-local#no-mixed-pools`) | AVD session host resource link and Resource Graph |
+| `c11.hostPool.sessionHosts.azureLocalHosts` | Session hosts in the pool backed by `Microsoft.AzureStackHCI/virtualMachineInstances` | AVD session host resource link and Resource Graph |
+| `c11.hostPool.sessionHosts.arcConnected` | Session hosts in the pool backed by an Arc-enabled server (`Microsoft.HybridCompute/machines`) | AVD session host resource link and Resource Graph |
+| `c11.hostPool.sessionHosts.arcAgentDisconnected` | Arc-backed session hosts whose Connected Machine agent status is not `Connected` | Resource Graph `HybridCompute/machines` |
+| `c11.hostPool.sessionHosts.cloudDeviceExtensionFailed` | Arc-backed session hosts where `Microsoft.AzureVirtualDesktop.CloudDeviceExtension` is not `Succeeded` (`ref:avd-hybrid-deploy#cloud-device-extension`) | Resource Graph `HybridCompute/machines/extensions` |
 | `proposed:c11.hostPool.arcResourceGroupReaderAssigned` | Whether the host pool has a managed identity with `Reader` on the resource group holding its Arc-enabled servers (`ref:avd-hybrid-deploy#hostpool-identity-reader`) | Host pool identity and role assignments |
 
 ## Draft checks

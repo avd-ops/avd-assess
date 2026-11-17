@@ -1916,21 +1916,25 @@
       "id": "network.azure-local",
       "area": "network",
       "pillar": "networking-azure",
-      "title": "AVD on Azure Local (extension)",
-      "decides": "The network design for host pools on Azure Local.",
+      "title": "AVD on Azure Local (placement and Shortpath)",
+      "decides": "The network and placement boundary for host pools on Azure Local.",
       "home": {
         "decision": "network",
-        "facts": []
+        "facts": [
+          "c11.hostPool.hostPlacement",
+          "c11.hostPool.sessionHosts.azureLocalHosts"
+        ]
       },
       "baseline": {
-        "standing": "gap",
+        "standing": "published",
         "claims": [
           "ref:avd-azure-local#no-mixed-pools",
-          "gap:network-scope"
+          "ref:avd-azure-local#multisession-and-shortpath",
+          "gap:hybrid-scope"
         ],
-        "says": "Extension point only; no method yet."
+        "says": "Keep Azure and Azure Local session hosts in separate host pools; Azure Local 23H2+ pools support RDP Shortpath and outbound Arc/AVD connectivity."
       },
-      "measure": "none",
+      "measure": "fact",
       "landingZone": []
     },
     {
@@ -5800,10 +5804,13 @@
       "home": {
         "decision": "region",
         "facts": [
-          "proposed:c11.hostPool.sessionHosts.arcConnected"
+          "c11.hostPool.hostPlacement",
+          "c11.hostPool.sessionHosts.azureLocalHosts",
+          "c11.hostPool.sessionHosts.arcConnected"
         ],
         "intake": [
-          "intake.residency"
+          "intake.residency",
+          "intake.hostPlacement"
         ]
       },
       "baseline": {
@@ -5829,7 +5836,8 @@
         "decision": "hostPool.type",
         "facts": [
           "c11.hostPool.type",
-          "proposed:c11.hostPool.sessionHosts.arcConnected"
+          "c11.hostPool.sessionHosts.arcConnected",
+          "c11.hostPool.sessionHosts.azureLocalHosts"
         ]
       },
       "baseline": {
@@ -5884,9 +5892,9 @@
       "home": {
         "decision": "proposed:operations.hybridRegistration",
         "facts": [
-          "proposed:c11.hostPool.sessionHosts.arcConnected",
-          "proposed:c11.hostPool.sessionHosts.arcAgentDisconnected",
-          "proposed:c11.hostPool.sessionHosts.cloudDeviceExtensionFailed",
+          "c11.hostPool.sessionHosts.arcConnected",
+          "c11.hostPool.sessionHosts.arcAgentDisconnected",
+          "c11.hostPool.sessionHosts.cloudDeviceExtensionFailed",
           "proposed:c11.hostPool.arcResourceGroupReaderAssigned"
         ]
       },
@@ -5940,7 +5948,8 @@
       "home": {
         "decision": "proposed:cost.licensing",
         "facts": [
-          "proposed:c11.hostPool.sessionHosts.arcConnected"
+          "c11.hostPool.sessionHosts.arcConnected",
+          "c11.hostPool.sessionHosts.azureLocalHosts"
         ],
         "intake": [
           "intake.userLicense"
@@ -5966,7 +5975,7 @@
       "home": {
         "decision": "proposed:operations.monitoring",
         "facts": [
-          "proposed:c11.hostPool.sessionHosts.arcConnected",
+          "c11.hostPool.sessionHosts.arcConnected",
           "c11.hostPool.sessionHosts.insightsDcr"
         ]
       },
