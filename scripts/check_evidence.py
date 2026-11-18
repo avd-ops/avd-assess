@@ -35,7 +35,9 @@ EXTRA_METRICS = {
 GUID = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b")
 EMAIL = re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b")
 IPV4 = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
-DOMAIN = re.compile(r"\b[a-z0-9-]+\.(?:com|net|org|io|local|corp|internal|lan|onmicrosoft)\b", re.IGNORECASE)
+IPV6 = re.compile(r"(?:[0-9a-f]{1,4}:){2,7}[0-9a-f]{0,4}|::1", re.IGNORECASE)
+DOMAIN = re.compile(r"\b(?:[a-z0-9-]+\.)+[a-z]{2,}\b", re.IGNORECASE)
+ALLOWED_DOMAINS = {"assess.avd-ops.dev"}
 
 
 def load_yaml(path):
@@ -78,9 +80,13 @@ def check(path, known=None, metrics=None, observations=None, profiles=None):
     raw = path.read_text(encoding="utf-8")
     if any(ord(ch) > 127 for ch in raw):
         problems.append("non-ASCII character")
-    for name, pattern in (("a GUID", GUID), ("an email address", EMAIL), ("an IP address", IPV4), ("a domain", DOMAIN)):
+    for name, pattern in (("a GUID", GUID), ("an email address", EMAIL), ("an IPv4 address", IPV4), ("an IPv6 address", IPV6)):
         if pattern.search(raw):
             problems.append(f"contains what looks like {name}")
+    for m in DOMAIN.finditer(raw):
+        if m.group(0).lower() not in ALLOWED_DOMAINS:
+            problems.append("contains what looks like a domain")
+            break
     try:
         doc = json.loads(raw)
     except json.JSONDecodeError as e:
@@ -109,6 +115,26 @@ def check(path, known=None, metrics=None, observations=None, profiles=None):
             obs = item.get("observation")
             if obs and obs not in observations:
                 problems.append(f"verdict observation {obs!r} doesn't exist")
+        ext = doc.get("extensions")
+        if isinstance(ext, dict) and "generator" in ext:
+            gen = ext["generator"]
+            if not isinstance(gen, dict):
+                problems.append("extensions.generator must be an object")
+            else:
+                allowed_gen = {"kind", "version", "persona", "licenseSelfDeclared", "exportSha256"}
+                for gk in gen:
+                    if gk not in allowed_gen:
+                        problems.append(f"extensions.generator.{gk} is not an allowed property")
+                if gen.get("kind") not in {"native", "euc-score-byo"}:
+                    problems.append("extensions.generator.kind must be native or euc-score-byo")
+                if not re.match(r"^(?:[0-9]+\.[0-9]+(?:\.[0-9]+)?|unknown)$", str(gen.get("version", ""))):
+                    problems.append("extensions.generator.version must be semver or unknown")
+                if gen.get("persona") not in {"author", "knowledge-worker", "power-user", "media-user", "other"}:
+                    problems.append("extensions.generator.persona is not in the closed enum")
+                if gen.get("licenseSelfDeclared") != "community-public-results":
+                    problems.append("extensions.generator.licenseSelfDeclared must be community-public-results")
+                if not re.match(r"^[0-9a-f]{64}$", str(gen.get("exportSha256", ""))):
+                    problems.append("extensions.generator.exportSha256 must be a 64-char hex SHA-256")
         return problems
     scope = doc["scope"]
     if doc["source"] == "estate":
