@@ -33,5 +33,7 @@ body:
           required: true
         - label: For an estate, its owner agreed to share these aggregates, and its size is given as bands, not exact counts.
           required: true
+        - label: If using an external BYO generator (such as euc-score-byo), I ran it under a license that permits public sharing of these results (for example, EUC Score non-commercial Community Subscription).
+          required: false
         - label: I agree my submission is licensed under the repo's MIT License.
           required: true
