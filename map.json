@@ -7555,6 +7555,137 @@
       ]
     },
     {
+      "id": "rpa-ui-responsiveness",
+      "version": "1.0.0",
+      "tier": "synthetic",
+      "title": "In-session GUI/RPA step latency and responsiveness benchmark",
+      "summary": "Drives a deterministic self-contained Win32/WPF desktop fixture inside active sandboxed AVD sessions using semantic Windows UI Automation locators, measuring step-level UI latencies alongside User Input Delay and host counters.",
+      "harness": "In-session Windows UI Automation worker (in-session-uia category, MIT open-source library on .NET Framework 4.8) plus PerfMon counters (User Input Delay per Session, Processor Time, Processor Queue Length, Available MBytes)",
+      "parameters": [
+        {
+          "name": "stepDurationMinutes",
+          "value": 15,
+          "unit": "minutes"
+        },
+        {
+          "name": "warmupMinutes",
+          "value": 3,
+          "unit": "minutes"
+        },
+        {
+          "name": "stepTimeoutSeconds",
+          "value": 30,
+          "unit": "s"
+        },
+        {
+          "name": "inputDelayGateP95Ms",
+          "value": 100,
+          "unit": "ms"
+        }
+      ],
+      "personas": {
+        "light": {
+          "appCategory": "self-contained-win32-wpf-fixture",
+          "pacingSeconds": 10,
+          "steps": [
+            "launch-fixture",
+            "text-entry",
+            "scroll-view",
+            "save-close"
+          ]
+        },
+        "medium": {
+          "appCategory": "self-contained-win32-wpf-fixture",
+          "pacingSeconds": 5,
+          "steps": [
+            "launch-fixture",
+            "text-entry",
+            "scroll-view",
+            "control-tree-filter",
+            "save-close"
+          ]
+        },
+        "heavy": {
+          "appCategory": "self-contained-win32-wpf-fixture",
+          "pacingSeconds": 2,
+          "steps": [
+            "launch-fixture",
+            "text-entry",
+            "scroll-view",
+            "control-tree-filter",
+            "multi-tab-switch",
+            "save-close"
+          ]
+        },
+        "power": {
+          "appCategory": "self-contained-win32-wpf-fixture",
+          "pacingSeconds": 1,
+          "steps": [
+            "launch-fixture",
+            "text-entry",
+            "scroll-view",
+            "control-tree-filter",
+            "multi-tab-switch",
+            "large-file-save",
+            "save-close"
+          ]
+        }
+      },
+      "metrics": [
+        {
+          "metric": "appLaunchMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "windowReadyMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "actionLatencyMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "saveCloseMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "stepSuccessRatePct",
+          "unit": "percent"
+        },
+        {
+          "metric": "stepTimeoutRatePct",
+          "unit": "percent"
+        },
+        {
+          "metric": "inputDelayMs",
+          "unit": "ms"
+        },
+        {
+          "metric": "cpuPct",
+          "unit": "percent"
+        },
+        {
+          "metric": "pqlPerCore",
+          "unit": "ratio"
+        },
+        {
+          "metric": "availableMemoryMiB",
+          "unit": "mib"
+        },
+        {
+          "metric": "memoryPerSessionMiB",
+          "unit": "mib"
+        }
+      ],
+      "claims": [
+        "ref:avd-insights-glossary#input-delay-bands",
+        "ref:avd-insights-use-cases#input-delay-host-100",
+        "ref:perfmon-troubleshooting#cpu-bands",
+        "gap:workload-benchmark",
+        "gap:ui-step-latency"
+      ]
+    },
+    {
       "id": "control-plane-autoscale",
       "version": "1.0.0",
       "tier": "synthetic",
