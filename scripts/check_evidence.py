@@ -95,6 +95,8 @@ def check(path, known=None, metrics=None, observations=None, profiles=None):
     if doc["id"] != path.stem:
         problems.append(f"id {doc['id']!r} must match the file name")
     if schema_str == "avd-benchmark-result/v1":
+        if doc["source"] == "fixture":
+            problems.append("a fixture run (source: fixture) cannot be submitted to evidence or corpus")
         if doc["source"] == "estate" and doc.get("consent") is not True:
             problems.append("an estate submission needs consent: true (the owner agreed to share these aggregates)")
         pid = doc["profile"]["id"]
