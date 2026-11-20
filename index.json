@@ -6226,6 +6226,28 @@
       ]
     },
     {
+      "id": "kerberos-clock-skew",
+      "title": "Maximum tolerance for computer clock synchronization",
+      "url": "https://learn.microsoft.com/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/maximum-tolerance-for-computer-clock-synchronization",
+      "pin": "Learn git_commit_id 3781a3939e77300af0299d25b3e16928184faa07, updated_at 2026-04-27",
+      "read": "2026-11-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "identity"
+      ],
+      "notes": "Kerberos ticket timestamp tolerance for clock skew between client and domain controller.",
+      "claims": [
+        {
+          "id": "five-minute-default",
+          "says": "Kerberos timestamps tolerate up to five minutes of clock skew by default between client and domain controller before authentication fails.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "log-retention",
       "title": "Manage data retention in a Log Analytics workspace",
       "url": "https://learn.microsoft.com/azure/azure-monitor/logs/data-retention-configure",
@@ -8112,6 +8134,29 @@
       ]
     },
     {
+      "id": "terminal-services-policy-csp",
+      "title": "Policy CSP - ADMX_TerminalServer",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-admx-terminalserver",
+      "pin": "Learn git_commit_id 6e5887a2f20ef9f4a897a01f069534e71a53d71e, updated_at 2026-10-23",
+      "read": "2026-11-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "protocol",
+        "images"
+      ],
+      "notes": "Documents Terminal Services ADMX-backed policies, including fEnableTimeZoneRedirection.",
+      "claims": [
+        {
+          "id": "timezone-redirection-policy",
+          "says": "Allowing time zone redirection (fEnableTimeZoneRedirection under SOFTWARE\\Policies\\Microsoft\\Windows NT\\Terminal Services) lets supported clients pass their local time zone to the remote session.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
       "id": "thin-clients",
       "title": "Thin client support (Azure Virtual Desktop)",
       "url": "https://learn.microsoft.com/azure/virtual-desktop/thin-clients",
@@ -9299,6 +9344,40 @@
       ]
     },
     {
+      "id": "windows-vm-time-sync",
+      "title": "Time sync for Windows VMs in Azure",
+      "url": "https://learn.microsoft.com/azure/virtual-machines/windows/time-sync",
+      "pin": "Learn git_commit_id 40aaa64a2771acda033ca09289e1e777241f201e, updated_at 2026-06-24",
+      "read": "2026-11-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "assessment"
+      ],
+      "pillars": [
+        "images",
+        "identity",
+        "monitoring"
+      ],
+      "notes": "Baseline reference for Windows Time Service (W32Time) behavior on Azure VMs and AVD session hosts.",
+      "claims": [
+        {
+          "id": "azure-vm-time-sources",
+          "says": "Azure Windows VMs can sync via host time (VMICTimeProvider), time.windows.com (NTP), or a domain hierarchy (NT5DS), while Azure hosts pull from Stratum 1 GPS-backed servers.",
+          "kind": "published"
+        },
+        {
+          "id": "ad-domain-hierarchy",
+          "says": "Active Directory domain-joined VMs should follow the AD DS time hierarchy (NT5DS) rather than time.windows.com or host-only sync.",
+          "kind": "guidance"
+        },
+        {
+          "id": "host-only-avd",
+          "says": "Host-only sync (VMICTimeProvider) avoids outbound public NTP traffic and is suited to environments such as Azure Virtual Desktop when not domain-joined.",
+          "kind": "guidance"
+        }
+      ]
+    },
+    {
       "id": "wireserver-ip",
       "title": "Azure platform address WireServer, explained",
       "url": "https://learn.microsoft.com/azure/virtual-network/what-is-ip-address-168-63-129-16",
@@ -9850,6 +9929,17 @@
       "date": "2026-11-10"
     },
     {
+      "id": "timezone-redirection-in-golden-image",
+      "claim": "ref:terminal-services-policy-csp#timezone-redirection-policy",
+      "verdict": "extends",
+      "observed": "Both avd-landing-zone (AIB inline script and Test-GoldenImage.ps1 validation) and avd-hcl (Packer base script) set fEnableTimeZoneRedirection = 1 in the golden image so pooled sessions follow the client's local time zone without a separate Intune policy.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/c3495bd7d0c544c6bb4182d1d0a558c76d412241/scripts/image/Enable-TimeZoneRedirection.ps1",
+        "https://github.com/avd-ops/avd-landing-zone/blob/c3495bd7d0c544c6bb4182d1d0a558c76d412241/scripts/image/Test-GoldenImage.ps1"
+      ],
+      "date": "2026-11-20"
+    },
+    {
       "id": "transport-column-names-disagree",
       "claim": "ref:configure-rdp-shortpath#verify-transport",
       "verdict": "extends",
@@ -9915,6 +10005,17 @@
         "https://github.com/avd-ops/avd-ops/blob/c40b00afcc3c7cd03d24d4c60b15b9f90eaee5fd/docs/govcloud-support-spec.md"
       ],
       "date": "2026-11-09"
+    },
+    {
+      "id": "w32time-protected-from-wdot",
+      "claim": "ref:windows-vm-time-sync#azure-vm-time-sources",
+      "verdict": "extends",
+      "observed": "The landing zone's WDOT profile keeps W32Time in protected-services.json (Skip) and Test-GoldenImage.ps1 fails the build if it is disabled, but neither the image build nor the control plane yet configures or monitors VMICTimeProvider vs. NT5DS or clock skew.",
+      "evidence": [
+        "https://github.com/avd-ops/avd-landing-zone/blob/c3495bd7d0c544c6bb4182d1d0a558c76d412241/scripts/image/protected-services.json",
+        "https://github.com/avd-ops/avd-landing-zone/blob/c3495bd7d0c544c6bb4182d1d0a558c76d412241/build/specs/image-pipeline-spec.md"
+      ],
+      "date": "2026-11-20"
     },
     {
       "id": "wdot-appx-removal-left-off",

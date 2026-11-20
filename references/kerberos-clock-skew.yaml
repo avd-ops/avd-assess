@@ -1,0 +1,13 @@
+id: kerberos-clock-skew
+title: Maximum tolerance for computer clock synchronization
+url: https://learn.microsoft.com/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/maximum-tolerance-for-computer-clock-synchronization
+pin: "Learn git_commit_id 3781a3939e77300af0299d25b3e16928184faa07, updated_at 2026-04-27"
+read: 2026-11-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [identity]
+notes: Kerberos ticket timestamp tolerance for clock skew between client and domain controller.
+claims:
+  - id: five-minute-default
+    says: Kerberos timestamps tolerate up to five minutes of clock skew by default between client and domain controller before authentication fails.
+    kind: published

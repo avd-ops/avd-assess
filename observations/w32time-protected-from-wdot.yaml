@@ -1,0 +1,8 @@
+id: w32time-protected-from-wdot
+claim: ref:windows-vm-time-sync#azure-vm-time-sources
+verdict: extends
+observed: The landing zone's WDOT profile keeps W32Time in protected-services.json (Skip) and Test-GoldenImage.ps1 fails the build if it is disabled, but neither the image build nor the control plane yet configures or monitors VMICTimeProvider vs. NT5DS or clock skew.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/c3495bd7d0c544c6bb4182d1d0a558c76d412241/scripts/image/protected-services.json
+  - https://github.com/avd-ops/avd-landing-zone/blob/c3495bd7d0c544c6bb4182d1d0a558c76d412241/build/specs/image-pipeline-spec.md
+date: 2026-11-20

@@ -1,0 +1,13 @@
+id: terminal-services-policy-csp
+title: Policy CSP - ADMX_TerminalServer
+url: https://learn.microsoft.com/windows/client-management/mdm/policy-csp-admx-terminalserver
+pin: "Learn git_commit_id 6e5887a2f20ef9f4a897a01f069534e71a53d71e, updated_at 2026-10-23"
+read: 2026-11-20
+license: Microsoft Learn content (link only)
+areas: [assessment]
+pillars: [protocol, images]
+notes: Documents Terminal Services ADMX-backed policies, including fEnableTimeZoneRedirection.
+claims:
+  - id: timezone-redirection-policy
+    says: Allowing time zone redirection (fEnableTimeZoneRedirection under SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services) lets supported clients pass their local time zone to the remote session.
+    kind: published

@@ -1,0 +1,8 @@
+id: timezone-redirection-in-golden-image
+claim: ref:terminal-services-policy-csp#timezone-redirection-policy
+verdict: extends
+observed: Both avd-landing-zone (AIB inline script and Test-GoldenImage.ps1 validation) and avd-hcl (Packer base script) set fEnableTimeZoneRedirection = 1 in the golden image so pooled sessions follow the client's local time zone without a separate Intune policy.
+evidence:
+  - https://github.com/avd-ops/avd-landing-zone/blob/c3495bd7d0c544c6bb4182d1d0a558c76d412241/scripts/image/Enable-TimeZoneRedirection.ps1
+  - https://github.com/avd-ops/avd-landing-zone/blob/c3495bd7d0c544c6bb4182d1d0a558c76d412241/scripts/image/Test-GoldenImage.ps1
+date: 2026-11-20
