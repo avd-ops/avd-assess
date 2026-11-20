@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-ticket-ref/v1.json",
+  "title": "avd-ticket-ref/v1: normalized ticket correlation envelope for C24, C9, and C10",
+  "description": "Carries provider, ticketId, and optional correlationId so avd-remediate and avd-swarm can post redacted triage notes and execution outcomes back to any ITSM adapter (mock, jira-jsm, servicenow, github) without embedding vendor schemas or PII.",
+  "type": "object",
+  "required": ["schema", "provider", "ticketId"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "avd-ticket-ref/v1" },
+    "provider": {
+      "enum": ["mock", "jira-jsm", "servicenow", "github"],
+      "description": "Normalized ticket adapter provider key"
+    },
+    "ticketId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,64}$",
+      "description": "Opaque ticket key or number (e.g. AVD-42, INC0010001)"
+    },
+    "correlationId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,64}$",
+      "description": "Optional correlation ID linking triage C24 to swarm C9/C10"
+    }
+  }
+}
