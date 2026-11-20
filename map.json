@@ -1721,6 +1721,30 @@
       "note": "Host policy, outside the landing zone's parameters."
     },
     {
+      "id": "protocol.timezone-redirection",
+      "area": "protocol",
+      "pillar": "protocol",
+      "title": "Session time zone redirection",
+      "decides": "Whether remote sessions inherit the client device's local time zone or stay on the session host's time zone.",
+      "home": {
+        "decision": "proposed:hostPool.image",
+        "facts": []
+      },
+      "baseline": {
+        "standing": "published",
+        "claims": [
+          "ref:terminal-services-policy-csp#timezone-redirection-policy"
+        ],
+        "says": "Enable fEnableTimeZoneRedirection on pooled and multi-session hosts so user sessions reflect the client's local time zone."
+      },
+      "observations": [
+        "obs:timezone-redirection-in-golden-image"
+      ],
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "Set in the golden image by Enable-TimeZoneRedirection.ps1 and verified by Test-GoldenImage.ps1, not a Bicep parameter."
+    },
+    {
       "id": "perf.accelerated-networking",
       "area": "performance",
       "pillar": "capacity",
@@ -3165,6 +3189,36 @@
       "landingZone": [
         "validationEnvironment"
       ]
+    },
+    {
+      "id": "images.time-sync",
+      "area": "operations",
+      "pillar": "images",
+      "title": "Host time synchronization (W32Time)",
+      "decides": "Which time source session hosts sync with (NT5DS for AD-joined, VMICTimeProvider or NTP for Entra-joined) and that W32Time stays enabled.",
+      "home": {
+        "decision": "identity",
+        "facts": [],
+        "intake": [
+          "intake.identityConstraints"
+        ]
+      },
+      "baseline": {
+        "standing": "guidance",
+        "claims": [
+          "ref:windows-vm-time-sync#azure-vm-time-sources",
+          "ref:windows-vm-time-sync#ad-domain-hierarchy",
+          "ref:windows-vm-time-sync#host-only-avd",
+          "ref:kerberos-clock-skew#five-minute-default"
+        ],
+        "says": "Keep W32Time running; use AD DS hierarchy (NT5DS) for domain-joined hosts and host-only (VMICTimeProvider) or NTP for Entra-joined hosts so clock skew stays within Kerberos and token limits."
+      },
+      "observations": [
+        "obs:w32time-protected-from-wdot"
+      ],
+      "measure": "rebuild",
+      "landingZone": [],
+      "note": "W32Time is protected from WDOT in protected-services.json, but explicit time-source configuration and skew checks are not yet wired into collection or remediation."
     },
     {
       "id": "region",
