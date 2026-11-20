@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-security-outputs/v1.json",
+  "title": "avd-security-outputs/v1: Security control-plane deployment outputs",
+  "description": "Redacted security control-plane outputs produced by avd-security and consumed by avd-current-state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generatedAt",
+    "costProfile",
+    "cloudProfile",
+    "defenderPlansDeployed",
+    "defenderTier",
+    "policyEffect",
+    "sentinelEnabled",
+    "policyAssignmentNames"
+  ],
+  "properties": {
+    "schema": {
+      "const": "avd-security-outputs/v1"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "costProfile": {
+      "type": "string",
+      "enum": ["lab", "enterprise"]
+    },
+    "cloudProfile": {
+      "type": "string",
+      "enum": ["commercial", "usgov"]
+    },
+    "defenderPlansDeployed": {
+      "type": "boolean"
+    },
+    "defenderTier": {
+      "type": "string",
+      "enum": ["Unchanged", "Free", "Standard"]
+    },
+    "policyEffect": {
+      "type": "string",
+      "enum": ["Audit", "Deny"]
+    },
+    "sentinelEnabled": {
+      "type": "boolean"
+    },
+    "policyAssignmentNames": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

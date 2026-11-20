@@ -21,6 +21,8 @@ This folder is the authority for the formats the foundation repos exchange: avd-
 | C30 `avd-verify-report/v1` | `schemas/verify-report.schema.json`, `examples/assess/verify-report.example.json` | post-wave parity evaluators | the operator, the brain |
 | C31 `avd-networking-outputs/v1` | `schemas/networking-outputs.schema.json`, `examples/assess/networking-outputs.example.json` | avd-networking (or compatible hub IaC) | avd-azure, avd-landing-zone, avd-current-state |
 | C32 `avd-gcp-outputs/v1` | `schemas/gcp-outputs.schema.json`, `examples/assess/gcp-outputs.example.json` | avd-gcp (GCP Hybrid session-host plane) | avd-azure, avd-landing-zone, avd-current-state |
+| C33 `avd-security-outputs/v1` | `schemas/security-outputs.schema.json`, `examples/assess/security-outputs.example.json` | avd-security | avd-current-state |
+| C34 `avd-security-posture/v1` | `schemas/security-posture.schema.json`, `examples/assess/security-posture.example.json` | avd-security | avd-assess, avd-current-state |
 
 The release manifest, `datapackage.json` with profile `avd-assess-bundle/v1` (`schemas/assess-bundle.schema.json`), is how all of the above ship together; it carries no contract number and is never committed ([distribution spec](../docs/distribution-spec.md)).
 
