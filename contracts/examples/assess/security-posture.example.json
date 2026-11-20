@@ -1,0 +1,47 @@
+{
+  "schema": "avd-security-posture/v1",
+  "checkedAt": "2026-11-20T12:00:00Z",
+  "mode": "c11-facts",
+  "summary": {
+    "total": 4,
+    "pass": 3,
+    "warn": 0,
+    "fail": 1,
+    "unknown": 0
+  },
+  "checks": [
+    {
+      "id": "sec-host-trusted-launch",
+      "assessCheckId": "asm-hosts-trusted-launch",
+      "pillar": "security-posture",
+      "status": "pass",
+      "claimRef": "ref:avd-security-guide#trusted-launch",
+      "message": "All collected session hosts have Trusted Launch enabled."
+    },
+    {
+      "id": "sec-host-rdp-redirection",
+      "assessCheckId": "asm-drive-usb-redirection-off",
+      "pillar": "security-posture",
+      "status": "pass",
+      "claimRef": "ref:avd-security-guide#device-redirection",
+      "message": "Drive, clipboard, and USB redirection are disabled across collected host pools."
+    },
+    {
+      "id": "sec-host-edr-present",
+      "assessCheckId": "asm-hosts-edr-present",
+      "pillar": "security-posture",
+      "status": "pass",
+      "claimRef": "ref:avd-security-guide#edr-microsoft-or-third-party",
+      "message": "Zero session hosts flagged for missing EDR."
+    },
+    {
+      "id": "sec-ctrl-defender-servers",
+      "assessCheckId": "asm-defender-servers",
+      "pillar": "security-posture",
+      "status": "fail",
+      "claimRef": "ref:avd-security-guide#defender-for-cloud",
+      "message": "Defender for Cloud VirtualMachines plan is Free on one or more subscriptions.",
+      "remediationHint": "Enable Standard Defender for Cloud (VirtualMachines P1) in enterprise deployments."
+    }
+  ]
+}

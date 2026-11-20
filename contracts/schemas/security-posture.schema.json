@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-security-posture/v1.json",
+  "title": "avd-security-posture/v1: AVD security posture verification report",
+  "description": "Structured security posture report produced by avd-security from C11 facts or self-reported inputs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "checkedAt",
+    "mode",
+    "summary",
+    "checks"
+  ],
+  "properties": {
+    "schema": {
+      "const": "avd-security-posture/v1"
+    },
+    "checkedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["c11-facts", "self-reported", "offline", "live"]
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "pass", "warn", "fail", "unknown"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "pass": { "type": "integer", "minimum": 0 },
+        "warn": { "type": "integer", "minimum": 0 },
+        "fail": { "type": "integer", "minimum": 0 },
+        "unknown": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "pillar", "status", "claimRef", "message"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "assessCheckId": { "type": "string", "minLength": 1 },
+          "pillar": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "enum": ["pass", "warn", "fail", "unknown"] },
+          "claimRef": { "type": "string", "minLength": 1 },
+          "message": { "type": "string", "minLength": 1 },
+          "remediationHint": { "type": "string" }
+        }
+      }
+    }
+  }
+}

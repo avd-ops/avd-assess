@@ -1,0 +1,15 @@
+{
+  "schema": "avd-security-outputs/v1",
+  "generatedAt": "2026-11-20T12:00:00Z",
+  "costProfile": "lab",
+  "cloudProfile": "commercial",
+  "defenderPlansDeployed": false,
+  "defenderTier": "Unchanged",
+  "policyEffect": "Audit",
+  "sentinelEnabled": false,
+  "policyAssignmentNames": [
+    "avd-sec-kv-softdelete",
+    "avd-sec-st-https",
+    "avd-sec-nic-nopubip"
+  ]
+}
